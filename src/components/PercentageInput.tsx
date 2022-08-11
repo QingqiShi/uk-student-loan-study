@@ -32,7 +32,7 @@ export function PercentageInput({
       }
       fullWidth
       variant="outlined"
-      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+      inputProps={{ inputMode: 'decimal', pattern: '[0-9]*' }}
       InputProps={{
         inputComponent: NumberFormatCustom,
         endAdornment: <InputAdornment position="end">%</InputAdornment>,

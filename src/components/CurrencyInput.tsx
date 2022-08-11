@@ -31,7 +31,7 @@ export function CurrencyInput({
         >
       }
       variant="outlined"
-      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+      inputProps={{ inputMode: 'decimal', pattern: '[0-9]*' }}
       InputProps={{
         inputComponent: NumberFormatCustom,
         startAdornment: <InputAdornment position="start">£</InputAdornment>,
