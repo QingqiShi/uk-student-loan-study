@@ -22,3 +22,5 @@ export function DateInput({ id, label, value, onChange }: DateInputProps) {
     </LocalizationProvider>
   );
 }
+
+export default DateInput;

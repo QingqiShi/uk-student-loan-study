@@ -1,7 +1,9 @@
-import { styled, Typography } from '@mui/material';
-import { InterestRateChart } from './InterestRateChart';
-import { RepaymentYearsChart } from './RepaymentYearsChart';
-import { TotalRepaymentChart } from './TotalRepaymentChart';
+import { lazy, Suspense } from 'react';
+import { Skeleton, styled, Typography } from '@mui/material';
+
+const InterestRateChart = lazy(() => import('./InterestRateChart'));
+const RepaymentYearsChart = lazy(() => import('./RepaymentYearsChart'));
+const TotalRepaymentChart = lazy(() => import('./TotalRepaymentChart'));
 
 const Container = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -51,7 +53,7 @@ export function ChartsGrid(_props: ChartsGridProps) {
     <Container>
       <Item>
         <TextContent>
-          <Typography variant="h6" component="h3" fontWeight="bold">
+          <Typography variant="h6" component="h2" fontWeight="bold">
             How much do you repay in total?
           </Typography>
           <Typography>
@@ -67,12 +69,16 @@ export function ChartsGrid(_props: ChartsGridProps) {
           </Typography>
         </TextContent>
         <ChartContainer>
-          <TotalRepaymentChart />
+          <Suspense
+            fallback={<Skeleton variant="rounded" width="100%" height="100%" />}
+          >
+            <TotalRepaymentChart />
+          </Suspense>
         </ChartContainer>
       </Item>
       <Item>
         <TextContent>
-          <Typography variant="h6" component="h3" fontWeight="bold">
+          <Typography variant="h6" component="h2" fontWeight="bold">
             How long does it take to pay off your student loan?
           </Typography>
           <Typography>
@@ -86,12 +92,14 @@ export function ChartsGrid(_props: ChartsGridProps) {
           </Typography>
         </TextContent>
         <ChartContainer>
-          <RepaymentYearsChart />
+          <Suspense>
+            <RepaymentYearsChart />
+          </Suspense>
         </ChartContainer>
       </Item>
       <Item>
         <TextContent>
-          <Typography variant="h6" component="h3" fontWeight="bold">
+          <Typography variant="h6" component="h2" fontWeight="bold">
             Is it worth paying off student loan early?
           </Typography>
           <Typography>
@@ -106,7 +114,11 @@ export function ChartsGrid(_props: ChartsGridProps) {
           </Typography>
         </TextContent>
         <ChartContainer>
-          <InterestRateChart />
+          <Suspense
+            fallback={<Skeleton variant="rounded" width="100%" height="100%" />}
+          >
+            <InterestRateChart />
+          </Suspense>
         </ChartContainer>
       </Item>
     </Container>

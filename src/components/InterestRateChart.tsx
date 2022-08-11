@@ -123,3 +123,5 @@ export function InterestRateChart(_props: InterestRateChartProps) {
     />
   );
 }
+
+export default InterestRateChart;
