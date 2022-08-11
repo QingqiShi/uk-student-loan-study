@@ -12,7 +12,7 @@ export default defineConfig({
         short_name: 'Student Loan Study',
         description:
           'UK Student Loan Study is a tool to help you understand the impact of student loan repayment on your future.',
-        theme_color: '#0B9542',
+        theme_color: '#121212',
         icons: [
           { src: 'windows11/SmallTile.scale-100.png', sizes: '71x71' },
           { src: 'windows11/SmallTile.scale-125.png', sizes: '89x89' },
