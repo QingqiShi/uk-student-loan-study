@@ -1,0 +1,40 @@
+{
+  "name": "student-loan-study",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.10.0",
+    "@mui/x-date-pickers": "^5.0.0-beta.4",
+    "@react-spring/web": "^9.5.2",
+    "@visx/pattern": "^2.10.0",
+    "@visx/xychart": "^2.12.2",
+    "dayjs": "^1.11.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-number-format": "^4.9.3",
+    "zustand": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "@visx/mock-data": "^2.1.2",
+    "@vitejs/plugin-react": "^2.0.0",
+    "eslint": "^8.21.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "typescript": "^4.7.4",
+    "vite": "^3.0.0"
+  }
+}
