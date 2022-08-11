@@ -115,3 +115,5 @@ export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
     />
   );
 }
+
+export default TotalRepaymentChart;

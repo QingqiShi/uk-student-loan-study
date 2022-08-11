@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense } from 'react';
 import { ExpandMore } from '@mui/icons-material';
 import {
   Accordion,
@@ -6,12 +6,14 @@ import {
   AccordionSummary,
   Box,
   Card,
+  Skeleton,
   Typography,
 } from '@mui/material';
-import { CurrencyInput } from './CurrencyInput';
-import { PercentageInput } from './PercentageInput';
-import { DateInput } from './DateInput';
 import { useStore } from '../store';
+
+const CurrencyInput = lazy(() => import('./CurrencyInput'));
+const PercentageInput = lazy(() => import('./PercentageInput'));
+const DateInput = lazy(() => import('./DateInput'));
 
 export function ConfigPanel() {
   const store = useStore();
@@ -23,24 +25,36 @@ export function ConfigPanel() {
           <Typography>Student Loan Balance</Typography>
         </Box>
         <Box p={2} display="flex" flexDirection="column" gap={2}>
-          <CurrencyInput
-            id="plan2-balance"
-            label="Plan 2 Loan Balance"
-            value={store.plan2Balance}
-            onChange={store.setPlan2Balance}
-          />
-          <CurrencyInput
-            id="postgrad-balance"
-            label="Postgraduate Loan Balance"
-            value={store.postGradBalance}
-            onChange={store.setPostGradBalance}
-          />
-          <DateInput
-            id="repayment-date"
-            label="Date Repayment Started"
-            value={store.repaymentDate}
-            onChange={store.setRepaymentDate}
-          />
+          <Suspense
+            fallback={<Skeleton variant="rounded" width="100%" height={56} />}
+          >
+            <CurrencyInput
+              id="plan2-balance"
+              label="Plan 2 Loan Balance"
+              value={store.plan2Balance}
+              onChange={store.setPlan2Balance}
+            />
+          </Suspense>
+          <Suspense
+            fallback={<Skeleton variant="rounded" width="100%" height={56} />}
+          >
+            <CurrencyInput
+              id="postgrad-balance"
+              label="Postgraduate Loan Balance"
+              value={store.postGradBalance}
+              onChange={store.setPostGradBalance}
+            />
+          </Suspense>
+          <Suspense
+            fallback={<Skeleton variant="rounded" width="100%" height={56} />}
+          >
+            <DateInput
+              id="repayment-date"
+              label="Date Repayment Started"
+              value={store.repaymentDate}
+              onChange={store.setRepaymentDate}
+            />
+          </Suspense>
         </Box>
       </Card>
       <Accordion>
@@ -53,30 +67,36 @@ export function ConfigPanel() {
         </AccordionSummary>
         <AccordionDetails>
           <Box display="flex" flexDirection="column" gap={2}>
-            <PercentageInput
-              id="plan2-lt-rate"
-              label="Plan 2 Lower Threshold Rate"
-              value={store.plan2LTRate}
-              onChange={store.setPlan2LTRate}
-            />
-            <PercentageInput
-              id="plan2-ut-rate"
-              label="Plan 2 Upper Threshold Rate"
-              value={store.plan2UTRate}
-              onChange={store.setPlan2UTRate}
-            />
-            <PercentageInput
-              id="postgrad-rate"
-              label="Postgraduate Rate"
-              value={store.postGradRate}
-              onChange={store.setPostGradRate}
-            />
-            <PercentageInput
-              id="inflation-rate"
-              label="Inflation Rate"
-              value={store.inflationRate}
-              onChange={store.setInflationRate}
-            />
+            <Suspense
+              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
+            >
+              <PercentageInput
+                id="plan2-lt-rate"
+                label="Plan 2 Lower Threshold Rate"
+                value={store.plan2LTRate}
+                onChange={store.setPlan2LTRate}
+              />
+            </Suspense>
+            <Suspense
+              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
+            >
+              <PercentageInput
+                id="plan2-ut-rate"
+                label="Plan 2 Upper Threshold Rate"
+                value={store.plan2UTRate}
+                onChange={store.setPlan2UTRate}
+              />
+            </Suspense>
+            <Suspense
+              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
+            >
+              <PercentageInput
+                id="postgrad-rate"
+                label="Postgraduate Rate"
+                value={store.postGradRate}
+                onChange={store.setPostGradRate}
+              />
+            </Suspense>
           </Box>
         </AccordionDetails>
       </Accordion>
@@ -90,12 +110,16 @@ export function ConfigPanel() {
         </AccordionSummary>
         <AccordionDetails>
           <Box display="flex" flexDirection="column" gap={2}>
-            <CurrencyInput
-              id="earning"
-              label="Your current Pre-Tax Salary"
-              value={store.salary}
-              onChange={store.setSalary}
-            />
+            <Suspense
+              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
+            >
+              <CurrencyInput
+                id="earning"
+                label="Your current Pre-Tax Salary"
+                value={store.salary}
+                onChange={store.setSalary}
+              />
+            </Suspense>
           </Box>
         </AccordionDetails>
       </Accordion>

@@ -115,3 +115,5 @@ export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
     />
   );
 }
+
+export default RepaymentYearsChart;

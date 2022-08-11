@@ -65,3 +65,5 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(
     />
   );
 });
+
+export default CurrencyInput;
