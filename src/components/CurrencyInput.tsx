@@ -4,7 +4,7 @@ import {
   InputBaseComponentProps,
   TextField,
 } from '@mui/material';
-import NumberFormat from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 
 interface CurrencyInputProps {
   id: string;
@@ -24,7 +24,7 @@ export function CurrencyInput({
       id={id}
       label={label}
       value={value}
-      // This typing is correct as the number comes from `NumberFormat`
+      // This typing is correct as the number comes from `NumericFormat`
       onChange={
         onChange as unknown as React.ChangeEventHandler<
           HTMLInputElement | HTMLTextAreaElement
@@ -33,7 +33,7 @@ export function CurrencyInput({
       variant="outlined"
       inputProps={{ inputMode: 'decimal', pattern: '[0-9]*' }}
       InputProps={{
-        inputComponent: NumberFormatCustom,
+        inputComponent: NumericFormatCustom,
         startAdornment: <InputAdornment position="start">£</InputAdornment>,
       }}
       fullWidth
@@ -41,7 +41,7 @@ export function CurrencyInput({
   );
 }
 
-const NumberFormatCustom = forwardRef(function NumberFormatCustom(
+const NumericFormatCustom = forwardRef(function NumericFormatCustom(
   props: Omit<InputBaseComponentProps, 'defaultValue' | 'onChange'> & {
     onChange: React.Dispatch<React.SetStateAction<number>>;
   },
@@ -50,7 +50,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(
   const { onChange, ...other } = props;
 
   return (
-    <NumberFormat
+    <NumericFormat
       {...other}
       getInputRef={ref}
       onValueChange={(values) => {
@@ -61,7 +61,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(
       decimalScale={2}
       fixedDecimalScale
       thousandSeparator
-      isNumericString
+      valueIsNumericString
     />
   );
 });
