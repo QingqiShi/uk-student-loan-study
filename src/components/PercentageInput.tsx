@@ -4,7 +4,7 @@ import {
   TextField,
 } from '@mui/material';
 import { forwardRef } from 'react';
-import NumberFormat from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 
 interface PercentageInputProps {
   id: string;
@@ -24,7 +24,7 @@ export function PercentageInput({
       id={id}
       label={label}
       value={value}
-      // This typing is correct as the number comes from `NumberFormat`
+      // This typing is correct as the number comes from `NumericFormat`
       onChange={
         onChange as unknown as React.ChangeEventHandler<
           HTMLInputElement | HTMLTextAreaElement
@@ -34,14 +34,14 @@ export function PercentageInput({
       variant="outlined"
       inputProps={{ inputMode: 'decimal', pattern: '[0-9]*' }}
       InputProps={{
-        inputComponent: NumberFormatCustom,
+        inputComponent: NumericFormatCustom,
         endAdornment: <InputAdornment position="end">%</InputAdornment>,
       }}
     />
   );
 }
 
-const NumberFormatCustom = forwardRef(function NumberFormatCustom(
+const NumericFormatCustom = forwardRef(function NumericFormatCustom(
   props: Omit<InputBaseComponentProps, 'defaultValue' | 'onChange'> & {
     onChange: React.Dispatch<React.SetStateAction<number>>;
   },
@@ -50,7 +50,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(
   const { onChange, ...other } = props;
 
   return (
-    <NumberFormat
+    <NumericFormat
       {...other}
       getInputRef={ref}
       onValueChange={(values) => {
@@ -59,7 +59,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(
         }
       }}
       thousandSeparator
-      isNumericString
+      valueIsNumericString
     />
   );
 });
