@@ -6,7 +6,11 @@ import {
   AccordionSummary,
   Box,
   Card,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
   Skeleton,
+  Switch,
   Typography,
 } from '@mui/material';
 import { useStore } from '../store';
@@ -29,10 +33,10 @@ export function ConfigPanel() {
             fallback={<Skeleton variant="rounded" width="100%" height={56} />}
           >
             <CurrencyInput
-              id="plan2-balance"
-              label="Plan 2 Loan Balance"
-              value={store.plan2Balance}
-              onChange={store.setPlan2Balance}
+              id="undergrad-balance"
+              label="Undergraduate Loan Balance (plan 2 or plan 5)"
+              value={store.underGradBalance}
+              onChange={store.setUnderGradBalance}
             />
           </Suspense>
           <Suspense
@@ -51,10 +55,26 @@ export function ConfigPanel() {
             <DateInput
               id="repayment-date"
               label="Date Repayment Started"
+              helperText="This determines when your loan is written off."
               value={store.repaymentDate}
               onChange={store.setRepaymentDate}
             />
           </Suspense>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  value={store.isPost2023}
+                  onChange={(e) => store.setIsPost2023(e.target.checked)}
+                />
+              }
+              label="Post 2023"
+            />
+            <FormHelperText>
+              For students who started an undergraduate course on or after
+              August 2023.
+            </FormHelperText>
+          </FormGroup>
         </Box>
       </Card>
       <Accordion>
@@ -67,26 +87,48 @@ export function ConfigPanel() {
         </AccordionSummary>
         <AccordionDetails>
           <Box display="flex" flexDirection="column" gap={2}>
-            <Suspense
-              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
-            >
-              <PercentageInput
-                id="plan2-lt-rate"
-                label="Plan 2 Lower Threshold Rate"
-                value={store.plan2LTRate}
-                onChange={store.setPlan2LTRate}
-              />
-            </Suspense>
-            <Suspense
-              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
-            >
-              <PercentageInput
-                id="plan2-ut-rate"
-                label="Plan 2 Upper Threshold Rate"
-                value={store.plan2UTRate}
-                onChange={store.setPlan2UTRate}
-              />
-            </Suspense>
+            {!store.isPost2023 && (
+              <>
+                <Suspense
+                  fallback={
+                    <Skeleton variant="rounded" width="100%" height={56} />
+                  }
+                >
+                  <PercentageInput
+                    id="plan2-lt-rate"
+                    label="Plan 2 Lower Threshold Rate"
+                    value={store.plan2LTRate}
+                    onChange={store.setPlan2LTRate}
+                  />
+                </Suspense>
+                <Suspense
+                  fallback={
+                    <Skeleton variant="rounded" width="100%" height={56} />
+                  }
+                >
+                  <PercentageInput
+                    id="plan2-ut-rate"
+                    label="Plan 2 Upper Threshold Rate"
+                    value={store.plan2UTRate}
+                    onChange={store.setPlan2UTRate}
+                  />
+                </Suspense>
+              </>
+            )}
+            {store.isPost2023 && (
+              <Suspense
+                fallback={
+                  <Skeleton variant="rounded" width="100%" height={56} />
+                }
+              >
+                <PercentageInput
+                  id="plan5-rate"
+                  label="Plan 5 Interest Rate (RPI)"
+                  value={store.plan5Rate}
+                  onChange={store.setPlan5Rate}
+                />
+              </Suspense>
+            )}
             <Suspense
               fallback={<Skeleton variant="rounded" width="100%" height={56} />}
             >
