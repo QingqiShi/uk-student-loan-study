@@ -97,8 +97,8 @@ export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
       let totalRepayment = 0;
       for (
         let month = 0;
-        (month < (isPost2023 ? plan5RemainingMonths : plan2RemainingMonths) ||
-          month < postGradRemainingMonths) &&
+        (month <= (isPost2023 ? plan5RemainingMonths : plan2RemainingMonths) ||
+          month <= postGradRemainingMonths) &&
         (underGradRemaining > 0 || postGradRemaining > 0);
         month++
       ) {
