@@ -98,8 +98,8 @@ export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
       let months = 0;
       for (
         let month = 0;
-        (month < (isPost2023 ? plan5RemainingMonths : plan2RemainingMonths) ||
-          month < postGradRemainingMonths) &&
+        (month <= (isPost2023 ? plan5RemainingMonths : plan2RemainingMonths) ||
+          month <= postGradRemainingMonths) &&
         (underGradRemaining > 0 || postGradRemaining > 0);
         month++
       ) {
@@ -131,7 +131,7 @@ export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
         months = month;
       }
 
-      data.push([salary, months / 12]);
+      data.push([salary, (months + 1) / 12]);
     }
     return data;
   }, [
@@ -146,7 +146,7 @@ export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
   ]);
 
   const annotateDataPoint =
-    salary > MIN_SALARY && salary < (MAX_SALARY - 5000)
+    salary > MIN_SALARY && salary < MAX_SALARY - 5000
       ? data.find((d) => d[0] >= salary)
       : undefined;
 
