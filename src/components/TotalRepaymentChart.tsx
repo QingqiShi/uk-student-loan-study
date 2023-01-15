@@ -47,6 +47,7 @@ export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
     plan5Rate,
     postGradRate,
     repaymentDate,
+    salary,
   } = useStore((state) => ({
     isPost2023: state.isPost2023,
     underGradBalance: state.underGradBalance,
@@ -56,6 +57,7 @@ export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
     plan5Rate: state.plan5Rate,
     postGradRate: state.postGradRate,
     repaymentDate: state.repaymentDate,
+    salary: state.salary,
   }));
 
   const data = useMemo(() => {
@@ -141,9 +143,15 @@ export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
     underGradBalance,
   ]);
 
+  const annotateDataPoint =
+    salary > MIN_SALARY && salary < MAX_SALARY
+      ? data.find((d) => d[0] >= salary)
+      : undefined;
+
   return (
     <ChartBase
       data={data}
+      annotateDataPoint={annotateDataPoint}
       xAxisLabel="Salary"
       yAxisLabel="Total Repayment"
       xFormatter={formatter.format}

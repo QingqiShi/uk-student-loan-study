@@ -1,7 +1,9 @@
 import { PatternLines } from '@visx/pattern';
 import {
+  AnimatedAnnotation,
   AnimatedAreaSeries,
   AnimatedAxis,
+  AnnotationLineSubject,
   darkTheme,
   DataContext,
   Tooltip,
@@ -19,6 +21,7 @@ interface ChartBaseProps {
   yAxisLabel: string;
   xFormatter: (x: number) => string;
   yFormatter: (y: number) => string;
+  annotateDataPoint?: DataPoint;
 }
 
 const xAccessor = (d: DataPoint) => d[0];
@@ -30,6 +33,7 @@ export function ChartBase({
   yAxisLabel,
   xFormatter,
   yFormatter,
+  annotateDataPoint,
 }: ChartBaseProps) {
   return (
     <XYChart
@@ -59,7 +63,6 @@ export function ChartBase({
         snapTooltipToDatumX
         snapTooltipToDatumY
         showVerticalCrosshair
-        showSeriesGlyphs
         renderTooltip={({ tooltipData }) =>
           tooltipData?.nearestDatum && (
             <>
@@ -73,6 +76,11 @@ export function ChartBase({
           )
         }
       />
+      {annotateDataPoint && (
+        <AnimatedAnnotation dataKey="default" datum={annotateDataPoint}>
+          <AnnotationLineSubject orientation="vertical" />
+        </AnimatedAnnotation>
+      )}
     </XYChart>
   );
 }

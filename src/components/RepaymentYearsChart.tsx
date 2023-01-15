@@ -47,6 +47,7 @@ export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
     plan5Rate,
     postGradRate,
     repaymentDate,
+    salary,
   } = useStore((state) => ({
     isPost2023: state.isPost2023,
     underGradBalance: state.underGradBalance,
@@ -56,6 +57,7 @@ export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
     plan5Rate: state.plan5Rate,
     postGradRate: state.postGradRate,
     repaymentDate: state.repaymentDate,
+    salary: state.salary,
   }));
 
   const data = useMemo(() => {
@@ -143,9 +145,15 @@ export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
     underGradBalance,
   ]);
 
+  const annotateDataPoint =
+    salary > MIN_SALARY && salary < (MAX_SALARY - 5000)
+      ? data.find((d) => d[0] >= salary)
+      : undefined;
+
   return (
     <ChartBase
       data={data}
+      annotateDataPoint={annotateDataPoint}
       xAxisLabel="Salary"
       yAxisLabel="Time to Pay Off (Years)"
       xFormatter={formatter.format}
