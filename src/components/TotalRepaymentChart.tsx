@@ -1,17 +1,23 @@
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
+import {
+  PLAN2_LT,
+  PLAN2_UT,
+  MIN_SALARY,
+  MAX_SALARY,
+  SALARY_STEP,
+  PLAN2_MONTHLY_THRESHOLD,
+  PLAN2_MONTHLY_REPAY_RATE,
+  PLAN5_MONTHLY_THRESHOLD,
+  PLAN5_MONTHLY_REPAY_RATE,
+  POST_GRAD_MONTHLY_THRESHOLD,
+  POST_GRAD_MONTHLY_REPAY_RATE,
+  PLAN2_WRITE_OFF,
+  PLAN5_WRITE_OFF,
+  POST_GRAD_WRITE_OFF,
+} from '../constants';
 import { useStore } from '../store';
 import { ChartBase } from './ChartBase';
-
-const MIN_SALARY = 30_000;
-const MAX_SALARY = 200_000;
-const SALARY_STEP = 5_000;
-const PLAN2_MONTHLY_THRESHOLD = 2274;
-const POST_GRAD_MONTHLY_THRESHOLD = 1750;
-const PLAN2_MONTHLY_REPAY_RATE = 0.09;
-const POST_GRAD_MONTHLY_REPAY_RATE = 0.06;
-const PLAN2_LT = 27_295;
-const PLAN2_UT = 49_130;
 
 const getPlan2Rate = (salary: number, lr: number, hr: number) => {
   if (salary <= PLAN2_LT) {
@@ -33,17 +39,21 @@ interface TotalRepaymentChartProps {}
 
 export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
   const {
-    plan2Balance,
+    isPost2023,
+    underGradBalance,
     postGradBalance,
     plan2LTRate,
     plan2UTRate,
+    plan5Rate,
     postGradRate,
     repaymentDate,
   } = useStore((state) => ({
-    plan2Balance: state.plan2Balance,
+    isPost2023: state.isPost2023,
+    underGradBalance: state.underGradBalance,
     postGradBalance: state.postGradBalance,
     plan2LTRate: state.plan2LTRate,
     plan2UTRate: state.plan2UTRate,
+    plan5Rate: state.plan5Rate,
     postGradRate: state.postGradRate,
     repaymentDate: state.repaymentDate,
   }));
@@ -56,6 +66,10 @@ export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
         monthlySalary > PLAN2_MONTHLY_THRESHOLD
           ? (monthlySalary - PLAN2_MONTHLY_THRESHOLD) * PLAN2_MONTHLY_REPAY_RATE
           : 0;
+      const plan5Repayment =
+        monthlySalary > PLAN5_MONTHLY_THRESHOLD
+          ? (monthlySalary - PLAN5_MONTHLY_THRESHOLD) * PLAN5_MONTHLY_REPAY_RATE
+          : 0;
       const postGradRepayment =
         monthlySalary > POST_GRAD_MONTHLY_THRESHOLD
           ? (monthlySalary - POST_GRAD_MONTHLY_THRESHOLD) *
@@ -63,46 +77,68 @@ export function TotalRepaymentChart(_props: TotalRepaymentChartProps) {
           : 0;
       const monthlyPlan2Rate =
         getPlan2Rate(salary, plan2LTRate, plan2UTRate) / 100 / 12;
+      const monthlyPlan5Rate = plan5Rate / 100 / 12;
       const monthlyPostGradRate = postGradRate / 100 / 12;
 
-      const endDate = dayjs(repaymentDate).add(30, 'years');
-      const remainingMonths = endDate.diff(dayjs(), 'months');
+      const plan2EndDate = dayjs(repaymentDate).add(PLAN2_WRITE_OFF, 'years');
+      const plan5EndDate = dayjs(repaymentDate).add(PLAN5_WRITE_OFF, 'years');
+      const postGradEndDate = dayjs(repaymentDate).add(
+        POST_GRAD_WRITE_OFF,
+        'years'
+      );
+      const plan2RemainingMonths = plan2EndDate.diff(dayjs(), 'months');
+      const plan5RemainingMonths = plan5EndDate.diff(dayjs(), 'months');
+      const postGradRemainingMonths = postGradEndDate.diff(dayjs(), 'months');
 
-      let plan2Remaining = plan2Balance;
+      let underGradRemaining = underGradBalance;
       let postGradRemaining = postGradBalance;
       let totalRepayment = 0;
-      let months = 0;
       for (
         let month = 0;
-        month < remainingMonths &&
-        (plan2Remaining > 0 || postGradRemaining > 0);
+        (month < (isPost2023 ? plan5RemainingMonths : plan2RemainingMonths) ||
+          month < postGradRemainingMonths) &&
+        (underGradRemaining > 0 || postGradRemaining > 0);
         month++
       ) {
-        if (plan2Remaining > 0) {
-          plan2Remaining += plan2Remaining * monthlyPlan2Rate;
-          const payment = Math.min(plan2Repayment, plan2Remaining);
-          plan2Remaining -= payment;
+        if (
+          !isPost2023 &&
+          month < plan2RemainingMonths &&
+          underGradRemaining > 0
+        ) {
+          underGradRemaining += underGradRemaining * monthlyPlan2Rate;
+          const payment = Math.min(plan2Repayment, underGradRemaining);
+          underGradRemaining -= payment;
+          totalRepayment += payment;
+        } else if (
+          isPost2023 &&
+          month < plan5RemainingMonths &&
+          underGradRemaining > 0
+        ) {
+          underGradRemaining += underGradRemaining * monthlyPlan5Rate;
+          const payment = Math.min(plan5Repayment, underGradRemaining);
+          underGradRemaining -= payment;
           totalRepayment += payment;
         }
-        if (postGradRemaining > 0) {
+        if (month < postGradRemainingMonths && postGradRemaining > 0) {
           postGradRemaining += postGradRemaining * monthlyPostGradRate;
           const payment = Math.min(postGradRepayment, postGradRemaining);
           postGradRemaining -= payment;
           totalRepayment += payment;
         }
-        months = month;
       }
 
       data.push([salary, totalRepayment]);
     }
     return data;
   }, [
-    plan2Balance,
+    isPost2023,
     plan2LTRate,
     plan2UTRate,
+    plan5Rate,
     postGradBalance,
     postGradRate,
     repaymentDate,
+    underGradBalance,
   ]);
 
   return (

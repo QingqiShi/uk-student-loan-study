@@ -9,6 +9,7 @@ import { NumericFormat } from 'react-number-format';
 interface CurrencyInputProps {
   id: string;
   label: string;
+  helperText?: string;
   value: number;
   onChange: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -16,6 +17,7 @@ interface CurrencyInputProps {
 export function CurrencyInput({
   id,
   label,
+  helperText,
   value,
   onChange,
 }: CurrencyInputProps) {
@@ -23,6 +25,7 @@ export function CurrencyInput({
     <TextField
       id={id}
       label={label}
+      helperText={helperText}
       value={value}
       // This typing is correct as the number comes from `NumericFormat`
       onChange={

@@ -1,8 +1,11 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 interface Store {
-  plan2Balance: number;
-  setPlan2Balance: React.Dispatch<React.SetStateAction<number>>;
+  isPost2023: boolean;
+  setIsPost2023: React.Dispatch<React.SetStateAction<boolean>>;
+
+  underGradBalance: number;
+  setUnderGradBalance: React.Dispatch<React.SetStateAction<number>>;
 
   postGradBalance: number;
   setPostGradBalance: React.Dispatch<React.SetStateAction<number>>;
@@ -12,6 +15,9 @@ interface Store {
 
   plan2UTRate: number;
   setPlan2UTRate: React.Dispatch<React.SetStateAction<number>>;
+
+  plan5Rate: number;
+  setPlan5Rate: React.Dispatch<React.SetStateAction<number>>;
 
   postGradRate: number;
   setPostGradRate: React.Dispatch<React.SetStateAction<number>>;
@@ -27,11 +33,18 @@ interface Store {
 }
 
 export const useStore = create<Store>((set) => ({
-  plan2Balance: 50_000,
-  setPlan2Balance: (change) =>
+  isPost2023: false,
+  setIsPost2023: (change) =>
     set((state) => ({
-      plan2Balance:
-        typeof change === 'function' ? change(state.plan2Balance) : change,
+      isPost2023:
+        typeof change === 'function' ? change(state.isPost2023) : change,
+    })),
+
+  underGradBalance: 50_000,
+  setUnderGradBalance: (change) =>
+    set((state) => ({
+      underGradBalance:
+        typeof change === 'function' ? change(state.underGradBalance) : change,
     })),
 
   postGradBalance: 0,
@@ -41,21 +54,28 @@ export const useStore = create<Store>((set) => ({
         typeof change === 'function' ? change(state.postGradBalance) : change,
     })),
 
-  plan2LTRate: 1.5,
+  plan2LTRate: 6.5,
   setPlan2LTRate: (change) =>
     set((state) => ({
       plan2LTRate:
         typeof change === 'function' ? change(state.plan2LTRate) : change,
     })),
 
-  plan2UTRate: 4.5,
+  plan2UTRate: 6.5,
   setPlan2UTRate: (change) =>
     set((state) => ({
       plan2UTRate:
         typeof change === 'function' ? change(state.plan2UTRate) : change,
     })),
 
-  postGradRate: 4.5,
+  plan5Rate: 6.5,
+  setPlan5Rate: (change) =>
+    set((state) => ({
+      plan5Rate:
+        typeof change === 'function' ? change(state.plan5Rate) : change,
+    })),
+
+  postGradRate: 6.5,
   setPostGradRate: (change) =>
     set((state) => ({
       postGradRate:
