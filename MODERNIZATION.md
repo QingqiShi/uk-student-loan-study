@@ -421,8 +421,8 @@ Since this is a single-page app, we'll use Next.js App Router. The calculator pa
 - [x] `yarn build` succeeds
 - [x] All pages render correctly
 - [x] All tests pass (63 tests)
-- [ ] **MANUAL**: Vercel deployment succeeds (check Vercel dashboard)
-- [ ] **MANUAL**: Custom domain works (if configured)
+- [x] **MANUAL**: Vercel deployment succeeds (check Vercel dashboard)
+- [x] **MANUAL**: Custom domain works (if configured)
 - [x] SEO meta tags appear in page source (View Source)
 - [ ] Lighthouse performance score improves
 
