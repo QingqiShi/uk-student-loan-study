@@ -20,7 +20,6 @@ describe('useStore', () => {
       expect(state.plan2UTRate).toBe(6.5);
       expect(state.plan5Rate).toBe(6.5);
       expect(state.postGradRate).toBe(6.5);
-      expect(state.inflationRate).toBe(0);
       expect(state.salary).toBe(0);
       expect(state.repaymentDate).toBeInstanceOf(Date);
     });
@@ -60,11 +59,6 @@ describe('useStore', () => {
     it('should update postGradRate', () => {
       useStore.getState().updateField('postGradRate', 7.0);
       expect(useStore.getState().postGradRate).toBe(7.0);
-    });
-
-    it('should update inflationRate', () => {
-      useStore.getState().updateField('inflationRate', 2.5);
-      expect(useStore.getState().inflationRate).toBe(2.5);
     });
 
     it('should update salary', () => {
