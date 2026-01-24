@@ -24,14 +24,20 @@ export function ChartBase({
   xFormatter,
   yFormatter,
   annotateDataPoint,
+  ariaLabel,
 }: ChartBaseProps) {
   return (
-    <XYChart
-      theme={chartTheme}
-      xScale={{ type: 'band' }}
-      yScale={{ type: 'linear' }}
-      margin={{ top: 20, right: 20, bottom: 50, left: 80 }}
+    <div
+      role="img"
+      aria-label={ariaLabel || `Chart showing ${yAxisLabel} by ${xAxisLabel}`}
     >
+      <XYChart
+        theme={chartTheme}
+        xScale={{ type: 'band' }}
+        yScale={{ type: 'linear' }}
+        margin={{ top: 20, right: 20, bottom: 50, left: 80 }}
+        accessibilityLabel={ariaLabel || `${yAxisLabel} by ${xAxisLabel}`}
+      >
       <CustomChartBackground />
       <AnimatedAxis
         orientation="left"
@@ -72,6 +78,7 @@ export function ChartBase({
         </AnimatedAnnotation>
       )}
     </XYChart>
+    </div>
   );
 }
 

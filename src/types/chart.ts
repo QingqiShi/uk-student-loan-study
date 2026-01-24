@@ -20,4 +20,6 @@ export interface ChartBaseProps {
   yFormatter: (y: number) => string;
   /** Optional data point to highlight with an annotation */
   annotateDataPoint?: DataPoint;
+  /** Accessibility label for screen readers */
+  ariaLabel?: string;
 }
