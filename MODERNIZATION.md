@@ -588,13 +588,13 @@ Since this is a single-page app, we'll use Next.js App Router. The calculator pa
 | `package.json` | Remove MUI, add date-fns |
 
 ### Verification
-- [ ] All MUI imports removed (search for `@mui`)
-- [ ] All components render correctly
-- [ ] Dark theme applies correctly
-- [ ] Form inputs work (currency, percentage, date, switch)
-- [ ] Responsive layout works on mobile/tablet/desktop
-- [ ] Bundle size reduced (check with `next build` output)
-- [ ] All tests pass
+- [x] All MUI imports removed (search for `@mui`)
+- [x] All components render correctly
+- [x] Dark theme applies correctly
+- [x] Form inputs work (currency, percentage, date, switch)
+- [x] Responsive layout works on mobile/tablet/desktop
+- [x] Bundle size reduced (check with `next build` output)
+- [x] All tests pass (63/63)
 
 ---
 

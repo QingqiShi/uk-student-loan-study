@@ -1,17 +1,3 @@
-import { Box, Paper, styled } from '@mui/material';
-
-const Container = styled('div')(({ theme }) => ({
-  display: 'grid',
-  gap: theme.spacing(2),
-  padding: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(3),
-  },
-  [theme.breakpoints.up('md')]: {
-    gridTemplateColumns: '400px 1fr',
-  },
-}));
-
 interface LayoutProps {
   stickyPanel?: React.ReactNode;
   content?: React.ReactNode;
@@ -19,21 +5,15 @@ interface LayoutProps {
 
 export function Layout({ stickyPanel, content }: LayoutProps) {
   return (
-    <Container>
-      <Box position="relative" height="100%">
-        <Box
-          position="sticky"
-          top={64}
-          maxHeight="calc(100vh - 64px)"
-          py={2}
-          overflow="auto"
-        >
+    <div className="grid gap-4 px-4 pb-4 md:grid-cols-[400px_1fr] md:px-6 md:pb-6">
+      <div className="relative h-full">
+        <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-auto pt-4">
           {stickyPanel}
-        </Box>
-      </Box>
-      <Box py={2}>
-        <Paper>{content}</Paper>
-      </Box>
-    </Container>
+        </div>
+      </div>
+      <div className="pt-4">
+        <div className="rounded-lg border bg-card p-4">{content}</div>
+      </div>
+    </div>
   );
 }
