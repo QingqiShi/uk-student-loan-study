@@ -609,43 +609,34 @@ Since this is a single-page app, we'll use Next.js App Router. The calculator pa
 
 ### Tasks
 
-1. **Refactor charts to use shared utilities**
-   ```typescript
-   import { generateSalaryDataSeries } from '@/utils/loan-calculations';
-   import { useLoanConfig, useCurrentSalary } from '@/hooks/useStoreSelectors';
-   import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+1. **Create `src/hooks/useChartData.ts`** with hooks for each chart type:
+   - `useTotalRepaymentData()` - returns data and annotation point for total repayment
+   - `useRepaymentYearsData()` - returns data and annotation point for years to payoff
+   - `useInterestRateData()` - returns data and annotation point for effective interest rate
+   - Internal `useAnnotationPoint()` helper for finding current salary on chart
 
-   export function TotalRepaymentChart() {
-     const config = useLoanConfig();
-     const salary = useCurrentSalary();
-     const data = useMemo(
-       () => generateSalaryDataSeries(config, (r) => r.totalRepayment),
-       [config]
-     );
+2. **Add formatters to `src/constants.ts`**:
+   - `currencyFormatter` - GBP currency formatter
+   - `percentageFormatter` - percentage formatter
+   - `yearsFormatter` - years decimal formatter
 
-     return (
-       <Card>
-         <CardHeader>
-           <CardTitle>Total Repayment</CardTitle>
-         </CardHeader>
-         <CardContent>
-           <ChartBase data={data} ... />
-         </CardContent>
-       </Card>
-     );
-   }
-   ```
+3. **Refactor all three chart components** to use the new hooks:
+   - Each chart reduced from ~160 lines to 22 lines
+   - Removed duplicated simulation logic, constants, and getPlan2Rate function
+   - Uses shared utilities from `@/utils/loan-calculations`
 
-2. **Create `src/hooks/useAnnotationPoint.ts`**
-
-3. **Update chart container styling for Tailwind**
-
-4. **Add component tests**
+4. **Add hook tests** in `src/hooks/__tests__/useChartData.test.ts`:
+   - Tests for data generation
+   - Tests for annotation point calculation
+   - Tests for Plan 2 vs Plan 5 differentiation
+   - Tests for memoization behavior
 
 ### Verification
-- [ ] All tests pass
-- [ ] Visual output matches original design
-- [ ] Components reduced from ~160 lines to ~50 lines
+- [x] All tests pass (81 tests, up from 63)
+- [x] Visual output matches original design
+- [x] `yarn dev` starts without errors
+- [x] `yarn build` succeeds
+- [x] Components reduced from 496 lines to 142 lines (~71% reduction)
 
 ---
 

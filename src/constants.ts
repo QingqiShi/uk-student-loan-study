@@ -14,3 +14,14 @@ export const POST_GRAD_WRITE_OFF = 30;
 export const PLAN5_MONTHLY_THRESHOLD = 2083;
 export const PLAN5_MONTHLY_REPAY_RATE = 0.09;
 export const PLAN5_WRITE_OFF = 40;
+
+// Formatters for chart display
+export const currencyFormatter = new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+
+export const percentageFormatter = (value: number) => `${(value * 100).toFixed(1)}%`;
+export const yearsFormatter = (value: number) => value.toFixed(1);
