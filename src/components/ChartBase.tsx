@@ -10,19 +10,9 @@ import {
   XYChart,
 } from '@visx/xychart';
 import { useContext, useRef } from 'react';
+import type { ChartBaseProps, DataPoint } from '../types';
 
 const chartTheme = { ...darkTheme, colors: ['#fff'] };
-
-type DataPoint = [number, number];
-
-interface ChartBaseProps {
-  data: DataPoint[];
-  xAxisLabel: string;
-  yAxisLabel: string;
-  xFormatter: (x: number) => string;
-  yFormatter: (y: number) => string;
-  annotateDataPoint?: DataPoint;
-}
 
 const xAccessor = (d: DataPoint) => d[0];
 const yAccessor = (d: DataPoint) => d[1];
@@ -59,7 +49,7 @@ export function ChartBase({
         strokeWidth={2}
         fillOpacity={0.4}
       />
-      <Tooltip<[number, number]>
+      <Tooltip<DataPoint>
         snapTooltipToDatumX
         snapTooltipToDatumY
         showVerticalCrosshair

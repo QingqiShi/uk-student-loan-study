@@ -11,7 +11,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'jsx-a11y'],
   root: true,
   rules: {
-    '@typescript-eslint/no-unused-vars': 0,
-    '@typescript-eslint/no-empty-interface': 0,
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-empty-interface': 'error',
   },
 };

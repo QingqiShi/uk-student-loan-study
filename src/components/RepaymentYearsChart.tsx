@@ -35,9 +35,7 @@ const formatter = Intl.NumberFormat('en-GB', {
   maximumFractionDigits: 0,
 });
 
-interface RepaymentYearsChartProps {}
-
-export function RepaymentYearsChart(_props: RepaymentYearsChartProps) {
+export function RepaymentYearsChart() {
   const {
     isPost2023,
     underGradBalance,

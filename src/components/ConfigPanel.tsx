@@ -36,7 +36,7 @@ export function ConfigPanel() {
               id="undergrad-balance"
               label="Undergraduate Loan Balance (plan 2 or plan 5)"
               value={store.underGradBalance}
-              onChange={store.setUnderGradBalance}
+              onChange={(value) => store.updateField('underGradBalance', value)}
             />
           </Suspense>
           <Suspense
@@ -46,7 +46,7 @@ export function ConfigPanel() {
               id="postgrad-balance"
               label="Postgraduate Loan Balance"
               value={store.postGradBalance}
-              onChange={store.setPostGradBalance}
+              onChange={(value) => store.updateField('postGradBalance', value)}
             />
           </Suspense>
           <Suspense
@@ -57,7 +57,7 @@ export function ConfigPanel() {
               label="Date Repayment Started"
               helperText="This determines when your loan is written off."
               value={store.repaymentDate}
-              onChange={store.setRepaymentDate}
+              onChange={(value) => store.updateField('repaymentDate', value)}
             />
           </Suspense>
           <FormGroup>
@@ -65,7 +65,7 @@ export function ConfigPanel() {
               control={
                 <Switch
                   value={store.isPost2023}
-                  onChange={(e) => store.setIsPost2023(e.target.checked)}
+                  onChange={(e) => store.updateField('isPost2023', e.target.checked)}
                 />
               }
               label="Post 2023"
@@ -98,7 +98,7 @@ export function ConfigPanel() {
                     id="plan2-lt-rate"
                     label="Plan 2 Lower Threshold Rate"
                     value={store.plan2LTRate}
-                    onChange={store.setPlan2LTRate}
+                    onChange={(value) => store.updateField('plan2LTRate', value)}
                   />
                 </Suspense>
                 <Suspense
@@ -110,7 +110,7 @@ export function ConfigPanel() {
                     id="plan2-ut-rate"
                     label="Plan 2 Upper Threshold Rate"
                     value={store.plan2UTRate}
-                    onChange={store.setPlan2UTRate}
+                    onChange={(value) => store.updateField('plan2UTRate', value)}
                   />
                 </Suspense>
               </>
@@ -125,7 +125,7 @@ export function ConfigPanel() {
                   id="plan5-rate"
                   label="Plan 5 Interest Rate (RPI)"
                   value={store.plan5Rate}
-                  onChange={store.setPlan5Rate}
+                  onChange={(value) => store.updateField('plan5Rate', value)}
                 />
               </Suspense>
             )}
@@ -136,7 +136,7 @@ export function ConfigPanel() {
                 id="postgrad-rate"
                 label="Postgraduate Rate"
                 value={store.postGradRate}
-                onChange={store.setPostGradRate}
+                onChange={(value) => store.updateField('postGradRate', value)}
               />
             </Suspense>
           </Box>
@@ -159,7 +159,7 @@ export function ConfigPanel() {
                 id="earning"
                 label="Your current Pre-Tax Salary"
                 value={store.salary}
-                onChange={store.setSalary}
+                onChange={(value) => store.updateField('salary', value)}
               />
             </Suspense>
           </Box>

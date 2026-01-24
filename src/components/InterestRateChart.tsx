@@ -36,9 +36,7 @@ const formatter = Intl.NumberFormat('en-GB', {
   maximumFractionDigits: 0,
 });
 
-interface InterestRateChartProps {}
-
-export function InterestRateChart(_props: InterestRateChartProps) {
+export function InterestRateChart() {
   const {
     isPost2023,
     underGradBalance,

@@ -5,14 +5,7 @@ import {
   TextField,
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-
-interface CurrencyInputProps {
-  id: string;
-  label: string;
-  helperText?: string;
-  value: number;
-  onChange: React.Dispatch<React.SetStateAction<number>>;
-}
+import type { CurrencyInputProps } from '../types';
 
 export function CurrencyInput({
   id,
@@ -27,14 +20,12 @@ export function CurrencyInput({
       label={label}
       helperText={helperText}
       value={value}
-      // This typing is correct as the number comes from `NumericFormat`
-      onChange={
-        onChange as unknown as React.ChangeEventHandler<
-          HTMLInputElement | HTMLTextAreaElement
-        >
-      }
       variant="outlined"
-      inputProps={{ inputMode: 'decimal', pattern: '[0-9]*' }}
+      inputProps={{
+        inputMode: 'decimal',
+        pattern: '[0-9]*',
+        onNumericChange: onChange,
+      }}
       InputProps={{
         inputComponent: NumericFormatCustom,
         startAdornment: <InputAdornment position="start">£</InputAdornment>,
@@ -44,29 +35,31 @@ export function CurrencyInput({
   );
 }
 
-const NumericFormatCustom = forwardRef(function NumericFormatCustom(
-  props: Omit<InputBaseComponentProps, 'defaultValue' | 'onChange'> & {
-    onChange: React.Dispatch<React.SetStateAction<number>>;
-  },
-  ref
-) {
-  const { onChange, ...other } = props;
+interface NumericFormatCustomProps
+  extends Omit<InputBaseComponentProps, 'defaultValue'> {
+  onNumericChange?: (value: number) => void;
+}
 
-  return (
-    <NumericFormat
-      {...other}
-      getInputRef={ref}
-      onValueChange={(values) => {
-        if (typeof values.floatValue === 'number') {
-          onChange?.(values.floatValue);
-        }
-      }}
-      decimalScale={2}
-      fixedDecimalScale
-      thousandSeparator
-      valueIsNumericString
-    />
-  );
-});
+const NumericFormatCustom = forwardRef<HTMLInputElement, NumericFormatCustomProps>(
+  function NumericFormatCustom(props, ref) {
+    const { onNumericChange, ...other } = props;
+
+    return (
+      <NumericFormat
+        {...other}
+        getInputRef={ref}
+        onValueChange={(values) => {
+          if (typeof values.floatValue === 'number') {
+            onNumericChange?.(values.floatValue);
+          }
+        }}
+        decimalScale={2}
+        fixedDecimalScale
+        thousandSeparator
+        valueIsNumericString
+      />
+    );
+  }
+);
 
 export default CurrencyInput;
