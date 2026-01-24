@@ -1,19 +1,25 @@
-import { AppBar, Toolbar, Typography, useScrollTrigger } from '@mui/material';
+'use client';
 
-interface HeaderProps {}
+import { useEffect, useState } from 'react';
 
-export function Header(_props: HeaderProps) {
-  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
+export function Header() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 0);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <>
-      <AppBar elevation={trigger ? 4 : 0}>
-        <Toolbar>
-          <Typography variant="h6" component="h1" fontWeight="bold">
-            UK Student Loan Study
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
-    </>
+    <header
+      className={`sticky top-0 z-50 w-full bg-background/95 backdrop-blur transition-shadow ${
+        scrolled ? 'shadow-md' : ''
+      }`}
+    >
+      <div className="container flex h-14 items-center px-4">
+        <h1 className="text-lg font-bold">UK Student Loan Study</h1>
+      </div>
+    </header>
   );
 }

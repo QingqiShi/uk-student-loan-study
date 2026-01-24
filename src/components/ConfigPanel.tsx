@@ -1,18 +1,19 @@
 import { lazy, Suspense } from 'react';
-import { ExpandMore } from '@mui/icons-material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Card,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  Skeleton,
-  Switch,
-  Typography,
-} from '@mui/material';
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useStore } from '../store';
 
 const CurrencyInput = lazy(() => import('./CurrencyInput'));
@@ -23,15 +24,13 @@ export function ConfigPanel() {
   const store = useStore();
 
   return (
-    <div>
+    <div className="space-y-4">
       <Card>
-        <Box p={2}>
-          <Typography>Student Loan Balance</Typography>
-        </Box>
-        <Box p={2} display="flex" flexDirection="column" gap={2}>
-          <Suspense
-            fallback={<Skeleton variant="rounded" width="100%" height={56} />}
-          >
+        <CardHeader>
+          <CardTitle>Student Loan Balance</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Suspense fallback={<Skeleton className="h-14 w-full" />}>
             <CurrencyInput
               id="undergrad-balance"
               label="Undergraduate Loan Balance (plan 2 or plan 5)"
@@ -39,9 +38,7 @@ export function ConfigPanel() {
               onChange={(value) => store.updateField('underGradBalance', value)}
             />
           </Suspense>
-          <Suspense
-            fallback={<Skeleton variant="rounded" width="100%" height={56} />}
-          >
+          <Suspense fallback={<Skeleton className="h-14 w-full" />}>
             <CurrencyInput
               id="postgrad-balance"
               label="Postgraduate Loan Balance"
@@ -49,9 +46,7 @@ export function ConfigPanel() {
               onChange={(value) => store.updateField('postGradBalance', value)}
             />
           </Suspense>
-          <Suspense
-            fallback={<Skeleton variant="rounded" width="100%" height={56} />}
-          >
+          <Suspense fallback={<Skeleton className="h-14 w-full" />}>
             <DateInput
               id="repayment-date"
               label="Date Repayment Started"
@@ -60,40 +55,30 @@ export function ConfigPanel() {
               onChange={(value) => store.updateField('repaymentDate', value)}
             />
           </Suspense>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  value={store.isPost2023}
-                  onChange={(e) => store.updateField('isPost2023', e.target.checked)}
-                />
-              }
-              label="Post 2023"
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label htmlFor="post-2023">Post 2023</Label>
+              <p className="text-sm text-muted-foreground">
+                For students who started an undergraduate course on or after
+                August 2023.
+              </p>
+            </div>
+            <Switch
+              id="post-2023"
+              checked={store.isPost2023}
+              onCheckedChange={(checked) => store.updateField('isPost2023', checked)}
             />
-            <FormHelperText>
-              For students who started an undergraduate course on or after
-              August 2023.
-            </FormHelperText>
-          </FormGroup>
-        </Box>
+          </div>
+        </CardContent>
       </Card>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMore />}
-          aria-controls="rates-content"
-          id="rates-header"
-        >
-          <Typography>Rates</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box display="flex" flexDirection="column" gap={2}>
+
+      <Accordion type="single" collapsible>
+        <AccordionItem value="rates">
+          <AccordionTrigger>Rates</AccordionTrigger>
+          <AccordionContent className="space-y-4">
             {!store.isPost2023 && (
               <>
-                <Suspense
-                  fallback={
-                    <Skeleton variant="rounded" width="100%" height={56} />
-                  }
-                >
+                <Suspense fallback={<Skeleton className="h-14 w-full" />}>
                   <PercentageInput
                     id="plan2-lt-rate"
                     label="Plan 2 Lower Threshold Rate"
@@ -101,11 +86,7 @@ export function ConfigPanel() {
                     onChange={(value) => store.updateField('plan2LTRate', value)}
                   />
                 </Suspense>
-                <Suspense
-                  fallback={
-                    <Skeleton variant="rounded" width="100%" height={56} />
-                  }
-                >
+                <Suspense fallback={<Skeleton className="h-14 w-full" />}>
                   <PercentageInput
                     id="plan2-ut-rate"
                     label="Plan 2 Upper Threshold Rate"
@@ -116,11 +97,7 @@ export function ConfigPanel() {
               </>
             )}
             {store.isPost2023 && (
-              <Suspense
-                fallback={
-                  <Skeleton variant="rounded" width="100%" height={56} />
-                }
-              >
+              <Suspense fallback={<Skeleton className="h-14 w-full" />}>
                 <PercentageInput
                   id="plan5-rate"
                   label="Plan 5 Interest Rate (RPI)"
@@ -129,9 +106,7 @@ export function ConfigPanel() {
                 />
               </Suspense>
             )}
-            <Suspense
-              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
-            >
+            <Suspense fallback={<Skeleton className="h-14 w-full" />}>
               <PercentageInput
                 id="postgrad-rate"
                 label="Postgraduate Rate"
@@ -139,22 +114,12 @@ export function ConfigPanel() {
                 onChange={(value) => store.updateField('postGradRate', value)}
               />
             </Suspense>
-          </Box>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMore />}
-          aria-controls="employment-content"
-          id="employment-header"
-        >
-          <Typography>Earnings</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box display="flex" flexDirection="column" gap={2}>
-            <Suspense
-              fallback={<Skeleton variant="rounded" width="100%" height={56} />}
-            >
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="earnings">
+          <AccordionTrigger>Earnings</AccordionTrigger>
+          <AccordionContent className="space-y-4">
+            <Suspense fallback={<Skeleton className="h-14 w-full" />}>
               <CurrencyInput
                 id="earning"
                 label="Your current Pre-Tax Salary"
@@ -162,8 +127,8 @@ export function ConfigPanel() {
                 onChange={(value) => store.updateField('salary', value)}
               />
             </Suspense>
-          </Box>
-        </AccordionDetails>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
