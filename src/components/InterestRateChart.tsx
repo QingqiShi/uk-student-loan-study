@@ -15,6 +15,7 @@ export function InterestRateChart() {
       yAxisLabel="Annualized Interest Rate"
       xFormatter={currencyFormatter.format}
       yFormatter={percentageFormatter}
+      ariaLabel="Chart showing effective annualized interest rate by annual salary. Useful for comparing loan repayment vs other investments."
     />
   );
 }

@@ -17,6 +17,12 @@ export function Header() {
         scrolled ? 'shadow-md' : ''
       }`}
     >
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-2 focus:text-foreground"
+      >
+        Skip to main content
+      </a>
       <div className="container flex h-14 items-center px-4">
         <h1 className="text-lg font-bold">UK Student Loan Study</h1>
       </div>

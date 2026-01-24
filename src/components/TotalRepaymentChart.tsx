@@ -15,6 +15,7 @@ export function TotalRepaymentChart() {
       yAxisLabel="Total Repayment"
       xFormatter={currencyFormatter.format}
       yFormatter={currencyFormatter.format}
+      ariaLabel="Chart showing total student loan repayment amount by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
     />
   );
 }

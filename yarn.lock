@@ -4583,6 +4583,11 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-error-boundary@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-6.1.0.tgz#d2965de0723d65d60d20aef2e120bd2c171ae4d7"
+  integrity sha512-02k9WQ/mUhdbXir0tC1NiMesGzRPaCsJEWU/4bcFrbY1YMZOtHShtZP6zw0SJrBWA/31H0KT9/FgdL8+sPKgHA==
+
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
