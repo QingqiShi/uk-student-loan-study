@@ -70,8 +70,9 @@ describe('useChartData hooks', () => {
       useStore.getState().updateField('salary', 50_000);
       const { result } = renderHook(() => useTotalRepaymentData());
 
-      expect(result.current.annotationPoint).toBeDefined();
-      expect(result.current.annotationPoint![0]).toBeGreaterThanOrEqual(50_000);
+      const point = result.current.annotationPoint;
+      if (!point) throw new Error('Expected annotationPoint to be defined');
+      expect(point[0]).toBeGreaterThanOrEqual(50_000);
     });
 
     it('returns undefined annotationPoint when salary is below MIN_SALARY', () => {

@@ -18,6 +18,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-empty-interface': 'error',
+    '@typescript-eslint/no-non-null-assertion': 'error',
     'react/prop-types': 'off', // TypeScript handles type checking
   },
 };
