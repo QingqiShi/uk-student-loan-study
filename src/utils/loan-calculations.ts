@@ -18,9 +18,9 @@ import {
 import type {
   LoanConfig,
   SimulationResult,
-  DataPoint,
   SimulationMapper,
 } from '../types/loan';
+import type { DataPoint } from '../types/chart';
 
 /**
  * Calculates the Plan 2 interest rate based on salary using linear interpolation.

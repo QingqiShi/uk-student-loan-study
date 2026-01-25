@@ -43,12 +43,6 @@ export interface SimulationResult {
 }
 
 /**
- * Data point for salary-based charts.
- * First element is salary, second is the computed metric.
- */
-export type DataPoint = [number, number];
-
-/**
  * Function that maps a simulation result to a chart value.
  */
 export type SimulationMapper = (result: SimulationResult) => number;

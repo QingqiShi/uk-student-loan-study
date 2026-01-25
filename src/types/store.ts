@@ -16,8 +16,6 @@ export interface LoanState {
   plan5Rate: number;
   /** Postgraduate loan interest rate (percentage) */
   postGradRate: number;
-  /** Inflation rate for real value calculations (percentage) */
-  inflationRate: number;
   /** Date when loan repayment started */
   repaymentDate: Date | null;
   /** Current salary for annotation on charts */
