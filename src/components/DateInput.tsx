@@ -42,7 +42,6 @@ export function DateInput({
             mode="single"
             selected={value ?? undefined}
             onSelect={(date) => onChange(date ?? null)}
-            autoFocus
           />
         </PopoverContent>
       </Popover>
