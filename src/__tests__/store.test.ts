@@ -108,9 +108,9 @@ describe('useStore', () => {
 
       // Check localStorage has the data
       const stored = localStorage.getItem('loan-calculator-storage');
-      expect(stored).toBeTruthy();
+      if (!stored) throw new Error('Expected localStorage to have data');
 
-      const parsed = JSON.parse(stored!);
+      const parsed = JSON.parse(stored);
       expect(parsed.state.underGradBalance).toBe(80_000);
       expect(parsed.state.salary).toBe(55_000);
     });
@@ -120,7 +120,8 @@ describe('useStore', () => {
       useStore.getState().updateField('repaymentDate', date);
 
       const stored = localStorage.getItem('loan-calculator-storage');
-      const parsed = JSON.parse(stored!);
+      if (!stored) throw new Error('Expected localStorage to have data');
+      const parsed = JSON.parse(stored);
       expect(parsed.state.repaymentDate).toBe('2021-09-01T00:00:00.000Z');
     });
   });
