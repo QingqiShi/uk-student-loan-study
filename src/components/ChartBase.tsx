@@ -9,7 +9,7 @@ import {
   Tooltip,
   XYChart,
 } from '@visx/xychart';
-import { useContext, useRef } from 'react';
+import { useContext, useId } from 'react';
 import type { ChartBaseProps, DataPoint } from '../types';
 
 const chartTheme = { ...darkTheme, colors: ['#fff'] };
@@ -108,7 +108,7 @@ function CustomBottomAxis({
 function CustomChartBackground() {
   const { theme, margin, width, height, innerWidth } = useContext(DataContext);
 
-  const patternId = useRef(`${Math.random()}`);
+  const patternId = useId();
 
   // early return values not available in context
   if (!width || !height || !margin || !theme || !innerWidth) return null;
@@ -116,7 +116,7 @@ function CustomChartBackground() {
   return (
     <>
       <PatternLines
-        id={patternId.current}
+        id={patternId}
         width={24}
         height={24}
         orientation={['diagonal']}
@@ -128,7 +128,7 @@ function CustomChartBackground() {
         y={margin.top}
         width={innerWidth}
         height={height - margin.top - margin.bottom}
-        fill={`url(#${patternId.current})`}
+        fill={`url(#${patternId})`}
         fillOpacity={0.3}
       />
     </>
