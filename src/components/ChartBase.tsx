@@ -30,6 +30,7 @@ export function ChartBase({
     <div
       role="img"
       aria-label={ariaLabel || `Chart showing ${yAxisLabel} by ${xAxisLabel}`}
+      className="h-full w-full"
     >
       <XYChart
         theme={chartTheme}
