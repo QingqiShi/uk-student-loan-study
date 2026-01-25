@@ -24,16 +24,16 @@ An interactive calculator to help understand UK student loan repayment under Pla
 ### Prerequisites
 
 - Node.js 18+
-- Yarn
+- pnpm
 
 ### Setup
 
 ```bash
 # Install dependencies
-yarn install
+pnpm install
 
 # Start development server
-yarn dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
@@ -42,12 +42,12 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 | Command | Description |
 |---------|-------------|
-| `yarn dev` | Start development server |
-| `yarn build` | Build for production |
-| `yarn start` | Start production server |
-| `yarn lint` | Run ESLint |
-| `yarn test` | Run tests in watch mode |
-| `yarn test:coverage` | Run tests with coverage |
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build for production |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm test` | Run tests in watch mode |
+| `pnpm test:coverage` | Run tests with coverage |
 
 ## Project Structure
 
