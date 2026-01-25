@@ -1,4 +1,3 @@
-import { forwardRef } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -42,11 +41,11 @@ export function CurrencyInput({
   );
 }
 
-const CustomInput = forwardRef<
-  HTMLInputElement,
-  React.ComponentProps<'input'>
->(function CustomInput(props, ref) {
+function CustomInput({
+  ref,
+  ...props
+}: React.ComponentProps<'input'> & { ref?: React.Ref<HTMLInputElement> }) {
   return <Input ref={ref} {...props} />;
-});
+}
 
 export default CurrencyInput;
