@@ -61,3 +61,14 @@ This is a UK student loan repayment calculator built with Next.js 16 (App Router
 - **Plan 2** (pre-2023): £2,274/month threshold, 9% rate, 30-year write-off, income-based interest
 - **Plan 5** (post-2023): £2,083/month threshold, 9% rate, 40-year write-off, RPI-only interest
 - **Postgraduate**: £1,750/month threshold, 6% rate, runs concurrently with undergraduate
+
+## Code Quality Rules
+
+**NEVER use these - they hide real errors:**
+
+- `eslint-disable` comments (any form)
+- `any` type
+- `@ts-ignore` / `@ts-expect-error`
+- Type assertions that bypass safety (`as unknown as X`)
+
+If lint or TypeScript errors occur, fix the underlying issue properly. If genuinely stuck, stop and ask for guidance rather than suppressing the error.

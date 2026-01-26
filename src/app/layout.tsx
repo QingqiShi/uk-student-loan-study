@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import { Manrope } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "UK Student Loan Study - Student Loan Repayment Calculator",
@@ -59,7 +63,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={cn("dark", manrope.variable)}>
       <head>
         <script
           type="application/ld+json"

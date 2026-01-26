@@ -1,7 +1,8 @@
 "use client";
 
 import dayjs from "dayjs";
-import { CalendarIcon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Calendar03Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
@@ -24,19 +25,21 @@ export function DateInput({
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
       <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id={id}
-            variant="outline"
-            className={cn(
-              "w-full justify-start text-left font-normal",
-              !value && "text-muted-foreground",
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {value ? dayjs(value).format("MMMM D, YYYY") : "Pick a date"}
-          </Button>
-        </PopoverTrigger>
+        <PopoverTrigger
+          render={
+            <Button
+              id={id}
+              variant="outline"
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !value && "text-muted-foreground",
+              )}
+            >
+              <HugeiconsIcon icon={Calendar03Icon} className="mr-2 size-4" />
+              {value ? dayjs(value).format("MMMM D, YYYY") : "Pick a date"}
+            </Button>
+          }
+        />
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
             mode="single"

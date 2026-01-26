@@ -50,7 +50,7 @@ export function ConfigPanel() {
               onChange={(value) => store.updateField("repaymentDate", value)}
             />
           </Suspense>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <div className="space-y-0.5">
               <Label htmlFor="post-2023">Post 2023</Label>
               <p className="text-sm text-muted-foreground">
@@ -69,68 +69,76 @@ export function ConfigPanel() {
         </CardContent>
       </Card>
 
-      <Accordion type="single" collapsible>
-        <AccordionItem value="rates">
-          <AccordionTrigger>Rates</AccordionTrigger>
-          <AccordionContent className="space-y-4">
-            {!store.isPost2023 && (
-              <>
+      <Card className="py-0">
+        <CardContent>
+          <Accordion>
+            <AccordionItem value={0}>
+              <AccordionTrigger>Rates</AccordionTrigger>
+              <AccordionContent className="space-y-4">
+                {!store.isPost2023 && (
+                  <>
+                    <Suspense fallback={<Skeleton className="h-14 w-full" />}>
+                      <PercentageInput
+                        id="plan2-lt-rate"
+                        label="Plan 2 Lower Threshold Rate"
+                        value={store.plan2LTRate}
+                        onChange={(value) =>
+                          store.updateField("plan2LTRate", value)
+                        }
+                      />
+                    </Suspense>
+                    <Suspense fallback={<Skeleton className="h-14 w-full" />}>
+                      <PercentageInput
+                        id="plan2-ut-rate"
+                        label="Plan 2 Upper Threshold Rate"
+                        value={store.plan2UTRate}
+                        onChange={(value) =>
+                          store.updateField("plan2UTRate", value)
+                        }
+                      />
+                    </Suspense>
+                  </>
+                )}
+                {store.isPost2023 && (
+                  <Suspense fallback={<Skeleton className="h-14 w-full" />}>
+                    <PercentageInput
+                      id="plan5-rate"
+                      label="Plan 5 Interest Rate (RPI)"
+                      value={store.plan5Rate}
+                      onChange={(value) =>
+                        store.updateField("plan5Rate", value)
+                      }
+                    />
+                  </Suspense>
+                )}
                 <Suspense fallback={<Skeleton className="h-14 w-full" />}>
                   <PercentageInput
-                    id="plan2-lt-rate"
-                    label="Plan 2 Lower Threshold Rate"
-                    value={store.plan2LTRate}
+                    id="postgrad-rate"
+                    label="Postgraduate Rate"
+                    value={store.postGradRate}
                     onChange={(value) =>
-                      store.updateField("plan2LTRate", value)
+                      store.updateField("postGradRate", value)
                     }
                   />
                 </Suspense>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value={1}>
+              <AccordionTrigger>Earnings</AccordionTrigger>
+              <AccordionContent className="space-y-4">
                 <Suspense fallback={<Skeleton className="h-14 w-full" />}>
-                  <PercentageInput
-                    id="plan2-ut-rate"
-                    label="Plan 2 Upper Threshold Rate"
-                    value={store.plan2UTRate}
-                    onChange={(value) =>
-                      store.updateField("plan2UTRate", value)
-                    }
+                  <CurrencyInput
+                    id="earning"
+                    label="Your current Pre-Tax Salary"
+                    value={store.salary}
+                    onChange={(value) => store.updateField("salary", value)}
                   />
                 </Suspense>
-              </>
-            )}
-            {store.isPost2023 && (
-              <Suspense fallback={<Skeleton className="h-14 w-full" />}>
-                <PercentageInput
-                  id="plan5-rate"
-                  label="Plan 5 Interest Rate (RPI)"
-                  value={store.plan5Rate}
-                  onChange={(value) => store.updateField("plan5Rate", value)}
-                />
-              </Suspense>
-            )}
-            <Suspense fallback={<Skeleton className="h-14 w-full" />}>
-              <PercentageInput
-                id="postgrad-rate"
-                label="Postgraduate Rate"
-                value={store.postGradRate}
-                onChange={(value) => store.updateField("postGradRate", value)}
-              />
-            </Suspense>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="earnings">
-          <AccordionTrigger>Earnings</AccordionTrigger>
-          <AccordionContent className="space-y-4">
-            <Suspense fallback={<Skeleton className="h-14 w-full" />}>
-              <CurrencyInput
-                id="earning"
-                label="Your current Pre-Tax Salary"
-                value={store.salary}
-                onChange={(value) => store.updateField("salary", value)}
-              />
-            </Suspense>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardContent>
+      </Card>
     </div>
   );
 }
