@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import {
   PLAN2_LT,
   PLAN2_UT,
@@ -14,13 +14,13 @@ import {
   PLAN2_WRITE_OFF,
   PLAN5_WRITE_OFF,
   POST_GRAD_WRITE_OFF,
-} from '../constants';
+} from "../constants";
 import type {
   LoanConfig,
   SimulationResult,
   SimulationMapper,
-} from '../types/loan';
-import type { DataPoint } from '../types/chart';
+} from "../types/loan";
+import type { DataPoint } from "../types/chart";
 
 /**
  * Calculates the Plan 2 interest rate based on salary using linear interpolation.
@@ -37,7 +37,7 @@ import type { DataPoint } from '../types/chart';
 export function getPlan2Rate(
   salary: number,
   lowerRate: number,
-  upperRate: number
+  upperRate: number,
 ): number {
   if (salary <= PLAN2_LT) {
     return lowerRate;
@@ -65,7 +65,7 @@ export function getPlan2Rate(
 export function calculateMonthlyRepayment(
   monthlySalary: number,
   threshold: number,
-  rate: number
+  rate: number,
 ): number {
   if (monthlySalary <= threshold) {
     return 0;
@@ -85,7 +85,7 @@ export function calculateMonthlyRepayment(
  */
 export function simulateLoanRepayment(
   salary: number,
-  config: LoanConfig
+  config: LoanConfig,
 ): SimulationResult {
   const {
     isPost2023,
@@ -104,17 +104,17 @@ export function simulateLoanRepayment(
   const plan2Repayment = calculateMonthlyRepayment(
     monthlySalary,
     PLAN2_MONTHLY_THRESHOLD,
-    PLAN2_MONTHLY_REPAY_RATE
+    PLAN2_MONTHLY_REPAY_RATE,
   );
   const plan5Repayment = calculateMonthlyRepayment(
     monthlySalary,
     PLAN5_MONTHLY_THRESHOLD,
-    PLAN5_MONTHLY_REPAY_RATE
+    PLAN5_MONTHLY_REPAY_RATE,
   );
   const postGradRepayment = calculateMonthlyRepayment(
     monthlySalary,
     POST_GRAD_MONTHLY_THRESHOLD,
-    POST_GRAD_MONTHLY_REPAY_RATE
+    POST_GRAD_MONTHLY_REPAY_RATE,
   );
 
   // Calculate monthly interest rates (convert from percentage to monthly decimal)
@@ -125,12 +125,15 @@ export function simulateLoanRepayment(
 
   // Calculate write-off dates and remaining months
   const now = dayjs();
-  const plan2EndDate = dayjs(repaymentDate).add(PLAN2_WRITE_OFF, 'years');
-  const plan5EndDate = dayjs(repaymentDate).add(PLAN5_WRITE_OFF, 'years');
-  const postGradEndDate = dayjs(repaymentDate).add(POST_GRAD_WRITE_OFF, 'years');
-  const plan2RemainingMonths = plan2EndDate.diff(now, 'months');
-  const plan5RemainingMonths = plan5EndDate.diff(now, 'months');
-  const postGradRemainingMonths = postGradEndDate.diff(now, 'months');
+  const plan2EndDate = dayjs(repaymentDate).add(PLAN2_WRITE_OFF, "years");
+  const plan5EndDate = dayjs(repaymentDate).add(PLAN5_WRITE_OFF, "years");
+  const postGradEndDate = dayjs(repaymentDate).add(
+    POST_GRAD_WRITE_OFF,
+    "years",
+  );
+  const plan2RemainingMonths = plan2EndDate.diff(now, "months");
+  const plan5RemainingMonths = plan5EndDate.diff(now, "months");
+  const postGradRemainingMonths = postGradEndDate.diff(now, "months");
 
   // Initialize tracking variables
   let underGradRemaining = underGradBalance;
@@ -206,7 +209,7 @@ export function simulateLoanRepayment(
  */
 export function generateSalaryDataSeries(
   config: LoanConfig,
-  mapper: SimulationMapper
+  mapper: SimulationMapper,
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
@@ -232,7 +235,7 @@ export function generateSalaryDataSeries(
  */
 export function calculateAnnualizedRate(
   result: SimulationResult,
-  totalPrincipal: number
+  totalPrincipal: number,
 ): number {
   if (totalPrincipal === 0 || result.monthsToPayoff === 0) {
     return 0;

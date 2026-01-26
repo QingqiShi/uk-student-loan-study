@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useTotalRepaymentData } from '@/hooks/useChartData';
-import { currencyFormatter } from '@/constants';
-import { ChartBase } from './ChartBase';
+import { useTotalRepaymentData } from "@/hooks/useChartData";
+import { currencyFormatter } from "@/constants";
+import { ChartBase } from "./ChartBase";
 
 export function TotalRepaymentChart() {
   const { data, annotationPoint } = useTotalRepaymentData();

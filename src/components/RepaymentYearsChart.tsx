@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useRepaymentYearsData } from '@/hooks/useChartData';
-import { currencyFormatter, yearsFormatter } from '@/constants';
-import { ChartBase } from './ChartBase';
+import { useRepaymentYearsData } from "@/hooks/useChartData";
+import { currencyFormatter, yearsFormatter } from "@/constants";
+import { ChartBase } from "./ChartBase";
 
 export function RepaymentYearsChart() {
   const { data, annotationPoint } = useRepaymentYearsData();

@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import type { LoanState, LoanStore } from './types';
+import { create } from "zustand";
+import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
+import type { LoanState, LoanStore } from "./types";
 
 const initialState: LoanState = {
   isPost2023: false,
@@ -22,7 +22,10 @@ const customStorage: StateStorage = {
     if (!str) return null;
     const parsed = JSON.parse(str);
     // Revive Date objects
-    if (parsed.state?.repaymentDate && typeof parsed.state.repaymentDate === 'string') {
+    if (
+      parsed.state?.repaymentDate &&
+      typeof parsed.state.repaymentDate === "string"
+    ) {
       parsed.state.repaymentDate = new Date(parsed.state.repaymentDate);
     }
     return JSON.stringify(parsed);
@@ -42,7 +45,7 @@ export const useStore = create<LoanStore>()(
       reset: () => set(() => ({ ...initialState })),
     })),
     {
-      name: 'loan-calculator-storage',
+      name: "loan-calculator-storage",
       storage: createJSONStorage(() => customStorage),
       partialize: (state) => ({
         isPost2023: state.isPost2023,
@@ -55,6 +58,6 @@ export const useStore = create<LoanStore>()(
         repaymentDate: state.repaymentDate,
         salary: state.salary,
       }),
-    }
-  )
+    },
+  ),
 );

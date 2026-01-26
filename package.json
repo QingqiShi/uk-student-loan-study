@@ -10,7 +10,9 @@
     "start": "next start",
     "lint": "eslint src",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -61,6 +63,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "jsdom": "^27.4.0",
     "postcss": "^8.5.6",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^5",
     "typescript-eslint": "^8",

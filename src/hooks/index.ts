@@ -1,6 +1,6 @@
-export { useLoanConfig, useCurrentSalary } from './useStoreSelectors';
+export { useLoanConfig, useCurrentSalary } from "./useStoreSelectors";
 export {
   useTotalRepaymentData,
   useRepaymentYearsData,
   useInterestRateData,
-} from './useChartData';
+} from "./useChartData";

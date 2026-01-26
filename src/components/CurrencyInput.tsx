@@ -1,7 +1,7 @@
-import { NumericFormat } from 'react-number-format';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import type { CurrencyInputProps } from '../types';
+import { NumericFormat } from "react-number-format";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { CurrencyInputProps } from "../types";
 
 export function CurrencyInput({
   id,
@@ -21,7 +21,7 @@ export function CurrencyInput({
           id={id}
           value={value}
           onValueChange={(values) => {
-            if (typeof values.floatValue === 'number') {
+            if (typeof values.floatValue === "number") {
               onChange(values.floatValue);
             }
           }}
@@ -44,7 +44,7 @@ export function CurrencyInput({
 function CustomInput({
   ref,
   ...props
-}: React.ComponentProps<'input'> & { ref?: React.Ref<HTMLInputElement> }) {
+}: React.ComponentProps<"input"> & { ref?: React.Ref<HTMLInputElement> }) {
   return <Input ref={ref} {...props} />;
 }
 

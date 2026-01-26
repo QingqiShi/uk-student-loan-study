@@ -1,6 +1,6 @@
-import { useShallow } from 'zustand/react/shallow';
-import { useStore } from '../store';
-import type { LoanConfig } from '../types';
+import { useShallow } from "zustand/react/shallow";
+import { useStore } from "../store";
+import type { LoanConfig } from "../types";
 
 /** Select the loan configuration for simulation calculations */
 export function useLoanConfig(): LoanConfig {
@@ -14,7 +14,7 @@ export function useLoanConfig(): LoanConfig {
       plan5Rate: state.plan5Rate,
       postGradRate: state.postGradRate,
       repaymentDate: state.repaymentDate,
-    }))
+    })),
   );
 }
 

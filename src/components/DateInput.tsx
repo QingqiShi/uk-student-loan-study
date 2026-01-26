@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import dayjs from 'dayjs';
-import { CalendarIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Label } from '@/components/ui/label';
+import dayjs from "dayjs";
+import { CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import type { DateInputProps } from '../types';
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import type { DateInputProps } from "../types";
 
 export function DateInput({
   id,
@@ -29,12 +29,12 @@ export function DateInput({
             id={id}
             variant="outline"
             className={cn(
-              'w-full justify-start text-left font-normal',
-              !value && 'text-muted-foreground'
+              "w-full justify-start text-left font-normal",
+              !value && "text-muted-foreground",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {value ? dayjs(value).format('MMMM D, YYYY') : 'Pick a date'}
+            {value ? dayjs(value).format("MMMM D, YYYY") : "Pick a date"}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">

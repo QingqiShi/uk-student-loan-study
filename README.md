@@ -40,14 +40,14 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ### Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start development server |
-| `pnpm build` | Build for production |
-| `pnpm start` | Start production server |
-| `pnpm lint` | Run ESLint |
-| `pnpm test` | Run tests in watch mode |
-| `pnpm test:coverage` | Run tests with coverage |
+| Command              | Description              |
+| -------------------- | ------------------------ |
+| `pnpm dev`           | Start development server |
+| `pnpm build`         | Build for production     |
+| `pnpm start`         | Start production server  |
+| `pnpm lint`          | Run ESLint               |
+| `pnpm test`          | Run tests in watch mode  |
+| `pnpm test:coverage` | Run tests with coverage  |
 
 ## Project Structure
 
@@ -73,18 +73,21 @@ The app is deployed on Vercel. Push to `main` to trigger a deployment.
 ## UK Student Loan Plans
 
 ### Plan 2 (Pre-2023 Students)
+
 - Repayment threshold: 2,274/month
 - Repayment rate: 9% above threshold
 - Interest: RPI to RPI+3% based on income
 - Write-off: 30 years after first repayment
 
 ### Plan 5 (Post-2023 Students)
+
 - Repayment threshold: 2,083/month
 - Repayment rate: 9% above threshold
 - Interest: RPI only (no income-based uplift)
 - Write-off: 40 years after first repayment
 
 ### Postgraduate Loans
+
 - Repayment threshold: 1,750/month
 - Repayment rate: 6% above threshold
 - Runs concurrently with undergraduate loan

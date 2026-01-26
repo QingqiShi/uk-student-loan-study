@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
-import { useLoanConfig, useCurrentSalary } from './useStoreSelectors';
+import { useMemo } from "react";
+import { useLoanConfig, useCurrentSalary } from "./useStoreSelectors";
 import {
   generateSalaryDataSeries,
   calculateAnnualizedRate,
-} from '@/utils/loan-calculations';
-import type { DataPoint } from '@/types';
-import { MIN_SALARY, MAX_SALARY } from '@/constants';
+} from "@/utils/loan-calculations";
+import type { DataPoint } from "@/types";
+import { MIN_SALARY, MAX_SALARY } from "@/constants";
 
 /**
  * Finds the annotation point for the current salary in a data series.
@@ -14,7 +14,7 @@ import { MIN_SALARY, MAX_SALARY } from '@/constants';
 function useAnnotationPoint(
   data: DataPoint[],
   salary: number,
-  maxSalaryOffset = 0
+  maxSalaryOffset = 0,
 ): DataPoint | undefined {
   return useMemo(() => {
     if (salary > MIN_SALARY && salary < MAX_SALARY - maxSalaryOffset) {
@@ -31,7 +31,7 @@ export function useTotalRepaymentData() {
 
   const data = useMemo(
     () => generateSalaryDataSeries(config, (r) => r.totalRepayment),
-    [config]
+    [config],
   );
 
   const annotationPoint = useAnnotationPoint(data, salary);
@@ -46,7 +46,7 @@ export function useRepaymentYearsData() {
 
   const data = useMemo(
     () => generateSalaryDataSeries(config, (r) => r.monthsToPayoff / 12),
-    [config]
+    [config],
   );
 
   // RepaymentYearsChart uses a 5000 offset to avoid annotation at chart edge
@@ -65,9 +65,9 @@ export function useInterestRateData() {
   const data = useMemo(
     () =>
       generateSalaryDataSeries(config, (r) =>
-        calculateAnnualizedRate(r, totalPrincipal)
+        calculateAnnualizedRate(r, totalPrincipal),
       ),
-    [config, totalPrincipal]
+    [config, totalPrincipal],
   );
 
   const annotationPoint = useAnnotationPoint(data, salary);
