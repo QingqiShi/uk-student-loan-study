@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import App from '@/components/App';
-import { AppErrorBoundary } from '@/components/ErrorBoundary';
+import App from "@/components/App";
+import { AppErrorBoundary } from "@/components/ErrorBoundary";
 
 export default function Home() {
   return (

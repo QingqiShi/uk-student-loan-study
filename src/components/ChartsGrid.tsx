@@ -1,9 +1,9 @@
-import { lazy, Suspense } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { lazy, Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const InterestRateChart = lazy(() => import('./InterestRateChart'));
-const RepaymentYearsChart = lazy(() => import('./RepaymentYearsChart'));
-const TotalRepaymentChart = lazy(() => import('./TotalRepaymentChart'));
+const InterestRateChart = lazy(() => import("./InterestRateChart"));
+const RepaymentYearsChart = lazy(() => import("./RepaymentYearsChart"));
+const TotalRepaymentChart = lazy(() => import("./TotalRepaymentChart"));
 
 export function ChartsGrid() {
   return (

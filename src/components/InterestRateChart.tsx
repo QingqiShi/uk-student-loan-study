@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useInterestRateData } from '@/hooks/useChartData';
-import { currencyFormatter, percentageFormatter } from '@/constants';
-import { ChartBase } from './ChartBase';
+import { useInterestRateData } from "@/hooks/useChartData";
+import { currencyFormatter, percentageFormatter } from "@/constants";
+import { ChartBase } from "./ChartBase";
 
 export function InterestRateChart() {
   const { data, annotationPoint } = useInterestRateData();

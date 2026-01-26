@@ -1,24 +1,19 @@
-import { lazy, Suspense } from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { lazy, Suspense } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useStore } from '../store';
+} from "@/components/ui/accordion";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useStore } from "../store";
 
-const CurrencyInput = lazy(() => import('./CurrencyInput'));
-const PercentageInput = lazy(() => import('./PercentageInput'));
-const DateInput = lazy(() => import('./DateInput'));
+const CurrencyInput = lazy(() => import("./CurrencyInput"));
+const PercentageInput = lazy(() => import("./PercentageInput"));
+const DateInput = lazy(() => import("./DateInput"));
 
 export function ConfigPanel() {
   const store = useStore();
@@ -35,7 +30,7 @@ export function ConfigPanel() {
               id="undergrad-balance"
               label="Undergraduate Loan Balance (plan 2 or plan 5)"
               value={store.underGradBalance}
-              onChange={(value) => store.updateField('underGradBalance', value)}
+              onChange={(value) => store.updateField("underGradBalance", value)}
             />
           </Suspense>
           <Suspense fallback={<Skeleton className="h-14 w-full" />}>
@@ -43,7 +38,7 @@ export function ConfigPanel() {
               id="postgrad-balance"
               label="Postgraduate Loan Balance"
               value={store.postGradBalance}
-              onChange={(value) => store.updateField('postGradBalance', value)}
+              onChange={(value) => store.updateField("postGradBalance", value)}
             />
           </Suspense>
           <Suspense fallback={<Skeleton className="h-14 w-full" />}>
@@ -52,7 +47,7 @@ export function ConfigPanel() {
               label="Date Repayment Started"
               helperText="This determines when your loan is written off."
               value={store.repaymentDate}
-              onChange={(value) => store.updateField('repaymentDate', value)}
+              onChange={(value) => store.updateField("repaymentDate", value)}
             />
           </Suspense>
           <div className="flex items-center justify-between">
@@ -66,7 +61,9 @@ export function ConfigPanel() {
             <Switch
               id="post-2023"
               checked={store.isPost2023}
-              onCheckedChange={(checked) => store.updateField('isPost2023', checked)}
+              onCheckedChange={(checked) =>
+                store.updateField("isPost2023", checked)
+              }
             />
           </div>
         </CardContent>
@@ -83,7 +80,9 @@ export function ConfigPanel() {
                     id="plan2-lt-rate"
                     label="Plan 2 Lower Threshold Rate"
                     value={store.plan2LTRate}
-                    onChange={(value) => store.updateField('plan2LTRate', value)}
+                    onChange={(value) =>
+                      store.updateField("plan2LTRate", value)
+                    }
                   />
                 </Suspense>
                 <Suspense fallback={<Skeleton className="h-14 w-full" />}>
@@ -91,7 +90,9 @@ export function ConfigPanel() {
                     id="plan2-ut-rate"
                     label="Plan 2 Upper Threshold Rate"
                     value={store.plan2UTRate}
-                    onChange={(value) => store.updateField('plan2UTRate', value)}
+                    onChange={(value) =>
+                      store.updateField("plan2UTRate", value)
+                    }
                   />
                 </Suspense>
               </>
@@ -102,7 +103,7 @@ export function ConfigPanel() {
                   id="plan5-rate"
                   label="Plan 5 Interest Rate (RPI)"
                   value={store.plan5Rate}
-                  onChange={(value) => store.updateField('plan5Rate', value)}
+                  onChange={(value) => store.updateField("plan5Rate", value)}
                 />
               </Suspense>
             )}
@@ -111,7 +112,7 @@ export function ConfigPanel() {
                 id="postgrad-rate"
                 label="Postgraduate Rate"
                 value={store.postGradRate}
-                onChange={(value) => store.updateField('postGradRate', value)}
+                onChange={(value) => store.updateField("postGradRate", value)}
               />
             </Suspense>
           </AccordionContent>
@@ -124,7 +125,7 @@ export function ConfigPanel() {
                 id="earning"
                 label="Your current Pre-Tax Salary"
                 value={store.salary}
-                onChange={(value) => store.updateField('salary', value)}
+                onChange={(value) => store.updateField("salary", value)}
               />
             </Suspense>
           </AccordionContent>

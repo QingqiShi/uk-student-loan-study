@@ -23,7 +23,10 @@ export interface CurrencyInputProps extends BaseInputProps {
 /**
  * Props for the PercentageInput component.
  */
-export interface PercentageInputProps extends Omit<BaseInputProps, 'helperText'> {
+export interface PercentageInputProps extends Omit<
+  BaseInputProps,
+  "helperText"
+> {
   /** Current value as a percentage (e.g., 6.5 for 6.5%) */
   value: number;
   /** Callback when value changes */

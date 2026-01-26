@@ -5,14 +5,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-pnpm dev          # Start Next.js development server (http://localhost:3000)
-pnpm build        # Build for production
-pnpm lint         # Run ESLint
-pnpm test         # Run tests in watch mode
+pnpm dev           # Start Next.js development server (http://localhost:3000)
+pnpm build         # Build for production
+pnpm lint          # Run ESLint
+pnpm format        # Format code with Prettier
+pnpm format:check  # Check formatting without modifying files
+pnpm test          # Run tests in watch mode
 pnpm test:coverage # Run tests with coverage report
 ```
 
 Run a single test file:
+
 ```bash
 pnpm test src/utils/__tests__/loan-calculations.test.ts
 ```

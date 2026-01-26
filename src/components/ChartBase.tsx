@@ -1,4 +1,4 @@
-import { PatternLines } from '@visx/pattern';
+import { PatternLines } from "@visx/pattern";
 import {
   AnimatedAnnotation,
   AnimatedAreaSeries,
@@ -8,11 +8,11 @@ import {
   DataContext,
   Tooltip,
   XYChart,
-} from '@visx/xychart';
-import { useContext, useId } from 'react';
-import type { ChartBaseProps, DataPoint } from '../types';
+} from "@visx/xychart";
+import { useContext, useId } from "react";
+import type { ChartBaseProps, DataPoint } from "../types";
 
-const chartTheme = { ...darkTheme, colors: ['#fff'] };
+const chartTheme = { ...darkTheme, colors: ["#fff"] };
 
 const xAccessor = (d: DataPoint) => d[0];
 const yAccessor = (d: DataPoint) => d[1];
@@ -34,51 +34,51 @@ export function ChartBase({
     >
       <XYChart
         theme={chartTheme}
-        xScale={{ type: 'band' }}
-        yScale={{ type: 'linear' }}
+        xScale={{ type: "band" }}
+        yScale={{ type: "linear" }}
         margin={{ top: 20, right: 20, bottom: 50, left: 80 }}
         accessibilityLabel={ariaLabel || `${yAxisLabel} by ${xAxisLabel}`}
       >
-      <CustomChartBackground />
-      <AnimatedAxis
-        orientation="left"
-        label={yAxisLabel}
-        labelOffset={40}
-        numTicks={3}
-        tickFormat={yFormatter}
-      />
-      <CustomBottomAxis label={xAxisLabel} tickFormat={xFormatter} />
-      <AnimatedAreaSeries
-        dataKey="default"
-        data={data}
-        xAccessor={xAccessor}
-        yAccessor={yAccessor}
-        strokeWidth={2}
-        fillOpacity={0.4}
-      />
-      <Tooltip<DataPoint>
-        snapTooltipToDatumX
-        snapTooltipToDatumY
-        showVerticalCrosshair
-        renderTooltip={({ tooltipData }) =>
-          tooltipData?.nearestDatum && (
-            <>
-              <div>
-                {xAxisLabel}: {xFormatter(tooltipData.nearestDatum.datum[0])}
-              </div>
-              <div>
-                {yAxisLabel}: {yFormatter(tooltipData.nearestDatum.datum[1])}
-              </div>
-            </>
-          )
-        }
-      />
-      {annotateDataPoint && (
-        <AnimatedAnnotation dataKey="default" datum={annotateDataPoint}>
-          <AnnotationLineSubject orientation="vertical" />
-        </AnimatedAnnotation>
-      )}
-    </XYChart>
+        <CustomChartBackground />
+        <AnimatedAxis
+          orientation="left"
+          label={yAxisLabel}
+          labelOffset={40}
+          numTicks={3}
+          tickFormat={yFormatter}
+        />
+        <CustomBottomAxis label={xAxisLabel} tickFormat={xFormatter} />
+        <AnimatedAreaSeries
+          dataKey="default"
+          data={data}
+          xAccessor={xAccessor}
+          yAccessor={yAccessor}
+          strokeWidth={2}
+          fillOpacity={0.4}
+        />
+        <Tooltip<DataPoint>
+          snapTooltipToDatumX
+          snapTooltipToDatumY
+          showVerticalCrosshair
+          renderTooltip={({ tooltipData }) =>
+            tooltipData?.nearestDatum && (
+              <>
+                <div>
+                  {xAxisLabel}: {xFormatter(tooltipData.nearestDatum.datum[0])}
+                </div>
+                <div>
+                  {yAxisLabel}: {yFormatter(tooltipData.nearestDatum.datum[1])}
+                </div>
+              </>
+            )
+          }
+        />
+        {annotateDataPoint && (
+          <AnimatedAnnotation dataKey="default" datum={annotateDataPoint}>
+            <AnnotationLineSubject orientation="vertical" />
+          </AnimatedAnnotation>
+        )}
+      </XYChart>
     </div>
   );
 }
@@ -119,7 +119,7 @@ function CustomChartBackground() {
         id={patternId}
         width={24}
         height={24}
-        orientation={['diagonal']}
+        orientation={["diagonal"]}
         stroke={theme?.gridStyles?.stroke}
         strokeWidth={1}
       />
