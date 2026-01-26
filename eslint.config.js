@@ -27,6 +27,11 @@ export default tseslint.config(
         { argsIgnorePattern: "^_" },
       ],
       "react/prop-types": "off",
+      // Label component receives htmlFor via props spread - valid pattern
+      "jsx-a11y/label-has-associated-control": [
+        "error",
+        { assert: "either", depth: 3 },
+      ],
     },
   },
   {
