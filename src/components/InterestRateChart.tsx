@@ -5,12 +5,13 @@ import { currencyFormatter, percentageFormatter } from "@/constants";
 import { ChartBase } from "./ChartBase";
 
 export function InterestRateChart() {
-  const { data, annotationSalary } = useInterestRateData();
+  const { data, annotationSalary, annotationValue } = useInterestRateData();
 
   return (
     <ChartBase
       data={data}
       annotationSalary={annotationSalary}
+      annotationValue={annotationValue}
       xAxisLabel="Salary"
       yAxisLabel="Annualized Interest Rate"
       xFormatter={currencyFormatter.format}

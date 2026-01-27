@@ -5,12 +5,13 @@ import { currencyFormatter, yearsFormatter } from "@/constants";
 import { ChartBase } from "./ChartBase";
 
 export function RepaymentYearsChart() {
-  const { data, annotationSalary } = useRepaymentYearsData();
+  const { data, annotationSalary, annotationValue } = useRepaymentYearsData();
 
   return (
     <ChartBase
       data={data}
       annotationSalary={annotationSalary}
+      annotationValue={annotationValue}
       xAxisLabel="Salary"
       yAxisLabel="Time to Pay Off (Years)"
       xFormatter={currencyFormatter.format}
