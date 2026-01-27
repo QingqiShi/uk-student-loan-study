@@ -14,6 +14,8 @@ pnpm test          # Run tests in watch mode
 pnpm test:coverage # Run tests with coverage report
 ```
 
+Do not run `pnpm dev` unless otherwise told to, expect a dev server to be already running during development.
+
 Run a single test file:
 
 ```bash
