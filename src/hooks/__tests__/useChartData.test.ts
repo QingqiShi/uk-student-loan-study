@@ -52,52 +52,51 @@ describe("useChartData hooks", () => {
       expect(result.current.data.length).toBe(expectedDataPoints);
     });
 
-    it("returns data points as [salary, repayment] tuples", () => {
+    it("returns data points as objects with salary and value", () => {
       const { result } = renderHook(() => useTotalRepaymentData());
 
-      expect(result.current.data[0]).toHaveLength(2);
-      expect(result.current.data[0][0]).toBe(MIN_SALARY);
-      expect(typeof result.current.data[0][1]).toBe("number");
+      expect(result.current.data[0]).toHaveProperty("salary");
+      expect(result.current.data[0]).toHaveProperty("value");
+      expect(result.current.data[0].salary).toBe(MIN_SALARY);
+      expect(typeof result.current.data[0].value).toBe("number");
     });
 
     it("starts at MIN_SALARY and ends at MAX_SALARY", () => {
       const { result } = renderHook(() => useTotalRepaymentData());
 
-      expect(result.current.data[0][0]).toBe(MIN_SALARY);
-      expect(result.current.data[result.current.data.length - 1][0]).toBe(
+      expect(result.current.data[0].salary).toBe(MIN_SALARY);
+      expect(result.current.data[result.current.data.length - 1].salary).toBe(
         MAX_SALARY,
       );
     });
 
-    it("returns annotationPoint when salary is in valid range", () => {
+    it("returns annotationSalary when salary is in valid range", () => {
       useStore.getState().updateField("salary", 50_000);
       const { result } = renderHook(() => useTotalRepaymentData());
 
-      const point = result.current.annotationPoint;
-      if (!point) throw new Error("Expected annotationPoint to be defined");
-      expect(point[0]).toBeGreaterThanOrEqual(50_000);
+      expect(result.current.annotationSalary).toBe(50_000);
     });
 
-    it("returns undefined annotationPoint when salary is below MIN_SALARY", () => {
+    it("returns undefined annotationSalary when salary is below MIN_SALARY", () => {
       useStore.getState().updateField("salary", MIN_SALARY - 1000);
       const { result } = renderHook(() => useTotalRepaymentData());
 
-      expect(result.current.annotationPoint).toBeUndefined();
+      expect(result.current.annotationSalary).toBeUndefined();
     });
 
-    it("returns undefined annotationPoint when salary is above MAX_SALARY", () => {
+    it("returns undefined annotationSalary when salary is above MAX_SALARY", () => {
       useStore.getState().updateField("salary", MAX_SALARY + 1000);
       const { result } = renderHook(() => useTotalRepaymentData());
 
-      expect(result.current.annotationPoint).toBeUndefined();
+      expect(result.current.annotationSalary).toBeUndefined();
     });
 
     it("calculates higher repayment for higher earners who pay off loan", () => {
       const { result } = renderHook(() => useTotalRepaymentData());
 
-      const lowSalaryRepayment = result.current.data[0][1];
+      const lowSalaryRepayment = result.current.data[0].value;
       const highSalaryRepayment =
-        result.current.data[result.current.data.length - 1][1];
+        result.current.data[result.current.data.length - 1].value;
 
       // Higher salary typically means more total repayment (up to full payoff)
       expect(highSalaryRepayment).toBeGreaterThanOrEqual(lowSalaryRepayment);
@@ -115,7 +114,7 @@ describe("useChartData hooks", () => {
       const { result } = renderHook(() => useRepaymentYearsData());
 
       // All values should be reasonable year values (not raw months)
-      result.current.data.forEach(([, years]) => {
+      result.current.data.forEach(({ value: years }) => {
         expect(years).toBeGreaterThanOrEqual(0);
         expect(years).toBeLessThanOrEqual(45); // Max write-off is 40 years + buffer
       });
@@ -127,22 +126,22 @@ describe("useChartData hooks", () => {
       const { result: withAnnotation } = renderHook(() =>
         useRepaymentYearsData(),
       );
-      expect(withAnnotation.current.annotationPoint).toBeDefined();
+      expect(withAnnotation.current.annotationSalary).toBeDefined();
 
       // Set salary just above MAX_SALARY - 5000 (should NOT have annotation)
       useStore.getState().updateField("salary", MAX_SALARY - 4000);
       const { result: withoutAnnotation } = renderHook(() =>
         useRepaymentYearsData(),
       );
-      expect(withoutAnnotation.current.annotationPoint).toBeUndefined();
+      expect(withoutAnnotation.current.annotationSalary).toBeUndefined();
     });
 
     it("higher salary generally means fewer years to pay off", () => {
       const { result } = renderHook(() => useRepaymentYearsData());
 
-      const lowSalaryYears = result.current.data[0][1];
+      const lowSalaryYears = result.current.data[0].value;
       const highSalaryYears =
-        result.current.data[result.current.data.length - 1][1];
+        result.current.data[result.current.data.length - 1].value;
 
       // Higher salary should mean fewer or equal years
       expect(highSalaryYears).toBeLessThanOrEqual(lowSalaryYears + 5);
@@ -165,18 +164,18 @@ describe("useChartData hooks", () => {
       const { result } = renderHook(() => useInterestRateData());
 
       // Rates should be decimals (e.g., 0.05 for 5%, not 5)
-      result.current.data.forEach(([, rate]) => {
+      result.current.data.forEach(({ value: rate }) => {
         expect(isFinite(rate)).toBe(true);
         expect(rate).toBeGreaterThan(-1);
         expect(rate).toBeLessThan(1);
       });
     });
 
-    it("returns annotationPoint when salary is in valid range", () => {
+    it("returns annotationSalary when salary is in valid range", () => {
       useStore.getState().updateField("salary", 60_000);
       const { result } = renderHook(() => useInterestRateData());
 
-      expect(result.current.annotationPoint).toBeDefined();
+      expect(result.current.annotationSalary).toBeDefined();
     });
 
     it("handles zero balance gracefully", () => {
@@ -187,7 +186,7 @@ describe("useChartData hooks", () => {
 
       // Should not throw, should return data with 0 rates
       expect(result.current.data.length).toBe(expectedDataPoints);
-      result.current.data.forEach(([, rate]) => {
+      result.current.data.forEach(({ value: rate }) => {
         expect(rate).toBe(0);
       });
     });
@@ -229,7 +228,7 @@ describe("useChartData hooks", () => {
       // At least some values should differ between plans
       let hasDifference = false;
       for (let i = 0; i < plan2Data.length; i++) {
-        if (plan2Data[i][1] !== plan5Data[i][1]) {
+        if (plan2Data[i].value !== plan5Data[i].value) {
           hasDifference = true;
           break;
         }

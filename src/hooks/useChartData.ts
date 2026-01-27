@@ -4,24 +4,21 @@ import {
   generateSalaryDataSeries,
   calculateAnnualizedRate,
 } from "@/utils/loan-calculations";
-import type { DataPoint } from "@/types";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
 
 /**
- * Finds the annotation point for the current salary in a data series.
- * Returns the first data point where salary >= current salary.
+ * Returns the annotation salary if it's within the valid range.
  */
-function useAnnotationPoint(
-  data: DataPoint[],
+function useAnnotationSalary(
   salary: number,
   maxSalaryOffset = 0,
-): DataPoint | undefined {
+): number | undefined {
   return useMemo(() => {
     if (salary > MIN_SALARY && salary < MAX_SALARY - maxSalaryOffset) {
-      return data.find((d) => d[0] >= salary);
+      return salary;
     }
     return undefined;
-  }, [data, salary, maxSalaryOffset]);
+  }, [salary, maxSalaryOffset]);
 }
 
 /** Hook for total repayment chart data */
@@ -34,9 +31,9 @@ export function useTotalRepaymentData() {
     [config],
   );
 
-  const annotationPoint = useAnnotationPoint(data, salary);
+  const annotationSalary = useAnnotationSalary(salary);
 
-  return { data, annotationPoint, salary };
+  return { data, annotationSalary };
 }
 
 /** Hook for repayment years chart data */
@@ -50,9 +47,9 @@ export function useRepaymentYearsData() {
   );
 
   // RepaymentYearsChart uses a 5000 offset to avoid annotation at chart edge
-  const annotationPoint = useAnnotationPoint(data, salary, 5000);
+  const annotationSalary = useAnnotationSalary(salary, 5000);
 
-  return { data, annotationPoint, salary };
+  return { data, annotationSalary };
 }
 
 /** Hook for interest rate chart data */
@@ -70,7 +67,7 @@ export function useInterestRateData() {
     [config, totalPrincipal],
   );
 
-  const annotationPoint = useAnnotationPoint(data, salary);
+  const annotationSalary = useAnnotationSalary(salary);
 
-  return { data, annotationPoint, salary };
+  return { data, annotationSalary };
 }
