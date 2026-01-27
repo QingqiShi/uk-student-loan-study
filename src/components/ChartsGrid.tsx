@@ -7,7 +7,7 @@ const TotalRepaymentChart = lazy(() => import("./TotalRepaymentChart"));
 
 export function ChartsGrid() {
   return (
-    <div className="grid gap-4 sm:grid-cols-[repeat(auto-fill,minmax(600px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(700px,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(800px,1fr))]">
+    <div className="grid gap-4">
       <div className="flex flex-col p-4 lg:p-8">
         <div className="flex-grow">
           <h2 className="text-lg font-bold">How much do you repay in total?</h2>
