@@ -5,6 +5,7 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  ReferenceDot,
   ReferenceLine,
   XAxis,
   YAxis,
@@ -31,6 +32,7 @@ export function ChartBase({
   xFormatter,
   yFormatter,
   annotationSalary,
+  annotationValue,
   ariaLabel,
 }: ChartBaseProps) {
   const gradientId = useId();
@@ -64,6 +66,8 @@ export function ChartBase({
           <CartesianGrid vertical={false} className="stroke-border/50" />
           <XAxis
             dataKey="salary"
+            type="number"
+            domain={["dataMin", "dataMax"]}
             tickFormatter={xFormatter}
             tickLine={false}
             axisLine={false}
@@ -112,8 +116,26 @@ export function ChartBase({
           {annotationSalary !== undefined && (
             <ReferenceLine
               x={annotationSalary}
-              stroke="hsl(var(--foreground))"
-              strokeDasharray="4 4"
+              stroke="rgba(255, 255, 255, 0.6)"
+              strokeWidth={1.5}
+              strokeDasharray="6 4"
+              label={{
+                value: xFormatter(annotationSalary),
+                position: "insideTopRight",
+                fill: "rgba(255, 255, 255, 0.9)",
+                fontSize: 11,
+                fontWeight: 500,
+                offset: 8,
+              }}
+            />
+          )}
+          {annotationSalary !== undefined && annotationValue !== undefined && (
+            <ReferenceDot
+              x={annotationSalary}
+              y={annotationValue}
+              r={4}
+              fill="rgba(255, 255, 255, 0.9)"
+              stroke="rgba(255, 255, 255, 0.6)"
               strokeWidth={2}
             />
           )}

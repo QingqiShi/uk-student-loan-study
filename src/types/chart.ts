@@ -22,6 +22,8 @@ export interface ChartBaseProps {
   yFormatter: (y: number) => string;
   /** Salary value to highlight with a vertical annotation line */
   annotationSalary?: number;
+  /** Y-axis value at the annotation salary for dot marker positioning */
+  annotationValue?: number;
   /** Accessibility label for screen readers */
   ariaLabel?: string;
 }

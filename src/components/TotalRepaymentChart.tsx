@@ -5,12 +5,13 @@ import { currencyFormatter } from "@/constants";
 import { ChartBase } from "./ChartBase";
 
 export function TotalRepaymentChart() {
-  const { data, annotationSalary } = useTotalRepaymentData();
+  const { data, annotationSalary, annotationValue } = useTotalRepaymentData();
 
   return (
     <ChartBase
       data={data}
       annotationSalary={annotationSalary}
+      annotationValue={annotationValue}
       xAxisLabel="Salary"
       yAxisLabel="Total Repayment"
       xFormatter={currencyFormatter.format}

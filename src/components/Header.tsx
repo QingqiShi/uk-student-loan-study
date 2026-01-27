@@ -23,8 +23,10 @@ export function Header() {
       >
         Skip to main content
       </a>
-      <div className="mx-auto flex h-14 max-w-screen-2xl items-center px-4 md:px-6">
-        <h1 className="text-lg font-bold">UK Student Loan Study</h1>
+      <div className="mx-auto flex h-12 max-w-4xl items-center px-4 md:px-6">
+        <span className="text-muted-foreground text-sm font-medium">
+          UK Student Loan Calculator
+        </span>
       </div>
     </header>
   );

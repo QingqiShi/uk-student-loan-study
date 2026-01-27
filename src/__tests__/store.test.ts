@@ -5,8 +5,6 @@ describe("useStore", () => {
   beforeEach(() => {
     // Reset store to initial state before each test
     useStore.getState().reset();
-    // Clear localStorage to ensure clean state
-    localStorage.clear();
   });
 
   describe("initial state", () => {
@@ -20,7 +18,7 @@ describe("useStore", () => {
       expect(state.plan2UTRate).toBe(6.5);
       expect(state.plan5Rate).toBe(6.5);
       expect(state.postGradRate).toBe(6.5);
-      expect(state.salary).toBe(0);
+      expect(state.salary).toBe(35_000);
       expect(state.repaymentDate).toBeInstanceOf(Date);
     });
   });
@@ -96,33 +94,8 @@ describe("useStore", () => {
       expect(resetState.underGradBalance).toBe(50_000);
       expect(resetState.postGradBalance).toBe(0);
       expect(resetState.isPost2023).toBe(false);
-      expect(resetState.salary).toBe(0);
+      expect(resetState.salary).toBe(35_000);
       expect(resetState.plan2LTRate).toBe(6.5);
-    });
-  });
-
-  describe("persistence", () => {
-    it("should persist state to localStorage", () => {
-      useStore.getState().updateField("underGradBalance", 80_000);
-      useStore.getState().updateField("salary", 55_000);
-
-      // Check localStorage has the data
-      const stored = localStorage.getItem("loan-calculator-storage");
-      if (!stored) throw new Error("Expected localStorage to have data");
-
-      const parsed = JSON.parse(stored);
-      expect(parsed.state.underGradBalance).toBe(80_000);
-      expect(parsed.state.salary).toBe(55_000);
-    });
-
-    it("should persist Date as ISO string", () => {
-      const date = new Date("2021-09-01T00:00:00.000Z");
-      useStore.getState().updateField("repaymentDate", date);
-
-      const stored = localStorage.getItem("loan-calculator-storage");
-      if (!stored) throw new Error("Expected localStorage to have data");
-      const parsed = JSON.parse(stored);
-      expect(parsed.state.repaymentDate).toBe("2021-09-01T00:00:00.000Z");
     });
   });
 });

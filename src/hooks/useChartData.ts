@@ -5,20 +5,44 @@ import {
   calculateAnnualizedRate,
 } from "@/utils/loan-calculations";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
+import type { DataPoint } from "@/types";
+
+interface AnnotationData {
+  annotationSalary: number | undefined;
+  annotationValue: number | undefined;
+}
 
 /**
- * Returns the annotation salary if it's within the valid range.
+ * Returns the annotation salary and corresponding value if within the valid range.
  */
-function useAnnotationSalary(
+function useAnnotationData(
   salary: number,
+  data: DataPoint[],
   maxSalaryOffset = 0,
-): number | undefined {
+): AnnotationData {
   return useMemo(() => {
-    if (salary > MIN_SALARY && salary < MAX_SALARY - maxSalaryOffset) {
-      return salary;
+    if (
+      data.length > 0 &&
+      salary > MIN_SALARY &&
+      salary < MAX_SALARY - maxSalaryOffset
+    ) {
+      // Find the data point closest to the annotation salary
+      const closestPoint = data.reduce((closest, point) => {
+        if (
+          Math.abs(point.salary - salary) < Math.abs(closest.salary - salary)
+        ) {
+          return point;
+        }
+        return closest;
+      }, data[0]);
+
+      return {
+        annotationSalary: salary,
+        annotationValue: closestPoint.value,
+      };
     }
-    return undefined;
-  }, [salary, maxSalaryOffset]);
+    return { annotationSalary: undefined, annotationValue: undefined };
+  }, [salary, data, maxSalaryOffset]);
 }
 
 /** Hook for total repayment chart data */
@@ -31,9 +55,9 @@ export function useTotalRepaymentData() {
     [config],
   );
 
-  const annotationSalary = useAnnotationSalary(salary);
+  const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
 
-  return { data, annotationSalary };
+  return { data, annotationSalary, annotationValue };
 }
 
 /** Hook for repayment years chart data */
@@ -47,9 +71,13 @@ export function useRepaymentYearsData() {
   );
 
   // RepaymentYearsChart uses a 5000 offset to avoid annotation at chart edge
-  const annotationSalary = useAnnotationSalary(salary, 5000);
+  const { annotationSalary, annotationValue } = useAnnotationData(
+    salary,
+    data,
+    5000,
+  );
 
-  return { data, annotationSalary };
+  return { data, annotationSalary, annotationValue };
 }
 
 /** Hook for interest rate chart data */
@@ -67,7 +95,7 @@ export function useInterestRateData() {
     [config, totalPrincipal],
   );
 
-  const annotationSalary = useAnnotationSalary(salary);
+  const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
 
-  return { data, annotationSalary };
+  return { data, annotationSalary, annotationValue };
 }
