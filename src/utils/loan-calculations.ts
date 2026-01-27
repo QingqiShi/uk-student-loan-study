@@ -215,7 +215,7 @@ export function generateSalaryDataSeries(
 
   for (let salary = MIN_SALARY; salary <= MAX_SALARY; salary += SALARY_STEP) {
     const result = simulateLoanRepayment(salary, config);
-    data.push([salary, mapper(result)]);
+    data.push({ salary, value: mapper(result) });
   }
 
   return data;

@@ -376,15 +376,15 @@ describe("generateSalaryDataSeries", () => {
   it("starts at MIN_SALARY and ends at MAX_SALARY", () => {
     const data = generateSalaryDataSeries(baseConfig, (r) => r.totalRepayment);
 
-    expect(data[0][0]).toBe(MIN_SALARY);
-    expect(data[data.length - 1][0]).toBe(MAX_SALARY);
+    expect(data[0].salary).toBe(MIN_SALARY);
+    expect(data[data.length - 1].salary).toBe(MAX_SALARY);
   });
 
   it("increments by SALARY_STEP", () => {
     const data = generateSalaryDataSeries(baseConfig, (r) => r.totalRepayment);
 
     for (let i = 1; i < data.length; i++) {
-      expect(data[i][0] - data[i - 1][0]).toBe(SALARY_STEP);
+      expect(data[i].salary - data[i - 1].salary).toBe(SALARY_STEP);
     }
   });
 
@@ -397,7 +397,7 @@ describe("generateSalaryDataSeries", () => {
 
       // Verify first point
       const firstResult = simulateLoanRepayment(MIN_SALARY, baseConfig);
-      expect(data[0][1]).toBe(firstResult.totalRepayment);
+      expect(data[0].value).toBe(firstResult.totalRepayment);
     });
 
     it("maps monthsToPayoff for repayment years chart", () => {
@@ -407,7 +407,7 @@ describe("generateSalaryDataSeries", () => {
       );
 
       // All values should be years (reasonable range)
-      data.forEach(([, years]) => {
+      data.forEach(({ value: years }) => {
         expect(years).toBeGreaterThanOrEqual(0);
         expect(years).toBeLessThanOrEqual(45); // Max 40 years + buffer
       });
@@ -421,7 +421,7 @@ describe("generateSalaryDataSeries", () => {
 
       // Should have data for all salary points
       expect(data.length).toBeGreaterThan(0);
-      data.forEach(([salary, value]) => {
+      data.forEach(({ salary, value }) => {
         expect(typeof salary).toBe("number");
         expect(typeof value).toBe("number");
       });
@@ -525,7 +525,9 @@ describe("integration: chart data generation", () => {
     const data = generateSalaryDataSeries(baseConfig, (r) => r.totalRepayment);
 
     // Total repayment should generally increase then plateau
-    expect(data[0][1]).toBeLessThanOrEqual(data[data.length - 1][1] * 1.5);
+    expect(data[0].value).toBeLessThanOrEqual(
+      data[data.length - 1].value * 1.5,
+    );
   });
 
   it("generates RepaymentYearsChart data", () => {
@@ -535,8 +537,8 @@ describe("integration: chart data generation", () => {
     );
 
     // Higher salary should mean fewer years (generally)
-    const firstYears = data[0][1];
-    const lastYears = data[data.length - 1][1];
+    const firstYears = data[0].value;
+    const lastYears = data[data.length - 1].value;
     expect(lastYears).toBeLessThanOrEqual(firstYears + 5); // Some tolerance
   });
 
@@ -548,7 +550,7 @@ describe("integration: chart data generation", () => {
     });
 
     // All rates should be reasonable numbers
-    data.forEach(([, rate]) => {
+    data.forEach(({ value: rate }) => {
       expect(isFinite(rate)).toBe(true);
       expect(rate).toBeGreaterThan(-1);
       expect(rate).toBeLessThan(1);

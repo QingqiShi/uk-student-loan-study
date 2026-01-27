@@ -1,22 +1,28 @@
-import { PatternLines } from "@visx/pattern";
-import { ParentSize } from "@visx/responsive";
+"use client";
+
+import { useId } from "react";
 import {
-  AnimatedAnnotation,
-  AnimatedAreaSeries,
-  AnimatedAxis,
-  AnnotationLineSubject,
-  darkTheme,
-  DataContext,
-  Tooltip,
-  XYChart,
-} from "@visx/xychart";
-import { useContext, useId } from "react";
-import type { ChartBaseProps, DataPoint } from "../types";
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ReferenceLine,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
+import type { ChartBaseProps } from "@/types";
 
-const chartTheme = { ...darkTheme, colors: ["#fff"] };
-
-const xAccessor = (d: DataPoint) => d[0];
-const yAccessor = (d: DataPoint) => d[1];
+const chartConfig = {
+  value: {
+    label: "Value",
+    color: "var(--chart-1)",
+  },
+} satisfies ChartConfig;
 
 export function ChartBase({
   data,
@@ -24,122 +30,95 @@ export function ChartBase({
   yAxisLabel,
   xFormatter,
   yFormatter,
-  annotateDataPoint,
+  annotationSalary,
   ariaLabel,
 }: ChartBaseProps) {
+  const gradientId = useId();
+
   return (
     <div
       role="img"
       aria-label={ariaLabel || `Chart showing ${yAxisLabel} by ${xAxisLabel}`}
       className="h-full w-full overflow-hidden"
     >
-      <ParentSize>
-        {({ width, height }) => (
-          <XYChart
-            theme={chartTheme}
-            width={width}
-            height={height}
-            xScale={{ type: "band" }}
-            yScale={{ type: "linear" }}
-            margin={{ top: 20, right: 20, bottom: 50, left: 80 }}
-            accessibilityLabel={ariaLabel || `${yAxisLabel} by ${xAxisLabel}`}
-          >
-            <CustomChartBackground />
-            <AnimatedAxis
-              orientation="left"
-              label={yAxisLabel}
-              labelOffset={40}
-              numTicks={3}
-              tickFormat={yFormatter}
-            />
-            <CustomBottomAxis label={xAxisLabel} tickFormat={xFormatter} />
-            <AnimatedAreaSeries
-              dataKey="default"
-              data={data}
-              xAccessor={xAccessor}
-              yAccessor={yAccessor}
+      <ChartContainer config={chartConfig} className="h-full w-full">
+        <AreaChart
+          data={data}
+          accessibilityLayer
+          margin={{ top: 5, right: 5, bottom: 25, left: 25 }}
+        >
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="var(--color-value)"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="var(--color-value)"
+                stopOpacity={0.1}
+              />
+            </linearGradient>
+          </defs>
+          <CartesianGrid vertical={false} className="stroke-border/50" />
+          <XAxis
+            dataKey="salary"
+            tickFormatter={xFormatter}
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            label={{
+              value: xAxisLabel,
+              position: "bottom",
+              offset: 5,
+              className: "fill-muted-foreground text-xs",
+            }}
+          />
+          <YAxis
+            tickFormatter={yFormatter}
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            label={{
+              value: yAxisLabel,
+              angle: -90,
+              position: "left",
+              offset: 10,
+              className: "fill-muted-foreground text-xs",
+            }}
+          />
+          <ChartTooltip
+            cursor={false}
+            content={
+              <ChartTooltipContent
+                labelFormatter={(_, payload) => {
+                  if (payload?.[0]) {
+                    return `${xAxisLabel}: ${xFormatter(payload[0].payload.salary)}`;
+                  }
+                  return "";
+                }}
+                formatter={(value) => [yFormatter(value as number), yAxisLabel]}
+              />
+            }
+          />
+          <Area
+            dataKey="value"
+            type="natural"
+            fill={`url(#${gradientId})`}
+            stroke="var(--color-value)"
+            strokeWidth={2}
+          />
+          {annotationSalary !== undefined && (
+            <ReferenceLine
+              x={annotationSalary}
+              stroke="hsl(var(--foreground))"
+              strokeDasharray="4 4"
               strokeWidth={2}
-              fillOpacity={0.4}
             />
-            <Tooltip<DataPoint>
-              snapTooltipToDatumX
-              snapTooltipToDatumY
-              showVerticalCrosshair
-              renderTooltip={({ tooltipData }) =>
-                tooltipData?.nearestDatum && (
-                  <>
-                    <div>
-                      {xAxisLabel}:{" "}
-                      {xFormatter(tooltipData.nearestDatum.datum[0])}
-                    </div>
-                    <div>
-                      {yAxisLabel}:{" "}
-                      {yFormatter(tooltipData.nearestDatum.datum[1])}
-                    </div>
-                  </>
-                )
-              }
-            />
-            {annotateDataPoint && (
-              <AnimatedAnnotation dataKey="default" datum={annotateDataPoint}>
-                <AnnotationLineSubject orientation="vertical" />
-              </AnimatedAnnotation>
-            )}
-          </XYChart>
-        )}
-      </ParentSize>
+          )}
+        </AreaChart>
+      </ChartContainer>
     </div>
-  );
-}
-
-function CustomBottomAxis({
-  label,
-  tickFormat,
-}: {
-  label: string;
-  tickFormat: (x: number) => string;
-}) {
-  const { innerWidth } = useContext(DataContext);
-
-  // early return values not available in context
-  if (!innerWidth) return null;
-
-  return (
-    <AnimatedAxis
-      orientation="bottom"
-      label={label}
-      numTicks={(innerWidth ?? 0) > 700 ? 6 : 3}
-      tickFormat={tickFormat}
-    />
-  );
-}
-
-function CustomChartBackground() {
-  const { theme, margin, width, height, innerWidth } = useContext(DataContext);
-
-  const patternId = useId();
-
-  // early return values not available in context
-  if (!width || !height || !margin || !theme || !innerWidth) return null;
-
-  return (
-    <>
-      <PatternLines
-        id={patternId}
-        width={24}
-        height={24}
-        orientation={["diagonal"]}
-        stroke={theme?.gridStyles?.stroke}
-        strokeWidth={1}
-      />
-      <rect
-        x={margin.left}
-        y={margin.top}
-        width={innerWidth}
-        height={height - margin.top - margin.bottom}
-        fill={`url(#${patternId})`}
-        fillOpacity={0.3}
-      />
-    </>
   );
 }
