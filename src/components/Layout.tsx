@@ -11,8 +11,8 @@ export function Layout({ stickyPanel, content }: LayoutProps) {
           {stickyPanel}
         </div>
       </aside>
-      <main id="main-content" className="pt-4">
-        <div className="rounded-lg border bg-card p-4">{content}</div>
+      <main id="main-content" className="min-w-0 pt-4">
+        <div className="min-w-0 rounded-lg border bg-card p-4">{content}</div>
       </main>
     </div>
   );
