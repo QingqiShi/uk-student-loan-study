@@ -7,8 +7,8 @@ const TotalRepaymentChart = lazy(() => import("./TotalRepaymentChart"));
 
 export function ChartsGrid() {
   return (
-    <div className="grid gap-4">
-      <div className="flex flex-col p-4 lg:p-8">
+    <div className="grid min-w-0 gap-4">
+      <div className="flex min-w-0 flex-col p-4 lg:p-8">
         <div className="flex-grow">
           <h2 className="text-lg font-bold">How much do you repay in total?</h2>
           <p className="text-muted-foreground">
@@ -29,7 +29,7 @@ export function ChartsGrid() {
           </Suspense>
         </div>
       </div>
-      <div className="flex flex-col p-4 lg:p-8">
+      <div className="flex min-w-0 flex-col p-4 lg:p-8">
         <div className="flex-grow">
           <h2 className="text-lg font-bold">
             How long does it take to pay off your student loan?
@@ -50,7 +50,7 @@ export function ChartsGrid() {
           </Suspense>
         </div>
       </div>
-      <div className="flex flex-col p-4 lg:p-8">
+      <div className="flex min-w-0 flex-col p-4 lg:p-8">
         <div className="flex-grow">
           <h2 className="text-lg font-bold">
             Is it worth paying off student loan early?

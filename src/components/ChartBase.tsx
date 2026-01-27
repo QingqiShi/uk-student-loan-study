@@ -1,4 +1,5 @@
 import { PatternLines } from "@visx/pattern";
+import { ParentSize } from "@visx/responsive";
 import {
   AnimatedAnnotation,
   AnimatedAreaSeries,
@@ -30,55 +31,63 @@ export function ChartBase({
     <div
       role="img"
       aria-label={ariaLabel || `Chart showing ${yAxisLabel} by ${xAxisLabel}`}
-      className="h-full w-full"
+      className="h-full w-full overflow-hidden"
     >
-      <XYChart
-        theme={chartTheme}
-        xScale={{ type: "band" }}
-        yScale={{ type: "linear" }}
-        margin={{ top: 20, right: 20, bottom: 50, left: 80 }}
-        accessibilityLabel={ariaLabel || `${yAxisLabel} by ${xAxisLabel}`}
-      >
-        <CustomChartBackground />
-        <AnimatedAxis
-          orientation="left"
-          label={yAxisLabel}
-          labelOffset={40}
-          numTicks={3}
-          tickFormat={yFormatter}
-        />
-        <CustomBottomAxis label={xAxisLabel} tickFormat={xFormatter} />
-        <AnimatedAreaSeries
-          dataKey="default"
-          data={data}
-          xAccessor={xAccessor}
-          yAccessor={yAccessor}
-          strokeWidth={2}
-          fillOpacity={0.4}
-        />
-        <Tooltip<DataPoint>
-          snapTooltipToDatumX
-          snapTooltipToDatumY
-          showVerticalCrosshair
-          renderTooltip={({ tooltipData }) =>
-            tooltipData?.nearestDatum && (
-              <>
-                <div>
-                  {xAxisLabel}: {xFormatter(tooltipData.nearestDatum.datum[0])}
-                </div>
-                <div>
-                  {yAxisLabel}: {yFormatter(tooltipData.nearestDatum.datum[1])}
-                </div>
-              </>
-            )
-          }
-        />
-        {annotateDataPoint && (
-          <AnimatedAnnotation dataKey="default" datum={annotateDataPoint}>
-            <AnnotationLineSubject orientation="vertical" />
-          </AnimatedAnnotation>
+      <ParentSize>
+        {({ width, height }) => (
+          <XYChart
+            theme={chartTheme}
+            width={width}
+            height={height}
+            xScale={{ type: "band" }}
+            yScale={{ type: "linear" }}
+            margin={{ top: 20, right: 20, bottom: 50, left: 80 }}
+            accessibilityLabel={ariaLabel || `${yAxisLabel} by ${xAxisLabel}`}
+          >
+            <CustomChartBackground />
+            <AnimatedAxis
+              orientation="left"
+              label={yAxisLabel}
+              labelOffset={40}
+              numTicks={3}
+              tickFormat={yFormatter}
+            />
+            <CustomBottomAxis label={xAxisLabel} tickFormat={xFormatter} />
+            <AnimatedAreaSeries
+              dataKey="default"
+              data={data}
+              xAccessor={xAccessor}
+              yAccessor={yAccessor}
+              strokeWidth={2}
+              fillOpacity={0.4}
+            />
+            <Tooltip<DataPoint>
+              snapTooltipToDatumX
+              snapTooltipToDatumY
+              showVerticalCrosshair
+              renderTooltip={({ tooltipData }) =>
+                tooltipData?.nearestDatum && (
+                  <>
+                    <div>
+                      {xAxisLabel}:{" "}
+                      {xFormatter(tooltipData.nearestDatum.datum[0])}
+                    </div>
+                    <div>
+                      {yAxisLabel}:{" "}
+                      {yFormatter(tooltipData.nearestDatum.datum[1])}
+                    </div>
+                  </>
+                )
+              }
+            />
+            {annotateDataPoint && (
+              <AnimatedAnnotation dataKey="default" datum={annotateDataPoint}>
+                <AnnotationLineSubject orientation="vertical" />
+              </AnimatedAnnotation>
+            )}
+          </XYChart>
         )}
-      </XYChart>
+      </ParentSize>
     </div>
   );
 }
