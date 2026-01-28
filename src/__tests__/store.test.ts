@@ -18,7 +18,7 @@ describe("useStore", () => {
       expect(state.plan2UTRate).toBe(6.5);
       expect(state.plan5Rate).toBe(6.5);
       expect(state.postGradRate).toBe(6.5);
-      expect(state.salary).toBe(35_000);
+      expect(state.salary).toBe(70_000);
       expect(state.repaymentDate).toBeInstanceOf(Date);
     });
   });
@@ -94,7 +94,7 @@ describe("useStore", () => {
       expect(resetState.underGradBalance).toBe(50_000);
       expect(resetState.postGradBalance).toBe(0);
       expect(resetState.isPost2023).toBe(false);
-      expect(resetState.salary).toBe(35_000);
+      expect(resetState.salary).toBe(70_000);
       expect(resetState.plan2LTRate).toBe(6.5);
     });
   });
