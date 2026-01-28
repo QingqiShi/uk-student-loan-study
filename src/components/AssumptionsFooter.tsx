@@ -33,8 +33,10 @@ export function AssumptionsFooter() {
     <div className="sticky bottom-0 z-40">
       {/* Expandable Panel */}
       <div
-        className={`bg-background/95 overflow-hidden border-t backdrop-blur-sm transition-all duration-300 ease-out ${
-          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        className={`bg-background/95 border-t backdrop-blur-sm transition-all duration-300 ease-out ${
+          isOpen
+            ? "max-h-[calc((100dvh-6.5rem)*0.9)] overflow-y-auto opacity-100"
+            : "max-h-0 overflow-hidden opacity-0"
         }`}
       >
         <div className="mx-auto max-w-4xl px-4 py-6 md:px-6">
