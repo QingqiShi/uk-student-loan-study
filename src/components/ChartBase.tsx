@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -16,6 +16,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { MIN_SALARY, MAX_SALARY } from "@/constants";
 import type { ChartBaseProps } from "@/types";
 
 const chartConfig = {
@@ -36,18 +37,36 @@ export function ChartBase({
   ariaLabel,
 }: ChartBaseProps) {
   const gradientId = useId();
+  const [isTooltipActive, setIsTooltipActive] = useState(false);
+
+  // Calculate label offset to avoid edge clipping
+  // Left side (<25%): push right; Right side (>75%): push left
+  const getAnnotationLabelOffset = () => {
+    if (annotationSalary === undefined) return 0;
+    const position =
+      (annotationSalary - MIN_SALARY) / (MAX_SALARY - MIN_SALARY);
+    if (position < 0.25) return 35; // Push right
+    if (position > 0.75) return -35; // Push left
+    return 0;
+  };
 
   return (
     <div
       role="img"
       aria-label={ariaLabel || `Chart showing ${yAxisLabel} by ${xAxisLabel}`}
-      className="h-full w-full overflow-hidden"
+      className="h-full w-full overflow-hidden select-none touch-pinch-zoom"
+      onTouchStart={() => setIsTooltipActive(true)}
+      onTouchEnd={() => setIsTooltipActive(false)}
     >
       <ChartContainer config={chartConfig} className="h-full w-full">
         <AreaChart
           data={data}
           accessibilityLayer
           margin={{ top: 5, right: 5, bottom: 25, left: 25 }}
+          onMouseMove={(state) => {
+            setIsTooltipActive(state?.activePayload != null);
+          }}
+          onMouseLeave={() => setIsTooltipActive(false)}
         >
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
@@ -94,6 +113,7 @@ export function ChartBase({
           />
           <ChartTooltip
             cursor={false}
+            active={isTooltipActive}
             content={
               <ChartTooltipContent
                 labelFormatter={(_, payload) => {
@@ -112,8 +132,9 @@ export function ChartBase({
             fill={`url(#${gradientId})`}
             stroke="var(--color-value)"
             strokeWidth={2}
+            activeDot={isTooltipActive}
           />
-          {annotationSalary !== undefined && (
+          {annotationSalary !== undefined && !isTooltipActive && (
             <ReferenceLine
               x={annotationSalary}
               stroke="rgba(255, 255, 255, 0.6)"
@@ -121,24 +142,24 @@ export function ChartBase({
               strokeDasharray="6 4"
               label={{
                 value: xFormatter(annotationSalary),
-                position: "insideTopRight",
+                position: "insideTop",
                 fill: "rgba(255, 255, 255, 0.9)",
                 fontSize: 11,
                 fontWeight: 500,
-                offset: 8,
+                dx: getAnnotationLabelOffset(),
               }}
             />
           )}
-          {annotationSalary !== undefined && annotationValue !== undefined && (
-            <ReferenceDot
-              x={annotationSalary}
-              y={annotationValue}
-              r={4}
-              fill="rgba(255, 255, 255, 0.9)"
-              stroke="rgba(255, 255, 255, 0.6)"
-              strokeWidth={2}
-            />
-          )}
+          {annotationSalary !== undefined &&
+            annotationValue !== undefined &&
+            !isTooltipActive && (
+              <ReferenceDot
+                x={annotationSalary}
+                y={annotationValue}
+                r={4}
+                fill="var(--color-value)"
+              />
+            )}
         </AreaChart>
       </ChartContainer>
     </div>
