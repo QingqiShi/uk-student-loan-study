@@ -17,6 +17,12 @@ export function AdvancedInputs() {
         <h4 className="text-sm font-medium">Loan Details</h4>
         <div className="grid gap-4 sm:grid-cols-2">
           <CurrencyInput
+            id="adv-undergrad-balance"
+            label="Undergraduate Loan Balance"
+            value={store.underGradBalance}
+            onChange={(value) => store.updateField("underGradBalance", value)}
+          />
+          <CurrencyInput
             id="adv-postgrad-balance"
             label="Postgraduate Loan Balance"
             value={store.postGradBalance}
