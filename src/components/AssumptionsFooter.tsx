@@ -13,11 +13,12 @@ import AdvancedInputs from "./AdvancedInputs";
 export function AssumptionsFooter() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { isPost2023, plan2UTRate, plan5Rate } = useStore(
+  const { isPost2023, plan2UTRate, plan5Rate, underGradBalance } = useStore(
     useShallow((state) => ({
       isPost2023: state.isPost2023,
       plan2UTRate: state.plan2UTRate,
       plan5Rate: state.plan5Rate,
+      underGradBalance: state.underGradBalance,
     })),
   );
 
@@ -26,6 +27,7 @@ export function AssumptionsFooter() {
     ? currencyFormatter.format(PLAN5_MONTHLY_THRESHOLD * 12)
     : currencyFormatter.format(PLAN2_LT);
   const rate = isPost2023 ? plan5Rate : plan2UTRate;
+  const balance = currencyFormatter.format(underGradBalance);
 
   return (
     <div className="sticky bottom-0 z-40">
@@ -66,6 +68,8 @@ export function AssumptionsFooter() {
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 md:px-6">
           <p className="text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
             <span className="text-foreground font-medium">{planName}</span>
+            <span className="text-muted-foreground/50">•</span>
+            <span>{balance}</span>
             <span className="text-muted-foreground/50">•</span>
             <span>9% above {threshold}</span>
             <span className="text-muted-foreground/50">•</span>
