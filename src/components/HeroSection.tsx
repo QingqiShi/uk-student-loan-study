@@ -1,11 +1,8 @@
 "use client";
 
-import { lazy, Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { QuickInputs } from "./QuickInputs";
 import { InsightCallout } from "./InsightCallout";
-
-const TotalRepaymentChart = lazy(() => import("./TotalRepaymentChart"));
+import TotalRepaymentChart from "./TotalRepaymentChart";
 
 export function HeroSection() {
   return (
@@ -22,9 +19,7 @@ export function HeroSection() {
       </div>
 
       <div className="h-[300px] sm:h-[400px] lg:h-[450px]">
-        <Suspense fallback={<Skeleton className="h-full w-full" />}>
-          <TotalRepaymentChart />
-        </Suspense>
+        <TotalRepaymentChart />
       </div>
 
       <QuickInputs />

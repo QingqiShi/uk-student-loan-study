@@ -1,10 +1,7 @@
 "use client";
 
-import { lazy, Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const RepaymentYearsChart = lazy(() => import("./RepaymentYearsChart"));
-const InterestRateChart = lazy(() => import("./InterestRateChart"));
+import RepaymentYearsChart from "./RepaymentYearsChart";
+import InterestRateChart from "./InterestRateChart";
 
 export function SecondaryCharts() {
   return (
@@ -17,9 +14,7 @@ export function SecondaryCharts() {
           years of payments.
         </p>
         <div className="h-[300px] sm:h-[350px]">
-          <Suspense fallback={<Skeleton className="h-full w-full" />}>
-            <RepaymentYearsChart />
-          </Suspense>
+          <RepaymentYearsChart />
         </div>
       </section>
 
@@ -30,9 +25,7 @@ export function SecondaryCharts() {
           Lower earners often have negative effective rates due to write-off.
         </p>
         <div className="h-[300px] sm:h-[350px]">
-          <Suspense fallback={<Skeleton className="h-full w-full" />}>
-            <InterestRateChart />
-          </Suspense>
+          <InterestRateChart />
         </div>
       </section>
     </div>

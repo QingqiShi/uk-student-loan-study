@@ -1,10 +1,7 @@
-import { lazy, Suspense } from "react";
 import { Header } from "./Header";
 import { HeroSection } from "./HeroSection";
-import { Skeleton } from "./ui/skeleton";
-
-const SecondaryCharts = lazy(() => import("./SecondaryCharts"));
-const AssumptionsFooter = lazy(() => import("./AssumptionsFooter"));
+import SecondaryCharts from "./SecondaryCharts";
+import AssumptionsFooter from "./AssumptionsFooter";
 
 function App() {
   return (
@@ -16,13 +13,9 @@ function App() {
       >
         <HeroSection />
 
-        <Suspense fallback={<Skeleton className="h-96 w-full" />}>
-          <SecondaryCharts />
-        </Suspense>
+        <SecondaryCharts />
       </main>
-      <Suspense fallback={<Skeleton className="h-12 w-full" />}>
-        <AssumptionsFooter />
-      </Suspense>
+      <AssumptionsFooter />
     </div>
   );
 }

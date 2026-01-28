@@ -1,16 +1,14 @@
 "use client";
 
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import { useStore } from "@/store";
 import { useShallow } from "zustand/react/shallow";
 import { currencyFormatter } from "@/constants";
 import { PLAN2_LT, PLAN5_MONTHLY_THRESHOLD } from "@/constants";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon, Settings02Icon } from "@hugeicons/core-free-icons";
-
-const AdvancedInputs = lazy(() => import("./AdvancedInputs"));
+import AdvancedInputs from "./AdvancedInputs";
 
 export function AssumptionsFooter() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,9 +57,7 @@ export function AssumptionsFooter() {
           </div>
 
           {/* Panel Content */}
-          <Suspense fallback={<Skeleton className="h-48 w-full" />}>
-            <AdvancedInputs />
-          </Suspense>
+          <AdvancedInputs />
         </div>
       </div>
 
