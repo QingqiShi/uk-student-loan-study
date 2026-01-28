@@ -1,9 +1,8 @@
 "use client";
 
-import { lazy, Suspense, useCallback } from "react";
+import { useCallback } from "react";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useStore } from "@/store";
 import {
   MIN_SALARY,
@@ -11,8 +10,7 @@ import {
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
-
-const CurrencyInput = lazy(() => import("./CurrencyInput"));
+import CurrencyInput from "./CurrencyInput";
 
 export function QuickInputs() {
   const salary = useStore((state) => state.salary);
@@ -59,14 +57,12 @@ export function QuickInputs() {
       </div>
 
       <div className="w-full sm:w-48">
-        <Suspense fallback={<Skeleton className="h-14 w-full" />}>
-          <CurrencyInput
-            id="quick-balance"
-            label="Loan Balance"
-            value={underGradBalance}
-            onChange={handleBalanceChange}
-          />
-        </Suspense>
+        <CurrencyInput
+          id="quick-balance"
+          label="Loan Balance"
+          value={underGradBalance}
+          onChange={handleBalanceChange}
+        />
       </div>
     </div>
   );

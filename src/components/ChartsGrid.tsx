@@ -1,9 +1,6 @@
-import { lazy, Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const InterestRateChart = lazy(() => import("./InterestRateChart"));
-const RepaymentYearsChart = lazy(() => import("./RepaymentYearsChart"));
-const TotalRepaymentChart = lazy(() => import("./TotalRepaymentChart"));
+import InterestRateChart from "./InterestRateChart";
+import RepaymentYearsChart from "./RepaymentYearsChart";
+import TotalRepaymentChart from "./TotalRepaymentChart";
 
 export function ChartsGrid() {
   return (
@@ -24,9 +21,7 @@ export function ChartsGrid() {
           </p>
         </div>
         <div className="h-[300px] sm:h-[400px] lg:h-[450px] lg:p-4 xl:h-[600px]">
-          <Suspense fallback={<Skeleton className="h-full w-full" />}>
-            <TotalRepaymentChart />
-          </Suspense>
+          <TotalRepaymentChart />
         </div>
       </div>
       <div className="flex min-w-0 flex-col p-4 lg:p-8">
@@ -45,9 +40,7 @@ export function ChartsGrid() {
           </p>
         </div>
         <div className="h-[300px] sm:h-[400px] lg:h-[450px] lg:p-4 xl:h-[600px]">
-          <Suspense fallback={<Skeleton className="h-full w-full" />}>
-            <RepaymentYearsChart />
-          </Suspense>
+          <RepaymentYearsChart />
         </div>
       </div>
       <div className="flex min-w-0 flex-col p-4 lg:p-8">
@@ -67,9 +60,7 @@ export function ChartsGrid() {
           </p>
         </div>
         <div className="h-[300px] sm:h-[400px] lg:h-[450px] lg:p-4 xl:h-[600px]">
-          <Suspense fallback={<Skeleton className="h-full w-full" />}>
-            <InterestRateChart />
-          </Suspense>
+          <InterestRateChart />
         </div>
       </div>
     </div>
