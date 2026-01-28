@@ -1,0 +1,58 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "15:00"
+    assignees:
+      - "QingqiShi"
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    groups:
+      next:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+          - "@next/eslint-plugin-next"
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint*"
+          - "typescript-eslint"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      react-compiler:
+        patterns:
+          - "eslint-plugin-react-compiler"
+          - "babel-plugin-react-compiler"
+      testing-library:
+        patterns:
+          - "@testing-library*"
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest*"
+          - "@vitejs/plugin-react"
+          - "vite-plugin-babel"
+      postcss:
+        patterns:
+          - "postcss-*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "15:00"
+    assignees:
+      - "QingqiShi"
+    open-pull-requests-limit: 10
