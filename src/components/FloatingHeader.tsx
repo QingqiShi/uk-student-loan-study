@@ -54,7 +54,7 @@ export function FloatingHeader() {
       </a>
       <header
         ref={headerRef}
-        className="mx-auto max-w-4xl overflow-hidden rounded-xl border bg-background/95 shadow-lg backdrop-blur-sm"
+        className="mx-auto max-w-4xl overflow-hidden rounded-xl border bg-muted/50 shadow-lg backdrop-blur-sm"
       >
         {/* Title and Summary Bar */}
         <div className="py-2 pl-4 pr-2">
