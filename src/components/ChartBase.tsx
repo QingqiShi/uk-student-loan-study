@@ -55,6 +55,8 @@ export function ChartBase({
       role="img"
       aria-label={ariaLabel || `Chart showing ${yAxisLabel} by ${xAxisLabel}`}
       className="h-full w-full overflow-hidden select-none touch-pinch-zoom"
+      onMouseEnter={() => setIsTooltipActive(true)}
+      onMouseLeave={() => setIsTooltipActive(false)}
       onTouchStart={() => setIsTooltipActive(true)}
       onTouchEnd={() => setIsTooltipActive(false)}
     >
@@ -63,10 +65,6 @@ export function ChartBase({
           data={data}
           accessibilityLayer
           margin={{ top: 5, right: 5, bottom: 25, left: 25 }}
-          onMouseMove={(state) => {
-            setIsTooltipActive(state?.activePayload != null);
-          }}
-          onMouseLeave={() => setIsTooltipActive(false)}
         >
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
