@@ -11,7 +11,7 @@ const initialState: LoanState = {
   plan5Rate: 6.5,
   postGradRate: 6.5,
   repaymentDate: new Date(),
-  salary: 35_000,
+  salary: 70_000,
 };
 
 export const useStore = create<LoanStore>()(
