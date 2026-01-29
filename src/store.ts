@@ -3,13 +3,9 @@ import { immer } from "zustand/middleware/immer";
 import type { LoanState, LoanStore } from "./types";
 
 const initialState: LoanState = {
-  isPost2023: false,
+  underGradPlanType: "PLAN_2",
   underGradBalance: 50_000,
   postGradBalance: 0,
-  plan2LTRate: 6.5,
-  plan2UTRate: 6.5,
-  plan5Rate: 6.5,
-  postGradRate: 6.5,
   repaymentDate: new Date(),
   salary: 70_000,
 };

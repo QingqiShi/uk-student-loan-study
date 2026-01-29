@@ -1,21 +1,15 @@
+import type { UndergraduatePlanType } from "@/lib/loans";
+
 /**
  * Core loan state values stored in the application state.
  */
 export interface LoanState {
-  /** Whether the loan is under Plan 5 (post-2023) or Plan 2 */
-  isPost2023: boolean;
+  /** Undergraduate loan plan type */
+  underGradPlanType: UndergraduatePlanType;
   /** Undergraduate loan balance in GBP */
   underGradBalance: number;
   /** Postgraduate loan balance in GBP */
   postGradBalance: number;
-  /** Plan 2 lower threshold interest rate (percentage) */
-  plan2LTRate: number;
-  /** Plan 2 upper threshold interest rate (percentage) */
-  plan2UTRate: number;
-  /** Plan 5 interest rate (percentage) */
-  plan5Rate: number;
-  /** Postgraduate loan interest rate (percentage) */
-  postGradRate: number;
   /** Date when loan repayment started */
   repaymentDate: Date | null;
   /** Current salary for annotation on charts */

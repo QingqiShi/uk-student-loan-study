@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useStore } from "@/store";
 import { useShallow } from "zustand/react/shallow";
 import { currencyFormatter } from "@/constants";
+import { CURRENT_RATES } from "@/lib/loans";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon, Settings02Icon } from "@hugeicons/core-free-icons";
@@ -13,18 +14,17 @@ export function FloatingHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  const { isPost2023, plan2UTRate, plan5Rate, underGradBalance } = useStore(
+  const { underGradPlanType, underGradBalance } = useStore(
     useShallow((state) => ({
-      isPost2023: state.isPost2023,
-      plan2UTRate: state.plan2UTRate,
-      plan5Rate: state.plan5Rate,
+      underGradPlanType: state.underGradPlanType,
       underGradBalance: state.underGradBalance,
     })),
   );
 
+  const isPost2023 = underGradPlanType === "PLAN_5";
   const planName = isPost2023 ? "Plan 5" : "Plan 2";
-  const rate = isPost2023 ? plan5Rate : plan2UTRate;
   const balance = currencyFormatter.format(underGradBalance);
+  const rate = isPost2023 ? CURRENT_RATES.rpi : CURRENT_RATES.rpi + 3;
   const writeOff = isPost2023 ? "40yr" : "30yr";
 
   // Close on click outside

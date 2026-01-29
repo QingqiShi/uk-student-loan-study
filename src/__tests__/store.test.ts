@@ -11,13 +11,9 @@ describe("useStore", () => {
     it("should have correct initial values", () => {
       const state = useStore.getState();
 
-      expect(state.isPost2023).toBe(false);
+      expect(state.underGradPlanType).toBe("PLAN_2");
       expect(state.underGradBalance).toBe(50_000);
       expect(state.postGradBalance).toBe(0);
-      expect(state.plan2LTRate).toBe(6.5);
-      expect(state.plan2UTRate).toBe(6.5);
-      expect(state.plan5Rate).toBe(6.5);
-      expect(state.postGradRate).toBe(6.5);
       expect(state.salary).toBe(70_000);
       expect(state.repaymentDate).toBeInstanceOf(Date);
     });
@@ -34,29 +30,17 @@ describe("useStore", () => {
       expect(useStore.getState().postGradBalance).toBe(25_000);
     });
 
-    it("should update isPost2023", () => {
-      useStore.getState().updateField("isPost2023", true);
-      expect(useStore.getState().isPost2023).toBe(true);
+    it("should update underGradPlanType", () => {
+      useStore.getState().updateField("underGradPlanType", "PLAN_5");
+      expect(useStore.getState().underGradPlanType).toBe("PLAN_5");
     });
 
-    it("should update plan2LTRate", () => {
-      useStore.getState().updateField("plan2LTRate", 7.5);
-      expect(useStore.getState().plan2LTRate).toBe(7.5);
-    });
+    it("should update to different plan types", () => {
+      useStore.getState().updateField("underGradPlanType", "PLAN_1");
+      expect(useStore.getState().underGradPlanType).toBe("PLAN_1");
 
-    it("should update plan2UTRate", () => {
-      useStore.getState().updateField("plan2UTRate", 8.0);
-      expect(useStore.getState().plan2UTRate).toBe(8.0);
-    });
-
-    it("should update plan5Rate", () => {
-      useStore.getState().updateField("plan5Rate", 5.5);
-      expect(useStore.getState().plan5Rate).toBe(5.5);
-    });
-
-    it("should update postGradRate", () => {
-      useStore.getState().updateField("postGradRate", 7.0);
-      expect(useStore.getState().postGradRate).toBe(7.0);
+      useStore.getState().updateField("underGradPlanType", "PLAN_4");
+      expect(useStore.getState().underGradPlanType).toBe("PLAN_4");
     });
 
     it("should update salary", () => {
@@ -82,9 +66,8 @@ describe("useStore", () => {
       const store = useStore.getState();
       store.updateField("underGradBalance", 100_000);
       store.updateField("postGradBalance", 30_000);
-      store.updateField("isPost2023", true);
+      store.updateField("underGradPlanType", "PLAN_5");
       store.updateField("salary", 60_000);
-      store.updateField("plan2LTRate", 10);
 
       // Reset
       useStore.getState().reset();
@@ -93,9 +76,8 @@ describe("useStore", () => {
       const resetState = useStore.getState();
       expect(resetState.underGradBalance).toBe(50_000);
       expect(resetState.postGradBalance).toBe(0);
-      expect(resetState.isPost2023).toBe(false);
+      expect(resetState.underGradPlanType).toBe("PLAN_2");
       expect(resetState.salary).toBe(70_000);
-      expect(resetState.plan2LTRate).toBe(6.5);
     });
   });
 });

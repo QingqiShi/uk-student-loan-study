@@ -51,7 +51,12 @@ export function useTotalRepaymentData() {
   const salary = useCurrentSalary();
 
   const data = useMemo(
-    () => generateSalaryDataSeries(config, (r) => r.totalRepayment),
+    () =>
+      generateSalaryDataSeries(
+        config.loans,
+        config.repaymentStartDate,
+        (r) => r.totalRepayment,
+      ),
     [config],
   );
 
@@ -66,7 +71,12 @@ export function useRepaymentYearsData() {
   const salary = useCurrentSalary();
 
   const data = useMemo(
-    () => generateSalaryDataSeries(config, (r) => r.monthsToPayoff / 12),
+    () =>
+      generateSalaryDataSeries(
+        config.loans,
+        config.repaymentStartDate,
+        (r) => r.totalMonths / 12,
+      ),
     [config],
   );
 
@@ -89,7 +99,7 @@ export function useInterestRateData() {
 
   const data = useMemo(
     () =>
-      generateSalaryDataSeries(config, (r) =>
+      generateSalaryDataSeries(config.loans, config.repaymentStartDate, (r) =>
         calculateAnnualizedRate(r, totalPrincipal),
       ),
     [config, totalPrincipal],
