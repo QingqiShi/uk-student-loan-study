@@ -2,11 +2,14 @@
 
 import App from "@/components/App";
 import { AppErrorBoundary } from "@/components/ErrorBoundary";
+import { LoanProvider } from "@/context";
 
 export default function Home() {
   return (
     <AppErrorBoundary>
-      <App />
+      <LoanProvider>
+        <App />
+      </LoanProvider>
     </AppErrorBoundary>
   );
 }

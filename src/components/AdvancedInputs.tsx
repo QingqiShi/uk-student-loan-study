@@ -2,13 +2,13 @@
 
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { useStore } from "@/store";
+import { useLoanContext } from "@/context";
 import CurrencyInput from "./CurrencyInput";
 import DateInput from "./DateInput";
 
 export function AdvancedInputs() {
-  const store = useStore();
-  const isPost2023 = store.underGradPlanType === "PLAN_5";
+  const { state, updateField } = useLoanContext();
+  const isPost2023 = state.underGradPlanType === "PLAN_5";
 
   return (
     <div className="space-y-6">
@@ -19,21 +19,21 @@ export function AdvancedInputs() {
           <CurrencyInput
             id="adv-undergrad-balance"
             label="Undergraduate Loan Balance"
-            value={store.underGradBalance}
-            onChange={(value) => store.updateField("underGradBalance", value)}
+            value={state.underGradBalance}
+            onChange={(value) => updateField("underGradBalance", value)}
           />
           <CurrencyInput
             id="adv-postgrad-balance"
             label="Postgraduate Loan Balance"
-            value={store.postGradBalance}
-            onChange={(value) => store.updateField("postGradBalance", value)}
+            value={state.postGradBalance}
+            onChange={(value) => updateField("postGradBalance", value)}
           />
           <DateInput
             id="adv-repayment-date"
             label="Repayment Start Date"
             helperText="Determines when your loan is written off."
-            value={store.repaymentDate}
-            onChange={(value) => store.updateField("repaymentDate", value)}
+            value={state.repaymentDate}
+            onChange={(value) => updateField("repaymentDate", value)}
           />
         </div>
         <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
@@ -48,10 +48,7 @@ export function AdvancedInputs() {
             id="adv-post-2023"
             checked={isPost2023}
             onCheckedChange={(checked) =>
-              store.updateField(
-                "underGradPlanType",
-                checked ? "PLAN_5" : "PLAN_2",
-              )
+              updateField("underGradPlanType", checked ? "PLAN_5" : "PLAN_2")
             }
           />
         </div>

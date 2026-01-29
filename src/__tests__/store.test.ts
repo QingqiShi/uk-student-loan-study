@@ -1,83 +1,106 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { useStore } from "../store";
+import { describe, it, expect } from "vitest";
+import {
+  loanReducer,
+  initialState,
+  updateFieldAction,
+  resetAction,
+} from "../context/loanReducer";
 
-describe("useStore", () => {
-  beforeEach(() => {
-    // Reset store to initial state before each test
-    useStore.getState().reset();
-  });
-
+describe("loanReducer", () => {
   describe("initial state", () => {
     it("should have correct initial values", () => {
-      const state = useStore.getState();
-
-      expect(state.underGradPlanType).toBe("PLAN_2");
-      expect(state.underGradBalance).toBe(50_000);
-      expect(state.postGradBalance).toBe(0);
-      expect(state.salary).toBe(70_000);
-      expect(state.repaymentDate).toBeInstanceOf(Date);
+      expect(initialState.underGradPlanType).toBe("PLAN_2");
+      expect(initialState.underGradBalance).toBe(50_000);
+      expect(initialState.postGradBalance).toBe(0);
+      expect(initialState.salary).toBe(70_000);
+      expect(initialState.repaymentDate).toBeInstanceOf(Date);
     });
   });
 
-  describe("updateField", () => {
+  describe("UPDATE_FIELD action", () => {
     it("should update underGradBalance", () => {
-      useStore.getState().updateField("underGradBalance", 75_000);
-      expect(useStore.getState().underGradBalance).toBe(75_000);
+      const action = updateFieldAction("underGradBalance", 75_000);
+      const newState = loanReducer(initialState, action);
+      expect(newState.underGradBalance).toBe(75_000);
     });
 
     it("should update postGradBalance", () => {
-      useStore.getState().updateField("postGradBalance", 25_000);
-      expect(useStore.getState().postGradBalance).toBe(25_000);
+      const action = updateFieldAction("postGradBalance", 25_000);
+      const newState = loanReducer(initialState, action);
+      expect(newState.postGradBalance).toBe(25_000);
     });
 
     it("should update underGradPlanType", () => {
-      useStore.getState().updateField("underGradPlanType", "PLAN_5");
-      expect(useStore.getState().underGradPlanType).toBe("PLAN_5");
+      const action = updateFieldAction("underGradPlanType", "PLAN_5");
+      const newState = loanReducer(initialState, action);
+      expect(newState.underGradPlanType).toBe("PLAN_5");
     });
 
     it("should update to different plan types", () => {
-      useStore.getState().updateField("underGradPlanType", "PLAN_1");
-      expect(useStore.getState().underGradPlanType).toBe("PLAN_1");
+      const action1 = updateFieldAction("underGradPlanType", "PLAN_1");
+      const state1 = loanReducer(initialState, action1);
+      expect(state1.underGradPlanType).toBe("PLAN_1");
 
-      useStore.getState().updateField("underGradPlanType", "PLAN_4");
-      expect(useStore.getState().underGradPlanType).toBe("PLAN_4");
+      const action2 = updateFieldAction("underGradPlanType", "PLAN_4");
+      const state2 = loanReducer(state1, action2);
+      expect(state2.underGradPlanType).toBe("PLAN_4");
     });
 
     it("should update salary", () => {
-      useStore.getState().updateField("salary", 45_000);
-      expect(useStore.getState().salary).toBe(45_000);
+      const action = updateFieldAction("salary", 45_000);
+      const newState = loanReducer(initialState, action);
+      expect(newState.salary).toBe(45_000);
     });
 
     it("should update repaymentDate", () => {
       const date = new Date("2020-04-01");
-      useStore.getState().updateField("repaymentDate", date);
-      expect(useStore.getState().repaymentDate).toEqual(date);
+      const action = updateFieldAction("repaymentDate", date);
+      const newState = loanReducer(initialState, action);
+      expect(newState.repaymentDate).toEqual(date);
     });
 
     it("should allow setting repaymentDate to null", () => {
-      useStore.getState().updateField("repaymentDate", null);
-      expect(useStore.getState().repaymentDate).toBeNull();
+      const action = updateFieldAction("repaymentDate", null);
+      const newState = loanReducer(initialState, action);
+      expect(newState.repaymentDate).toBeNull();
+    });
+
+    it("should not mutate the original state", () => {
+      const originalState = { ...initialState };
+      const action = updateFieldAction("salary", 100_000);
+      loanReducer(initialState, action);
+      expect(initialState.salary).toBe(originalState.salary);
     });
   });
 
-  describe("reset", () => {
+  describe("RESET action", () => {
     it("should reset all fields to initial values", () => {
-      // Modify multiple fields
-      const store = useStore.getState();
-      store.updateField("underGradBalance", 100_000);
-      store.updateField("postGradBalance", 30_000);
-      store.updateField("underGradPlanType", "PLAN_5");
-      store.updateField("salary", 60_000);
+      // Start with modified state
+      let state = loanReducer(
+        initialState,
+        updateFieldAction("underGradBalance", 100_000),
+      );
+      state = loanReducer(state, updateFieldAction("postGradBalance", 30_000));
+      state = loanReducer(
+        state,
+        updateFieldAction("underGradPlanType", "PLAN_5"),
+      );
+      state = loanReducer(state, updateFieldAction("salary", 60_000));
 
       // Reset
-      useStore.getState().reset();
+      const resetState = loanReducer(state, resetAction());
 
       // Verify all fields are back to initial values
-      const resetState = useStore.getState();
       expect(resetState.underGradBalance).toBe(50_000);
       expect(resetState.postGradBalance).toBe(0);
       expect(resetState.underGradPlanType).toBe("PLAN_2");
       expect(resetState.salary).toBe(70_000);
+    });
+
+    it("should create a new repaymentDate on reset", () => {
+      const action = resetAction();
+      const newState = loanReducer(initialState, action);
+      expect(newState.repaymentDate).toBeInstanceOf(Date);
     });
   });
 });

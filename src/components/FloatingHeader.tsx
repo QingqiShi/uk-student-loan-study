@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useStore } from "@/store";
-import { useShallow } from "zustand/react/shallow";
+import { useLoanContext } from "@/context";
 import { currencyFormatter } from "@/constants";
 import { CURRENT_RATES } from "@/lib/loans";
 import { Button } from "@/components/ui/button";
@@ -14,12 +13,8 @@ export function FloatingHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  const { underGradPlanType, underGradBalance } = useStore(
-    useShallow((state) => ({
-      underGradPlanType: state.underGradPlanType,
-      underGradBalance: state.underGradBalance,
-    })),
-  );
+  const { state } = useLoanContext();
+  const { underGradPlanType, underGradBalance } = state;
 
   const isPost2023 = underGradPlanType === "PLAN_5";
   const planName = isPost2023 ? "Plan 5" : "Plan 2";
