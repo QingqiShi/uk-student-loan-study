@@ -4,11 +4,11 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useStore } from "@/store";
 import CurrencyInput from "./CurrencyInput";
-import PercentageInput from "./PercentageInput";
 import DateInput from "./DateInput";
 
 export function AdvancedInputs() {
   const store = useStore();
+  const isPost2023 = store.underGradPlanType === "PLAN_5";
 
   return (
     <div className="space-y-6">
@@ -46,47 +46,13 @@ export function AdvancedInputs() {
           </div>
           <Switch
             id="adv-post-2023"
-            checked={store.isPost2023}
+            checked={isPost2023}
             onCheckedChange={(checked) =>
-              store.updateField("isPost2023", checked)
+              store.updateField(
+                "underGradPlanType",
+                checked ? "PLAN_5" : "PLAN_2",
+              )
             }
-          />
-        </div>
-      </div>
-
-      {/* Interest Rates */}
-      <div className="space-y-4">
-        <h4 className="text-sm font-medium">Interest Rates</h4>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {!store.isPost2023 && (
-            <>
-              <PercentageInput
-                id="adv-plan2-lt-rate"
-                label="Plan 2 Lower Threshold Rate"
-                value={store.plan2LTRate}
-                onChange={(value) => store.updateField("plan2LTRate", value)}
-              />
-              <PercentageInput
-                id="adv-plan2-ut-rate"
-                label="Plan 2 Upper Threshold Rate"
-                value={store.plan2UTRate}
-                onChange={(value) => store.updateField("plan2UTRate", value)}
-              />
-            </>
-          )}
-          {store.isPost2023 && (
-            <PercentageInput
-              id="adv-plan5-rate"
-              label="Plan 5 Interest Rate (RPI)"
-              value={store.plan5Rate}
-              onChange={(value) => store.updateField("plan5Rate", value)}
-            />
-          )}
-          <PercentageInput
-            id="adv-postgrad-rate"
-            label="Postgraduate Rate"
-            value={store.postGradRate}
-            onChange={(value) => store.updateField("postGradRate", value)}
           />
         </div>
       </div>

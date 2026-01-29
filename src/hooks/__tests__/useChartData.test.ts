@@ -217,11 +217,11 @@ describe("useChartData hooks", () => {
 
   describe("integration with Plan 2 vs Plan 5", () => {
     it("Plan 2 data differs from Plan 5 data", () => {
-      useStore.getState().updateField("isPost2023", false);
+      useStore.getState().updateField("underGradPlanType", "PLAN_2");
       const { result: plan2Result } = renderHook(() => useTotalRepaymentData());
       const plan2Data = [...plan2Result.current.data];
 
-      useStore.getState().updateField("isPost2023", true);
+      useStore.getState().updateField("underGradPlanType", "PLAN_5");
       const { result: plan5Result } = renderHook(() => useTotalRepaymentData());
       const plan5Data = plan5Result.current.data;
 

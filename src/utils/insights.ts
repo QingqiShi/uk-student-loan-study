@@ -1,6 +1,9 @@
-import type { SimulationResult, LoanConfig } from "@/types";
-import { simulateLoanRepayment } from "./loan-calculations";
-import { PLAN2_WRITE_OFF, PLAN5_WRITE_OFF } from "@/constants";
+import {
+  simulateLoans,
+  PLAN_CONFIGS,
+  type Loan,
+  type SimulationResult,
+} from "@/lib/loans";
 
 export type InsightType = "low-earner" | "middle-earner" | "high-earner";
 
@@ -13,45 +16,68 @@ export interface Insight {
 // Threshold for "peak repayment zone" - overpaying more than this % of principal
 const PEAK_ZONE_OVERPAYMENT_THRESHOLD = 0.5; // 50%
 
-/**
- * Determines if the loan will be written off based on simulation result
- */
-function willBeWrittenOff(
-  result: SimulationResult,
-  config: LoanConfig,
-): boolean {
-  const writeOffYears = config.isPost2023 ? PLAN5_WRITE_OFF : PLAN2_WRITE_OFF;
-  const writeOffMonths = writeOffYears * 12;
-  return result.monthsToPayoff >= writeOffMonths;
+interface InsightConfig {
+  loans: Loan[];
+  repaymentStartDate: Date;
+  underGradBalance: number;
+  postGradBalance: number;
 }
 
 /**
- * Calculates amount overpaid compared to original loan balance
+ * Gets the write-off years for a loan configuration.
+ * Uses the undergraduate loan's write-off period, or postgraduate if no undergrad.
+ */
+function getWriteOffYears(loans: Loan[]): number {
+  const undergradLoan = loans.find((l) => l.planType !== "POSTGRADUATE");
+  if (undergradLoan) {
+    return PLAN_CONFIGS[undergradLoan.planType].writeOffYears;
+  }
+  return PLAN_CONFIGS.POSTGRADUATE.writeOffYears;
+}
+
+/**
+ * Determines if the loan will be written off based on simulation result.
+ */
+function willBeWrittenOff(result: SimulationResult, loans: Loan[]): boolean {
+  const writeOffYears = getWriteOffYears(loans);
+  const writeOffMonths = writeOffYears * 12;
+  return result.totalMonths >= writeOffMonths;
+}
+
+/**
+ * Calculates amount overpaid compared to original loan balance.
  */
 function calculateOverpayment(
   result: SimulationResult,
-  config: LoanConfig,
+  principal: number,
 ): number {
-  const principal = config.underGradBalance + config.postGradBalance;
   return result.totalRepayment - principal;
 }
 
 /**
- * Generates a personalized insight based on salary and loan configuration
+ * Generates a personalized insight based on salary and loan configuration.
  */
 export function generateInsight(
   salary: number,
-  config: LoanConfig,
+  config: InsightConfig,
 ): Insight | null {
+  const { loans, repaymentStartDate, underGradBalance, postGradBalance } =
+    config;
+
   // No insight if no loan balance
-  if (config.underGradBalance <= 0 && config.postGradBalance <= 0) {
+  if (underGradBalance <= 0 && postGradBalance <= 0) {
     return null;
   }
 
-  const result = simulateLoanRepayment(salary, config);
-  const writeOffYears = config.isPost2023 ? PLAN5_WRITE_OFF : PLAN2_WRITE_OFF;
-  const principal = config.underGradBalance + config.postGradBalance;
-  const overpayment = calculateOverpayment(result, config);
+  const result = simulateLoans({
+    loans,
+    annualSalary: salary,
+    repaymentStartDate,
+  });
+
+  const writeOffYears = getWriteOffYears(loans);
+  const principal = underGradBalance + postGradBalance;
+  const overpayment = calculateOverpayment(result, principal);
   const overpaymentRatio = principal > 0 ? overpayment / principal : 0;
 
   // Peak repayment zone: paying significantly more than borrowed (>50% extra)
@@ -72,8 +98,11 @@ export function generateInsight(
   }
 
   // Low earner: loan will be written off
-  if (willBeWrittenOff(result, config)) {
-    const remaining = result.underGradRemaining + result.postGradRemaining;
+  if (willBeWrittenOff(result, loans)) {
+    const remaining = result.loanResults.reduce(
+      (sum, r) => sum + r.remainingBalance,
+      0,
+    );
 
     if (remaining > 0) {
       const formattedRemaining = new Intl.NumberFormat("en-GB", {
@@ -91,7 +120,7 @@ export function generateInsight(
   }
 
   // High earner: pays off before write-off with reasonable interest
-  const yearsToPayoff = (result.monthsToPayoff / 12).toFixed(1);
+  const yearsToPayoff = (result.totalMonths / 12).toFixed(1);
   const interestPercent = (overpaymentRatio * 100).toFixed(0);
 
   return {

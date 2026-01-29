@@ -28,25 +28,32 @@ This is a UK student loan repayment calculator built with Next.js 16 (App Router
 
 ### Data Flow
 
-1. **Store** (`src/store.ts`): Zustand store with Immer middleware handles all loan configuration state. Persists to localStorage with custom Date serialization.
+1. **Store** (`src/store.ts`): Zustand store with Immer middleware handles loan configuration state (`underGradPlanType`, `underGradBalance`, `postGradBalance`, `repaymentDate`, `salary`).
 
-2. **Store Selectors** (`src/hooks/useStoreSelectors.ts`): Extract `LoanConfig` object for calculations and current salary for annotations.
+2. **Store Selectors** (`src/hooks/useStoreSelectors.ts`): Builds `Loan[]` array from store state for calculations, plus current salary for annotations.
 
-3. **Loan Calculations** (`src/utils/loan-calculations.ts`): Core simulation logic:
-   - `simulateLoanRepayment()` - Main simulation loop handling Plan 2/5 and postgraduate loans
+3. **Loan Library** (`src/lib/loans/`): Core loan modeling logic:
+   - `plans.ts` - Configuration values for all UK loan plans (easy to update annually)
+   - `interest.ts` - Interest rate calculations per plan type
+   - `simulate.ts` - `simulateLoans()` runs repayment simulation
+   - `types.ts` - Type definitions (`PlanType`, `Loan`, `SimulationResult`, etc.)
+
+4. **Chart Utilities** (`src/utils/loan-calculations.ts`): Thin wrapper providing chart-specific functions:
    - `generateSalaryDataSeries()` - Generates chart data by running simulations across salary range
    - `calculateAnnualizedRate()` - Computes effective interest rate from simulation results
 
-4. **Chart Data Hooks** (`src/hooks/useChartData.ts`): Three hooks (`useTotalRepaymentData`, `useRepaymentYearsData`, `useInterestRateData`) each call `generateSalaryDataSeries` with appropriate mapper functions.
+5. **Chart Data Hooks** (`src/hooks/useChartData.ts`): Three hooks (`useTotalRepaymentData`, `useRepaymentYearsData`, `useInterestRateData`) each call `generateSalaryDataSeries` with appropriate mapper functions.
 
-5. **Insights** (`src/hooks/usePersonalizedInsight.ts`, `src/utils/insights.ts`): Generate personalized insights based on user's salary and loan configuration.
+6. **Insights** (`src/hooks/usePersonalizedInsight.ts`, `src/utils/insights.ts`): Generate personalized insights based on user's salary and loan configuration.
 
-6. **Chart Components**: `TotalRepaymentChart`, `RepaymentYearsChart`, `InterestRateChart` each use their corresponding hook and render via `ChartBase`.
+7. **Chart Components**: `TotalRepaymentChart`, `RepaymentYearsChart`, `InterestRateChart` each use their corresponding hook and render via `ChartBase`.
 
-### Key Types
+### Key Types (from `src/lib/loans/`)
 
-- `LoanConfig` - Loan parameters for simulation (balances, rates, dates, plan type)
-- `SimulationResult` - Output of one salary simulation (payments, months, remaining balances)
+- `PlanType` - Union of all plan types: `"PLAN_1" | "PLAN_2" | "PLAN_4" | "PLAN_5" | "POSTGRADUATE"`
+- `Loan` - `{ planType, balance }` for a single loan
+- `SimulationResult` - Output with `loanResults[]`, `totalRepayment`, `totalMonths`
+- `LoanResult` - Per-loan result with `totalPaid`, `monthsToPayoff`, `remainingBalance`, `writtenOff`
 - `DataPoint` - `{ salary, value }` object for charts
 - `SimulationMapper` - Function extracting chart metric from `SimulationResult`
 
@@ -65,9 +72,13 @@ This is a UK student loan repayment calculator built with Next.js 16 (App Router
 
 ### Loan Plan Differences
 
-- **Plan 2** (pre-2023): £2,274/month threshold, 9% rate, 30-year write-off, income-based interest
-- **Plan 5** (post-2023): £2,083/month threshold, 9% rate, 40-year write-off, RPI-only interest
-- **Postgraduate**: £1,750/month threshold, 6% rate, runs concurrently with undergraduate
+All plan configurations are in `src/lib/loans/plans.ts` (update annually when GOV.UK announces changes):
+
+- **Plan 1** (pre-2012): 25-year write-off, min(RPI, BoE+1%) interest
+- **Plan 2** (2012-2023): 30-year write-off, sliding scale interest (RPI to RPI+3%)
+- **Plan 4** (Scotland): 30-year write-off, min(RPI, BoE+1%) interest
+- **Plan 5** (post-2023): 40-year write-off, RPI-only interest
+- **Postgraduate**: 30-year write-off, RPI+3% interest, 6% repayment rate, runs concurrently
 
 ## Code Quality Rules
 

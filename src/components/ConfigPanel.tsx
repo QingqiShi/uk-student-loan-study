@@ -9,11 +9,11 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useStore } from "../store";
 import CurrencyInput from "./CurrencyInput";
-import PercentageInput from "./PercentageInput";
 import DateInput from "./DateInput";
 
 export function ConfigPanel() {
   const store = useStore();
+  const isPost2023 = store.underGradPlanType === "PLAN_5";
 
   return (
     <div className="space-y-4">
@@ -51,9 +51,12 @@ export function ConfigPanel() {
             </div>
             <Switch
               id="post-2023"
-              checked={store.isPost2023}
+              checked={isPost2023}
               onCheckedChange={(checked) =>
-                store.updateField("isPost2023", checked)
+                store.updateField(
+                  "underGradPlanType",
+                  checked ? "PLAN_5" : "PLAN_2",
+                )
               }
             />
           </div>
@@ -64,45 +67,6 @@ export function ConfigPanel() {
         <CardContent>
           <Accordion>
             <AccordionItem value={0}>
-              <AccordionTrigger>Rates</AccordionTrigger>
-              <AccordionContent className="space-y-4">
-                {!store.isPost2023 && (
-                  <>
-                    <PercentageInput
-                      id="plan2-lt-rate"
-                      label="Plan 2 Lower Threshold Rate"
-                      value={store.plan2LTRate}
-                      onChange={(value) =>
-                        store.updateField("plan2LTRate", value)
-                      }
-                    />
-                    <PercentageInput
-                      id="plan2-ut-rate"
-                      label="Plan 2 Upper Threshold Rate"
-                      value={store.plan2UTRate}
-                      onChange={(value) =>
-                        store.updateField("plan2UTRate", value)
-                      }
-                    />
-                  </>
-                )}
-                {store.isPost2023 && (
-                  <PercentageInput
-                    id="plan5-rate"
-                    label="Plan 5 Interest Rate (RPI)"
-                    value={store.plan5Rate}
-                    onChange={(value) => store.updateField("plan5Rate", value)}
-                  />
-                )}
-                <PercentageInput
-                  id="postgrad-rate"
-                  label="Postgraduate Rate"
-                  value={store.postGradRate}
-                  onChange={(value) => store.updateField("postGradRate", value)}
-                />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value={1}>
               <AccordionTrigger>Earnings</AccordionTrigger>
               <AccordionContent className="space-y-4">
                 <CurrencyInput

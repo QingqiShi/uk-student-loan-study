@@ -12,5 +12,11 @@ export type {
   NumericFormatInputProps,
 } from "./input";
 
-// Loan calculation types (from Phase 2)
-export type { LoanConfig, SimulationResult, SimulationMapper } from "./loan";
+// Loan calculation types (re-exported from lib/loans)
+export type {
+  PlanType,
+  UndergraduatePlanType,
+  Loan,
+  SimulationResult,
+  SimulationMapper,
+} from "@/lib/loans";
