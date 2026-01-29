@@ -6,27 +6,30 @@ import {
   Alert02Icon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
-import { cn } from "@/lib/utils";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { usePersonalizedInsight } from "@/hooks/usePersonalizedInsight";
 import type { InsightType } from "@/utils/insights";
 
-const insightStyles: Record<
+const insightConfig: Record<
   InsightType,
-  { bg: string; border: string; icon: typeof InformationCircleIcon }
+  {
+    className: string;
+    icon: typeof InformationCircleIcon;
+  }
 > = {
   "low-earner": {
-    bg: "bg-blue-50 dark:bg-blue-950/30",
-    border: "border-blue-200 dark:border-blue-800",
+    className:
+      "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
     icon: InformationCircleIcon,
   },
   "middle-earner": {
-    bg: "bg-amber-50 dark:bg-amber-950/30",
-    border: "border-amber-200 dark:border-amber-800",
+    className:
+      "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800",
     icon: Alert02Icon,
   },
   "high-earner": {
-    bg: "bg-green-50 dark:bg-green-950/30",
-    border: "border-green-200 dark:border-green-800",
+    className:
+      "bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800",
     icon: Tick02Icon,
   },
 };
@@ -38,28 +41,18 @@ export function InsightCallout() {
     return null;
   }
 
-  const styles = insightStyles[insight.type];
+  const config = insightConfig[insight.type];
 
   return (
-    <div
-      className={cn(
-        "flex gap-3 rounded-lg border p-4",
-        styles.bg,
-        styles.border,
-      )}
-      role="status"
-      aria-live="polite"
-    >
+    <Alert className={config.className} role="status" aria-live="polite">
       <HugeiconsIcon
-        icon={styles.icon}
-        className="text-foreground/70 mt-0.5 size-5 shrink-0"
+        icon={config.icon}
+        className="text-foreground/70 size-5"
         strokeWidth={2}
       />
-      <div className="space-y-1">
-        <p className="text-sm font-medium">{insight.title}</p>
-        <p className="text-muted-foreground text-sm">{insight.description}</p>
-      </div>
-    </div>
+      <AlertTitle>{insight.title}</AlertTitle>
+      <AlertDescription>{insight.description}</AlertDescription>
+    </Alert>
   );
 }
 
