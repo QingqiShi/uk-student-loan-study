@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { Manrope } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -57,21 +58,38 @@ const jsonLd = {
   },
 };
 
+// Inline script to prevent theme flash on page load
+const themeScript = `
+(function() {
+  try {
+    var theme = localStorage.getItem('theme');
+    var resolved = theme;
+    if (!theme || theme === 'system') {
+      resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.classList.add(resolved);
+  } catch (e) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn("dark", manrope.variable)}>
+    <html lang="en" className={cn(manrope.variable)} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <Analytics />
       </body>
     </html>
