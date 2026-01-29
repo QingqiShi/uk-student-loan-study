@@ -28,9 +28,12 @@ This is a UK student loan repayment calculator built with Next.js 16 (App Router
 
 ### Data Flow
 
-1. **Store** (`src/store.ts`): Zustand store with Immer middleware handles loan configuration state (`underGradPlanType`, `underGradBalance`, `postGradBalance`, `repaymentDate`, `salary`).
+1. **Context** (`src/context/`): React Context with `useReducer` handles loan configuration state (`underGradPlanType`, `underGradBalance`, `postGradBalance`, `repaymentDate`, `salary`).
+   - `loanReducer.ts` - Pure reducer function, action creators, and initial state
+   - `LoanContext.tsx` - Context provider and `useLoanContext` hook
+   - `index.ts` - Barrel export
 
-2. **Store Selectors** (`src/hooks/useStoreSelectors.ts`): Builds `Loan[]` array from store state for calculations, plus current salary for annotations.
+2. **Store Selectors** (`src/hooks/useStoreSelectors.ts`): Builds `Loan[]` array from context state for calculations, plus current salary for annotations.
 
 3. **Loan Library** (`src/lib/loans/`): Core loan modeling logic:
    - `plans.ts` - Configuration values for all UK loan plans (easy to update annually)

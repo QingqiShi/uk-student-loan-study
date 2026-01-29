@@ -2,11 +2,19 @@ import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
 import dayjs from "dayjs";
 import {
+  createContext,
+  useContext,
+  useReducer,
+  useMemo,
+  type ReactNode,
+} from "react";
+import {
   useTotalRepaymentData,
   useRepaymentYearsData,
   useInterestRateData,
 } from "../useChartData";
-import { useStore } from "../../store";
+import { loanReducer, initialState } from "../../context/loanReducer";
+import type { LoanState } from "@/types/store";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../../constants";
 
 // Mock dayjs to control "now" for deterministic tests
@@ -27,18 +35,88 @@ vi.mock("dayjs", async (importOriginal) => {
   return { default: mockDayjs };
 });
 
+// Mock the context module to provide a test-friendly provider
+vi.mock("../../context", async () => {
+  const LoanContext = createContext<{
+    state: LoanState;
+    updateField: <K extends keyof LoanState>(
+      key: K,
+      value: LoanState[K],
+    ) => void;
+    reset: () => void;
+  } | null>(null);
+
+  return {
+    LoanProvider: ({
+      children,
+      initialStateOverride,
+    }: {
+      children: ReactNode;
+      initialStateOverride?: Partial<LoanState>;
+    }) => {
+      const mergedInitial = { ...initialState, ...initialStateOverride };
+      const [state, dispatch] = useReducer(loanReducer, mergedInitial);
+
+      const contextValue = useMemo(
+        () => ({
+          state,
+          updateField: <K extends keyof LoanState>(
+            key: K,
+            value: LoanState[K],
+          ) => {
+            dispatch({ type: "UPDATE_FIELD", key, value });
+          },
+          reset: () => {
+            dispatch({ type: "RESET" });
+          },
+        }),
+        [state],
+      );
+
+      return (
+        <LoanContext.Provider value={contextValue}>
+          {children}
+        </LoanContext.Provider>
+      );
+    },
+    useLoanContext: () => {
+      const context = useContext(LoanContext);
+      if (context === null) {
+        throw new Error("useLoanContext must be used within a LoanProvider");
+      }
+      return context;
+    },
+  };
+});
+
+// Import mocked provider after mock setup
+const { LoanProvider } = await import("../../context");
+
+// Default test configuration
+const defaultTestConfig: Partial<LoanState> = {
+  underGradBalance: 50_000,
+  postGradBalance: 0,
+  repaymentDate: new Date("2022-04-01"),
+  salary: 45_000,
+};
+
+function createWrapper(overrides?: Partial<LoanState>) {
+  const mergedConfig = { ...defaultTestConfig, ...overrides };
+  return function Wrapper({ children }: { children: ReactNode }) {
+    return (
+      <LoanProvider initialStateOverride={mergedConfig}>
+        {children}
+      </LoanProvider>
+    );
+  };
+}
+
 describe("useChartData hooks", () => {
   const expectedDataPoints =
     Math.floor((MAX_SALARY - MIN_SALARY) / SALARY_STEP) + 1;
 
   beforeEach(() => {
-    useStore.getState().reset();
     localStorage.clear();
-    // Set default test configuration
-    useStore.getState().updateField("underGradBalance", 50_000);
-    useStore.getState().updateField("postGradBalance", 0);
-    useStore.getState().updateField("repaymentDate", new Date("2022-04-01"));
-    useStore.getState().updateField("salary", 45_000);
   });
 
   afterEach(() => {
@@ -47,13 +125,17 @@ describe("useChartData hooks", () => {
 
   describe("useTotalRepaymentData", () => {
     it("returns data array with correct number of points", () => {
-      const { result } = renderHook(() => useTotalRepaymentData());
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper(),
+      });
 
       expect(result.current.data.length).toBe(expectedDataPoints);
     });
 
     it("returns data points as objects with salary and value", () => {
-      const { result } = renderHook(() => useTotalRepaymentData());
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper(),
+      });
 
       expect(result.current.data[0]).toHaveProperty("salary");
       expect(result.current.data[0]).toHaveProperty("value");
@@ -62,7 +144,9 @@ describe("useChartData hooks", () => {
     });
 
     it("starts at MIN_SALARY and ends at MAX_SALARY", () => {
-      const { result } = renderHook(() => useTotalRepaymentData());
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper(),
+      });
 
       expect(result.current.data[0].salary).toBe(MIN_SALARY);
       expect(result.current.data[result.current.data.length - 1].salary).toBe(
@@ -71,28 +155,33 @@ describe("useChartData hooks", () => {
     });
 
     it("returns annotationSalary when salary is in valid range", () => {
-      useStore.getState().updateField("salary", 50_000);
-      const { result } = renderHook(() => useTotalRepaymentData());
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({ salary: 50_000 }),
+      });
 
       expect(result.current.annotationSalary).toBe(50_000);
     });
 
     it("returns undefined annotationSalary when salary is below MIN_SALARY", () => {
-      useStore.getState().updateField("salary", MIN_SALARY - 1000);
-      const { result } = renderHook(() => useTotalRepaymentData());
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({ salary: MIN_SALARY - 1000 }),
+      });
 
       expect(result.current.annotationSalary).toBeUndefined();
     });
 
     it("returns undefined annotationSalary when salary is above MAX_SALARY", () => {
-      useStore.getState().updateField("salary", MAX_SALARY + 1000);
-      const { result } = renderHook(() => useTotalRepaymentData());
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({ salary: MAX_SALARY + 1000 }),
+      });
 
       expect(result.current.annotationSalary).toBeUndefined();
     });
 
     it("calculates higher repayment for higher earners who pay off loan", () => {
-      const { result } = renderHook(() => useTotalRepaymentData());
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper(),
+      });
 
       const lowSalaryRepayment = result.current.data[0].value;
       const highSalaryRepayment =
@@ -105,13 +194,17 @@ describe("useChartData hooks", () => {
 
   describe("useRepaymentYearsData", () => {
     it("returns data array with correct number of points", () => {
-      const { result } = renderHook(() => useRepaymentYearsData());
+      const { result } = renderHook(() => useRepaymentYearsData(), {
+        wrapper: createWrapper(),
+      });
 
       expect(result.current.data.length).toBe(expectedDataPoints);
     });
 
     it("returns years values (not months)", () => {
-      const { result } = renderHook(() => useRepaymentYearsData());
+      const { result } = renderHook(() => useRepaymentYearsData(), {
+        wrapper: createWrapper(),
+      });
 
       // All values should be reasonable year values (not raw months)
       result.current.data.forEach(({ value: years }) => {
@@ -122,22 +215,24 @@ describe("useChartData hooks", () => {
 
     it("uses offset of 5000 for annotation boundary", () => {
       // Set salary just below MAX_SALARY - 5000 (should have annotation)
-      useStore.getState().updateField("salary", MAX_SALARY - 6000);
-      const { result: withAnnotation } = renderHook(() =>
-        useRepaymentYearsData(),
+      const { result: withAnnotation } = renderHook(
+        () => useRepaymentYearsData(),
+        { wrapper: createWrapper({ salary: MAX_SALARY - 6000 }) },
       );
       expect(withAnnotation.current.annotationSalary).toBeDefined();
 
       // Set salary just above MAX_SALARY - 5000 (should NOT have annotation)
-      useStore.getState().updateField("salary", MAX_SALARY - 4000);
-      const { result: withoutAnnotation } = renderHook(() =>
-        useRepaymentYearsData(),
+      const { result: withoutAnnotation } = renderHook(
+        () => useRepaymentYearsData(),
+        { wrapper: createWrapper({ salary: MAX_SALARY - 4000 }) },
       );
       expect(withoutAnnotation.current.annotationSalary).toBeUndefined();
     });
 
     it("higher salary generally means fewer years to pay off", () => {
-      const { result } = renderHook(() => useRepaymentYearsData());
+      const { result } = renderHook(() => useRepaymentYearsData(), {
+        wrapper: createWrapper(),
+      });
 
       const lowSalaryYears = result.current.data[0].value;
       const highSalaryYears =
@@ -149,19 +244,18 @@ describe("useChartData hooks", () => {
   });
 
   describe("useInterestRateData", () => {
-    beforeEach(() => {
-      // Ensure we have positive balance for rate calculation
-      useStore.getState().updateField("underGradBalance", 50_000);
-    });
-
     it("returns data array with correct number of points", () => {
-      const { result } = renderHook(() => useInterestRateData());
+      const { result } = renderHook(() => useInterestRateData(), {
+        wrapper: createWrapper({ underGradBalance: 50_000 }),
+      });
 
       expect(result.current.data.length).toBe(expectedDataPoints);
     });
 
     it("returns rates as decimals (not percentages)", () => {
-      const { result } = renderHook(() => useInterestRateData());
+      const { result } = renderHook(() => useInterestRateData(), {
+        wrapper: createWrapper({ underGradBalance: 50_000 }),
+      });
 
       // Rates should be decimals (e.g., 0.05 for 5%, not 5)
       result.current.data.forEach(({ value: rate }) => {
@@ -172,17 +266,17 @@ describe("useChartData hooks", () => {
     });
 
     it("returns annotationSalary when salary is in valid range", () => {
-      useStore.getState().updateField("salary", 60_000);
-      const { result } = renderHook(() => useInterestRateData());
+      const { result } = renderHook(() => useInterestRateData(), {
+        wrapper: createWrapper({ salary: 60_000, underGradBalance: 50_000 }),
+      });
 
       expect(result.current.annotationSalary).toBeDefined();
     });
 
     it("handles zero balance gracefully", () => {
-      useStore.getState().updateField("underGradBalance", 0);
-      useStore.getState().updateField("postGradBalance", 0);
-
-      const { result } = renderHook(() => useInterestRateData());
+      const { result } = renderHook(() => useInterestRateData(), {
+        wrapper: createWrapper({ underGradBalance: 0, postGradBalance: 0 }),
+      });
 
       // Should not throw, should return data with 0 rates
       expect(result.current.data.length).toBe(expectedDataPoints);
@@ -194,7 +288,9 @@ describe("useChartData hooks", () => {
 
   describe("hook memoization", () => {
     it("useTotalRepaymentData returns equivalent data on rerender", () => {
-      const { result, rerender } = renderHook(() => useTotalRepaymentData());
+      const { result, rerender } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper(),
+      });
       const firstData = [...result.current.data];
 
       rerender();
@@ -204,25 +300,37 @@ describe("useChartData hooks", () => {
     });
 
     it("useTotalRepaymentData returns different data when config changes", () => {
-      const { result, rerender } = renderHook(() => useTotalRepaymentData());
-      const firstData = [...result.current.data];
+      // Test that different initial configs produce different data
+      const { result: result1 } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({ underGradBalance: 50_000 }),
+      });
+      const firstData = [...result1.current.data];
 
-      useStore.getState().updateField("underGradBalance", 75_000);
-      rerender();
+      const { result: result2 } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({ underGradBalance: 75_000 }),
+      });
 
-      // Data should differ after config change
-      expect(result.current.data).not.toStrictEqual(firstData);
+      // Data should differ with different config
+      expect(result2.current.data).not.toStrictEqual(firstData);
     });
   });
 
   describe("integration with Plan 2 vs Plan 5", () => {
     it("Plan 2 data differs from Plan 5 data", () => {
-      useStore.getState().updateField("underGradPlanType", "PLAN_2");
-      const { result: plan2Result } = renderHook(() => useTotalRepaymentData());
+      const { result: plan2Result } = renderHook(
+        () => useTotalRepaymentData(),
+        {
+          wrapper: createWrapper({ underGradPlanType: "PLAN_2" }),
+        },
+      );
       const plan2Data = [...plan2Result.current.data];
 
-      useStore.getState().updateField("underGradPlanType", "PLAN_5");
-      const { result: plan5Result } = renderHook(() => useTotalRepaymentData());
+      const { result: plan5Result } = renderHook(
+        () => useTotalRepaymentData(),
+        {
+          wrapper: createWrapper({ underGradPlanType: "PLAN_5" }),
+        },
+      );
       const plan5Data = plan5Result.current.data;
 
       // At least some values should differ between plans

@@ -1,6 +1,5 @@
 import { useMemo } from "react";
-import { useShallow } from "zustand/react/shallow";
-import { useStore } from "../store";
+import { useLoanContext } from "@/context";
 import type { Loan } from "@/lib/loans";
 
 interface LoanConfig {
@@ -12,14 +11,7 @@ interface LoanConfig {
 
 /** Select the loan configuration for simulation calculations */
 export function useLoanConfig(): LoanConfig {
-  const state = useStore(
-    useShallow((s) => ({
-      underGradPlanType: s.underGradPlanType,
-      underGradBalance: s.underGradBalance,
-      postGradBalance: s.postGradBalance,
-      repaymentDate: s.repaymentDate,
-    })),
-  );
+  const { state } = useLoanContext();
 
   return useMemo(() => {
     const loans: Loan[] = [];
@@ -45,5 +37,6 @@ export function useLoanConfig(): LoanConfig {
 
 /** Select current salary for chart annotation */
 export function useCurrentSalary(): number {
-  return useStore((state) => state.salary);
+  const { state } = useLoanContext();
+  return state.salary;
 }

@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { useStore } from "@/store";
+import { useLoanContext } from "@/context";
 import {
   MIN_SALARY,
   MAX_SALARY,
@@ -12,8 +12,8 @@ import {
 } from "@/constants";
 
 export function QuickInputs() {
-  const salary = useStore((state) => state.salary);
-  const updateField = useStore((state) => state.updateField);
+  const { state, updateField } = useLoanContext();
+  const salary = state.salary;
 
   const handleSalaryChange = useCallback(
     (value: number | readonly number[]) => {
