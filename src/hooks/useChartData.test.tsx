@@ -12,10 +12,10 @@ import {
   useTotalRepaymentData,
   useRepaymentYearsData,
   useInterestRateData,
-} from "../useChartData";
-import { loanReducer, initialState } from "../../context/loanReducer";
+} from "./useChartData";
+import { loanReducer, initialState } from "../context/loanReducer";
 import type { LoanState } from "@/types/store";
-import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../../constants";
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 
 // Mock dayjs to control "now" for deterministic tests
 vi.mock("dayjs", async (importOriginal) => {
@@ -36,7 +36,7 @@ vi.mock("dayjs", async (importOriginal) => {
 });
 
 // Mock the context module to provide a test-friendly provider
-vi.mock("../../context", async () => {
+vi.mock("../context", async () => {
   const LoanContext = createContext<{
     state: LoanState;
     updateField: <K extends keyof LoanState>(
@@ -90,7 +90,7 @@ vi.mock("../../context", async () => {
 });
 
 // Import mocked provider after mock setup
-const { LoanProvider } = await import("../../context");
+const { LoanProvider } = await import("../context");
 
 // Default test configuration
 const defaultTestConfig: Partial<LoanState> = {
