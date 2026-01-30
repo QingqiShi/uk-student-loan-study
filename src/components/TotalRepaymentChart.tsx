@@ -1,8 +1,8 @@
 "use client";
 
-import { useTotalRepaymentData } from "@/hooks/useChartData";
-import { currencyFormatter } from "@/constants";
 import { ChartBase } from "./ChartBase";
+import { currencyFormatter } from "@/constants";
+import { useTotalRepaymentData } from "@/hooks/useChartData";
 
 export function TotalRepaymentChart() {
   const { data, annotationSalary, annotationValue } = useTotalRepaymentData();
@@ -14,8 +14,8 @@ export function TotalRepaymentChart() {
       annotationValue={annotationValue}
       xAxisLabel="Salary"
       yAxisLabel="Total Repayment"
-      xFormatter={currencyFormatter.format}
-      yFormatter={currencyFormatter.format}
+      xFormatter={(v) => currencyFormatter.format(v)}
+      yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel="Chart showing total student loan repayment amount by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
     />
   );

@@ -1,7 +1,7 @@
 import { NumericFormat } from "react-number-format";
+import type { CurrencyInputProps } from "../types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { CurrencyInputProps } from "../types";
 
 export function CurrencyInput({
   id,

@@ -1,8 +1,8 @@
 "use client";
 
-import { useRepaymentYearsData } from "@/hooks/useChartData";
-import { currencyFormatter, yearsFormatter } from "@/constants";
 import { ChartBase } from "./ChartBase";
+import { currencyFormatter, yearsFormatter } from "@/constants";
+import { useRepaymentYearsData } from "@/hooks/useChartData";
 
 export function RepaymentYearsChart() {
   const { data, annotationSalary, annotationValue } = useRepaymentYearsData();
@@ -14,7 +14,7 @@ export function RepaymentYearsChart() {
       annotationValue={annotationValue}
       xAxisLabel="Salary"
       yAxisLabel="Time to Pay Off (Years)"
-      xFormatter={currencyFormatter.format}
+      xFormatter={(v) => currencyFormatter.format(v)}
       yFormatter={yearsFormatter}
       ariaLabel="Chart showing years to pay off student loan by annual salary. Higher earners pay off faster, lower earners reach write-off at 30 years."
     />

@@ -1,10 +1,10 @@
 "use client";
 
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { useLoanContext } from "@/context";
 import CurrencyInput from "./CurrencyInput";
 import DateInput from "./DateInput";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { useLoanContext } from "@/context";
 
 export function AdvancedInputs() {
   const { state, updateField } = useLoanContext();
@@ -20,20 +20,26 @@ export function AdvancedInputs() {
             id="adv-undergrad-balance"
             label="Undergraduate Loan Balance"
             value={state.underGradBalance}
-            onChange={(value) => updateField("underGradBalance", value)}
+            onChange={(value) => {
+              updateField("underGradBalance", value);
+            }}
           />
           <CurrencyInput
             id="adv-postgrad-balance"
             label="Postgraduate Loan Balance"
             value={state.postGradBalance}
-            onChange={(value) => updateField("postGradBalance", value)}
+            onChange={(value) => {
+              updateField("postGradBalance", value);
+            }}
           />
           <DateInput
             id="adv-repayment-date"
             label="Repayment Start Date"
             helperText="Determines when your loan is written off."
             value={state.repaymentDate}
-            onChange={(value) => updateField("repaymentDate", value)}
+            onChange={(value) => {
+              updateField("repaymentDate", value);
+            }}
           />
         </div>
         <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
@@ -47,9 +53,9 @@ export function AdvancedInputs() {
           <Switch
             id="adv-post-2023"
             checked={isPost2023}
-            onCheckedChange={(checked) =>
-              updateField("underGradPlanType", checked ? "PLAN_5" : "PLAN_2")
-            }
+            onCheckedChange={(checked) => {
+              updateField("underGradPlanType", checked ? "PLAN_5" : "PLAN_2");
+            }}
           />
         </div>
       </div>

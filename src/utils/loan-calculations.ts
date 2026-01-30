@@ -1,3 +1,5 @@
+import type { DataPoint } from "@/types/chart";
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
 import {
   simulateLoans,
   CURRENT_RATES,
@@ -5,8 +7,6 @@ import {
   type Loan,
   type SimulationMapper,
 } from "@/lib/loans";
-import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
-import type { DataPoint } from "@/types/chart";
 
 /**
  * Generates a data series for salary-based charts.

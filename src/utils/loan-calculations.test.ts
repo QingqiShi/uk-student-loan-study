@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import dayjs from "dayjs";
 import {
   generateSalaryDataSeries,
   calculateAnnualizedRate,
 } from "./loan-calculations";
-import type { Loan, SimulationResult } from "@/lib/loans";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
+import type { Loan, SimulationResult } from "@/lib/loans";
+import type dayjs from "dayjs";
 
 // Mock dayjs to control "now" for deterministic tests
 vi.mock("dayjs", async (importOriginal) => {

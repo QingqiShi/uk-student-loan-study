@@ -2,20 +2,20 @@
 
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { useLoanContext } from "@/context";
 import {
   MIN_SALARY,
   MAX_SALARY,
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
+import { useLoanContext } from "@/context";
 
 export function QuickInputs() {
   const { state, updateField } = useLoanContext();
   const salary = state.salary;
 
   const handleSalaryChange = (value: number | readonly number[]) => {
-    const newSalary = Array.isArray(value) ? value[0] : value;
+    const newSalary = typeof value === "number" ? value : value[0];
     updateField("salary", newSalary);
   };
 

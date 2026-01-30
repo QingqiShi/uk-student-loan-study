@@ -1,13 +1,18 @@
 "use client";
 
 import {
+  Sun02Icon,
+  Moon02Icon,
+  ComputerIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
   useState,
   useRef,
   useSyncExternalStore,
   useDeferredValue,
   ViewTransition,
 } from "react";
-import { useTheme } from "@/context/ThemeContext";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,12 +21,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Sun02Icon,
-  Moon02Icon,
-  ComputerIcon,
-} from "@hugeicons/core-free-icons";
+import { useTheme } from "@/context/ThemeContext";
 
 type ThemeOption = "light" | "dark" | "system";
 
@@ -112,7 +112,9 @@ export function ThemeToggle() {
   return (
     <DropdownMenu
       open={isMenuOpen}
-      onOpenChange={(open) => !open && setIsMenuOpen(false)}
+      onOpenChange={(open) => {
+        if (!open) setIsMenuOpen(false);
+      }}
     >
       <DropdownMenuTrigger
         render={
@@ -135,7 +137,9 @@ export function ThemeToggle() {
       <DropdownMenuContent align="end" className="w-30">
         <DropdownMenuRadioGroup
           value={theme}
-          onValueChange={(value) => handleSelectTheme(value as ThemeOption)}
+          onValueChange={(value) => {
+            handleSelectTheme(value as ThemeOption);
+          }}
         >
           {themeOptions.map((option) => (
             <DropdownMenuRadioItem key={option.value} value={option.value}>

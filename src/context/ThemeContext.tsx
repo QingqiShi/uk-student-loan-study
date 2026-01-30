@@ -48,7 +48,9 @@ function getThemeServerSnapshot(): Theme {
 }
 
 function notifyThemeListeners() {
-  themeListeners.forEach((l) => l());
+  themeListeners.forEach((l) => {
+    l();
+  });
 }
 
 // External store for system preference
@@ -56,7 +58,9 @@ function subscribeToSystemTheme(callback: () => void) {
   if (typeof window === "undefined") return () => {};
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   mediaQuery.addEventListener("change", callback);
-  return () => mediaQuery.removeEventListener("change", callback);
+  return () => {
+    mediaQuery.removeEventListener("change", callback);
+  };
 }
 
 function getSystemThemeSnapshot(): ResolvedTheme {

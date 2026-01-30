@@ -1,8 +1,8 @@
 "use client";
 
-import { useInterestRateData } from "@/hooks/useChartData";
-import { currencyFormatter, percentageFormatter } from "@/constants";
 import { ChartBase } from "./ChartBase";
+import { currencyFormatter, percentageFormatter } from "@/constants";
+import { useInterestRateData } from "@/hooks/useChartData";
 
 export function InterestRateChart() {
   const { data, annotationSalary, annotationValue } = useInterestRateData();
@@ -14,7 +14,7 @@ export function InterestRateChart() {
       annotationValue={annotationValue}
       xAxisLabel="Salary"
       yAxisLabel="Annualized Interest Rate"
-      xFormatter={currencyFormatter.format}
+      xFormatter={(v) => currencyFormatter.format(v)}
       yFormatter={percentageFormatter}
       ariaLabel="Chart showing effective annualized interest rate by annual salary. Useful for comparing loan repayment vs other investments."
     />

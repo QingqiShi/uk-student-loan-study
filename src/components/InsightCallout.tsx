@@ -1,14 +1,14 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   InformationCircleIcon,
   Alert02Icon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import type { InsightType } from "@/utils/insights";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { usePersonalizedInsight } from "@/hooks/usePersonalizedInsight";
-import type { InsightType } from "@/utils/insights";
 
 const insightConfig: Record<
   InsightType,

@@ -1,8 +1,9 @@
 "use client";
 
-import dayjs from "dayjs";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Calendar03Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import dayjs from "dayjs";
+import type { DateInputProps } from "../types";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
@@ -12,7 +13,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import type { DateInputProps } from "../types";
 
 export function DateInput({
   id,
@@ -44,7 +44,9 @@ export function DateInput({
           <Calendar
             mode="single"
             selected={value ?? undefined}
-            onSelect={(date) => onChange(date ?? null)}
+            onSelect={(date) => {
+              onChange(date ?? null);
+            }}
           />
         </PopoverContent>
       </Popover>

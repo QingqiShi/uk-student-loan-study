@@ -1,10 +1,10 @@
 import { useLoanConfig, useCurrentSalary } from "./useStoreSelectors";
+import type { DataPoint } from "@/types";
+import { MIN_SALARY, MAX_SALARY } from "@/constants";
 import {
   generateSalaryDataSeries,
   calculateAnnualizedRate,
 } from "@/utils/loan-calculations";
-import { MIN_SALARY, MAX_SALARY } from "@/constants";
-import type { DataPoint } from "@/types";
 
 interface AnnotationData {
   annotationSalary: number | undefined;
