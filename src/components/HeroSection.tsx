@@ -1,7 +1,7 @@
 "use client";
 
-import { QuickInputs } from "./QuickInputs";
 import { InsightCallout } from "./InsightCallout";
+import { QuickInputs } from "./QuickInputs";
 import TotalRepaymentChart from "./TotalRepaymentChart";
 
 export function HeroSection() {

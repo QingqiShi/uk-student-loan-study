@@ -1,6 +1,4 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
-import dayjs from "dayjs";
 import {
   createContext,
   useContext,
@@ -8,14 +6,16 @@ import {
   useMemo,
   type ReactNode,
 } from "react";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import {
   useTotalRepaymentData,
   useRepaymentYearsData,
   useInterestRateData,
 } from "./useChartData";
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import { loanReducer, initialState } from "../context/loanReducer";
 import type { LoanState } from "@/types/store";
-import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
+import type dayjs from "dayjs";
 
 // Mock dayjs to control "now" for deterministic tests
 vi.mock("dayjs", async (importOriginal) => {
@@ -36,7 +36,7 @@ vi.mock("dayjs", async (importOriginal) => {
 });
 
 // Mock the context module to provide a test-friendly provider
-vi.mock("../context", async () => {
+vi.mock("../context", () => {
   const LoanContext = createContext<{
     state: LoanState;
     updateField: <K extends keyof LoanState>(

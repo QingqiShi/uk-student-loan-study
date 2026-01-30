@@ -1,7 +1,7 @@
 "use client";
 
-import RepaymentYearsChart from "./RepaymentYearsChart";
 import InterestRateChart from "./InterestRateChart";
+import RepaymentYearsChart from "./RepaymentYearsChart";
 
 export function SecondaryCharts() {
   return (

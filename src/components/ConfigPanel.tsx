@@ -1,15 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import CurrencyInput from "./CurrencyInput";
+import DateInput from "./DateInput";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useLoanContext } from "@/context";
-import CurrencyInput from "./CurrencyInput";
-import DateInput from "./DateInput";
 
 export function ConfigPanel() {
   const { state, updateField } = useLoanContext();
@@ -26,20 +26,26 @@ export function ConfigPanel() {
             id="undergrad-balance"
             label="Undergraduate Loan Balance (plan 2 or plan 5)"
             value={state.underGradBalance}
-            onChange={(value) => updateField("underGradBalance", value)}
+            onChange={(value) => {
+              updateField("underGradBalance", value);
+            }}
           />
           <CurrencyInput
             id="postgrad-balance"
             label="Postgraduate Loan Balance"
             value={state.postGradBalance}
-            onChange={(value) => updateField("postGradBalance", value)}
+            onChange={(value) => {
+              updateField("postGradBalance", value);
+            }}
           />
           <DateInput
             id="repayment-date"
             label="Date Repayment Started"
             helperText="This determines when your loan is written off."
             value={state.repaymentDate}
-            onChange={(value) => updateField("repaymentDate", value)}
+            onChange={(value) => {
+              updateField("repaymentDate", value);
+            }}
           />
           <div className="flex items-center justify-between gap-4">
             <div className="space-y-0.5">
@@ -52,9 +58,9 @@ export function ConfigPanel() {
             <Switch
               id="post-2023"
               checked={isPost2023}
-              onCheckedChange={(checked) =>
-                updateField("underGradPlanType", checked ? "PLAN_5" : "PLAN_2")
-              }
+              onCheckedChange={(checked) => {
+                updateField("underGradPlanType", checked ? "PLAN_5" : "PLAN_2");
+              }}
             />
           </div>
         </CardContent>
@@ -70,7 +76,9 @@ export function ConfigPanel() {
                   id="earning"
                   label="Your current Pre-Tax Salary"
                   value={state.salary}
-                  onChange={(value) => updateField("salary", value)}
+                  onChange={(value) => {
+                    updateField("salary", value);
+                  }}
                 />
               </AccordionContent>
             </AccordionItem>

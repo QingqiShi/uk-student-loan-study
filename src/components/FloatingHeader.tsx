@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useLoanContext } from "@/context";
-import { currencyFormatter } from "@/constants";
-import { CURRENT_RATES } from "@/lib/loans";
-import { Button } from "@/components/ui/button";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon, Settings02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { useState, useEffect, useRef } from "react";
 import AdvancedInputs from "./AdvancedInputs";
 import ThemeToggle from "./ThemeToggle";
+import { Button } from "@/components/ui/button";
+import { currencyFormatter } from "@/constants";
+import { useLoanContext } from "@/context";
+import { CURRENT_RATES } from "@/lib/loans";
 
 export function FloatingHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +38,9 @@ export function FloatingHeader() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [isOpen]);
 
   // Height of summary bar (py-2 = 0.5rem*2, plus content ~2.5rem, plus border)
@@ -87,7 +89,9 @@ export function FloatingHeader() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                }}
                 className="shrink-0 gap-1.5"
               >
                 <HugeiconsIcon

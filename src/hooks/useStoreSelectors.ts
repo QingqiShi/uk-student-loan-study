@@ -1,5 +1,5 @@
-import { useLoanContext } from "@/context";
 import type { Loan } from "@/lib/loans";
+import { useLoanContext } from "@/context";
 
 interface LoanConfig {
   loans: Loan[];

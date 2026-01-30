@@ -114,7 +114,7 @@ export function generateInsight(
       return {
         type: "low-earner",
         title: "Your loan will be written off",
-        description: `At your current salary, you'll pay for ${writeOffYears} years and have ${formattedRemaining} written off. This is often the best outcome for lower earners.`,
+        description: `At your current salary, you'll pay for ${String(writeOffYears)} years and have ${formattedRemaining} written off. This is often the best outcome for lower earners.`,
       };
     }
   }

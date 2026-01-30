@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
 import { getAnnualInterestRate } from "./interest";
+import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
 import type {
   Loan,
   LoanResult,

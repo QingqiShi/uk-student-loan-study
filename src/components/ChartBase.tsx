@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import type { ChartBaseProps } from "@/types";
 import {
   ChartContainer,
   ChartTooltip,
@@ -17,7 +18,6 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
-import type { ChartBaseProps } from "@/types";
 
 const chartConfig = {
   value: {
@@ -55,10 +55,18 @@ export function ChartBase({
       role="img"
       aria-label={ariaLabel || `Chart showing ${yAxisLabel} by ${xAxisLabel}`}
       className="h-full w-full overflow-hidden select-none touch-pinch-zoom"
-      onMouseEnter={() => setIsTooltipActive(true)}
-      onMouseLeave={() => setIsTooltipActive(false)}
-      onTouchStart={() => setIsTooltipActive(true)}
-      onTouchEnd={() => setIsTooltipActive(false)}
+      onMouseEnter={() => {
+        setIsTooltipActive(true);
+      }}
+      onMouseLeave={() => {
+        setIsTooltipActive(false);
+      }}
+      onTouchStart={() => {
+        setIsTooltipActive(true);
+      }}
+      onTouchEnd={() => {
+        setIsTooltipActive(false);
+      }}
     >
       <ChartContainer config={chartConfig} className="h-full w-full">
         <AreaChart
@@ -115,10 +123,8 @@ export function ChartBase({
             content={
               <ChartTooltipContent
                 labelFormatter={(_, payload) => {
-                  if (payload?.[0]) {
-                    return `${xAxisLabel}: ${xFormatter(payload[0].payload.salary)}`;
-                  }
-                  return "";
+                  const item = payload[0].payload as { salary: number };
+                  return `${xAxisLabel}: ${xFormatter(item.salary)}`;
                 }}
                 formatter={(value) => [yFormatter(value as number), yAxisLabel]}
               />

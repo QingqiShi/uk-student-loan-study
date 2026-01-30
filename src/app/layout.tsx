@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import "./globals.css";
 import { Manrope } from "next/font/google";
-import { cn } from "@/lib/utils";
+import "./globals.css";
+import type { Metadata } from "next";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { cn } from "@/lib/utils";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 

@@ -1,13 +1,13 @@
 "use client";
 
 import { createContext, useContext, useReducer, type ReactNode } from "react";
-import type { LoanState } from "@/types/store";
 import {
   loanReducer,
   initialState,
   updateFieldAction,
   resetAction,
 } from "./loanReducer";
+import type { LoanState } from "@/types/store";
 
 interface LoanContextValue {
   state: LoanState;
