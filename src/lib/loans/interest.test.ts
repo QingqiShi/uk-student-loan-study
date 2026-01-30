@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { getAnnualInterestRate } from "../interest";
-import { PLAN_CONFIGS } from "../plans";
+import { getAnnualInterestRate } from "./interest";
+import { PLAN_CONFIGS } from "./plans";
 
 describe("getAnnualInterestRate", () => {
   describe("PLAN_1 - min(RPI, BoE+1%)", () => {

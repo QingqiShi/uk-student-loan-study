@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 import {
   generateSalaryDataSeries,
   calculateAnnualizedRate,
-} from "../loan-calculations";
+} from "./loan-calculations";
 import type { Loan, SimulationResult } from "@/lib/loans";
-import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../../constants";
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 
 // Mock dayjs to control "now" for deterministic tests
 vi.mock("dayjs", async (importOriginal) => {

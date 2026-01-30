@@ -4,7 +4,7 @@ import {
   initialState,
   updateFieldAction,
   resetAction,
-} from "../context/loanReducer";
+} from "./loanReducer";
 
 describe("loanReducer", () => {
   describe("initial state", () => {
