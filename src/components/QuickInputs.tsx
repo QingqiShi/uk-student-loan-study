@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { useLoanContext } from "@/context";
@@ -15,13 +14,10 @@ export function QuickInputs() {
   const { state, updateField } = useLoanContext();
   const salary = state.salary;
 
-  const handleSalaryChange = useCallback(
-    (value: number | readonly number[]) => {
-      const newSalary = Array.isArray(value) ? value[0] : value;
-      updateField("salary", newSalary);
-    },
-    [updateField],
-  );
+  const handleSalaryChange = (value: number | readonly number[]) => {
+    const newSalary = Array.isArray(value) ? value[0] : value;
+    updateField("salary", newSalary);
+  };
 
   return (
     <div className="space-y-2">

@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useLoanContext } from "@/context";
 import type { Loan } from "@/lib/loans";
 
@@ -13,26 +12,24 @@ interface LoanConfig {
 export function useLoanConfig(): LoanConfig {
   const { state } = useLoanContext();
 
-  return useMemo(() => {
-    const loans: Loan[] = [];
+  const loans: Loan[] = [];
 
-    if (state.underGradBalance > 0) {
-      loans.push({
-        planType: state.underGradPlanType,
-        balance: state.underGradBalance,
-      });
-    }
-    if (state.postGradBalance > 0) {
-      loans.push({ planType: "POSTGRADUATE", balance: state.postGradBalance });
-    }
+  if (state.underGradBalance > 0) {
+    loans.push({
+      planType: state.underGradPlanType,
+      balance: state.underGradBalance,
+    });
+  }
+  if (state.postGradBalance > 0) {
+    loans.push({ planType: "POSTGRADUATE", balance: state.postGradBalance });
+  }
 
-    return {
-      loans,
-      repaymentStartDate: state.repaymentDate ?? new Date(),
-      underGradBalance: state.underGradBalance,
-      postGradBalance: state.postGradBalance,
-    };
-  }, [state]);
+  return {
+    loans,
+    repaymentStartDate: state.repaymentDate ?? new Date(),
+    underGradBalance: state.underGradBalance,
+    postGradBalance: state.postGradBalance,
+  };
 }
 
 /** Select current salary for chart annotation */
