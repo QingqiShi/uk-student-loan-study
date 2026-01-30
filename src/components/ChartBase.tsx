@@ -22,7 +22,7 @@ import type { ChartBaseProps } from "@/types";
 const chartConfig = {
   value: {
     label: "Value",
-    color: "var(--chart-1)",
+    color: "var(--chart-3)",
   },
 } satisfies ChartConfig;
 

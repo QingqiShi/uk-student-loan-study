@@ -124,3 +124,57 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Theme transition */
+body {
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
+}
+
+/* Theme toggle icon animations */
+@keyframes sun-enter {
+  from {
+    transform: rotate(-90deg) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes moon-enter {
+  from {
+    transform: translateY(4px) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes icon-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Light mode: sun icon entering */
+html:not(.dark)::view-transition-new(theme-icon) {
+  animation: sun-enter 300ms ease-out;
+}
+
+/* Dark mode: moon icon entering */
+html.dark::view-transition-new(theme-icon) {
+  animation: moon-enter 300ms ease-out;
+}
+
+/* Outgoing icon fades out */
+::view-transition-old(theme-icon) {
+  animation: icon-exit 300ms ease-out;
+}

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon, Settings02Icon } from "@hugeicons/core-free-icons";
 import AdvancedInputs from "./AdvancedInputs";
+import ThemeToggle from "./ThemeToggle";
 
 export function FloatingHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,7 +73,8 @@ export function FloatingHeader() {
                 <span>{writeOff} write-off</span>
               </p>
             </div>
-            {/* Fixed button - always visible */}
+            {/* Theme toggle and settings button */}
+            <ThemeToggle />
             <Button
               variant="outline"
               size="sm"
