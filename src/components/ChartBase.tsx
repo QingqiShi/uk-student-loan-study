@@ -137,13 +137,13 @@ export function ChartBase({
             !isTooltipActive && (
               <ReferenceLine
                 x={annotationSalary}
-                stroke="rgba(255, 255, 255, 0.6)"
+                stroke="var(--muted-foreground)"
                 strokeWidth={1.5}
                 strokeDasharray="6 4"
                 label={{
                   value: yFormatter(annotationValue),
                   position: "insideTop",
-                  fill: "rgba(255, 255, 255, 0.9)",
+                  fill: "var(--muted-foreground)",
                   fontSize: 11,
                   fontWeight: 500,
                   dx: getAnnotationLabelOffset(),
