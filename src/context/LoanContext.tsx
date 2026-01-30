@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useReducer,
-  useMemo,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useReducer, type ReactNode } from "react";
 import type { LoanState } from "@/types/store";
 import {
   loanReducer,
@@ -30,21 +24,21 @@ interface LoanProviderProps {
 export function LoanProvider({ children }: LoanProviderProps) {
   const [state, dispatch] = useReducer(loanReducer, initialState);
 
-  const contextValue = useMemo<LoanContextValue>(
-    () => ({
-      state,
-      updateField: <K extends keyof LoanState>(key: K, value: LoanState[K]) => {
-        dispatch(updateFieldAction(key, value));
-      },
-      reset: () => {
-        dispatch(resetAction());
-      },
-    }),
-    [state],
-  );
+  const updateField = <K extends keyof LoanState>(
+    key: K,
+    value: LoanState[K],
+  ) => {
+    dispatch(updateFieldAction(key, value));
+  };
+
+  const reset = () => {
+    dispatch(resetAction());
+  };
 
   return (
-    <LoanContext.Provider value={contextValue}>{children}</LoanContext.Provider>
+    <LoanContext.Provider value={{ state, updateField, reset }}>
+      {children}
+    </LoanContext.Provider>
   );
 }
 

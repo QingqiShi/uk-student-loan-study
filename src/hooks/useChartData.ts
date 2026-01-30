@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useLoanConfig, useCurrentSalary } from "./useStoreSelectors";
 import {
   generateSalaryDataSeries,
@@ -20,29 +19,25 @@ function useAnnotationData(
   data: DataPoint[],
   maxSalaryOffset = 0,
 ): AnnotationData {
-  return useMemo(() => {
-    if (
-      data.length > 0 &&
-      salary > MIN_SALARY &&
-      salary < MAX_SALARY - maxSalaryOffset
-    ) {
-      // Find the data point closest to the annotation salary
-      const closestPoint = data.reduce((closest, point) => {
-        if (
-          Math.abs(point.salary - salary) < Math.abs(closest.salary - salary)
-        ) {
-          return point;
-        }
-        return closest;
-      }, data[0]);
+  if (
+    data.length > 0 &&
+    salary > MIN_SALARY &&
+    salary < MAX_SALARY - maxSalaryOffset
+  ) {
+    // Find the data point closest to the annotation salary
+    const closestPoint = data.reduce((closest, point) => {
+      if (Math.abs(point.salary - salary) < Math.abs(closest.salary - salary)) {
+        return point;
+      }
+      return closest;
+    }, data[0]);
 
-      return {
-        annotationSalary: salary,
-        annotationValue: closestPoint.value,
-      };
-    }
-    return { annotationSalary: undefined, annotationValue: undefined };
-  }, [salary, data, maxSalaryOffset]);
+    return {
+      annotationSalary: salary,
+      annotationValue: closestPoint.value,
+    };
+  }
+  return { annotationSalary: undefined, annotationValue: undefined };
 }
 
 /** Hook for total repayment chart data */
@@ -50,14 +45,10 @@ export function useTotalRepaymentData() {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
 
-  const data = useMemo(
-    () =>
-      generateSalaryDataSeries(
-        config.loans,
-        config.repaymentStartDate,
-        (r) => r.totalRepayment,
-      ),
-    [config],
+  const data = generateSalaryDataSeries(
+    config.loans,
+    config.repaymentStartDate,
+    (r) => r.totalRepayment,
   );
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
@@ -70,14 +61,10 @@ export function useRepaymentYearsData() {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
 
-  const data = useMemo(
-    () =>
-      generateSalaryDataSeries(
-        config.loans,
-        config.repaymentStartDate,
-        (r) => r.totalMonths / 12,
-      ),
-    [config],
+  const data = generateSalaryDataSeries(
+    config.loans,
+    config.repaymentStartDate,
+    (r) => r.totalMonths / 12,
   );
 
   // RepaymentYearsChart uses a 5000 offset to avoid annotation at chart edge
@@ -97,12 +84,10 @@ export function useInterestRateData() {
   const { underGradBalance, postGradBalance } = config;
   const totalPrincipal = underGradBalance + postGradBalance;
 
-  const data = useMemo(
-    () =>
-      generateSalaryDataSeries(config.loans, config.repaymentStartDate, (r) =>
-        calculateAnnualizedRate(r, totalPrincipal),
-      ),
-    [config, totalPrincipal],
+  const data = generateSalaryDataSeries(
+    config.loans,
+    config.repaymentStartDate,
+    (r) => calculateAnnualizedRate(r, totalPrincipal),
   );
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
