@@ -36,7 +36,7 @@ export function QuickInputs() {
         step={SALARY_STEP}
         aria-label="Adjust your annual salary"
       />
-      <div className="text-muted-foreground flex justify-between text-xs">
+      <div className="flex justify-between text-xs text-muted-foreground">
         <span>{currencyFormatter.format(MIN_SALARY)}</span>
         <span>{currencyFormatter.format(MAX_SALARY)}</span>
       </div>

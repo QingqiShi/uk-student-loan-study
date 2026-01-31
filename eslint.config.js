@@ -5,11 +5,13 @@ import reactHooks from "eslint-plugin-react-hooks";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import nextPlugin from "@next/eslint-plugin-next";
 import importPlugin from "eslint-plugin-import";
+import tailwindcss from "eslint-plugin-better-tailwindcss";
 
 export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   reactHooks.configs.flat["recommended-latest"],
+  tailwindcss.configs.recommended,
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -26,6 +28,9 @@ export default tseslint.config(
     },
     settings: {
       react: { version: "detect" },
+      "better-tailwindcss": {
+        entryPoint: "src/app/globals.css",
+      },
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -63,6 +68,8 @@ export default tseslint.config(
           alphabetize: { order: "asc", caseInsensitive: true },
         },
       ],
+      // Disable line wrapping - causes React hydration mismatches with SSR
+      "better-tailwindcss/enforce-consistent-line-wrapping": "off",
     },
   },
   {

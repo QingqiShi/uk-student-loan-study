@@ -59,7 +59,7 @@ export function PlanSelector() {
       </div>
 
       {/* Summary line with info popover */}
-      <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
+      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
         <span>
           {selectedInfo.region} •{" "}
           {currencyFormatter.format(selectedInfo.yearlyThreshold)}/year
@@ -89,7 +89,7 @@ export function PlanSelector() {
               </PopoverDescription>
             </PopoverHeader>
             <p className="text-sm">{selectedInfo.description}</p>
-            <div className="text-muted-foreground space-y-1 text-xs">
+            <div className="space-y-1 text-xs text-muted-foreground">
               <div className="flex justify-between">
                 <span>Threshold</span>
                 <span>

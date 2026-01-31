@@ -17,7 +17,7 @@ export function OverpayPage() {
       <div className="space-y-4">
         <Link
           href="/"
-          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm transition-colors"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} className="size-4" />
           Back to Calculator
@@ -27,7 +27,7 @@ export function OverpayPage() {
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Should You Overpay?
           </h1>
-          <p className="text-muted-foreground max-w-2xl text-base sm:text-lg">
+          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
             Most graduates won&apos;t fully repay before write-off. See if
             overpaying helps or if you&apos;d be better off investing.
           </p>

@@ -138,7 +138,7 @@ export function YearSelector({
         </PopoverContent>
       </Popover>
       {helperText && (
-        <p className="text-muted-foreground text-sm">{helperText}</p>
+        <p className="text-sm text-muted-foreground">{helperText}</p>
       )}
     </div>
   );

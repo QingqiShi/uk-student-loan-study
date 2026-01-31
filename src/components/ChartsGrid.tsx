@@ -6,7 +6,7 @@ export function ChartsGrid() {
   return (
     <div className="grid min-w-0 gap-4">
       <div className="flex min-w-0 flex-col p-4 lg:p-8">
-        <div className="flex-grow">
+        <div className="grow">
           <h2 className="text-lg font-bold">How much do you repay in total?</h2>
           <p className="text-muted-foreground">
             Low income earners usually get the best deal because their student
@@ -25,7 +25,7 @@ export function ChartsGrid() {
         </div>
       </div>
       <div className="flex min-w-0 flex-col p-4 lg:p-8">
-        <div className="flex-grow">
+        <div className="grow">
           <h2 className="text-lg font-bold">
             How long does it take to pay off your student loan?
           </h2>
@@ -44,7 +44,7 @@ export function ChartsGrid() {
         </div>
       </div>
       <div className="flex min-w-0 flex-col p-4 lg:p-8">
-        <div className="flex-grow">
+        <div className="grow">
           <h2 className="text-lg font-bold">
             Is it worth paying off student loan early?
           </h2>

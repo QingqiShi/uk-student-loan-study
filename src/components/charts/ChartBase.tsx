@@ -83,7 +83,7 @@ export function ChartBase({
     <div
       role="img"
       aria-label={ariaLabel}
-      className="h-full w-full overflow-hidden select-none touch-pinch-zoom"
+      className="size-full touch-pinch-zoom overflow-hidden select-none"
       onMouseEnter={() => {
         setIsTooltipActive(true);
       }}
@@ -97,7 +97,7 @@ export function ChartBase({
         setIsTooltipActive(false);
       }}
     >
-      <ChartContainer config={chartConfig} className="h-full w-full">
+      <ChartContainer config={chartConfig} className="size-full">
         <ChartComponent
           data={data}
           accessibilityLayer
