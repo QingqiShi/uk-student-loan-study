@@ -1,4 +1,5 @@
 import { FloatingHeader } from "./FloatingHeader";
+import { Footer } from "./Footer";
 import { HeroSection } from "./HeroSection";
 import SecondaryCharts from "./SecondaryCharts";
 
@@ -14,6 +15,7 @@ function App() {
 
         <SecondaryCharts />
       </main>
+      <Footer />
     </div>
   );
 }
