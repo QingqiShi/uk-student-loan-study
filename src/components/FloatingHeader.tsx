@@ -136,7 +136,7 @@ export function FloatingHeader() {
         {/* Absolutely positioned card - expands without affecting page layout */}
         <header
           ref={headerRef}
-          className="absolute inset-x-0 top-0 overflow-hidden rounded-xl border bg-muted/50 shadow-lg backdrop-blur-sm"
+          className="absolute inset-x-0 top-0 max-h-[85dvh] overflow-hidden rounded-xl border bg-muted/50 shadow-lg backdrop-blur-sm"
         >
           {/* Title and Summary Bar */}
           <div className="py-2 pr-2 pl-4">
@@ -177,9 +177,8 @@ export function FloatingHeader() {
           <div
             className={`border-t transition-all duration-500 ease-in-out ${
               isOpen
-                ? // eslint-disable-next-line better-tailwindcss/no-conflicting-classes -- Intentional: calc-size() progressive enhancement with viewport fallback
-                  "max-h-[calc((100dvh-6rem)*0.85)] max-h-[calc-size(auto,size)] opacity-100"
-                : "max-h-0 border-t-transparent opacity-0"
+                ? "max-h-[calc((100dvh-6rem)*0.85)] opacity-100 supports-[height:calc-size(auto,size)]:h-[calc-size(auto,size)]"
+                : "h-0 max-h-0 border-t-transparent opacity-0"
             } ${isOpen && isFullyOpen ? "overflow-y-auto" : "overflow-hidden"}`}
             onTransitionEnd={(e) => {
               // Only react to max-height transitions on this element
