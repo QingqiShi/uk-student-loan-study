@@ -102,7 +102,7 @@ export const POSTGRADUATE_DISPLAY_INFO = {
   description: "For Master's and Doctoral loans",
   yearlyThreshold: PLAN_CONFIGS.POSTGRADUATE.monthlyThreshold * 12,
   writeOffYears: PLAN_CONFIGS.POSTGRADUATE.writeOffYears,
-  repaymentRate: `${String(PLAN_CONFIGS.POSTGRADUATE.repaymentRate * 100)}%`,
+  repaymentRate: PLAN_CONFIGS.POSTGRADUATE.repaymentRate,
 } as const;
 
 // =============================================================================

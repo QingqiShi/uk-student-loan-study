@@ -83,8 +83,8 @@ export function AdvancedInputs() {
               <div className="flex justify-between">
                 <span>Repayment</span>
                 <span>
-                  {POSTGRADUATE_DISPLAY_INFO.repaymentRate} of income above
-                  threshold
+                  {String(POSTGRADUATE_DISPLAY_INFO.repaymentRate * 100)}% of
+                  income above threshold
                 </span>
               </div>
               <div className="flex justify-between">
