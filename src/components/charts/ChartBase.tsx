@@ -189,7 +189,7 @@ export function ChartBase({
               <Area
                 key={s.dataKey}
                 dataKey={s.dataKey}
-                type="natural"
+                type="linear"
                 fill={`url(#${gradientId}-${s.dataKey})`}
                 stroke={`var(--color-${s.dataKey})`}
                 strokeWidth={2}
@@ -202,7 +202,7 @@ export function ChartBase({
               <Line
                 key={s.dataKey}
                 dataKey={s.dataKey}
-                type="monotone"
+                type="linear"
                 stroke={`var(--color-${s.dataKey})`}
                 strokeWidth={2}
                 dot={false}
