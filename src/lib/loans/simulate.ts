@@ -1,15 +1,12 @@
 import dayjs from "dayjs";
-import { getAnnualInterestRate } from "./interest";
-import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
-import type {
-  Loan,
-  LoanResult,
-  SimulationInput,
-  SimulationResult,
-} from "./types";
+import { simulate } from "./engine";
+import type { SimulationInput, SimulationResult } from "./types";
 
 /**
  * Simulates repayment of multiple loans over time.
+ *
+ * This is a backward-compatible wrapper around the unified simulation engine.
+ * Calculates elapsed months from repaymentStartDate to simulate remaining time.
  *
  * @param input - Simulation parameters including loans, salary, and dates
  * @returns Combined simulation results for all loans
@@ -17,75 +14,27 @@ import type {
 export function simulateLoans(input: SimulationInput): SimulationResult {
   const { loans, annualSalary, repaymentStartDate, rpiRate, boeBaseRate } =
     input;
-  const rpi = rpiRate ?? CURRENT_RATES.rpi;
-  const boe = boeBaseRate ?? CURRENT_RATES.boeBaseRate;
 
-  const loanResults = loans
-    .filter((loan) => loan.balance > 0)
-    .map((loan) =>
-      simulateSingleLoan(loan, annualSalary, repaymentStartDate, rpi, boe),
-    );
-
-  return {
-    loanResults,
-    totalRepayment: loanResults.reduce((sum, r) => sum + r.totalPaid, 0),
-    totalMonths:
-      loanResults.length > 0
-        ? Math.max(...loanResults.map((r) => r.monthsToPayoff))
-        : 0,
-  };
-}
-
-/**
- * Simulates repayment of a single loan.
- */
-function simulateSingleLoan(
-  loan: Loan,
-  annualSalary: number,
-  startDate: Date,
-  rpi: number,
-  boe: number,
-): LoanResult {
-  const config = PLAN_CONFIGS[loan.planType];
-  const monthlySalary = annualSalary / 12;
-  const monthlyRepayment = Math.max(
+  // Calculate months elapsed since repayment started
+  const monthsElapsed = Math.max(
     0,
-    (monthlySalary - config.monthlyThreshold) * config.repaymentRate,
+    dayjs().diff(dayjs(repaymentStartDate), "months"),
   );
-  const annualInterest = getAnnualInterestRate(
-    loan.planType,
+
+  const result = simulate({
+    loans,
     annualSalary,
-    rpi,
-    boe,
-  );
-  const monthlyInterest = annualInterest / 100 / 12;
-  const maxMonths = getRemainingMonths(startDate, config.writeOffYears);
-
-  let balance = loan.balance;
-  let totalPaid = 0;
-  let months = 0;
-
-  while (months < maxMonths && balance > 0) {
-    balance *= 1 + monthlyInterest;
-    const payment = Math.min(monthlyRepayment, balance);
-    balance -= payment;
-    totalPaid += payment;
-    months++;
-  }
+    monthsElapsed,
+    rpiRate,
+    boeBaseRate,
+    // Legacy API doesn't support salary growth or overpayment
+    salaryGrowthRate: 0,
+    monthlyOverpayment: 0,
+  });
 
   return {
-    planType: loan.planType,
-    totalPaid,
-    monthsToPayoff: months,
-    remainingBalance: Math.max(0, balance),
-    writtenOff: balance > 0,
+    loanResults: result.summary.perLoan,
+    totalRepayment: result.summary.totalPaid,
+    totalMonths: result.summary.monthsToPayoff,
   };
-}
-
-/**
- * Calculates remaining months until write-off from a start date.
- */
-function getRemainingMonths(startDate: Date, writeOffYears: number): number {
-  const writeOffDate = dayjs(startDate).add(writeOffYears, "years");
-  return Math.max(0, writeOffDate.diff(dayjs(), "months"));
 }
