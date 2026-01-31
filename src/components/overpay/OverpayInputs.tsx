@@ -27,16 +27,19 @@ const salaryGrowthOptions: { value: SalaryGrowthRate; label: string }[] = [
 export function OverpayInputs() {
   const { state, updateField } = useLoanContext();
 
-  const handleSalaryChange = (value: number[]) => {
-    updateField("salary", value[0]);
+  const handleSalaryChange = (value: number | readonly number[]) => {
+    const newValue = typeof value === "number" ? value : value[0];
+    updateField("salary", newValue);
   };
 
-  const handleOverpaymentChange = (value: number[]) => {
-    updateField("monthlyOverpayment", value[0]);
+  const handleOverpaymentChange = (value: number | readonly number[]) => {
+    const newValue = typeof value === "number" ? value : value[0];
+    updateField("monthlyOverpayment", newValue);
   };
 
-  const handleSavingsRateChange = (value: number[]) => {
-    updateField("alternativeSavingsRate", value[0]);
+  const handleSavingsRateChange = (value: number | readonly number[]) => {
+    const newValue = typeof value === "number" ? value : value[0];
+    updateField("alternativeSavingsRate", newValue);
   };
 
   return (
