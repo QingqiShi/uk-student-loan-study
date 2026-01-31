@@ -1,5 +1,5 @@
 import { NumericFormat } from "react-number-format";
-import type { PercentageInputProps } from "../types";
+import type { PercentageInputProps } from "@/types/input";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 

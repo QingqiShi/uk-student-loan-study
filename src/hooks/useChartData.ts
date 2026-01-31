@@ -1,5 +1,5 @@
 import { useLoanConfig, useCurrentSalary } from "./useStoreSelectors";
-import type { DataPoint } from "@/types";
+import type { DataPoint } from "@/types/chart";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
 import {
   generateSalaryDataSeries,

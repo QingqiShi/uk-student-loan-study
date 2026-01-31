@@ -1,12 +1,12 @@
+import type {
+  SimulationResult,
+  Loan,
+  SimulationMapper,
+} from "@/lib/loans/types";
 import type { DataPoint } from "@/types/chart";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
-import {
-  simulateLoans,
-  CURRENT_RATES,
-  type SimulationResult,
-  type Loan,
-  type SimulationMapper,
-} from "@/lib/loans";
+import { CURRENT_RATES } from "@/lib/loans/plans";
+import { simulateLoans } from "@/lib/loans/simulate";
 
 /**
  * Generates a data series for salary-based charts.
@@ -68,4 +68,5 @@ export function calculateAnnualizedRate(
 }
 
 // Re-export for convenience
-export { simulateLoans, type SimulationResult, type Loan } from "@/lib/loans";
+export { simulateLoans } from "@/lib/loans/simulate";
+export type { SimulationResult, Loan } from "@/lib/loans/types";

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartBase } from "./charts";
+import { ChartBase } from "./charts/ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
 import {
   currencyFormatter,

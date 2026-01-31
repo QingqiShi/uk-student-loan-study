@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useLoanContext } from "@/context";
+import { useLoanContext } from "@/context/LoanContext";
 import { PRESETS } from "@/lib/presets";
 
 export function PresetPills() {

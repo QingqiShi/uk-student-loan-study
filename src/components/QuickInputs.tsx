@@ -8,7 +8,7 @@ import {
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
-import { useLoanContext } from "@/context";
+import { useLoanContext } from "@/context/LoanContext";
 
 export function QuickInputs() {
   const { state, updateField } = useLoanContext();

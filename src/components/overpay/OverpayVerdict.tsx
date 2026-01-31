@@ -5,7 +5,7 @@ import {
   Cancel01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import type { RecommendationType } from "@/lib/loans";
+import type { RecommendationType } from "@/lib/loans/overpay-types";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const verdictConfig: Record<

@@ -3,7 +3,7 @@
 import { Calendar03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import dayjs from "dayjs";
-import type { DateInputProps } from "../types";
+import type { DateInputProps } from "@/types/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";

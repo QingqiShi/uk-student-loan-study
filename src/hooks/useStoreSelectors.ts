@@ -1,6 +1,6 @@
-import type { Loan } from "@/lib/loans";
+import type { Loan } from "@/lib/loans/types";
 import type { SalaryGrowthRate } from "@/types/store";
-import { useLoanContext } from "@/context";
+import { useLoanContext } from "@/context/LoanContext";
 
 interface LoanConfig {
   loans: Loan[];

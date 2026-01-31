@@ -8,7 +8,7 @@ import { OverpayInputs } from "./OverpayInputs";
 import { OverpaySummaryCards } from "./OverpaySummaryCards";
 import { OverpayVerdict } from "./OverpayVerdict";
 import { FloatingHeader } from "@/components/FloatingHeader";
-import { useOverpayAnalysis } from "@/hooks";
+import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
 
 export function OverpayPage() {
   const analysis = useOverpayAnalysis();
