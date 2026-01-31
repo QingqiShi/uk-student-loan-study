@@ -6,13 +6,16 @@ import {
   initialState,
   updateFieldAction,
   resetAction,
+  applyPresetAction,
 } from "./loanReducer";
+import type { Preset } from "@/lib/presets";
 import type { LoanState } from "@/types/store";
 
 interface LoanContextValue {
   state: LoanState;
   updateField: <K extends keyof LoanState>(key: K, value: LoanState[K]) => void;
   reset: () => void;
+  applyPreset: (preset: Preset) => void;
 }
 
 const LoanContext = createContext<LoanContextValue | null>(null);
@@ -35,8 +38,12 @@ export function LoanProvider({ children }: LoanProviderProps) {
     dispatch(resetAction());
   };
 
+  const applyPreset = (preset: Preset) => {
+    dispatch(applyPresetAction(preset));
+  };
+
   return (
-    <LoanContext.Provider value={{ state, updateField, reset }}>
+    <LoanContext.Provider value={{ state, updateField, reset, applyPreset }}>
       {children}
     </LoanContext.Provider>
   );

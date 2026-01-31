@@ -4,6 +4,7 @@ import { Cancel01Icon, Settings02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState, useEffect, useRef } from "react";
 import AdvancedInputs from "./AdvancedInputs";
+import { PresetPills } from "./PresetPills";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
@@ -118,8 +119,8 @@ export function FloatingHeader() {
     };
   }, [isOpen]);
 
-  // Height of summary bar (py-2 = 0.5rem*2, plus content ~2.5rem, plus border)
-  const SUMMARY_HEIGHT = "4.5rem";
+  // Height of header (py-2 = 0.5rem*2, title, preset pills row, summary line, plus border)
+  const SUMMARY_HEIGHT = "6rem";
 
   return (
     <div className="sticky top-0 z-50 px-4 pt-3">
@@ -138,38 +139,53 @@ export function FloatingHeader() {
           ref={headerRef}
           className="absolute inset-x-0 top-0 max-h-[85dvh] overflow-hidden rounded-xl border bg-muted/50 shadow-lg backdrop-blur-sm"
         >
-          {/* Title and Summary Bar */}
-          <div className="py-2 pr-2 pl-4">
-            <h1 className="text-base font-medium text-foreground">
-              UK Student Loan Calculator
-            </h1>
-            <div className="mt-1 flex items-center gap-3">
-              {/* Scrollable tags container - hidden scrollbar */}
-              <div
-                className="min-w-0 flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden"
-                style={{ scrollbarWidth: "none" }}
-              >
-                <p className="flex items-center gap-2 text-xs whitespace-nowrap text-muted-foreground sm:text-sm">
-                  {renderSummary()}
-                </p>
+          {/* Title and Controls Bar */}
+          <div className="py-2 pr-2 pl-3">
+            <div className="flex items-center justify-between gap-3">
+              <h1 className="text-base font-medium text-foreground">
+                UK Student Loan Calculator
+              </h1>
+              <div className="flex shrink-0 items-center gap-2">
+                <ThemeToggle />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                  }}
+                  className="shrink-0 gap-1.5"
+                  aria-label={
+                    isOpen ? "Close settings" : "Personalise settings"
+                  }
+                >
+                  <HugeiconsIcon
+                    icon={isOpen ? Cancel01Icon : Settings02Icon}
+                    className="size-4"
+                    strokeWidth={2}
+                  />
+                  <span className="hidden sm:inline">
+                    {isOpen ? "Close" : "Personalise"}
+                  </span>
+                </Button>
               </div>
-              {/* Theme toggle and settings button */}
-              <ThemeToggle />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setIsOpen(!isOpen);
-                }}
-                className="shrink-0 gap-1.5"
-              >
-                <HugeiconsIcon
-                  icon={isOpen ? Cancel01Icon : Settings02Icon}
-                  className="size-4"
-                  strokeWidth={2}
-                />
-                {isOpen ? "Close" : "Personalise"}
-              </Button>
+            </div>
+
+            {/* Preset Pills Row */}
+            <div
+              className="mt-2 overflow-x-auto border-t pt-2 [&::-webkit-scrollbar]:hidden"
+              style={{ scrollbarWidth: "none" }}
+            >
+              <PresetPills />
+            </div>
+
+            {/* Summary Line */}
+            <div
+              className="mt-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+              style={{ scrollbarWidth: "none" }}
+            >
+              <p className="flex items-center gap-2 text-xs whitespace-nowrap text-muted-foreground sm:text-sm">
+                {renderSummary()}
+              </p>
             </div>
           </div>
 
