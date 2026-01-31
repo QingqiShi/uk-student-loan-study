@@ -1,5 +1,3 @@
-"use client";
-
 import { InsightCallout } from "./InsightCallout";
 import { QuickInputs } from "./QuickInputs";
 import TotalRepaymentChart from "./TotalRepaymentChart";
