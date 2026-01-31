@@ -7,10 +7,16 @@ import {
 
 export type InsightType = "low-earner" | "middle-earner" | "high-earner";
 
+export interface InsightCta {
+  text: string;
+  href: string;
+}
+
 export interface Insight {
   type: InsightType;
   title: string;
   description: string;
+  cta?: InsightCta;
 }
 
 // Threshold for "peak repayment zone" - overpaying more than this % of principal
@@ -93,7 +99,11 @@ export function generateInsight(
     return {
       type: "middle-earner",
       title: "You're in the peak repayment zone",
-      description: `At this salary, you'll pay ${formattedOverpayment} (${percentOver}%) more than you borrowed. Consider strategies to either boost income quickly or make targeted overpayments.`,
+      description: `At this salary, you'll pay ${formattedOverpayment} (${percentOver}%) more than you borrowed.`,
+      cta: {
+        text: "See if overpaying could help",
+        href: "/overpay",
+      },
     };
   }
 
@@ -126,6 +136,10 @@ export function generateInsight(
   return {
     type: "high-earner",
     title: "You'll pay off quickly",
-    description: `You'll clear your loan in about ${yearsToPayoff} years, paying ${interestPercent}% extra in interest. Early repayment likely isn't worth it—consider investing instead.`,
+    description: `You'll clear your loan in about ${yearsToPayoff} years, paying ${interestPercent}% extra in interest.`,
+    cta: {
+      text: "Should you overpay instead of investing?",
+      href: "/overpay",
+    },
   };
 }

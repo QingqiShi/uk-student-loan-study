@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import {
   InformationCircleIcon,
   Alert02Icon,
   Tick02Icon,
+  ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { InsightType } from "@/utils/insights";
@@ -51,7 +53,21 @@ export function InsightCallout() {
         strokeWidth={2}
       />
       <AlertTitle>{insight.title}</AlertTitle>
-      <AlertDescription>{insight.description}</AlertDescription>
+      <AlertDescription>
+        {insight.description}
+        {insight.cta && (
+          <>
+            {" "}
+            <Link
+              href={insight.cta.href}
+              className="inline-flex items-center gap-0.5 font-medium hover:underline"
+            >
+              {insight.cta.text}
+              <HugeiconsIcon icon={ArrowRight01Icon} className="size-3.5" />
+            </Link>
+          </>
+        )}
+      </AlertDescription>
     </Alert>
   );
 }

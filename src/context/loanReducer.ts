@@ -6,6 +6,11 @@ export const initialState: LoanState = {
   postGradBalance: 0,
   repaymentDate: new Date(),
   salary: 70_000,
+
+  // Overpay analysis defaults
+  monthlyOverpayment: 200,
+  salaryGrowthRate: "moderate",
+  alternativeSavingsRate: 0.05, // 5%
 };
 
 // Action types

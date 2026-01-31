@@ -1,4 +1,5 @@
 import type { Loan } from "@/lib/loans";
+import type { SalaryGrowthRate } from "@/types/store";
 import { useLoanContext } from "@/context";
 
 interface LoanConfig {
@@ -36,4 +37,20 @@ export function useLoanConfig(): LoanConfig {
 export function useCurrentSalary(): number {
   const { state } = useLoanContext();
   return state.salary;
+}
+
+interface OverpayConfig {
+  monthlyOverpayment: number;
+  salaryGrowthRate: SalaryGrowthRate;
+  alternativeSavingsRate: number;
+}
+
+/** Select overpay analysis configuration */
+export function useOverpayConfig(): OverpayConfig {
+  const { state } = useLoanContext();
+  return {
+    monthlyOverpayment: state.monthlyOverpayment,
+    salaryGrowthRate: state.salaryGrowthRate,
+    alternativeSavingsRate: state.alternativeSavingsRate,
+  };
 }
