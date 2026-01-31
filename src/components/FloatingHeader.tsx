@@ -8,7 +8,16 @@ import ThemeToggle from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
 import { useLoanContext } from "@/context";
-import { CURRENT_RATES } from "@/lib/loans";
+import {
+  CURRENT_RATES,
+  PLAN_DISPLAY_INFO,
+  POSTGRADUATE_DISPLAY_INFO,
+  getAnnualInterestRate,
+} from "@/lib/loans";
+
+// Selector for popover content rendered in portals.
+// This matches data-slot="popover-content" set by our own @/components/ui/popover.tsx wrapper.
+const POPOVER_CONTENT_SELECTOR = '[data-slot="popover-content"]';
 
 export function FloatingHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,25 +25,91 @@ export function FloatingHeader() {
   const headerRef = useRef<HTMLDivElement>(null);
 
   const { state } = useLoanContext();
-  const { underGradPlanType, underGradBalance } = state;
+  const { underGradPlanType, underGradBalance, postGradBalance, salary } =
+    state;
 
-  const isPost2023 = underGradPlanType === "PLAN_5";
-  const planName = isPost2023 ? "Plan 5" : "Plan 2";
-  const balance = currencyFormatter.format(underGradBalance);
-  const rate = isPost2023 ? CURRENT_RATES.rpi : CURRENT_RATES.rpi + 3;
-  const writeOff = isPost2023 ? "40yr" : "30yr";
+  const hasUndergrad = underGradBalance > 0;
+  const hasPostgrad = postGradBalance > 0;
+
+  const undergradPlanInfo = PLAN_DISPLAY_INFO[underGradPlanType];
+  const undergradInterestRate = getAnnualInterestRate(
+    underGradPlanType,
+    salary,
+    CURRENT_RATES.rpi,
+    CURRENT_RATES.boeBaseRate,
+  );
+  const postgradInterestRate = getAnnualInterestRate(
+    "POSTGRADUATE",
+    salary,
+    CURRENT_RATES.rpi,
+    CURRENT_RATES.boeBaseRate,
+  );
+
+  // Build summary based on loan combination
+  function renderSummary() {
+    if (hasUndergrad && hasPostgrad) {
+      // Both loans: "Plan 2 + Postgraduate • £75,000 total"
+      const totalBalance = underGradBalance + postGradBalance;
+      return (
+        <>
+          <span>
+            {undergradPlanInfo.name} + {POSTGRADUATE_DISPLAY_INFO.name}
+          </span>
+          <span className="text-muted-foreground/50">•</span>
+          <span>{currencyFormatter.format(totalBalance)} total</span>
+        </>
+      );
+    }
+
+    if (hasUndergrad) {
+      // Only undergrad: "Plan 2 • £50,000 • 5.2% interest • 30yr write-off"
+      return (
+        <>
+          <span>{undergradPlanInfo.name}</span>
+          <span className="text-muted-foreground/50">•</span>
+          <span>{currencyFormatter.format(underGradBalance)}</span>
+          <span className="text-muted-foreground/50">•</span>
+          <span>{undergradInterestRate.toFixed(1)}% interest</span>
+          <span className="text-muted-foreground/50">•</span>
+          <span>{undergradPlanInfo.writeOffYears}yr write-off</span>
+        </>
+      );
+    }
+
+    if (hasPostgrad) {
+      // Only postgrad: "Postgraduate • £25,000 • 6.2% interest • 30yr write-off"
+      return (
+        <>
+          <span>{POSTGRADUATE_DISPLAY_INFO.name}</span>
+          <span className="text-muted-foreground/50">•</span>
+          <span>{currencyFormatter.format(postGradBalance)}</span>
+          <span className="text-muted-foreground/50">•</span>
+          <span>{postgradInterestRate.toFixed(1)}% interest</span>
+          <span className="text-muted-foreground/50">•</span>
+          <span>{POSTGRADUATE_DISPLAY_INFO.writeOffYears}yr write-off</span>
+        </>
+      );
+    }
+
+    // No loans - show prompt to add loans
+    return <span>Add loan balances to get started</span>;
+  }
 
   // Close on click outside
   useEffect(() => {
     if (!isOpen) return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        headerRef.current &&
-        !headerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
+      const target = event.target as HTMLElement;
+      // Don't close if clicking inside the header
+      if (headerRef.current?.contains(target)) {
+        return;
       }
+      // Don't close if clicking inside a popover (rendered in portal outside header DOM)
+      if (target.closest(POPOVER_CONTENT_SELECTOR)) {
+        return;
+      }
+      setIsOpen(false);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -75,13 +150,7 @@ export function FloatingHeader() {
                 style={{ scrollbarWidth: "none" }}
               >
                 <p className="text-muted-foreground flex items-center gap-2 whitespace-nowrap text-xs sm:text-sm">
-                  <span>{planName}</span>
-                  <span className="text-muted-foreground/50">•</span>
-                  <span>{balance}</span>
-                  <span className="text-muted-foreground/50">•</span>
-                  <span>{rate}% interest</span>
-                  <span className="text-muted-foreground/50">•</span>
-                  <span>{writeOff} write-off</span>
+                  {renderSummary()}
                 </p>
               </div>
               {/* Theme toggle and settings button */}
@@ -99,7 +168,7 @@ export function FloatingHeader() {
                   className="size-4"
                   strokeWidth={2}
                 />
-                {isOpen ? "Close" : "Edit"}
+                {isOpen ? "Close" : "Personalise"}
               </Button>
             </div>
           </div>

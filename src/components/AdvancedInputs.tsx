@@ -1,63 +1,115 @@
 "use client";
 
 import CurrencyInput from "./CurrencyInput";
-import DateInput from "./DateInput";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import PlanSelector from "./PlanSelector";
+import YearSelector from "./YearSelector";
+import { currencyFormatter } from "@/constants";
 import { useLoanContext } from "@/context";
+import { POSTGRADUATE_DISPLAY_INFO } from "@/lib/loans";
 
 export function AdvancedInputs() {
   const { state, updateField } = useLoanContext();
-  const isPost2023 = state.underGradPlanType === "PLAN_5";
+  const hasUndergrad = state.underGradBalance > 0;
+  const hasPostgrad = state.postGradBalance > 0;
 
   return (
     <div className="space-y-6">
-      {/* Loan Details */}
+      {/* My Loans */}
       <div className="space-y-4">
-        <h4 className="text-sm font-medium">Loan Details</h4>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <CurrencyInput
-            id="adv-undergrad-balance"
-            label="Undergraduate Loan Balance"
-            value={state.underGradBalance}
-            onChange={(value) => {
-              updateField("underGradBalance", value);
-            }}
-          />
-          <CurrencyInput
-            id="adv-postgrad-balance"
-            label="Postgraduate Loan Balance"
-            value={state.postGradBalance}
-            onChange={(value) => {
-              updateField("postGradBalance", value);
-            }}
-          />
-          <DateInput
-            id="adv-repayment-date"
-            label="Repayment Start Date"
-            helperText="Determines when your loan is written off."
-            value={state.repaymentDate}
-            onChange={(value) => {
-              updateField("repaymentDate", value);
-            }}
-          />
-        </div>
-        <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
-          <div className="space-y-0.5">
-            <Label htmlFor="adv-post-2023">Plan 5 (Post-2023)</Label>
-            <p className="text-muted-foreground text-sm">
-              For students who started after August 2023. Has different
-              thresholds and 40-year write-off.
-            </p>
+        <h4 className="text-sm font-medium uppercase tracking-wide">
+          My Loans
+        </h4>
+
+        {/* Undergraduate Loan Card */}
+        <div className="rounded-lg border p-4">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm font-medium uppercase tracking-wide">
+              Undergraduate Loan
+            </span>
+            <div className="w-32">
+              <CurrencyInput
+                id="adv-undergrad-balance"
+                value={state.underGradBalance}
+                onChange={(value) => {
+                  updateField("underGradBalance", value);
+                }}
+              />
+            </div>
           </div>
-          <Switch
-            id="adv-post-2023"
-            checked={isPost2023}
-            onCheckedChange={(checked) => {
-              updateField("underGradPlanType", checked ? "PLAN_5" : "PLAN_2");
-            }}
-          />
+          {!hasUndergrad && (
+            <p className="text-muted-foreground mt-2 text-sm">
+              Enter a balance if you have an undergraduate loan
+            </p>
+          )}
+          {hasUndergrad && (
+            <div className="mt-4 border-t pt-4">
+              <PlanSelector />
+            </div>
+          )}
         </div>
+
+        {/* Postgraduate Loan Card */}
+        <div className="rounded-lg border p-4">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm font-medium uppercase tracking-wide">
+              Postgraduate Loan
+            </span>
+            <div className="w-32">
+              <CurrencyInput
+                id="adv-postgrad-balance"
+                value={state.postGradBalance}
+                onChange={(value) => {
+                  updateField("postGradBalance", value);
+                }}
+              />
+            </div>
+          </div>
+          {!hasPostgrad && (
+            <p className="text-muted-foreground mt-2 text-sm">
+              Enter a balance if you have a postgraduate loan
+            </p>
+          )}
+          {hasPostgrad && (
+            <div className="text-muted-foreground mt-4 space-y-1.5 border-t pt-4 text-sm">
+              <div className="flex justify-between">
+                <span>Threshold</span>
+                <span>
+                  {currencyFormatter.format(
+                    POSTGRADUATE_DISPLAY_INFO.yearlyThreshold,
+                  )}
+                  /year
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Repayment</span>
+                <span>
+                  {String(POSTGRADUATE_DISPLAY_INFO.repaymentRate * 100)}% of
+                  income above threshold
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Write-off</span>
+                <span>{POSTGRADUATE_DISPLAY_INFO.writeOffYears} years</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Repayment Details */}
+      <div className="space-y-4">
+        <h4 className="text-sm font-medium uppercase tracking-wide">
+          Repayment Details
+        </h4>
+        <YearSelector
+          id="adv-repayment-year"
+          label="Repayment Start Year"
+          helperText="Determines when your loan is written off."
+          value={state.repaymentDate}
+          onChange={(value) => {
+            updateField("repaymentDate", value);
+          }}
+        />
       </div>
     </div>
   );
