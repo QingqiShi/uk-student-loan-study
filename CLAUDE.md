@@ -27,5 +27,6 @@ UK student loan repayment calculator built with Next.js (App Router), React, and
 - `@ts-ignore` / `@ts-expect-error`
 - Unsafe type assertions (`as unknown as X`)
 - Manual memoization (`useMemo`, `useCallback`, `React.memo`) — React Compiler handles this automatically. Exception: auto-generated shadcn/ui components.
+- Barrel files (`index.ts` re-export files) — import directly from source modules instead (e.g., `@/lib/loans/types` not `@/lib/loans`).
 
 Fix underlying issues instead of suppressing errors.

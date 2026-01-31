@@ -8,13 +8,13 @@ import { PresetPills } from "./PresetPills";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
-import { useLoanContext } from "@/context";
+import { useLoanContext } from "@/context/LoanContext";
+import { getAnnualInterestRate } from "@/lib/loans/interest";
 import {
   CURRENT_RATES,
   PLAN_DISPLAY_INFO,
   POSTGRADUATE_DISPLAY_INFO,
-  getAnnualInterestRate,
-} from "@/lib/loans";
+} from "@/lib/loans/plans";
 
 // Selector for popover content rendered in portals.
 // This matches data-slot="popover-content" set by our own @/components/ui/popover.tsx wrapper.

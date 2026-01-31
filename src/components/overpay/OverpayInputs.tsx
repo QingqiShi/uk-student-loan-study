@@ -16,7 +16,7 @@ import {
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
-import { useLoanContext } from "@/context";
+import { useLoanContext } from "@/context/LoanContext";
 
 const salaryGrowthOptions: { value: SalaryGrowthRate; label: string }[] = [
   { value: "conservative", label: "2%" },

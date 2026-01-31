@@ -2,7 +2,7 @@
 
 import { InformationCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import type { UndergraduatePlanType } from "@/lib/loans";
+import type { UndergraduatePlanType } from "@/lib/loans/types";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -13,8 +13,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { currencyFormatter } from "@/constants";
-import { useLoanContext } from "@/context";
-import { PLAN_DISPLAY_INFO } from "@/lib/loans";
+import { useLoanContext } from "@/context/LoanContext";
+import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const PLAN_TYPES: UndergraduatePlanType[] = [
   "PLAN_1",

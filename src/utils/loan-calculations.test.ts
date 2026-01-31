@@ -4,7 +4,7 @@ import {
   calculateAnnualizedRate,
 } from "./loan-calculations";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
-import type { Loan, SimulationResult } from "@/lib/loans";
+import type { Loan, SimulationResult } from "@/lib/loans/types";
 import type dayjs from "dayjs";
 
 // Mock dayjs to control "now" for deterministic tests

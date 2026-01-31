@@ -1,4 +1,4 @@
-import type { UndergraduatePlanType } from "@/lib/loans";
+import type { UndergraduatePlanType } from "@/lib/loans/types";
 
 /**
  * Salary growth rate presets for overpay analysis.

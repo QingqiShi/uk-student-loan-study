@@ -1,4 +1,4 @@
-import type { UndergraduatePlanType } from "@/lib/loans";
+import type { UndergraduatePlanType } from "@/lib/loans/types";
 
 export interface Preset {
   id: string;

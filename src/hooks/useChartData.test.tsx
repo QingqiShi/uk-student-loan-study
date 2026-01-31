@@ -36,7 +36,7 @@ vi.mock("dayjs", async (importOriginal) => {
 });
 
 // Mock the context module to provide a test-friendly provider
-vi.mock("../context", () => {
+vi.mock("../context/LoanContext", () => {
   const LoanContext = createContext<{
     state: LoanState;
     updateField: <K extends keyof LoanState>(
@@ -90,7 +90,7 @@ vi.mock("../context", () => {
 });
 
 // Import mocked provider after mock setup
-const { LoanProvider } = await import("../context");
+const { LoanProvider } = await import("../context/LoanContext");
 
 // Default test configuration
 const defaultTestConfig: Partial<LoanState> = {

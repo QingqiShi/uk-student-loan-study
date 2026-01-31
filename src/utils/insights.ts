@@ -1,9 +1,6 @@
-import {
-  simulateLoans,
-  PLAN_CONFIGS,
-  type Loan,
-  type SimulationResult,
-} from "@/lib/loans";
+import type { Loan, SimulationResult } from "@/lib/loans/types";
+import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import { simulateLoans } from "@/lib/loans/simulate";
 
 export type InsightType = "low-earner" | "middle-earner" | "high-earner";
 

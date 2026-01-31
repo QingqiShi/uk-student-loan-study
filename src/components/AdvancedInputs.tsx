@@ -4,8 +4,8 @@ import CurrencyInput from "./CurrencyInput";
 import PlanSelector from "./PlanSelector";
 import YearSelector from "./YearSelector";
 import { currencyFormatter } from "@/constants";
-import { useLoanContext } from "@/context";
-import { POSTGRADUATE_DISPLAY_INFO } from "@/lib/loans";
+import { useLoanContext } from "@/context/LoanContext";
+import { POSTGRADUATE_DISPLAY_INFO } from "@/lib/loans/plans";
 
 export function AdvancedInputs() {
   const { state, updateField } = useLoanContext();

@@ -1,8 +1,8 @@
 "use client";
 
-import { ChartBase, type ChartAnnotationConfig } from "../charts";
+import { ChartBase, type ChartAnnotationConfig } from "../charts/ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
-import type { OverpayAnalysisResult } from "@/lib/loans";
+import type { OverpayAnalysisResult } from "@/lib/loans/overpay-types";
 import { currencyFormatter } from "@/constants";
 
 const chartConfig = {
