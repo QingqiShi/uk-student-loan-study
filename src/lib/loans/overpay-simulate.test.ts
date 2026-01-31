@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import dayjs from "dayjs";
 import { simulateOverpayScenarios } from "./overpay-simulate";
 import { CURRENT_RATES } from "./plans";
 import type { OverpayInput } from "./overpay-types";
+import type dayjs from "dayjs";
 
 // Mock dayjs to control "now" for deterministic tests
 vi.mock("dayjs", async (importOriginal) => {

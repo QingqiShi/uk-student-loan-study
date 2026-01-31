@@ -1,5 +1,5 @@
-import type { SalaryGrowthRate } from "@/types/store";
 import type { Loan } from "./types";
+import type { SalaryGrowthRate } from "@/types/store";
 
 /**
  * Input parameters for overpay analysis simulation.

@@ -1,9 +1,9 @@
 "use client";
 
+import type { SalaryGrowthRate } from "@/types/store";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
-import { useLoanContext } from "@/context";
 import {
   MIN_MONTHLY_OVERPAYMENT,
   MAX_MONTHLY_OVERPAYMENT,
@@ -16,7 +16,7 @@ import {
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
-import type { SalaryGrowthRate } from "@/types/store";
+import { useLoanContext } from "@/context";
 
 const salaryGrowthOptions: { value: SalaryGrowthRate; label: string }[] = [
   { value: "conservative", label: "2%" },
@@ -27,19 +27,16 @@ const salaryGrowthOptions: { value: SalaryGrowthRate; label: string }[] = [
 export function OverpayInputs() {
   const { state, updateField } = useLoanContext();
 
-  const handleSalaryChange = (value: number | readonly number[]) => {
-    const numValue = Array.isArray(value) ? value[0] : value;
-    updateField("salary", numValue);
+  const handleSalaryChange = (value: number[]) => {
+    updateField("salary", value[0]);
   };
 
-  const handleOverpaymentChange = (value: number | readonly number[]) => {
-    const numValue = Array.isArray(value) ? value[0] : value;
-    updateField("monthlyOverpayment", numValue);
+  const handleOverpaymentChange = (value: number[]) => {
+    updateField("monthlyOverpayment", value[0]);
   };
 
-  const handleSavingsRateChange = (value: number | readonly number[]) => {
-    const numValue = Array.isArray(value) ? value[0] : value;
-    updateField("alternativeSavingsRate", numValue);
+  const handleSavingsRateChange = (value: number[]) => {
+    updateField("alternativeSavingsRate", value[0]);
   };
 
   return (
@@ -104,7 +101,7 @@ export function OverpayInputs() {
                 state.salaryGrowthRate === option.value ? "default" : "outline"
               }
               size="sm"
-              onClick={() => updateField("salaryGrowthRate", option.value)}
+              onClick={() => { updateField("salaryGrowthRate", option.value); }}
               aria-pressed={state.salaryGrowthRate === option.value}
               className="flex-1"
             >

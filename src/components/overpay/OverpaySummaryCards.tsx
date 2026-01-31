@@ -1,8 +1,8 @@
 "use client";
 
+import type { OverpayAnalysisResult } from "@/lib/loans";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { currencyFormatter } from "@/constants";
-import type { OverpayAnalysisResult } from "@/lib/loans";
 
 interface OverpaySummaryCardsProps {
   analysis: OverpayAnalysisResult;
@@ -15,9 +15,9 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
     const years = Math.floor(months / 12);
     const remainingMonths = months % 12;
     if (remainingMonths === 0) {
-      return `${years} ${years === 1 ? "year" : "years"}`;
+      return `${String(years)} ${years === 1 ? "year" : "years"}`;
     }
-    return `${years}y ${remainingMonths}m`;
+    return `${String(years)}y ${String(remainingMonths)}m`;
   };
 
   return (

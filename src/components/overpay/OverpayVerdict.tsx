@@ -1,14 +1,14 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   InformationCircleIcon,
   Alert02Icon,
   Tick02Icon,
   Cancel01Icon,
 } from "@hugeicons/core-free-icons";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type { RecommendationType } from "@/lib/loans";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const verdictConfig: Record<
   RecommendationType,

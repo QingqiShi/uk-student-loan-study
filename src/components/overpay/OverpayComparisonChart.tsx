@@ -10,6 +10,7 @@ import {
   YAxis,
   Legend,
 } from "recharts";
+import type { OverpayAnalysisResult } from "@/lib/loans";
 import {
   ChartContainer,
   ChartTooltip,
@@ -17,7 +18,6 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { currencyFormatter } from "@/constants";
-import type { OverpayAnalysisResult } from "@/lib/loans";
 
 const chartConfig = {
   overpayNetWorth: {
@@ -54,17 +54,17 @@ export function OverpayComparisonChart({
     );
   }
 
-  const formatYear = (month: number) => `Year ${Math.floor(month / 12)}`;
+  const formatYear = (month: number) => `Year ${String(Math.floor(month / 12))}`;
 
   return (
     <div
       role="img"
       aria-label="Net worth comparison chart showing overpay vs invest scenarios over time"
       className="h-full w-full overflow-hidden select-none touch-pinch-zoom"
-      onMouseEnter={() => setIsTooltipActive(true)}
-      onMouseLeave={() => setIsTooltipActive(false)}
-      onTouchStart={() => setIsTooltipActive(true)}
-      onTouchEnd={() => setIsTooltipActive(false)}
+      onMouseEnter={() => { setIsTooltipActive(true); }}
+      onMouseLeave={() => { setIsTooltipActive(false); }}
+      onTouchStart={() => { setIsTooltipActive(true); }}
+      onTouchEnd={() => { setIsTooltipActive(false); }}
     >
       <ChartContainer config={chartConfig} className="h-full w-full">
         <LineChart
@@ -89,7 +89,7 @@ export function OverpayComparisonChart({
             }}
           />
           <YAxis
-            tickFormatter={(value) => currencyFormatter.format(value)}
+            tickFormatter={(value: number) => currencyFormatter.format(value)}
             tickLine={false}
             axisLine={false}
             tickMargin={8}
@@ -107,8 +107,11 @@ export function OverpayComparisonChart({
             content={
               <ChartTooltipContent
                 labelFormatter={(_, payload) => {
-                  if (payload?.[0]) {
-                    return formatYear(payload[0].payload.month);
+                  const firstItem = payload[0] as
+                    | { payload: { month: number } }
+                    | undefined;
+                  if (firstItem) {
+                    return formatYear(firstItem.payload.month);
                   }
                   return "";
                 }}

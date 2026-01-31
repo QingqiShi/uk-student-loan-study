@@ -1,10 +1,10 @@
-import { simulateOverpayScenarios } from "@/lib/loans";
-import type { OverpayAnalysisResult } from "@/lib/loans";
 import {
   useLoanConfig,
   useCurrentSalary,
   useOverpayConfig,
 } from "./useStoreSelectors";
+import type { OverpayAnalysisResult } from "@/lib/loans";
+import { simulateOverpayScenarios } from "@/lib/loans";
 
 /**
  * Hook that performs overpay analysis calculations.

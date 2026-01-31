@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   InformationCircleIcon,
   Alert02Icon,
@@ -8,6 +7,7 @@ import {
   ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 import type { InsightType } from "@/utils/insights";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { usePersonalizedInsight } from "@/hooks/usePersonalizedInsight";

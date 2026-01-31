@@ -1,8 +1,6 @@
 import dayjs from "dayjs";
-import { SALARY_GROWTH_RATES } from "@/constants";
-import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
 import { getAnnualInterestRate } from "./interest";
-import type { Loan, PlanType } from "./types";
+import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
 import type {
   OverpayInput,
   OverpayAnalysisResult,
@@ -11,6 +9,8 @@ import type {
   NetWorthDataPoint,
   RecommendationType,
 } from "./overpay-types";
+import type { Loan, PlanType } from "./types";
+import { SALARY_GROWTH_RATES } from "@/constants";
 
 /**
  * Simulates overpayment scenarios to help users decide whether to overpay or invest.
