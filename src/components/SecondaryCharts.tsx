@@ -1,5 +1,3 @@
-"use client";
-
 import InterestRateChart from "./InterestRateChart";
 import RepaymentYearsChart from "./RepaymentYearsChart";
 

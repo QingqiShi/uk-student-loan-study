@@ -1,5 +1,3 @@
-"use client";
-
 import type { OverpayAnalysisResult } from "@/lib/loans";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { currencyFormatter } from "@/constants";
