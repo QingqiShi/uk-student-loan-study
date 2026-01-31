@@ -6,13 +6,17 @@ import type { OverpayAnalysisResult } from "@/lib/loans/overpay-types";
 import { currencyFormatter } from "@/constants";
 
 const chartConfig = {
+  baselineNetWorth: {
+    label: "Do nothing",
+    color: "oklch(0.7 0.15 50)", // Orange
+  },
   overpayNetWorth: {
     label: "Overpay",
-    color: "var(--chart-1)",
+    color: "var(--chart-1)", // Theme color
   },
   investNetWorth: {
     label: "Invest",
-    color: "var(--chart-2)",
+    color: "oklch(0.6 0.15 250)", // Blue
   },
 } satisfies ChartConfig;
 
@@ -72,7 +76,11 @@ export function OverpayComparisonChart({
       yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel="Net worth comparison chart showing overpay vs invest scenarios over time"
       chartConfig={chartConfig}
-      series={[{ dataKey: "overpayNetWorth" }, { dataKey: "investNetWorth" }]}
+      series={[
+        { dataKey: "baselineNetWorth" },
+        { dataKey: "overpayNetWorth" },
+        { dataKey: "investNetWorth" },
+      ]}
       annotations={annotations}
       showLegend
       xDomain={[0, maxMonth]}
