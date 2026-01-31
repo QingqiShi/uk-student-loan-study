@@ -50,6 +50,8 @@ export type RecommendationType =
 export interface NetWorthDataPoint {
   month: number;
   year: number;
+  /** Net worth with just baseline payments (no overpay, no invest) */
+  baselineNetWorth: number;
   /** Net worth if overpaying (negative loan balance offset by no debt) */
   overpayNetWorth: number;
   /** Net worth if investing (portfolio value minus remaining loan) */

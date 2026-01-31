@@ -271,14 +271,17 @@ function generateNetWorthSeries(params: NetWorthParams): NetWorthDataPoint[] {
   for (let month = 0; month <= maxMonths; month++) {
     // Calculate net worth at this point in time
     // Net worth = assets - liabilities
+    // Baseline path: just the remaining debt (no overpayment, no portfolio)
     // Overpay path: no portfolio, just reduced/eliminated debt
     // Invest path: portfolio value minus remaining debt
+    const baselineNetWorth = -Math.max(0, investBalance);
     const overpayNetWorth = -Math.max(0, overpayBalance);
     const investNetWorth = portfolioValue - Math.max(0, investBalance);
 
     series.push({
       month,
       year: Math.floor(month / 12),
+      baselineNetWorth,
       overpayNetWorth,
       investNetWorth,
     });
