@@ -258,9 +258,10 @@ describe("useChartData hooks", () => {
       });
 
       // Rates should be decimals (e.g., 0.05 for 5%, not 5)
+      // -1 means 100% written off (nothing paid back), which is valid for low salaries
       result.current.data.forEach(({ value: rate }) => {
         expect(isFinite(rate)).toBe(true);
-        expect(rate).toBeGreaterThan(-1);
+        expect(rate).toBeGreaterThanOrEqual(-1);
         expect(rate).toBeLessThan(1);
       });
     });
