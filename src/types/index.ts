@@ -2,7 +2,7 @@
 export type { LoanState, LoanActions, LoanStore } from "./store";
 
 // Chart types
-export type { DataPoint, ChartBaseProps } from "./chart";
+export type { DataPoint } from "./chart";
 
 // Input component types
 export type {
