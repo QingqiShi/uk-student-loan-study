@@ -4,5 +4,6 @@ export {
   initialState,
   updateFieldAction,
   resetAction,
+  applyPresetAction,
   type LoanAction,
 } from "./loanReducer";

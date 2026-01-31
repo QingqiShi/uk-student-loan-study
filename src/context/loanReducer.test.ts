@@ -10,7 +10,7 @@ describe("loanReducer", () => {
   describe("initial state", () => {
     it("should have correct initial values", () => {
       expect(initialState.underGradPlanType).toBe("PLAN_2");
-      expect(initialState.underGradBalance).toBe(50_000);
+      expect(initialState.underGradBalance).toBe(45_000); // "2012-23 Grad" preset
       expect(initialState.postGradBalance).toBe(0);
       expect(initialState.salary).toBe(70_000);
       expect(initialState.repaymentDate).toBeInstanceOf(Date);
@@ -91,7 +91,7 @@ describe("loanReducer", () => {
       const resetState = loanReducer(state, resetAction());
 
       // Verify all fields are back to initial values
-      expect(resetState.underGradBalance).toBe(50_000);
+      expect(resetState.underGradBalance).toBe(45_000); // "2012-23 Grad" preset
       expect(resetState.postGradBalance).toBe(0);
       expect(resetState.underGradPlanType).toBe("PLAN_2");
       expect(resetState.salary).toBe(70_000);

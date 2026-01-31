@@ -1,10 +1,19 @@
 import type { LoanState } from "@/types/store";
+import {
+  DEFAULT_PRESET,
+  REPAYMENT_START_MONTH,
+  type Preset,
+} from "@/lib/presets";
 
 export const initialState: LoanState = {
-  underGradPlanType: "PLAN_2",
-  underGradBalance: 50_000,
-  postGradBalance: 0,
-  repaymentDate: new Date(),
+  underGradPlanType: DEFAULT_PRESET.underGradPlanType,
+  underGradBalance: DEFAULT_PRESET.underGradBalance,
+  postGradBalance: DEFAULT_PRESET.postGradBalance,
+  repaymentDate: new Date(
+    DEFAULT_PRESET.repaymentYear,
+    REPAYMENT_START_MONTH,
+    1,
+  ),
   salary: 70_000,
 
   // Overpay analysis defaults
@@ -24,7 +33,12 @@ type ResetAction = {
   type: "RESET";
 };
 
-export type LoanAction = UpdateFieldAction | ResetAction;
+type ApplyPresetAction = {
+  type: "APPLY_PRESET";
+  preset: Preset;
+};
+
+export type LoanAction = UpdateFieldAction | ResetAction | ApplyPresetAction;
 
 // Action creators
 export function updateFieldAction<K extends keyof LoanState>(
@@ -38,13 +52,29 @@ export function resetAction(): ResetAction {
   return { type: "RESET" };
 }
 
+export function applyPresetAction(preset: Preset): ApplyPresetAction {
+  return { type: "APPLY_PRESET", preset };
+}
+
 // Reducer
 export function loanReducer(state: LoanState, action: LoanAction): LoanState {
   switch (action.type) {
     case "UPDATE_FIELD":
       return { ...state, [action.key]: action.value };
     case "RESET":
-      return { ...initialState, repaymentDate: new Date() };
+      return initialState;
+    case "APPLY_PRESET":
+      return {
+        ...state,
+        underGradBalance: action.preset.underGradBalance,
+        postGradBalance: action.preset.postGradBalance,
+        underGradPlanType: action.preset.underGradPlanType,
+        repaymentDate: new Date(
+          action.preset.repaymentYear,
+          REPAYMENT_START_MONTH,
+          1,
+        ),
+      };
     default:
       return state;
   }
