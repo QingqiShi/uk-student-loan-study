@@ -24,7 +24,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
     <div className="grid gap-4 sm:grid-cols-3">
       <Card size="sm">
         <CardHeader>
-          <CardTitle className="text-muted-foreground text-sm font-normal">
+          <CardTitle className="text-sm font-normal text-muted-foreground">
             Without Overpaying
           </CardTitle>
         </CardHeader>
@@ -33,7 +33,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
             <p className="text-2xl font-bold tabular-nums">
               {currencyFormatter.format(baseline.totalPaid)}
             </p>
-            <p className="text-muted-foreground text-xs">Total paid</p>
+            <p className="text-xs text-muted-foreground">Total paid</p>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Time</span>
@@ -44,7 +44,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {baseline.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium tabular-nums text-blue-600 dark:text-blue-400">
+              <span className="font-medium text-blue-600 tabular-nums dark:text-blue-400">
                 {currencyFormatter.format(baseline.amountWrittenOff)}
               </span>
             </div>
@@ -54,7 +54,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
 
       <Card size="sm">
         <CardHeader>
-          <CardTitle className="text-muted-foreground text-sm font-normal">
+          <CardTitle className="text-sm font-normal text-muted-foreground">
             With Overpaying
           </CardTitle>
         </CardHeader>
@@ -63,7 +63,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
             <p className="text-2xl font-bold tabular-nums">
               {currencyFormatter.format(overpay.totalPaid)}
             </p>
-            <p className="text-muted-foreground text-xs">Total paid</p>
+            <p className="text-xs text-muted-foreground">Total paid</p>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Time</span>
@@ -74,7 +74,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {overpay.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium tabular-nums text-blue-600 dark:text-blue-400">
+              <span className="font-medium text-blue-600 tabular-nums dark:text-blue-400">
                 {currencyFormatter.format(overpay.amountWrittenOff)}
               </span>
             </div>
@@ -92,7 +92,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
 
       <Card size="sm">
         <CardHeader>
-          <CardTitle className="text-muted-foreground text-sm font-normal">
+          <CardTitle className="text-sm font-normal text-muted-foreground">
             If Invested Instead
           </CardTitle>
         </CardHeader>
@@ -101,7 +101,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
             <p className="text-2xl font-bold tabular-nums">
               {currencyFormatter.format(investment.portfolioValue)}
             </p>
-            <p className="text-muted-foreground text-xs">Portfolio value</p>
+            <p className="text-xs text-muted-foreground">Portfolio value</p>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Contributed</span>
@@ -111,7 +111,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Returns</span>
-            <span className="font-medium tabular-nums text-emerald-600 dark:text-emerald-400">
+            <span className="font-medium text-emerald-600 tabular-nums dark:text-emerald-400">
               +{currencyFormatter.format(investment.investmentGains)}
             </span>
           </div>

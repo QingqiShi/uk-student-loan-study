@@ -11,12 +11,12 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const errorMessage =
     error instanceof Error ? error.message : "An unexpected error occurred";
   return (
-    <Card className="border-destructive m-4">
+    <Card className="m-4 border-destructive">
       <CardContent className="p-6">
-        <h2 className="text-lg font-semibold text-destructive mb-2">
+        <h2 className="mb-2 text-lg font-semibold text-destructive">
           Something went wrong
         </h2>
-        <p className="text-muted-foreground text-sm mb-4">{errorMessage}</p>
+        <p className="mb-4 text-sm text-muted-foreground">{errorMessage}</p>
         <Button onClick={resetErrorBoundary} variant="outline">
           Try again
         </Button>

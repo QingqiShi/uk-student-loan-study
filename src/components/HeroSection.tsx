@@ -11,7 +11,7 @@ export function HeroSection() {
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
           Student Loans Hurt Middle Earners Most
         </h2>
-        <p className="text-muted-foreground max-w-2xl text-base sm:text-lg">
+        <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
           Low earners get their loans written off. High earners pay them off
           quickly. But middle earners pay the most—often more than they
           borrowed.

@@ -60,7 +60,7 @@ export function OverpayInputs() {
           step={SALARY_STEP}
           aria-label="Adjust your annual salary"
         />
-        <div className="text-muted-foreground flex justify-between text-xs">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>{currencyFormatter.format(MIN_SALARY)}</span>
           <span>{currencyFormatter.format(MAX_SALARY)}</span>
         </div>
@@ -82,7 +82,7 @@ export function OverpayInputs() {
           step={OVERPAYMENT_STEP}
           aria-label="Adjust monthly overpayment amount"
         />
-        <div className="text-muted-foreground flex justify-between text-xs">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>{currencyFormatter.format(MIN_MONTHLY_OVERPAYMENT)}</span>
           <span>{currencyFormatter.format(MAX_MONTHLY_OVERPAYMENT)}</span>
         </div>
@@ -114,7 +114,7 @@ export function OverpayInputs() {
             </Button>
           ))}
         </div>
-        <p className="text-muted-foreground text-xs">
+        <p className="text-xs text-muted-foreground">
           {state.salaryGrowthRate === "conservative" &&
             "Matches inflation only"}
           {state.salaryGrowthRate === "moderate" &&
@@ -142,11 +142,11 @@ export function OverpayInputs() {
           step={SAVINGS_RATE_STEP}
           aria-label="Adjust alternative investment return rate"
         />
-        <div className="text-muted-foreground flex justify-between text-xs">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>0%</span>
           <span>10%</span>
         </div>
-        <p className="text-muted-foreground text-xs">
+        <p className="text-xs text-muted-foreground">
           What you&apos;d earn if investing instead of overpaying
         </p>
       </div>

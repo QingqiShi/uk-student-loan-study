@@ -139,8 +139,8 @@ export function FloatingHeader() {
           className="absolute inset-x-0 top-0 overflow-hidden rounded-xl border bg-muted/50 shadow-lg backdrop-blur-sm"
         >
           {/* Title and Summary Bar */}
-          <div className="py-2 pl-4 pr-2">
-            <h1 className="text-foreground text-base font-medium">
+          <div className="py-2 pr-2 pl-4">
+            <h1 className="text-base font-medium text-foreground">
               UK Student Loan Calculator
             </h1>
             <div className="mt-1 flex items-center gap-3">
@@ -149,7 +149,7 @@ export function FloatingHeader() {
                 className="min-w-0 flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden"
                 style={{ scrollbarWidth: "none" }}
               >
-                <p className="text-muted-foreground flex items-center gap-2 whitespace-nowrap text-xs sm:text-sm">
+                <p className="flex items-center gap-2 text-xs whitespace-nowrap text-muted-foreground sm:text-sm">
                   {renderSummary()}
                 </p>
               </div>
@@ -177,7 +177,8 @@ export function FloatingHeader() {
           <div
             className={`border-t transition-all duration-500 ease-in-out ${
               isOpen
-                ? "max-h-[calc((100dvh-6rem)*0.85)] max-h-[calc-size(auto,size)] opacity-100"
+                ? // eslint-disable-next-line better-tailwindcss/no-conflicting-classes -- Intentional: calc-size() progressive enhancement with viewport fallback
+                  "max-h-[calc((100dvh-6rem)*0.85)] max-h-[calc-size(auto,size)] opacity-100"
                 : "max-h-0 border-t-transparent opacity-0"
             } ${isOpen && isFullyOpen ? "overflow-y-auto" : "overflow-hidden"}`}
             onTransitionEnd={(e) => {

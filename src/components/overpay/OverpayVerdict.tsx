@@ -59,7 +59,7 @@ export function OverpayVerdict({
     <Alert className={config.className} role="status" aria-live="polite">
       <HugeiconsIcon
         icon={config.icon}
-        className="text-foreground/70 size-5"
+        className="size-5 text-foreground/70"
         strokeWidth={2}
       />
       <AlertTitle>{config.title}</AlertTitle>

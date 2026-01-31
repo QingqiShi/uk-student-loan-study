@@ -16,14 +16,14 @@ export function AdvancedInputs() {
     <div className="space-y-6">
       {/* My Loans */}
       <div className="space-y-4">
-        <h4 className="text-sm font-medium uppercase tracking-wide">
+        <h4 className="text-sm font-medium tracking-wide uppercase">
           My Loans
         </h4>
 
         {/* Undergraduate Loan Card */}
         <div className="rounded-lg border p-4">
           <div className="flex items-center justify-between gap-4">
-            <span className="text-sm font-medium uppercase tracking-wide">
+            <span className="text-sm font-medium tracking-wide uppercase">
               Undergraduate Loan
             </span>
             <div className="w-32">
@@ -37,7 +37,7 @@ export function AdvancedInputs() {
             </div>
           </div>
           {!hasUndergrad && (
-            <p className="text-muted-foreground mt-2 text-sm">
+            <p className="mt-2 text-sm text-muted-foreground">
               Enter a balance if you have an undergraduate loan
             </p>
           )}
@@ -51,7 +51,7 @@ export function AdvancedInputs() {
         {/* Postgraduate Loan Card */}
         <div className="rounded-lg border p-4">
           <div className="flex items-center justify-between gap-4">
-            <span className="text-sm font-medium uppercase tracking-wide">
+            <span className="text-sm font-medium tracking-wide uppercase">
               Postgraduate Loan
             </span>
             <div className="w-32">
@@ -65,12 +65,12 @@ export function AdvancedInputs() {
             </div>
           </div>
           {!hasPostgrad && (
-            <p className="text-muted-foreground mt-2 text-sm">
+            <p className="mt-2 text-sm text-muted-foreground">
               Enter a balance if you have a postgraduate loan
             </p>
           )}
           {hasPostgrad && (
-            <div className="text-muted-foreground mt-4 space-y-1.5 border-t pt-4 text-sm">
+            <div className="mt-4 space-y-1.5 border-t pt-4 text-sm text-muted-foreground">
               <div className="flex justify-between">
                 <span>Threshold</span>
                 <span>
@@ -98,7 +98,7 @@ export function AdvancedInputs() {
 
       {/* Repayment Details */}
       <div className="space-y-4">
-        <h4 className="text-sm font-medium uppercase tracking-wide">
+        <h4 className="text-sm font-medium tracking-wide uppercase">
           Repayment Details
         </h4>
         <YearSelector

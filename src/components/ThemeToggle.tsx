@@ -104,7 +104,7 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <div className="flex shrink-0 items-center">
-        <div className="bg-muted size-7 animate-pulse rounded-md" />
+        <div className="size-7 animate-pulse rounded-md bg-muted" />
       </div>
     );
   }
