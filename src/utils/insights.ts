@@ -41,10 +41,8 @@ function getWriteOffYears(loans: Loan[]): number {
 /**
  * Determines if the loan will be written off based on simulation result.
  */
-function willBeWrittenOff(result: SimulationResult, loans: Loan[]): boolean {
-  const writeOffYears = getWriteOffYears(loans);
-  const writeOffMonths = writeOffYears * 12;
-  return result.totalMonths >= writeOffMonths;
+function willBeWrittenOff(result: SimulationResult): boolean {
+  return result.loanResults.some((loan) => loan.writtenOff);
 }
 
 /**
@@ -105,7 +103,7 @@ export function generateInsight(
   }
 
   // Low earner: loan will be written off
-  if (willBeWrittenOff(result, loans)) {
+  if (willBeWrittenOff(result)) {
     const remaining = result.loanResults.reduce(
       (sum, r) => sum + r.remainingBalance,
       0,
