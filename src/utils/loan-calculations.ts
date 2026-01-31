@@ -5,8 +5,8 @@ import type {
 } from "@/lib/loans/types";
 import type { DataPoint } from "@/types/chart";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
+import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
-import { simulateLoans } from "@/lib/loans/simulate";
 
 /**
  * Generates a data series for salary-based charts.
@@ -14,27 +14,36 @@ import { simulateLoans } from "@/lib/loans/simulate";
  * Iterates through salary range (MIN_SALARY to MAX_SALARY by SALARY_STEP)
  * and applies the mapper function to each simulation result.
  *
+ * Uses monthsElapsed: 0 to show total duration from repayment start
+ * (e.g., 30 years for Plan 2 write-off) rather than remaining time.
+ *
  * @param loans - Array of loans to simulate
- * @param repaymentStartDate - Date when loan repayment started
  * @param mapper - Function to extract desired value from simulation result
  * @param rpiRate - Optional RPI rate override
  * @returns Array of [salary, value] data points
  */
 export function generateSalaryDataSeries(
   loans: Loan[],
-  repaymentStartDate: Date,
   mapper: SimulationMapper,
   rpiRate = CURRENT_RATES.rpi,
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
   for (let salary = MIN_SALARY; salary <= MAX_SALARY; salary += SALARY_STEP) {
-    const result = simulateLoans({
+    const timeSeries = simulate({
       loans,
       annualSalary: salary,
-      repaymentStartDate,
+      monthsElapsed: 0, // Simulate from repayment start
       rpiRate,
     });
+
+    // Convert to SimulationResult for mapper compatibility
+    const result: SimulationResult = {
+      loanResults: timeSeries.summary.perLoan,
+      totalRepayment: timeSeries.summary.totalPaid,
+      totalMonths: timeSeries.summary.monthsToPayoff,
+    };
+
     data.push({ salary, value: mapper(result) });
   }
 
