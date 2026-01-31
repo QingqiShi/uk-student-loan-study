@@ -18,14 +18,12 @@ import { CURRENT_RATES } from "@/lib/loans/plans";
  * (e.g., 30 years for Plan 2 write-off) rather than remaining time.
  *
  * @param loans - Array of loans to simulate
- * @param _repaymentStartDate - Unused (kept for API compatibility)
  * @param mapper - Function to extract desired value from simulation result
  * @param rpiRate - Optional RPI rate override
  * @returns Array of [salary, value] data points
  */
 export function generateSalaryDataSeries(
   loans: Loan[],
-  _repaymentStartDate: Date,
   mapper: SimulationMapper,
   rpiRate = CURRENT_RATES.rpi,
 ): DataPoint[] {

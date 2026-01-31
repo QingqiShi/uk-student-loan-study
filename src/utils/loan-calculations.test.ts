@@ -1,49 +1,20 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import {
   generateSalaryDataSeries,
   calculateAnnualizedRate,
 } from "./loan-calculations";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import type { Loan, SimulationResult } from "@/lib/loans/types";
-import type dayjs from "dayjs";
-
-// Mock dayjs to control "now" for deterministic tests
-vi.mock("dayjs", async (importOriginal) => {
-  const mod = await importOriginal<{ default: typeof dayjs }>();
-  const actualDayjs = mod.default;
-  const mockNow = actualDayjs("2024-01-15");
-
-  const mockDayjs = (date?: dayjs.ConfigType) => {
-    if (date === undefined) {
-      return mockNow;
-    }
-    return actualDayjs(date);
-  };
-
-  Object.assign(mockDayjs, actualDayjs);
-
-  return { default: mockDayjs };
-});
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 describe("generateSalaryDataSeries", () => {
   let loans: Loan[];
-  let repaymentStartDate: Date;
 
   beforeEach(() => {
     loans = [{ planType: "PLAN_2", balance: 50000 }];
-    repaymentStartDate = new Date("2022-04-01");
   });
 
   it("generates correct number of data points", () => {
-    const data = generateSalaryDataSeries(
-      loans,
-      repaymentStartDate,
-      (r) => r.totalRepayment,
-    );
+    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
     const expectedPoints =
       Math.floor((MAX_SALARY - MIN_SALARY) / SALARY_STEP) + 1;
 
@@ -51,22 +22,14 @@ describe("generateSalaryDataSeries", () => {
   });
 
   it("starts at MIN_SALARY and ends at MAX_SALARY", () => {
-    const data = generateSalaryDataSeries(
-      loans,
-      repaymentStartDate,
-      (r) => r.totalRepayment,
-    );
+    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
 
     expect(data[0].salary).toBe(MIN_SALARY);
     expect(data[data.length - 1].salary).toBe(MAX_SALARY);
   });
 
   it("increments by SALARY_STEP", () => {
-    const data = generateSalaryDataSeries(
-      loans,
-      repaymentStartDate,
-      (r) => r.totalRepayment,
-    );
+    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
 
     for (let i = 1; i < data.length; i++) {
       expect(data[i].salary - data[i - 1].salary).toBe(SALARY_STEP);
@@ -75,11 +38,7 @@ describe("generateSalaryDataSeries", () => {
 
   describe("mapper functions", () => {
     it("maps totalRepayment correctly", () => {
-      const data = generateSalaryDataSeries(
-        loans,
-        repaymentStartDate,
-        (r) => r.totalRepayment,
-      );
+      const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
 
       // All values should be non-negative
       data.forEach(({ value }) => {
@@ -88,11 +47,7 @@ describe("generateSalaryDataSeries", () => {
     });
 
     it("maps totalMonths for repayment years chart", () => {
-      const data = generateSalaryDataSeries(
-        loans,
-        repaymentStartDate,
-        (r) => r.totalMonths / 12,
-      );
+      const data = generateSalaryDataSeries(loans, (r) => r.totalMonths / 12);
 
       // All values should be years (reasonable range)
       data.forEach(({ value: years }) => {
@@ -109,7 +64,6 @@ describe("generateSalaryDataSeries", () => {
 
       const data = generateSalaryDataSeries(
         loansWithPostgrad,
-        repaymentStartDate,
         (r) => r.loanResults.length,
       );
 
@@ -122,11 +76,7 @@ describe("generateSalaryDataSeries", () => {
 
   it("works with different plan types", () => {
     const plan5Loans: Loan[] = [{ planType: "PLAN_5", balance: 60000 }];
-    const data = generateSalaryDataSeries(
-      plan5Loans,
-      repaymentStartDate,
-      (r) => r.totalRepayment,
-    );
+    const data = generateSalaryDataSeries(plan5Loans, (r) => r.totalRepayment);
 
     expect(data.length).toBeGreaterThan(0);
     data.forEach(({ value }) => {
@@ -135,11 +85,7 @@ describe("generateSalaryDataSeries", () => {
   });
 
   it("handles empty loans array", () => {
-    const data = generateSalaryDataSeries(
-      [],
-      repaymentStartDate,
-      (r) => r.totalRepayment,
-    );
+    const data = generateSalaryDataSeries([], (r) => r.totalRepayment);
 
     // Should still generate data points, all with zero values
     expect(data.length).toBeGreaterThan(0);
@@ -238,22 +184,16 @@ describe("calculateAnnualizedRate", () => {
 
 describe("integration: chart data generation", () => {
   let loans: Loan[];
-  let repaymentStartDate: Date;
 
   beforeEach(() => {
     loans = [
       { planType: "PLAN_2", balance: 50000 },
       { planType: "POSTGRADUATE", balance: 10000 },
     ];
-    repaymentStartDate = new Date("2022-04-01");
   });
 
   it("generates TotalRepaymentChart data", () => {
-    const data = generateSalaryDataSeries(
-      loans,
-      repaymentStartDate,
-      (r) => r.totalRepayment,
-    );
+    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
 
     // Total repayment should generally increase then plateau
     expect(data[0].value).toBeLessThanOrEqual(
@@ -262,11 +202,7 @@ describe("integration: chart data generation", () => {
   });
 
   it("generates RepaymentYearsChart data", () => {
-    const data = generateSalaryDataSeries(
-      loans,
-      repaymentStartDate,
-      (r) => r.totalMonths / 12,
-    );
+    const data = generateSalaryDataSeries(loans, (r) => r.totalMonths / 12);
 
     // Higher salary should mean fewer years (generally)
     const firstYears = data[0].value;
@@ -276,7 +212,7 @@ describe("integration: chart data generation", () => {
 
   it("generates InterestRateChart data", () => {
     const totalPrincipal = 60000;
-    const data = generateSalaryDataSeries(loans, repaymentStartDate, (r) =>
+    const data = generateSalaryDataSeries(loans, (r) =>
       calculateAnnualizedRate(r, totalPrincipal),
     );
 

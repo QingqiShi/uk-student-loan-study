@@ -45,11 +45,7 @@ export function useTotalRepaymentData() {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
 
-  const data = generateSalaryDataSeries(
-    config.loans,
-    config.repaymentStartDate,
-    (r) => r.totalRepayment,
-  );
+  const data = generateSalaryDataSeries(config.loans, (r) => r.totalRepayment);
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
 
@@ -63,7 +59,6 @@ export function useRepaymentYearsData() {
 
   const data = generateSalaryDataSeries(
     config.loans,
-    config.repaymentStartDate,
     (r) => r.totalMonths / 12,
   );
 
@@ -84,10 +79,8 @@ export function useInterestRateData() {
   const { underGradBalance, postGradBalance } = config;
   const totalPrincipal = underGradBalance + postGradBalance;
 
-  const data = generateSalaryDataSeries(
-    config.loans,
-    config.repaymentStartDate,
-    (r) => calculateAnnualizedRate(r, totalPrincipal),
+  const data = generateSalaryDataSeries(config.loans, (r) =>
+    calculateAnnualizedRate(r, totalPrincipal),
   );
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
