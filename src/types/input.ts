@@ -4,8 +4,8 @@
 interface BaseInputProps {
   /** Unique identifier for the input element */
   id: string;
-  /** Label displayed above the input */
-  label: string;
+  /** Label displayed above the input (optional for inline layouts) */
+  label?: string;
   /** Optional helper text displayed below the input */
   helperText?: string;
 }

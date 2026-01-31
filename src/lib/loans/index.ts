@@ -20,7 +20,12 @@ export type {
 } from "./overpay-types";
 
 // Config (for UI dropdowns, display names, etc.)
-export { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
+export {
+  PLAN_CONFIGS,
+  CURRENT_RATES,
+  PLAN_DISPLAY_INFO,
+  POSTGRADUATE_DISPLAY_INFO,
+} from "./plans";
 
 // Core functions
 export { simulateLoans } from "./simulate";
