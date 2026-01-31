@@ -1,6 +1,11 @@
 import type { UndergraduatePlanType } from "@/lib/loans";
 
 /**
+ * Salary growth rate presets for overpay analysis.
+ */
+export type SalaryGrowthRate = "conservative" | "moderate" | "aggressive";
+
+/**
  * Core loan state values stored in the application state.
  */
 export interface LoanState {
@@ -14,6 +19,14 @@ export interface LoanState {
   repaymentDate: Date | null;
   /** Current salary for annotation on charts */
   salary: number;
+
+  // Overpay analysis fields
+  /** Monthly overpayment amount in GBP (0-500) */
+  monthlyOverpayment: number;
+  /** Expected salary growth rate preset */
+  salaryGrowthRate: SalaryGrowthRate;
+  /** Alternative investment return rate (0-10%, stored as decimal e.g. 0.05) */
+  alternativeSavingsRate: number;
 }
 
 /**
