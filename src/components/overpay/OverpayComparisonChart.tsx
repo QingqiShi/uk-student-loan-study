@@ -54,17 +54,26 @@ export function OverpayComparisonChart({
     );
   }
 
-  const formatYear = (month: number) => `Year ${String(Math.floor(month / 12))}`;
+  const formatYear = (month: number) =>
+    `Year ${String(Math.floor(month / 12))}`;
 
   return (
     <div
       role="img"
       aria-label="Net worth comparison chart showing overpay vs invest scenarios over time"
       className="h-full w-full overflow-hidden select-none touch-pinch-zoom"
-      onMouseEnter={() => { setIsTooltipActive(true); }}
-      onMouseLeave={() => { setIsTooltipActive(false); }}
-      onTouchStart={() => { setIsTooltipActive(true); }}
-      onTouchEnd={() => { setIsTooltipActive(false); }}
+      onMouseEnter={() => {
+        setIsTooltipActive(true);
+      }}
+      onMouseLeave={() => {
+        setIsTooltipActive(false);
+      }}
+      onTouchStart={() => {
+        setIsTooltipActive(true);
+      }}
+      onTouchEnd={() => {
+        setIsTooltipActive(false);
+      }}
     >
       <ChartContainer config={chartConfig} className="h-full w-full">
         <LineChart

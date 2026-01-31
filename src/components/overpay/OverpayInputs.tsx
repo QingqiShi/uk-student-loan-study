@@ -101,7 +101,9 @@ export function OverpayInputs() {
                 state.salaryGrowthRate === option.value ? "default" : "outline"
               }
               size="sm"
-              onClick={() => { updateField("salaryGrowthRate", option.value); }}
+              onClick={() => {
+                updateField("salaryGrowthRate", option.value);
+              }}
               aria-pressed={state.salaryGrowthRate === option.value}
               className="flex-1"
             >
