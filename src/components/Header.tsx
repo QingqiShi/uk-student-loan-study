@@ -150,8 +150,6 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
     };
   }, [isOpen]);
 
-  const SUMMARY_HEIGHT = "6rem";
-
   return (
     <div className="sticky top-0 z-50 px-4 pt-3">
       <a
@@ -161,7 +159,7 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
         Skip to main content
       </a>
       <div className="relative mx-auto max-w-4xl">
-        <div style={{ height: SUMMARY_HEIGHT }} aria-hidden="true" />
+        <div className="h-24" aria-hidden="true" />
 
         <header
           ref={headerRef}
@@ -198,17 +196,11 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
               </div>
             </div>
 
-            <div
-              className="mt-2 overflow-x-auto border-t pt-2 [&::-webkit-scrollbar]:hidden"
-              style={{ scrollbarWidth: "none" }}
-            >
+            <div className="mt-2 overflow-x-auto border-t pt-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
               <PresetPills />
             </div>
 
-            <div
-              className="mt-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden"
-              style={{ scrollbarWidth: "none" }}
-            >
+            <div className="mt-1.5 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
               <p className="flex items-center gap-2 text-xs whitespace-nowrap text-muted-foreground sm:text-sm">
                 {renderSummary()}
               </p>

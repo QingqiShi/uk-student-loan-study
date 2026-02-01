@@ -1,4 +1,5 @@
-import { PRIMARY, PRIMARY_DARK } from "@/lib/brand-colors";
+import { PRIMARY_DARK } from "@/lib/brand-colors";
+import { cn } from "@/lib/utils";
 
 interface BrandIconProps {
   size?: number;
@@ -11,14 +12,11 @@ export function BrandIcon({ size = 44, className }: BrandIconProps) {
 
   return (
     <div
-      className={className}
+      className={cn("relative overflow-hidden bg-primary", className)}
       style={{
         width: size,
         height: size,
         borderRadius: cornerRadius,
-        backgroundColor: PRIMARY,
-        overflow: "hidden",
-        position: "relative",
       }}
     >
       <svg
@@ -28,7 +26,7 @@ export function BrandIcon({ size = 44, className }: BrandIconProps) {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
-        style={{ position: "absolute", top: 0, left: 0 }}
+        className="absolute top-0 left-0"
       >
         <path
           d="M44 44l0-20q-11-16-22-12-11 5-22 16l0 16z"

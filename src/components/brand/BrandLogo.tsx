@@ -1,5 +1,5 @@
 import { BrandIcon } from "./BrandIcon";
-import { PRIMARY, MUTED } from "@/lib/brand-colors";
+import { PRIMARY } from "@/lib/brand-colors";
 import { cn } from "@/lib/utils";
 
 interface BrandLogoProps {
@@ -31,11 +31,10 @@ export function BrandLogo({
         <div className="relative">
           {/* Shadow layer */}
           <span
-            className="absolute font-bold whitespace-nowrap text-primary/15"
+            className="absolute font-display font-bold whitespace-nowrap text-primary/15"
             style={{
               top: shadowOffset.y,
               left: shadowOffset.x,
-              fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
               fontSize,
             }}
           >
@@ -43,11 +42,8 @@ export function BrandLogo({
           </span>
           {/* Main text */}
           <span
-            className="relative whitespace-nowrap"
-            style={{
-              fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
-              fontSize,
-            }}
+            className="relative font-display whitespace-nowrap"
+            style={{ fontSize }}
           >
             <span className="text-foreground">StudentLoan</span>
             <span className="font-bold text-primary">Study</span>
@@ -62,39 +58,29 @@ export function BrandLogo({
   const textColor = variant === "dark" ? "#FFFFFF" : "#111111";
 
   return (
-    <div
-      className={className}
-      style={{ display: "flex", alignItems: "center", gap }}
-    >
+    <div className={cn("flex items-center", className)} style={{ gap }}>
       <BrandIcon size={iconSize} />
-      <div style={{ position: "relative" }}>
+      <div className="relative">
         {/* Shadow layer */}
         <span
+          className="absolute font-display font-bold whitespace-nowrap"
           style={{
-            position: "absolute",
             top: shadowOffset.y,
             left: shadowOffset.x,
-            fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
             fontSize,
-            fontWeight: 700,
             color: `${PRIMARY}25`,
-            whiteSpace: "nowrap",
           }}
         >
           StudentLoanStudy.uk
         </span>
         {/* Main text */}
         <span
-          style={{
-            position: "relative",
-            fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
-            fontSize,
-            whiteSpace: "nowrap",
-          }}
+          className="relative font-display whitespace-nowrap"
+          style={{ fontSize }}
         >
           <span style={{ color: textColor }}>StudentLoan</span>
-          <span style={{ color: PRIMARY, fontWeight: 700 }}>Study</span>
-          <span style={{ color: MUTED, fontWeight: 700 }}>.uk</span>
+          <span className="font-bold text-primary">Study</span>
+          <span className="font-bold text-muted-foreground">.uk</span>
         </span>
       </div>
     </div>

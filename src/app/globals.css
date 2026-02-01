@@ -55,10 +55,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Brand colors - source of truth: src/lib/brand-colors.json */
-  --primary: #10b981; /* brand-colors.json → primary.light (emerald-500) */
-  --primary-dark: #0d9668; /* brand-colors.json → primaryDark (emerald-600) */
-  --brand-background: #0a0a0a; /* brand-colors.json → background */
+  --primary: oklch(0.60 0.13 163);
   --primary-foreground: oklch(0.98 0.02 166);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -94,9 +91,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  /* Brand colors - source of truth: src/lib/brand-colors.json */
-  --primary: #34d399; /* brand-colors.json → primary.dark (emerald-400) */
-  --primary-dark: #0d9668; /* brand-colors.json → primaryDark (same) */
+  --primary: oklch(0.70 0.15 162);
   --primary-foreground: oklch(0.26 0.05 173);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
@@ -242,4 +237,8 @@ html.dark::view-transition-new(theme-icon) {
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
 }
