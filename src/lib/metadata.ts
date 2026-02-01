@@ -29,7 +29,10 @@ export interface DecodedMetadataParams {
  * Used by generateMetadata and opengraph-image files.
  */
 export function parseMetadataParams(
-  searchParams: Record<string, string | string[] | undefined> | undefined | null,
+  searchParams:
+    | Record<string, string | string[] | undefined>
+    | undefined
+    | null,
 ): DecodedMetadataParams {
   const urlParams = new URLSearchParams();
   for (const [key, value] of Object.entries(searchParams ?? {})) {

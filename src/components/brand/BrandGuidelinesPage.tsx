@@ -178,9 +178,7 @@ function ColorSwatch({
         <span className="font-display text-[13px] font-semibold text-foreground">
           {name}
         </span>
-        <span className="font-mono text-xs text-muted-foreground">
-          {hex}
-        </span>
+        <span className="font-mono text-xs text-muted-foreground">{hex}</span>
       </div>
     </div>
   );
