@@ -1,8 +1,9 @@
 import { useLoanConfig, useCurrentSalary } from "./useStoreSelectors";
-import type { DataPoint } from "@/types/chart";
+import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
 import {
   generateSalaryDataSeries,
+  generateBalanceTimeSeries,
   calculateAnnualizedRate,
 } from "@/utils/loan-calculations";
 
@@ -52,24 +53,15 @@ export function useTotalRepaymentData() {
   return { data, annotationSalary, annotationValue };
 }
 
-/** Hook for repayment years chart data */
-export function useRepaymentYearsData() {
+/** Hook for balance over time chart data */
+export function useBalanceOverTimeData(): {
+  data: BalanceDataPoint[];
+  writeOffMonth: number | null;
+} {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
 
-  const data = generateSalaryDataSeries(
-    config.loans,
-    (r) => r.totalMonths / 12,
-  );
-
-  // RepaymentYearsChart uses a 5000 offset to avoid annotation at chart edge
-  const { annotationSalary, annotationValue } = useAnnotationData(
-    salary,
-    data,
-    5000,
-  );
-
-  return { data, annotationSalary, annotationValue };
+  return generateBalanceTimeSeries(config.loans, salary);
 }
 
 /** Hook for interest rate chart data */
