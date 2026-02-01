@@ -4,7 +4,6 @@ import { useLoanContext } from "@/context/LoanContext";
 
 interface LoanConfig {
   loans: Loan[];
-  repaymentStartDate: Date;
   underGradBalance: number;
   postGradBalance: number;
 }
@@ -27,7 +26,6 @@ export function useLoanConfig(): LoanConfig {
 
   return {
     loans,
-    repaymentStartDate: state.repaymentDate ?? new Date(),
     underGradBalance: state.underGradBalance,
     postGradBalance: state.postGradBalance,
   };

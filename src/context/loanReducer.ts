@@ -1,19 +1,10 @@
 import type { LoanState } from "@/types/store";
-import {
-  DEFAULT_PRESET,
-  REPAYMENT_START_MONTH,
-  type Preset,
-} from "@/lib/presets";
+import { DEFAULT_PRESET, type Preset } from "@/lib/presets";
 
 export const initialState: LoanState = {
   underGradPlanType: DEFAULT_PRESET.underGradPlanType,
   underGradBalance: DEFAULT_PRESET.underGradBalance,
   postGradBalance: DEFAULT_PRESET.postGradBalance,
-  repaymentDate: new Date(
-    DEFAULT_PRESET.repaymentYear,
-    REPAYMENT_START_MONTH,
-    1,
-  ),
   salary: 70_000,
 
   // Overpay analysis defaults
@@ -69,11 +60,6 @@ export function loanReducer(state: LoanState, action: LoanAction): LoanState {
         underGradBalance: action.preset.underGradBalance,
         postGradBalance: action.preset.postGradBalance,
         underGradPlanType: action.preset.underGradPlanType,
-        repaymentDate: new Date(
-          action.preset.repaymentYear,
-          REPAYMENT_START_MONTH,
-          1,
-        ),
       };
     default:
       return state;
