@@ -3,7 +3,7 @@ import type {
   Loan,
   SimulationMapper,
 } from "@/lib/loans/types";
-import type { DataPoint } from "@/types/chart";
+import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
 import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
@@ -48,6 +48,78 @@ export function generateSalaryDataSeries(
   }
 
   return data;
+}
+
+/**
+ * Result of generating balance time series data.
+ */
+export interface BalanceTimeSeriesResult {
+  data: BalanceDataPoint[];
+  writeOffMonth: number | null;
+}
+
+/**
+ * Generates balance over time data for a specific salary.
+ *
+ * Runs a single simulation and extracts the total closing balance across
+ * all loans at each point in time, sampled annually for chart clarity.
+ *
+ * @param loans - Array of loans to simulate
+ * @param annualSalary - The user's current annual salary
+ * @param rpiRate - Optional RPI rate override
+ * @returns Balance data points and write-off month if applicable
+ */
+export function generateBalanceTimeSeries(
+  loans: Loan[],
+  annualSalary: number,
+  rpiRate = CURRENT_RATES.rpi,
+): BalanceTimeSeriesResult {
+  if (loans.length === 0 || loans.every((loan) => loan.balance <= 0)) {
+    return { data: [], writeOffMonth: null };
+  }
+
+  const timeSeries = simulate({
+    loans,
+    annualSalary,
+    monthsElapsed: 0,
+    rpiRate,
+  });
+
+  const data: BalanceDataPoint[] = [];
+
+  // Add initial balance at month 0
+  const initialBalance = loans.reduce((sum, loan) => sum + loan.balance, 0);
+  data.push({ month: 0, balance: initialBalance });
+
+  // Sample at yearly intervals
+  for (const snapshot of timeSeries.snapshots) {
+    // Sample annually (every 12 months)
+    if ((snapshot.month + 1) % 12 === 0) {
+      const totalBalance = snapshot.loans.reduce(
+        (sum, loan) => sum + loan.closingBalance,
+        0,
+      );
+      data.push({ month: snapshot.month + 1, balance: totalBalance });
+    }
+  }
+
+  // If the last snapshot isn't on a year boundary, add the final point
+  if (timeSeries.snapshots.length > 0) {
+    const lastSnapshot = timeSeries.snapshots[timeSeries.snapshots.length - 1];
+    if ((lastSnapshot.month + 1) % 12 !== 0) {
+      const totalBalance = lastSnapshot.loans.reduce(
+        (sum, loan) => sum + loan.closingBalance,
+        0,
+      );
+      data.push({ month: lastSnapshot.month + 1, balance: totalBalance });
+    }
+  }
+
+  // Detect write-off from simulation summary
+  const hasWriteOff = timeSeries.summary.perLoan.some((l) => l.writtenOff);
+  const writeOffMonth = hasWriteOff ? timeSeries.summary.monthsToPayoff : null;
+
+  return { data, writeOffMonth };
 }
 
 /**

@@ -9,7 +9,7 @@ import {
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import {
   useTotalRepaymentData,
-  useRepaymentYearsData,
+  useBalanceOverTimeData,
   useInterestRateData,
 } from "./useChartData";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
@@ -191,54 +191,65 @@ describe("useChartData hooks", () => {
     });
   });
 
-  describe("useRepaymentYearsData", () => {
-    it("returns data array with correct number of points", () => {
-      const { result } = renderHook(() => useRepaymentYearsData(), {
+  describe("useBalanceOverTimeData", () => {
+    it("returns data array with balance points over time", () => {
+      const { result } = renderHook(() => useBalanceOverTimeData(), {
         wrapper: createWrapper(),
       });
 
-      expect(result.current.data.length).toBe(expectedDataPoints);
+      expect(result.current.data.length).toBeGreaterThan(0);
     });
 
-    it("returns years values (not months)", () => {
-      const { result } = renderHook(() => useRepaymentYearsData(), {
+    it("returns data points with month and balance properties", () => {
+      const { result } = renderHook(() => useBalanceOverTimeData(), {
         wrapper: createWrapper(),
       });
 
-      // All values should be reasonable year values (not raw months)
-      result.current.data.forEach(({ value: years }) => {
-        expect(years).toBeGreaterThanOrEqual(0);
-        expect(years).toBeLessThanOrEqual(45); // Max write-off is 40 years + buffer
-      });
+      expect(result.current.data[0]).toHaveProperty("month");
+      expect(result.current.data[0]).toHaveProperty("balance");
     });
 
-    it("uses offset of 5000 for annotation boundary", () => {
-      // Set salary just below MAX_SALARY - 5000 (should have annotation)
-      const { result: withAnnotation } = renderHook(
-        () => useRepaymentYearsData(),
-        { wrapper: createWrapper({ salary: MAX_SALARY - 6000 }) },
-      );
-      expect(withAnnotation.current.annotationSalary).toBeDefined();
-
-      // Set salary just above MAX_SALARY - 5000 (should NOT have annotation)
-      const { result: withoutAnnotation } = renderHook(
-        () => useRepaymentYearsData(),
-        { wrapper: createWrapper({ salary: MAX_SALARY - 4000 }) },
-      );
-      expect(withoutAnnotation.current.annotationSalary).toBeUndefined();
-    });
-
-    it("higher salary generally means fewer years to pay off", () => {
-      const { result } = renderHook(() => useRepaymentYearsData(), {
-        wrapper: createWrapper(),
+    it("starts at month 0 with initial loan balance", () => {
+      const { result } = renderHook(() => useBalanceOverTimeData(), {
+        wrapper: createWrapper({ underGradBalance: 50_000 }),
       });
 
-      const lowSalaryYears = result.current.data[0].value;
-      const highSalaryYears =
-        result.current.data[result.current.data.length - 1].value;
+      expect(result.current.data[0].month).toBe(0);
+      expect(result.current.data[0].balance).toBe(50_000);
+    });
 
-      // Higher salary should mean fewer or equal years
-      expect(highSalaryYears).toBeLessThanOrEqual(lowSalaryYears + 5);
+    it("balance decreases over time", () => {
+      // Use a high salary where repayments clearly exceed interest
+      const { result } = renderHook(() => useBalanceOverTimeData(), {
+        wrapper: createWrapper({ underGradBalance: 50_000, salary: 100_000 }),
+      });
+
+      const initialBalance = result.current.data[0].balance;
+      const finalBalance =
+        result.current.data[result.current.data.length - 1].balance;
+
+      expect(finalBalance).toBeLessThan(initialBalance);
+    });
+
+    it("returns empty data when no loans", () => {
+      const { result } = renderHook(() => useBalanceOverTimeData(), {
+        wrapper: createWrapper({ underGradBalance: 0, postGradBalance: 0 }),
+      });
+
+      expect(result.current.data.length).toBe(0);
+      expect(result.current.writeOffMonth).toBeNull();
+    });
+
+    it("returns writeOffMonth for low earners who reach write-off", () => {
+      const { result } = renderHook(() => useBalanceOverTimeData(), {
+        wrapper: createWrapper({
+          underGradBalance: 50_000,
+          salary: MIN_SALARY,
+        }),
+      });
+
+      // Low earners should hit write-off (360 months for Plan 2)
+      expect(result.current.writeOffMonth).not.toBeNull();
     });
   });
 
