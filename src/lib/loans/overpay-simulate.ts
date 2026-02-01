@@ -5,20 +5,36 @@ import type {
   OverpayInput,
   OverpayAnalysisResult,
   ScenarioResult,
-  InvestmentResult,
-  NetWorthDataPoint,
+  BalanceDataPoint,
   RecommendationType,
 } from "./overpay-types";
-import type { SimulationTimeSeries } from "./types";
+import type { Loan, SimulationTimeSeries } from "./types";
 import { SALARY_GROWTH_RATES } from "@/constants";
 
 /**
- * Simulates overpayment scenarios to help users decide whether to overpay or invest.
+ * Applies a lump sum payment by reducing initial loan balances proportionally.
+ */
+function applyLumpSum(loans: Loan[], lumpSumPayment: number): Loan[] {
+  if (lumpSumPayment <= 0) return loans;
+
+  const totalBalance = loans.reduce((sum, l) => sum + l.balance, 0);
+  if (totalBalance === 0) return loans;
+
+  return loans.map((loan) => ({
+    ...loan,
+    balance: Math.max(
+      0,
+      loan.balance - (loan.balance / totalBalance) * lumpSumPayment,
+    ),
+  }));
+}
+
+/**
+ * Simulates overpayment scenarios to help users decide whether to overpay.
  *
- * Runs three simulations:
+ * Runs two simulations:
  * 1. Baseline: Normal repayments with no overpayment
  * 2. Overpay: Normal repayments + monthly overpayment
- * 3. Invest: Normal repayments, invest the overpayment amount instead
  *
  * Uses the unified simulation engine which correctly handles multiple loan types
  * with independent thresholds.
@@ -32,9 +48,9 @@ export function simulateOverpayScenarios(
     repaymentStartDate,
     monthlyOverpayment,
     salaryGrowthRate,
-    alternativeSavingsRate,
     rpiRate,
     boeBaseRate,
+    lumpSumPayment = 0,
   } = input;
 
   const rpi = rpiRate ?? CURRENT_RATES.rpi;
@@ -43,9 +59,19 @@ export function simulateOverpayScenarios(
 
   // Check for empty scenarios
   const validLoans = loans.filter((l) => l.balance > 0);
-  if (validLoans.length === 0 || monthlyOverpayment === 0) {
+  if (validLoans.length === 0) {
     return createEmptyResult();
   }
+
+  // Calculate total balance before lump sum to cap the actual amount used
+  const totalBalance = validLoans.reduce((sum, l) => sum + l.balance, 0);
+  const actualLumpSumUsed = Math.min(lumpSumPayment, totalBalance);
+
+  // Apply lump sum to overpay scenario only (comparing with vs without lump sum)
+  const loansAfterLumpSum = applyLumpSum(validLoans, actualLumpSumUsed).filter(
+    (l) => l.balance > 0,
+  );
+  const lumpSumPaidOffEntireLoan = loansAfterLumpSum.length === 0;
 
   // Calculate months elapsed since repayment started
   const monthsElapsed = Math.max(
@@ -53,7 +79,7 @@ export function simulateOverpayScenarios(
     dayjs().diff(dayjs(repaymentStartDate), "months"),
   );
 
-  // Simulate baseline (no overpayment)
+  // Simulate baseline (no lump sum, no monthly overpayment)
   const baselineSimulation = simulate({
     loans: validLoans,
     annualSalary: startingSalary,
@@ -64,65 +90,74 @@ export function simulateOverpayScenarios(
     boeBaseRate: boe,
   });
 
-  // Simulate with overpayment
-  const overpaySimulation = simulate({
-    loans: validLoans,
-    annualSalary: startingSalary,
-    monthsElapsed,
-    salaryGrowthRate: annualGrowthRate,
-    monthlyOverpayment,
-    rpiRate: rpi,
-    boeBaseRate: boe,
-  });
+  // Simulate with overpayment (lump sum applied + monthly overpayment)
+  const overpaySimulation =
+    loansAfterLumpSum.length === 0
+      ? baselineSimulation // Lump sum paid off entire loan
+      : simulate({
+          loans: loansAfterLumpSum,
+          annualSalary: startingSalary,
+          monthsElapsed,
+          salaryGrowthRate: annualGrowthRate,
+          monthlyOverpayment,
+          rpiRate: rpi,
+          boeBaseRate: boe,
+        });
 
   // Convert simulations to scenario results
   const baseline = extractScenarioResult(baselineSimulation);
-  const overpay = extractScenarioResult(overpaySimulation);
+  const overpayRaw = extractScenarioResult(overpaySimulation);
 
-  // Simulate investment alternative (invest for baseline duration)
-  const investmentResult = simulateInvestment(
-    monthlyOverpayment,
-    alternativeSavingsRate,
-    baseline.monthsToPayoff,
-  );
+  // Add lump sum to overpay total (it's paid upfront, not tracked by simulation)
+  // Use actualLumpSumUsed to avoid overstating cost when lump sum exceeds balance
+  const overpay: ScenarioResult = lumpSumPaidOffEntireLoan
+    ? {
+        totalPaid: actualLumpSumUsed,
+        monthsToPayoff: 0,
+        writtenOff: false,
+        amountWrittenOff: 0,
+        finalSalary: startingSalary,
+      }
+    : {
+        ...overpayRaw,
+        totalPaid: overpayRaw.totalPaid + actualLumpSumUsed,
+      };
 
-  // Generate net worth time series for chart
-  const netWorthTimeSeries = generateNetWorthSeries(
+  // Generate balance time series for chart
+  const balanceTimeSeries = generateBalanceSeries(
     baselineSimulation,
     overpaySimulation,
-    monthlyOverpayment,
-    alternativeSavingsRate,
+    lumpSumPaidOffEntireLoan,
   );
 
   // Calculate derived values
   const paymentDifference = baseline.totalPaid - overpay.totalPaid;
-  const overpaymentContributions = overpay.monthsToPayoff * monthlyOverpayment;
-
-  // Determine crossover point (if any)
-  const crossoverMonth = findCrossoverMonth(netWorthTimeSeries);
+  const overpaymentContributions =
+    overpay.monthsToPayoff * monthlyOverpayment + actualLumpSumUsed;
+  const monthsSaved = baseline.monthsToPayoff - overpay.monthsToPayoff;
 
   // Write-off month for baseline
   const writeOffMonth = baseline.writtenOff ? baseline.monthsToPayoff : null;
 
   // Determine recommendation
-  const { recommendation, reason } = determineRecommendation(
-    baseline,
-    overpay,
-    investmentResult,
-    paymentDifference,
-  );
+  const hasOverpayment = monthlyOverpayment > 0 || lumpSumPayment > 0;
+  const { recommendation, reason } = hasOverpayment
+    ? determineRecommendation(baseline, overpay, paymentDifference)
+    : {
+        recommendation: "marginal" as RecommendationType,
+        reason: "Enter an overpayment amount to compare scenarios.",
+      };
 
   return {
     baseline,
     overpay,
-    investment: investmentResult,
     recommendation,
     recommendationReason: reason,
-    netWorthTimeSeries,
-    crossoverMonth,
+    balanceTimeSeries,
     writeOffMonth,
     paymentDifference,
     overpaymentContributions,
+    monthsSaved,
   };
 }
 
@@ -152,109 +187,43 @@ function extractScenarioResult(
 }
 
 /**
- * Simulates investing the overpayment amount instead.
+ * Generates month-by-month balance comparison for charting.
  */
-function simulateInvestment(
-  monthlyContribution: number,
-  annualReturnRate: number,
-  months: number,
-): InvestmentResult {
-  const monthlyReturnRate = Math.pow(1 + annualReturnRate, 1 / 12) - 1;
-
-  let portfolioValue = 0;
-  const totalContributed = monthlyContribution * months;
-
-  for (let m = 0; m < months; m++) {
-    // Add contribution at start of month
-    portfolioValue += monthlyContribution;
-    // Apply monthly returns
-    portfolioValue *= 1 + monthlyReturnRate;
-  }
-
-  return {
-    portfolioValue,
-    totalContributed,
-    investmentGains: portfolioValue - totalContributed,
-  };
-}
-
-/**
- * Generates month-by-month net worth comparison for charting.
- */
-function generateNetWorthSeries(
+function generateBalanceSeries(
   baselineSimulation: SimulationTimeSeries,
   overpaySimulation: SimulationTimeSeries,
-  monthlyOverpayment: number,
-  alternativeSavingsRate: number,
-): NetWorthDataPoint[] {
-  const monthlyReturnRate = Math.pow(1 + alternativeSavingsRate, 1 / 12) - 1;
+  lumpSumPaidOffEntireLoan: boolean,
+): BalanceDataPoint[] {
+  const maxMonths = baselineSimulation.summary.monthsToPayoff;
 
-  const maxMonths = Math.max(
-    baselineSimulation.summary.monthsToPayoff,
-    overpaySimulation.summary.monthsToPayoff,
-  );
-
-  const series: NetWorthDataPoint[] = [];
-
-  // Track investment portfolio for the invest path
-  let portfolioValue = 0;
+  const series: BalanceDataPoint[] = [];
 
   for (let month = 0; month <= maxMonths; month++) {
-    // Get total balance for overpay path from snapshots
-    const overpayBalance =
-      overpaySimulation.snapshots[month]?.loans.reduce(
-        (sum, l) => sum + l.closingBalance,
-        0,
-      ) ?? 0;
-
-    // Get total balance for baseline/invest path from snapshots
+    // Get total balance for baseline path from snapshots
     const baselineBalance =
       baselineSimulation.snapshots[month]?.loans.reduce(
         (sum, l) => sum + l.closingBalance,
         0,
       ) ?? 0;
 
-    // Calculate net worth for each path
-    // Baseline path: just the (negative) remaining debt
-    const baselineNetWorth = -Math.max(0, baselineBalance);
-    // Overpay path: just the (negative) debt (reduced faster)
-    const overpayNetWorth = -Math.max(0, overpayBalance);
-    // Invest path: portfolio minus remaining debt (same debt as baseline)
-    const investNetWorth = portfolioValue - Math.max(0, baselineBalance);
+    // Get total balance for overpay path from snapshots
+    // If lump sum paid off entire loan, overpay balance is always 0
+    const overpayBalance = lumpSumPaidOffEntireLoan
+      ? 0
+      : (overpaySimulation.snapshots[month]?.loans.reduce(
+          (sum, l) => sum + l.closingBalance,
+          0,
+        ) ?? 0);
 
     series.push({
       month,
       year: Math.floor(month / 12),
-      baselineNetWorth,
-      overpayNetWorth,
-      investNetWorth,
+      baselineBalance: Math.max(0, baselineBalance),
+      overpayBalance: Math.max(0, overpayBalance),
     });
-
-    // Grow investment portfolio for next month
-    if (month < maxMonths) {
-      portfolioValue += monthlyOverpayment;
-      portfolioValue *= 1 + monthlyReturnRate;
-    }
   }
 
   return series;
-}
-
-/**
- * Finds the month where overpay net worth exceeds invest net worth.
- */
-function findCrossoverMonth(series: NetWorthDataPoint[]): number | null {
-  for (let i = 1; i < series.length; i++) {
-    const prev = series[i - 1];
-    const curr = series[i];
-    if (
-      prev.investNetWorth >= prev.overpayNetWorth &&
-      curr.overpayNetWorth > curr.investNetWorth
-    ) {
-      return curr.month;
-    }
-  }
-  return null;
 }
 
 /**
@@ -263,7 +232,6 @@ function findCrossoverMonth(series: NetWorthDataPoint[]): number | null {
 function determineRecommendation(
   baseline: ScenarioResult,
   overpay: ScenarioResult,
-  investment: InvestmentResult,
   paymentDifference: number,
 ): { recommendation: RecommendationType; reason: string } {
   // If baseline loan is written off
@@ -273,47 +241,43 @@ function determineRecommendation(
       // Still written off even with overpayment - definitely don't overpay
       return {
         recommendation: "dont-overpay",
-        reason: `Your loan will be written off regardless. Every pound you overpay is money lost that could be growing in investments.`,
+        reason: `Your loan will be written off regardless. Every pound you overpay is money lost.`,
       };
     }
     // Overpaying prevents write-off - compare total outcomes
     const extraPaidByOverpaying = overpay.totalPaid - baseline.totalPaid;
-    const investPathBenefit = extraPaidByOverpaying + investment.portfolioValue;
 
-    if (investPathBenefit > 0) {
+    if (extraPaidByOverpaying > 0) {
       return {
-        recommendation: "invest-instead",
-        reason: `With the invest path, you'd save ${formatCurrency(extraPaidByOverpaying)} (written off instead of paid) and have ${formatCurrency(investment.portfolioValue)} in investments.`,
+        recommendation: "dont-overpay",
+        reason: `Without overpaying, ${formatCurrency(baseline.amountWrittenOff)} would be written off. Overpaying would cost you ${formatCurrency(extraPaidByOverpaying)} more.`,
       };
     }
   }
 
-  // Compare investment returns vs payment savings
-  const benefit = paymentDifference - investment.investmentGains;
-  const denominator = Math.max(
-    Math.abs(paymentDifference),
-    investment.investmentGains,
-    1,
-  );
-  const percentageDiff = Math.abs(benefit) / denominator;
+  // Compare payment savings as percentage of baseline total paid
+  const percentageDiff =
+    baseline.totalPaid > 0
+      ? Math.abs(paymentDifference) / baseline.totalPaid
+      : 0;
 
-  if (percentageDiff < 0.1) {
+  if (percentageDiff < 0.1 && Math.abs(paymentDifference) < 1000) {
     return {
       recommendation: "marginal",
-      reason: `The difference is small (${formatCurrency(Math.abs(benefit))}). Consider other factors like flexibility and peace of mind.`,
+      reason: `The difference is small (${formatCurrency(Math.abs(paymentDifference))}). Consider other factors like flexibility and peace of mind.`,
     };
   }
 
-  if (investment.investmentGains > paymentDifference) {
+  if (paymentDifference > 0) {
     return {
-      recommendation: "invest-instead",
-      reason: `Investing would earn ${formatCurrency(investment.investmentGains)} in returns, beating the ${formatCurrency(paymentDifference)} you'd save by overpaying.`,
+      recommendation: "overpay",
+      reason: `Overpaying saves ${formatCurrency(paymentDifference)} in total interest paid.`,
     };
   }
 
   return {
-    recommendation: "overpay",
-    reason: `Overpaying saves ${formatCurrency(paymentDifference)} in interest, more than the ${formatCurrency(investment.investmentGains)} you'd earn investing.`,
+    recommendation: "dont-overpay",
+    reason: `Overpaying would cost you ${formatCurrency(Math.abs(paymentDifference))} more overall.`,
   };
 }
 
@@ -336,18 +300,13 @@ function createEmptyResult(): OverpayAnalysisResult {
       amountWrittenOff: 0,
       finalSalary: 0,
     },
-    investment: {
-      portfolioValue: 0,
-      totalContributed: 0,
-      investmentGains: 0,
-    },
     recommendation: "marginal",
     recommendationReason: "Enter an overpayment amount to see analysis.",
-    netWorthTimeSeries: [],
-    crossoverMonth: null,
+    balanceTimeSeries: [],
     writeOffMonth: null,
     paymentDifference: 0,
     overpaymentContributions: 0,
+    monthsSaved: 0,
   };
 }
 

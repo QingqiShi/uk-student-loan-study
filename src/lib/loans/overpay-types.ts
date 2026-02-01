@@ -10,13 +10,13 @@ export interface OverpayInput {
   repaymentStartDate: Date;
   monthlyOverpayment: number;
   salaryGrowthRate: SalaryGrowthRate;
-  alternativeSavingsRate: number; // Annual return rate as decimal (e.g., 0.05 for 5%)
   rpiRate?: number;
   boeBaseRate?: number;
+  lumpSumPayment?: number;
 }
 
 /**
- * Result of a single scenario simulation (baseline, overpay, or invest).
+ * Result of a single scenario simulation (baseline or overpay).
  */
 export interface ScenarioResult {
   totalPaid: number;
@@ -27,35 +27,21 @@ export interface ScenarioResult {
 }
 
 /**
- * Investment portfolio result when choosing to invest instead of overpay.
- */
-export interface InvestmentResult {
-  portfolioValue: number;
-  totalContributed: number;
-  investmentGains: number;
-}
-
-/**
  * Recommendation type based on analysis.
  */
 export type RecommendationType =
   | "dont-overpay" // Loan will be written off anyway
-  | "invest-instead" // Investment returns beat interest saved
-  | "overpay" // Overpaying saves more than investing would earn
+  | "overpay" // Overpaying saves money
   | "marginal"; // Within 10% - personal preference
 
 /**
- * A single data point in the net worth time series for charting.
+ * A single data point in the balance time series for charting.
  */
-export interface NetWorthDataPoint {
+export interface BalanceDataPoint {
   month: number;
   year: number;
-  /** Net worth with just baseline payments (no overpay, no invest) */
-  baselineNetWorth: number;
-  /** Net worth if overpaying (negative loan balance offset by no debt) */
-  overpayNetWorth: number;
-  /** Net worth if investing (portfolio value minus remaining loan) */
-  investNetWorth: number;
+  baselineBalance: number;
+  overpayBalance: number;
 }
 
 /**
@@ -64,13 +50,10 @@ export interface NetWorthDataPoint {
 export interface OverpayAnalysisResult {
   baseline: ScenarioResult;
   overpay: ScenarioResult;
-  investment: InvestmentResult;
   recommendation: RecommendationType;
   recommendationReason: string;
-  /** Net worth comparison over time for charting */
-  netWorthTimeSeries: NetWorthDataPoint[];
-  /** If overpay path beats invest path, the month where it happens */
-  crossoverMonth: number | null;
+  /** Balance comparison over time for charting */
+  balanceTimeSeries: BalanceDataPoint[];
   /** The month when the loan is written off (baseline scenario) */
   writeOffMonth: number | null;
   /** Payment difference: baseline.totalPaid - overpay.totalPaid
@@ -79,4 +62,6 @@ export interface OverpayAnalysisResult {
   paymentDifference: number;
   /** Extra amount paid when overpaying (overpayment contributions) */
   overpaymentContributions: number;
+  /** Number of months saved by overpaying */
+  monthsSaved: number;
 }

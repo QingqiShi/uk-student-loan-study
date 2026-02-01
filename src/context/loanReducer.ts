@@ -8,9 +8,9 @@ export const initialState: LoanState = {
   salary: 65_000,
 
   // Overpay analysis defaults
-  monthlyOverpayment: 200,
-  salaryGrowthRate: "moderate",
-  alternativeSavingsRate: 0.05, // 5%
+  monthlyOverpayment: 0,
+  salaryGrowthRate: "none",
+  lumpSumPayment: 10_000,
 };
 
 // Action types

@@ -9,20 +9,19 @@ import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
 /**
  * Hook that performs overpay analysis calculations.
  *
- * Compares three scenarios:
+ * Compares two scenarios:
  * 1. Baseline: Normal loan repayments with no overpayment
  * 2. Overpay: Add monthly overpayment to loan
- * 3. Invest: Keep baseline payments, invest the overpayment amount instead
  *
  * @param repaymentStartDate - Date when loan repayment started (local state from OverpayPage)
- * @returns Analysis result with recommendation, net worth time series, and comparison data
+ * @returns Analysis result with recommendation, balance time series, and comparison data
  */
 export function useOverpayAnalysis(
   repaymentStartDate: Date,
 ): OverpayAnalysisResult {
   const { loans } = useLoanConfig();
   const salary = useCurrentSalary();
-  const { monthlyOverpayment, salaryGrowthRate, alternativeSavingsRate } =
+  const { monthlyOverpayment, salaryGrowthRate, lumpSumPayment } =
     useOverpayConfig();
 
   return simulateOverpayScenarios({
@@ -31,6 +30,6 @@ export function useOverpayAnalysis(
     repaymentStartDate,
     monthlyOverpayment,
     salaryGrowthRate,
-    alternativeSavingsRate,
+    lumpSumPayment,
   });
 }

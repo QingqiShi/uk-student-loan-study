@@ -33,7 +33,6 @@ describe("simulateOverpayScenarios", () => {
     repaymentStartDate: new Date("2022-04-01"),
     monthlyOverpayment: 200,
     salaryGrowthRate: "moderate",
-    alternativeSavingsRate: 0.05,
     rpiRate: CURRENT_RATES.rpi,
     boeBaseRate: CURRENT_RATES.boeBaseRate,
   };
@@ -47,17 +46,21 @@ describe("simulateOverpayScenarios", () => {
 
       expect(result.baseline.totalPaid).toBe(0);
       expect(result.overpay.totalPaid).toBe(0);
-      expect(result.investment.portfolioValue).toBe(0);
+      expect(result.monthsSaved).toBe(0);
     });
 
-    it("returns empty result for zero overpayment", () => {
+    it("shows prompt when no overpayment but still generates chart data", () => {
       const result = simulateOverpayScenarios({
         ...defaultInput,
         monthlyOverpayment: 0,
+        lumpSumPayment: 0,
       });
 
       expect(result.recommendation).toBe("marginal");
       expect(result.recommendationReason).toContain("Enter an overpayment");
+      // Chart data should still be generated for baseline visualization
+      expect(result.balanceTimeSeries.length).toBeGreaterThan(0);
+      expect(result.baseline.totalPaid).toBeGreaterThan(0);
     });
 
     it("returns empty result for no loans", () => {
@@ -86,14 +89,13 @@ describe("simulateOverpayScenarios", () => {
       expect(result.recommendation).toBe("dont-overpay");
     });
 
-    it("recommends overpay when interest saved beats investment returns", () => {
-      // High salary = pays off quickly, low investment rate
+    it("recommends overpay when overpaying saves money", () => {
+      // High salary = pays off quickly
       const result = simulateOverpayScenarios({
         ...defaultInput,
         loans: [{ planType: "PLAN_2", balance: 30000 }],
         startingSalary: 150000,
         monthlyOverpayment: 500,
-        alternativeSavingsRate: 0.02, // Low investment rate
       });
 
       // High salary pays off quickly, overpaying saves significant interest
@@ -102,38 +104,18 @@ describe("simulateOverpayScenarios", () => {
       }
     });
 
-    it("recommends invest-instead when investment returns beat interest saved", () => {
-      // Low balance that would be paid off anyway, high investment rate
-      const result = simulateOverpayScenarios({
-        ...defaultInput,
-        loans: [{ planType: "PLAN_2", balance: 20000 }],
-        startingSalary: 100000,
-        monthlyOverpayment: 200,
-        alternativeSavingsRate: 0.1, // High investment rate
-      });
-
-      // With high investment rate and quick payoff, investing should win
-      expect(["invest-instead", "marginal", "overpay"]).toContain(
-        result.recommendation,
-      );
-    });
-
     it("recommends marginal when difference is small", () => {
       const result = simulateOverpayScenarios({
         ...defaultInput,
         loans: [{ planType: "PLAN_2", balance: 40000 }],
         startingSalary: 80000,
         monthlyOverpayment: 100,
-        alternativeSavingsRate: 0.05,
       });
 
       // Result could be marginal or one of the other recommendations
-      expect([
-        "dont-overpay",
-        "invest-instead",
-        "overpay",
-        "marginal",
-      ]).toContain(result.recommendation);
+      expect(["dont-overpay", "overpay", "marginal"]).toContain(
+        result.recommendation,
+      );
     });
   });
 
@@ -164,56 +146,18 @@ describe("simulateOverpayScenarios", () => {
         );
       }
     });
-  });
 
-  describe("investment simulation", () => {
-    it("investment grows over time", () => {
+    it("monthsSaved is positive when overpaying pays off faster", () => {
       const result = simulateOverpayScenarios({
         ...defaultInput,
-        monthlyOverpayment: 200,
-        alternativeSavingsRate: 0.05,
+        loans: [{ planType: "PLAN_2", balance: 30000 }],
+        startingSalary: 100000,
+        monthlyOverpayment: 500,
       });
 
-      expect(result.investment.portfolioValue).toBeGreaterThan(
-        result.investment.totalContributed,
-      );
-    });
-
-    it("investment gains are positive with positive return rate", () => {
-      const result = simulateOverpayScenarios({
-        ...defaultInput,
-        alternativeSavingsRate: 0.05,
-      });
-
-      expect(result.investment.investmentGains).toBeGreaterThan(0);
-    });
-
-    it("investment gains are zero with zero return rate", () => {
-      const result = simulateOverpayScenarios({
-        ...defaultInput,
-        alternativeSavingsRate: 0,
-      });
-
-      expect(result.investment.portfolioValue).toBe(
-        result.investment.totalContributed,
-      );
-      expect(result.investment.investmentGains).toBe(0);
-    });
-
-    it("higher return rate results in larger portfolio", () => {
-      const lowRate = simulateOverpayScenarios({
-        ...defaultInput,
-        alternativeSavingsRate: 0.03,
-      });
-
-      const highRate = simulateOverpayScenarios({
-        ...defaultInput,
-        alternativeSavingsRate: 0.08,
-      });
-
-      expect(highRate.investment.portfolioValue).toBeGreaterThan(
-        lowRate.investment.portfolioValue,
-      );
+      if (!result.baseline.writtenOff && !result.overpay.writtenOff) {
+        expect(result.monthsSaved).toBeGreaterThanOrEqual(0);
+      }
     });
   });
 
@@ -247,29 +191,44 @@ describe("simulateOverpayScenarios", () => {
     });
   });
 
-  describe("net worth time series", () => {
+  describe("balance time series", () => {
     it("generates time series data", () => {
       const result = simulateOverpayScenarios(defaultInput);
 
-      expect(result.netWorthTimeSeries.length).toBeGreaterThan(0);
+      expect(result.balanceTimeSeries.length).toBeGreaterThan(0);
     });
 
     it("time series starts at month 0", () => {
       const result = simulateOverpayScenarios(defaultInput);
 
-      expect(result.netWorthTimeSeries[0].month).toBe(0);
+      expect(result.balanceTimeSeries[0].month).toBe(0);
     });
 
-    it("time series includes both overpay and invest net worth", () => {
+    it("time series includes both baseline and overpay balance", () => {
       const result = simulateOverpayScenarios(defaultInput);
 
-      const firstPoint = result.netWorthTimeSeries[0];
-      expect(firstPoint).toHaveProperty("overpayNetWorth");
-      expect(firstPoint).toHaveProperty("investNetWorth");
+      const firstPoint = result.balanceTimeSeries[0];
+      expect(firstPoint).toHaveProperty("baselineBalance");
+      expect(firstPoint).toHaveProperty("overpayBalance");
+    });
+
+    it("overpay balance decreases faster than baseline", () => {
+      const result = simulateOverpayScenarios({
+        ...defaultInput,
+        startingSalary: 80000,
+        monthlyOverpayment: 300,
+      });
+
+      // Find a mid-point in the series and verify overpay balance is lower
+      const midIndex = Math.floor(result.balanceTimeSeries.length / 2);
+      const midPoint = result.balanceTimeSeries[midIndex];
+      expect(midPoint.overpayBalance).toBeLessThanOrEqual(
+        midPoint.baselineBalance,
+      );
     });
   });
 
-  describe("crossover and write-off months", () => {
+  describe("write-off months", () => {
     it("writeOffMonth is set when baseline is written off", () => {
       const result = simulateOverpayScenarios({
         ...defaultInput,
@@ -329,14 +288,13 @@ describe("simulateOverpayScenarios", () => {
 
       expect(result).toHaveProperty("baseline");
       expect(result).toHaveProperty("overpay");
-      expect(result).toHaveProperty("investment");
       expect(result).toHaveProperty("recommendation");
       expect(result).toHaveProperty("recommendationReason");
-      expect(result).toHaveProperty("netWorthTimeSeries");
-      expect(result).toHaveProperty("crossoverMonth");
+      expect(result).toHaveProperty("balanceTimeSeries");
       expect(result).toHaveProperty("writeOffMonth");
       expect(result).toHaveProperty("paymentDifference");
       expect(result).toHaveProperty("overpaymentContributions");
+      expect(result).toHaveProperty("monthsSaved");
     });
 
     it("ScenarioResult contains all required fields", () => {
@@ -347,14 +305,6 @@ describe("simulateOverpayScenarios", () => {
       expect(result.baseline).toHaveProperty("writtenOff");
       expect(result.baseline).toHaveProperty("amountWrittenOff");
       expect(result.baseline).toHaveProperty("finalSalary");
-    });
-
-    it("InvestmentResult contains all required fields", () => {
-      const result = simulateOverpayScenarios(defaultInput);
-
-      expect(result.investment).toHaveProperty("portfolioValue");
-      expect(result.investment).toHaveProperty("totalContributed");
-      expect(result.investment).toHaveProperty("investmentGains");
     });
   });
 
@@ -392,6 +342,126 @@ describe("simulateOverpayScenarios", () => {
 
       // Should use combined balance
       expect(result.baseline.totalPaid).toBeGreaterThan(0);
+    });
+  });
+
+  describe("lump sum payment", () => {
+    it("lump sum only (no monthly) generates meaningful analysis", () => {
+      const result = simulateOverpayScenarios({
+        ...defaultInput,
+        monthlyOverpayment: 0,
+        lumpSumPayment: 10000,
+      });
+
+      // Should get real recommendation, not the "enter an overpayment" prompt
+      expect(result.recommendationReason).not.toContain("Enter an overpayment");
+      expect(["dont-overpay", "overpay", "marginal"]).toContain(
+        result.recommendation,
+      );
+    });
+
+    it("lump sum is included in overpay totalPaid", () => {
+      const lumpSum = 5000;
+      const result = simulateOverpayScenarios({
+        ...defaultInput,
+        monthlyOverpayment: 0,
+        lumpSumPayment: lumpSum,
+      });
+
+      // Overpay totalPaid should be higher than baseline by approximately the lump sum
+      // (may be less if lump sum reduces interest paid)
+      expect(result.overpay.totalPaid).toBeGreaterThanOrEqual(lumpSum);
+    });
+
+    it("baseline does not include lump sum", () => {
+      const withoutLumpSum = simulateOverpayScenarios({
+        ...defaultInput,
+        monthlyOverpayment: 0,
+        lumpSumPayment: 0,
+      });
+
+      const withLumpSum = simulateOverpayScenarios({
+        ...defaultInput,
+        monthlyOverpayment: 0,
+        lumpSumPayment: 10000,
+      });
+
+      // Baseline should be identical regardless of lump sum
+      expect(withLumpSum.baseline.totalPaid).toBe(
+        withoutLumpSum.baseline.totalPaid,
+      );
+      expect(withLumpSum.baseline.monthsToPayoff).toBe(
+        withoutLumpSum.baseline.monthsToPayoff,
+      );
+    });
+
+    it("lump sum reduces overpay scenario balance and time to payoff", () => {
+      const withoutLumpSum = simulateOverpayScenarios({
+        ...defaultInput,
+        loans: [{ planType: "PLAN_2", balance: 30000 }],
+        startingSalary: 100000,
+        monthlyOverpayment: 200,
+        lumpSumPayment: 0,
+      });
+
+      const withLumpSum = simulateOverpayScenarios({
+        ...defaultInput,
+        loans: [{ planType: "PLAN_2", balance: 30000 }],
+        startingSalary: 100000,
+        monthlyOverpayment: 200,
+        lumpSumPayment: 10000,
+      });
+
+      // With lump sum should pay off faster
+      expect(withLumpSum.overpay.monthsToPayoff).toBeLessThan(
+        withoutLumpSum.overpay.monthsToPayoff,
+      );
+    });
+
+    it("lump sum is included in overpaymentContributions", () => {
+      const lumpSum = 5000;
+      const result = simulateOverpayScenarios({
+        ...defaultInput,
+        monthlyOverpayment: 100,
+        lumpSumPayment: lumpSum,
+      });
+
+      // Contributions should include lump sum
+      expect(result.overpaymentContributions).toBeGreaterThanOrEqual(lumpSum);
+    });
+
+    it("paymentDifference correctly accounts for lump sum", () => {
+      // When loan would be written off, lump sum is extra cost
+      const result = simulateOverpayScenarios({
+        ...defaultInput,
+        loans: [{ planType: "PLAN_2", balance: 100000 }],
+        startingSalary: 30000,
+        monthlyOverpayment: 0,
+        lumpSumPayment: 10000,
+        salaryGrowthRate: "conservative",
+      });
+
+      if (result.baseline.writtenOff) {
+        // Lump sum should make paymentDifference negative (extra cost)
+        expect(result.paymentDifference).toBeLessThan(0);
+      }
+    });
+
+    it("lump sum that pays off entire loan returns valid result", () => {
+      const result = simulateOverpayScenarios({
+        ...defaultInput,
+        loans: [{ planType: "PLAN_2", balance: 5000 }],
+        startingSalary: 50000,
+        monthlyOverpayment: 0,
+        lumpSumPayment: 10000, // More than balance
+      });
+
+      // Lump sum should be capped to actual balance
+      expect(result.overpay.totalPaid).toBe(5000);
+      expect(result.overpay.monthsToPayoff).toBe(0);
+      expect(result.overpay.writtenOff).toBe(false);
+      // Chart should show £0 balance for overpay scenario
+      expect(result.balanceTimeSeries[0]?.overpayBalance).toBe(0);
     });
   });
 });

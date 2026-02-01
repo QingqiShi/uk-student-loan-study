@@ -1,5 +1,4 @@
 import {
-  InformationCircleIcon,
   Alert02Icon,
   Tick02Icon,
   Cancel01Icon,
@@ -13,7 +12,7 @@ const verdictConfig: Record<
   {
     title: string;
     className: string;
-    icon: typeof InformationCircleIcon;
+    icon: typeof Alert02Icon;
   }
 > = {
   "dont-overpay": {
@@ -21,12 +20,6 @@ const verdictConfig: Record<
     className:
       "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800",
     icon: Cancel01Icon,
-  },
-  "invest-instead": {
-    title: "Invest Instead",
-    className:
-      "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
-    icon: InformationCircleIcon,
   },
   overpay: {
     title: "Overpay Your Loan",
