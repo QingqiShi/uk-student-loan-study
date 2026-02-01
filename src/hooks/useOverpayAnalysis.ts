@@ -14,10 +14,13 @@ import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
  * 2. Overpay: Add monthly overpayment to loan
  * 3. Invest: Keep baseline payments, invest the overpayment amount instead
  *
+ * @param repaymentStartDate - Date when loan repayment started (local state from OverpayPage)
  * @returns Analysis result with recommendation, net worth time series, and comparison data
  */
-export function useOverpayAnalysis(): OverpayAnalysisResult {
-  const { loans, repaymentStartDate } = useLoanConfig();
+export function useOverpayAnalysis(
+  repaymentStartDate: Date,
+): OverpayAnalysisResult {
+  const { loans } = useLoanConfig();
   const salary = useCurrentSalary();
   const { monthlyOverpayment, salaryGrowthRate, alternativeSavingsRate } =
     useOverpayConfig();

@@ -1,6 +1,6 @@
-import type { Loan, SimulationResult } from "@/lib/loans/types";
+import type { Loan, SimulationTimeSeries } from "@/lib/loans/types";
+import { simulate } from "@/lib/loans/engine";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
-import { simulateLoans } from "@/lib/loans/simulate";
 
 export type InsightType = "low-earner" | "middle-earner" | "high-earner";
 
@@ -21,7 +21,6 @@ const PEAK_ZONE_OVERPAYMENT_THRESHOLD = 0.5; // 50%
 
 interface InsightConfig {
   loans: Loan[];
-  repaymentStartDate: Date;
   underGradBalance: number;
   postGradBalance: number;
 }
@@ -41,18 +40,18 @@ function getWriteOffYears(loans: Loan[]): number {
 /**
  * Determines if the loan will be written off based on simulation result.
  */
-function willBeWrittenOff(result: SimulationResult): boolean {
-  return result.loanResults.some((loan) => loan.writtenOff);
+function willBeWrittenOff(result: SimulationTimeSeries): boolean {
+  return result.summary.perLoan.some((loan) => loan.writtenOff);
 }
 
 /**
  * Calculates amount overpaid compared to original loan balance.
  */
 function calculateOverpayment(
-  result: SimulationResult,
+  result: SimulationTimeSeries,
   principal: number,
 ): number {
-  return result.totalRepayment - principal;
+  return result.summary.totalPaid - principal;
 }
 
 /**
@@ -62,18 +61,18 @@ export function generateInsight(
   salary: number,
   config: InsightConfig,
 ): Insight | null {
-  const { loans, repaymentStartDate, underGradBalance, postGradBalance } =
-    config;
+  const { loans, underGradBalance, postGradBalance } = config;
 
   // No insight if no loan balance
   if (underGradBalance <= 0 && postGradBalance <= 0) {
     return null;
   }
 
-  const result = simulateLoans({
+  // Use monthsElapsed: 0 to show full repayment timeline
+  const result = simulate({
     loans,
     annualSalary: salary,
-    repaymentStartDate,
+    monthsElapsed: 0,
   });
 
   const writeOffYears = getWriteOffYears(loans);
@@ -104,7 +103,7 @@ export function generateInsight(
 
   // Low earner: loan will be written off
   if (willBeWrittenOff(result)) {
-    const remaining = result.loanResults.reduce(
+    const remaining = result.summary.perLoan.reduce(
       (sum, r) => sum + r.remainingBalance,
       0,
     );
@@ -125,7 +124,7 @@ export function generateInsight(
   }
 
   // High earner: pays off before write-off with reasonable interest
-  const yearsToPayoff = (result.totalMonths / 12).toFixed(1);
+  const yearsToPayoff = (result.summary.monthsToPayoff / 12).toFixed(1);
   const interestPercent = (overpaymentRatio * 100).toFixed(0);
 
   return {

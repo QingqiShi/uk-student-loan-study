@@ -15,8 +15,6 @@ export interface LoanState {
   underGradBalance: number;
   /** Postgraduate loan balance in GBP */
   postGradBalance: number;
-  /** Date when loan repayment started */
-  repaymentDate: Date | null;
   /** Current salary for annotation on charts */
   salary: number;
 

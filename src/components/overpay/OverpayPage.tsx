@@ -3,6 +3,7 @@
 import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { useState } from "react";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
 import { OverpayInputs } from "./OverpayInputs";
 import { OverpaySummaryCards } from "./OverpaySummaryCards";
@@ -10,9 +11,13 @@ import { OverpayVerdict } from "./OverpayVerdict";
 import { FloatingHeader } from "@/components/FloatingHeader";
 import { Footer } from "@/components/Footer";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
+import { DEFAULT_PRESET, REPAYMENT_START_MONTH } from "@/lib/presets";
 
 export function OverpayPage() {
-  const analysis = useOverpayAnalysis();
+  const [repaymentDate, setRepaymentDate] = useState<Date>(
+    () => new Date(DEFAULT_PRESET.repaymentYear, REPAYMENT_START_MONTH, 1),
+  );
+  const analysis = useOverpayAnalysis(repaymentDate);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -45,7 +50,10 @@ export function OverpayPage() {
           <OverpayComparisonChart analysis={analysis} />
         </div>
 
-        <OverpayInputs />
+        <OverpayInputs
+          repaymentDate={repaymentDate}
+          onRepaymentDateChange={setRepaymentDate}
+        />
 
         <OverpayVerdict
           recommendation={analysis.recommendation}

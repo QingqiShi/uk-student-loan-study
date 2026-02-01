@@ -2,7 +2,6 @@
 
 import CurrencyInput from "./CurrencyInput";
 import PlanSelector from "./PlanSelector";
-import YearSelector from "./YearSelector";
 import { currencyFormatter } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
 import { POSTGRADUATE_DISPLAY_INFO } from "@/lib/loans/plans";
@@ -94,22 +93,6 @@ export function AdvancedInputs() {
             </div>
           )}
         </div>
-      </div>
-
-      {/* Repayment Details */}
-      <div className="space-y-4">
-        <h4 className="text-sm font-medium tracking-wide uppercase">
-          Repayment Details
-        </h4>
-        <YearSelector
-          id="adv-repayment-year"
-          label="Repayment Start Year"
-          helperText="Determines when your loan is written off."
-          value={state.repaymentDate}
-          onChange={(value) => {
-            updateField("repaymentDate", value);
-          }}
-        />
       </div>
     </div>
   );

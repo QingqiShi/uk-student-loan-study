@@ -96,7 +96,6 @@ const { LoanProvider } = await import("../context/LoanContext");
 const defaultTestConfig: Partial<LoanState> = {
   underGradBalance: 50_000,
   postGradBalance: 0,
-  repaymentDate: new Date("2022-04-01"),
   salary: 45_000,
 };
 

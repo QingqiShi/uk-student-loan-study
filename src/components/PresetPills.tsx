@@ -7,13 +7,12 @@ import { PRESETS } from "@/lib/presets";
 export function PresetPills() {
   const { state, applyPreset } = useLoanContext();
 
-  // Find matching preset (includes repayment year to avoid false matches)
+  // Find matching preset based on loan configuration
   const activePreset = PRESETS.find(
     (p) =>
       p.underGradBalance === state.underGradBalance &&
       p.postGradBalance === state.postGradBalance &&
-      p.underGradPlanType === state.underGradPlanType &&
-      p.repaymentYear === state.repaymentDate?.getFullYear(),
+      p.underGradPlanType === state.underGradPlanType,
   );
 
   return (

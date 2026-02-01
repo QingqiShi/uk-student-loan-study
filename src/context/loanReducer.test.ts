@@ -13,7 +13,6 @@ describe("loanReducer", () => {
       expect(initialState.underGradBalance).toBe(45_000); // "2012-23 Grad" preset
       expect(initialState.postGradBalance).toBe(0);
       expect(initialState.salary).toBe(70_000);
-      expect(initialState.repaymentDate).toBeInstanceOf(Date);
     });
   });
 
@@ -52,19 +51,6 @@ describe("loanReducer", () => {
       expect(newState.salary).toBe(45_000);
     });
 
-    it("should update repaymentDate", () => {
-      const date = new Date("2020-04-01");
-      const action = updateFieldAction("repaymentDate", date);
-      const newState = loanReducer(initialState, action);
-      expect(newState.repaymentDate).toEqual(date);
-    });
-
-    it("should allow setting repaymentDate to null", () => {
-      const action = updateFieldAction("repaymentDate", null);
-      const newState = loanReducer(initialState, action);
-      expect(newState.repaymentDate).toBeNull();
-    });
-
     it("should not mutate the original state", () => {
       const originalState = { ...initialState };
       const action = updateFieldAction("salary", 100_000);
@@ -95,12 +81,6 @@ describe("loanReducer", () => {
       expect(resetState.postGradBalance).toBe(0);
       expect(resetState.underGradPlanType).toBe("PLAN_2");
       expect(resetState.salary).toBe(70_000);
-    });
-
-    it("should create a new repaymentDate on reset", () => {
-      const action = resetAction();
-      const newState = loanReducer(initialState, action);
-      expect(newState.repaymentDate).toBeInstanceOf(Date);
     });
   });
 });

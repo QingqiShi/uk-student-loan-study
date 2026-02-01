@@ -4,6 +4,7 @@ import type { SalaryGrowthRate } from "@/types/store";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import YearSelector from "@/components/YearSelector";
 import {
   MIN_MONTHLY_OVERPAYMENT,
   MAX_MONTHLY_OVERPAYMENT,
@@ -24,7 +25,15 @@ const salaryGrowthOptions: { value: SalaryGrowthRate; label: string }[] = [
   { value: "aggressive", label: "6%" },
 ];
 
-export function OverpayInputs() {
+interface OverpayInputsProps {
+  repaymentDate: Date;
+  onRepaymentDateChange: (date: Date) => void;
+}
+
+export function OverpayInputs({
+  repaymentDate,
+  onRepaymentDateChange,
+}: OverpayInputsProps) {
   const { state, updateField } = useLoanContext();
 
   const handleSalaryChange = (value: number | readonly number[]) => {
@@ -44,6 +53,18 @@ export function OverpayInputs() {
 
   return (
     <div className="space-y-6">
+      <YearSelector
+        id="overpay-repayment-year"
+        label="Repayment Start Year"
+        helperText="When did you start repaying your loan?"
+        value={repaymentDate}
+        onChange={(value) => {
+          if (value) {
+            onRepaymentDateChange(value);
+          }
+        }}
+      />
+
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="salary-slider">Your Current Salary</Label>
