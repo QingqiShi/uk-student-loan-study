@@ -4,7 +4,6 @@ import { MIN_SALARY, MAX_SALARY } from "@/constants";
 import {
   generateSalaryDataSeries,
   generateBalanceTimeSeries,
-  calculateAnnualizedRate,
 } from "@/utils/loan-calculations";
 
 interface AnnotationData {
@@ -62,20 +61,4 @@ export function useBalanceOverTimeData(): {
   const salary = useCurrentSalary();
 
   return generateBalanceTimeSeries(config.loans, salary);
-}
-
-/** Hook for interest rate chart data */
-export function useInterestRateData() {
-  const config = useLoanConfig();
-  const salary = useCurrentSalary();
-  const { underGradBalance, postGradBalance } = config;
-  const totalPrincipal = underGradBalance + postGradBalance;
-
-  const data = generateSalaryDataSeries(config.loans, (r) =>
-    calculateAnnualizedRate(r, totalPrincipal),
-  );
-
-  const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
-
-  return { data, annotationSalary, annotationValue };
 }

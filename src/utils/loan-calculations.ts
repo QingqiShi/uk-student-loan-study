@@ -122,32 +122,6 @@ export function generateBalanceTimeSeries(
   return { data, writeOffMonth };
 }
 
-/**
- * Calculates the annualized interest rate (effective interest paid).
- *
- * This is the rate that would produce the same total repayment
- * if compounded annually over the repayment period.
- *
- * Formula: rate = (totalPaid / principal)^(1/years) - 1
- *
- * @param result - Simulation result
- * @param totalPrincipal - Total original loan amount
- * @returns Annualized interest rate as a decimal (e.g., 0.065 for 6.5%)
- */
-export function calculateAnnualizedRate(
-  result: SimulationResult,
-  totalPrincipal: number,
-): number {
-  if (totalPrincipal === 0 || result.totalMonths === 0) {
-    return 0;
-  }
-
-  const roi = result.totalRepayment / totalPrincipal;
-  const years = result.totalMonths / 12;
-
-  return Math.pow(roi, 1 / years) - 1;
-}
-
 // Re-export for convenience
 export { simulateLoans } from "@/lib/loans/simulate";
 export type { SimulationResult, Loan } from "@/lib/loans/types";

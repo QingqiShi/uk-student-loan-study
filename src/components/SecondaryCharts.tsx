@@ -1,5 +1,4 @@
 import BalanceOverTimeChart from "./BalanceOverTimeChart";
-import InterestRateChart from "./InterestRateChart";
 
 export function SecondaryCharts() {
   return (
@@ -12,17 +11,6 @@ export function SecondaryCharts() {
         </p>
         <div className="h-[300px] sm:h-[350px]">
           <BalanceOverTimeChart />
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h3 className="text-base font-semibold">Effective Interest Rate</h3>
-        <p className="text-sm text-muted-foreground">
-          Compare your loan&apos;s effective rate against other investments.
-          Lower earners often have negative effective rates due to write-off.
-        </p>
-        <div className="h-[300px] sm:h-[350px]">
-          <InterestRateChart />
         </div>
       </section>
     </div>

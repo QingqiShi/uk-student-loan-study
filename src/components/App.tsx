@@ -3,6 +3,7 @@ import { Footer } from "./Footer";
 import { HeroSection } from "./HeroSection";
 import { PlanFromQuery } from "./PlanFromQuery";
 import SecondaryCharts from "./SecondaryCharts";
+import { ToolLinks } from "./ToolLinks";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <HeroSection />
 
         <SecondaryCharts />
+
+        <ToolLinks />
       </main>
       <Footer />
     </div>
