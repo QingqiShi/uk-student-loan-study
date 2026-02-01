@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
-import { Manrope } from "next/font/google";
+import { Manrope, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import type { Metadata } from "next";
 import { LoanProvider } from "@/context/LoanContext";
@@ -7,10 +7,21 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://studentloanstudy.uk"),
-  title: "UK Student Loan Study - Student Loan Repayment Calculator",
+  title: {
+    default: "UK Student Loan Study - Student Loan Repayment Calculator",
+    template: "%s | UK Student Loan Study",
+  },
   description:
     "Interactive calculator to understand UK student loan repayment. Compare Plan 2 and Plan 5, visualize total repayments, and see effective interest rates based on your salary.",
   keywords: [
@@ -24,19 +35,13 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "UK Student Loan Study" }],
   openGraph: {
-    title: "UK Student Loan Study",
-    description:
-      "Interactive calculator to understand UK student loan repayment under Plan 2, Plan 5, and Postgraduate schemes.",
-    url: "https://studentloanstudy.uk",
     siteName: "UK Student Loan Study",
     type: "website",
     locale: "en_GB",
+    images: ["/opengraph-image.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "UK Student Loan Study",
-    description:
-      "Interactive calculator to understand UK student loan repayment under Plan 2, Plan 5, and Postgraduate schemes.",
   },
   robots: {
     index: true,
@@ -82,7 +87,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(manrope.variable)} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(
+        manrope.variable,
+        spaceGrotesk.variable,
+        jetbrainsMono.variable,
+      )}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script

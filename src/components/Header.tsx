@@ -2,8 +2,10 @@
 
 import { Cancel01Icon, Settings02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import AdvancedInputs from "./AdvancedInputs";
+import { BrandLogo } from "./brand/BrandLogo";
 import { PresetPills } from "./PresetPills";
 import { ShareButton } from "./ShareButton";
 import ThemeToggle from "./ThemeToggle";
@@ -18,17 +20,52 @@ import {
 } from "@/lib/loans/plans";
 
 // Selector for popover content rendered in portals.
-// This matches data-slot="popover-content" set by our own @/components/ui/popover.tsx wrapper.
 const POPOVER_CONTENT_SELECTOR = '[data-slot="popover-content"]';
 
-interface FloatingHeaderProps {
+interface HeaderProps {
+  /** "simple" shows only logo and theme toggle; "full" includes loan controls */
+  variant?: "simple" | "full";
   repaymentYear?: number;
 }
 
-export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
+export function Header({ variant = "full", repaymentYear }: HeaderProps) {
+  if (variant === "simple") {
+    return <SimpleHeaderContent />;
+  }
+  return <FullHeaderContent repaymentYear={repaymentYear} />;
+}
+
+function SimpleHeaderContent() {
+  return (
+    <div className="sticky top-0 z-50 px-4 pt-3">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-2 focus:text-foreground"
+      >
+        Skip to main content
+      </a>
+      <div className="mx-auto max-w-4xl">
+        <header className="rounded-xl border bg-muted/50 px-3 py-2 shadow-lg backdrop-blur-sm">
+          <div className="flex items-center justify-between gap-3">
+            <Link href="/" aria-label="Go to home page">
+              <BrandLogo size="small" />
+            </Link>
+            <ThemeToggle />
+          </div>
+        </header>
+      </div>
+    </div>
+  );
+}
+
+interface FullHeaderContentProps {
+  repaymentYear?: number;
+}
+
+function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isFullyOpen, setIsFullyOpen] = useState(false);
-  const headerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   const { state } = useLoanContext();
   const { underGradPlanType, underGradBalance, postGradBalance, salary } =
@@ -51,10 +88,8 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
     CURRENT_RATES.boeBaseRate,
   );
 
-  // Build summary based on loan combination
   function renderSummary() {
     if (hasUndergrad && hasPostgrad) {
-      // Both loans: "Plan 2 + Postgraduate • £75,000 total"
       const totalBalance = underGradBalance + postGradBalance;
       return (
         <>
@@ -68,7 +103,6 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
     }
 
     if (hasUndergrad) {
-      // Only undergrad: "Plan 2 • £50,000 • 5.2% interest • 30yr write-off"
       return (
         <>
           <span>{undergradPlanInfo.name}</span>
@@ -83,7 +117,6 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
     }
 
     if (hasPostgrad) {
-      // Only postgrad: "Postgraduate • £25,000 • 6.2% interest • 30yr write-off"
       return (
         <>
           <span>{POSTGRADUATE_DISPLAY_INFO.name}</span>
@@ -97,7 +130,6 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
       );
     }
 
-    // No loans - show prompt to add loans
     return <span>Add loan balances to get started</span>;
   }
 
@@ -107,14 +139,8 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
 
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      // Don't close if clicking inside the header
-      if (headerRef.current?.contains(target)) {
-        return;
-      }
-      // Don't close if clicking inside a popover (rendered in portal outside header DOM)
-      if (target.closest(POPOVER_CONTENT_SELECTOR)) {
-        return;
-      }
+      if (headerRef.current?.contains(target)) return;
+      if (target.closest(POPOVER_CONTENT_SELECTOR)) return;
       setIsOpen(false);
     };
 
@@ -123,9 +149,6 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
-
-  // Height of header (py-2 = 0.5rem*2, title, preset pills row, summary line, plus border)
-  const SUMMARY_HEIGHT = "6rem";
 
   return (
     <div className="sticky top-0 z-50 px-4 pt-3">
@@ -136,20 +159,17 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
         Skip to main content
       </a>
       <div className="relative mx-auto max-w-4xl">
-        {/* Spacer - reserves layout space for the summary bar only */}
-        <div style={{ height: SUMMARY_HEIGHT }} aria-hidden="true" />
+        <div className="h-24" aria-hidden="true" />
 
-        {/* Absolutely positioned card - expands without affecting page layout */}
         <header
           ref={headerRef}
           className="absolute inset-x-0 top-0 max-h-[85dvh] overflow-hidden rounded-xl border bg-muted/50 shadow-lg backdrop-blur-sm"
         >
-          {/* Title and Controls Bar */}
           <div className="py-2 pr-2 pl-3">
             <div className="flex items-center justify-between gap-3">
-              <h1 className="text-base font-medium text-foreground">
-                UK Student Loan Calculator
-              </h1>
+              <Link href="/" aria-label="Go to home page">
+                <BrandLogo size="small" />
+              </Link>
               <div className="flex shrink-0 items-center gap-2">
                 <ThemeToggle />
                 <ShareButton repaymentYear={repaymentYear} />
@@ -176,26 +196,17 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
               </div>
             </div>
 
-            {/* Preset Pills Row */}
-            <div
-              className="mt-2 overflow-x-auto border-t pt-2 [&::-webkit-scrollbar]:hidden"
-              style={{ scrollbarWidth: "none" }}
-            >
+            <div className="mt-2 overflow-x-auto border-t pt-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
               <PresetPills />
             </div>
 
-            {/* Summary Line */}
-            <div
-              className="mt-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden"
-              style={{ scrollbarWidth: "none" }}
-            >
+            <div className="mt-1.5 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
               <p className="flex items-center gap-2 text-xs whitespace-nowrap text-muted-foreground sm:text-sm">
                 {renderSummary()}
               </p>
             </div>
           </div>
 
-          {/* Expandable Panel - inside the card for unified expand animation */}
           <div
             className={`border-t transition-all duration-500 ease-in-out ${
               isOpen
@@ -203,7 +214,6 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
                 : "h-0 max-h-0 border-t-transparent opacity-0"
             } ${isOpen && isFullyOpen ? "overflow-y-auto" : "overflow-hidden"}`}
             onTransitionEnd={(e) => {
-              // Only react to max-height transitions on this element
               if (
                 e.propertyName === "max-height" &&
                 e.target === e.currentTarget
@@ -221,5 +231,3 @@ export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
     </div>
   );
 }
-
-export default FloatingHeader;

@@ -45,6 +45,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
 :root {
@@ -235,4 +237,8 @@ html.dark::view-transition-new(theme-icon) {
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
 }

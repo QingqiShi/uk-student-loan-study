@@ -13,25 +13,18 @@ export async function generateMetadata({
   const params = await searchParams;
   const meta = parseMetadataParams(params);
 
-  // If no share params, use defaults from layout.tsx
+  // No share params - use defaults from layout
   if (!meta.hasShareParams) {
     return {};
   }
 
+  // Dynamic metadata for shared URLs
   const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary} salary`;
   const description = `See the repayment projection for a ${meta.planName} UK student loan with ${meta.formattedBalance} balance and ${meta.formattedSalary} annual salary.`;
 
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-    },
-    twitter: {
-      title,
-      description,
-    },
   };
 }
 
