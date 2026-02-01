@@ -1,11 +1,12 @@
 import type { LoanState } from "@/types/store";
+import { DEFAULT_SALARY } from "@/constants";
 import { DEFAULT_PRESET, type Preset } from "@/lib/presets";
 
 export const initialState: LoanState = {
   underGradPlanType: DEFAULT_PRESET.underGradPlanType,
   underGradBalance: DEFAULT_PRESET.underGradBalance,
   postGradBalance: DEFAULT_PRESET.postGradBalance,
-  salary: 65_000,
+  salary: DEFAULT_SALARY,
 
   // Overpay analysis defaults
   monthlyOverpayment: 0,

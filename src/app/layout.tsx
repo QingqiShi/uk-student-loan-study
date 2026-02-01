@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://studentloanstudy.uk"),
   title: "UK Student Loan Study - Student Loan Repayment Calculator",
   description:
     "Interactive calculator to understand UK student loan repayment. Compare Plan 2 and Plan 5, visualize total repayments, and see effective interest rates based on your salary.",

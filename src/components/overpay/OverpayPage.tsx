@@ -11,6 +11,7 @@ import { OverpaySummaryCards } from "./OverpaySummaryCards";
 import { OverpayVerdict } from "./OverpayVerdict";
 import { FloatingHeader } from "@/components/FloatingHeader";
 import { Footer } from "@/components/Footer";
+import { PlanFromQuery } from "@/components/PlanFromQuery";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
 import { REPAYMENT_START_MONTH } from "@/lib/presets";
 
@@ -20,9 +21,14 @@ export function OverpayPage() {
   );
   const analysis = useOverpayAnalysis(repaymentDate);
 
+  const handleRepaymentYearChange = (year: number) => {
+    setRepaymentDate(new Date(year, REPAYMENT_START_MONTH, 1));
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
-      <FloatingHeader />
+      <PlanFromQuery onRepaymentYearChange={handleRepaymentYearChange} />
+      <FloatingHeader repaymentYear={repaymentDate.getFullYear()} />
       <main
         id="main-content"
         className="mx-auto w-full max-w-4xl flex-1 space-y-6 overflow-x-hidden px-4 py-6 md:px-6 md:py-8"
