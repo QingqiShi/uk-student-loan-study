@@ -18,7 +18,7 @@ function formatYear(month: number): string {
 }
 
 export function BalanceOverTimeChart() {
-  const { data, writeOffMonth } = useBalanceOverTimeData();
+  const { data } = useBalanceOverTimeData();
 
   if (data.length === 0) {
     return (
@@ -27,19 +27,6 @@ export function BalanceOverTimeChart() {
       </div>
     );
   }
-
-  const maxMonth = data[data.length - 1].month;
-  const annotations =
-    writeOffMonth !== null
-      ? [
-          {
-            x: writeOffMonth,
-            label: "Write-off",
-            color: "var(--chart-3)",
-            labelPosition: "insideTopLeft" as const,
-          },
-        ]
-      : [];
 
   return (
     <ChartBase
@@ -53,8 +40,6 @@ export function BalanceOverTimeChart() {
       ariaLabel="Chart showing your loan balance decreasing over time. The balance starts at your total loan amount and decreases as you make repayments."
       chartConfig={chartConfig}
       series={[{ dataKey: "balance" }]}
-      annotations={annotations}
-      xDomain={[0, maxMonth]}
     />
   );
 }
