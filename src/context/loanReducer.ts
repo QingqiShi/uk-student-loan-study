@@ -5,7 +5,7 @@ export const initialState: LoanState = {
   underGradPlanType: DEFAULT_PRESET.underGradPlanType,
   underGradBalance: DEFAULT_PRESET.underGradBalance,
   postGradBalance: DEFAULT_PRESET.postGradBalance,
-  salary: 70_000,
+  salary: 65_000,
 
   // Overpay analysis defaults
   monthlyOverpayment: 200,
