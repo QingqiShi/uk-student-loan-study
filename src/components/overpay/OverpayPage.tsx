@@ -5,17 +5,18 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { useState } from "react";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
-import { OverpayInputs } from "./OverpayInputs";
+import { OverpayPrimaryInputs } from "./OverpayPrimaryInputs";
+import { OverpaySecondaryInputs } from "./OverpaySecondaryInputs";
 import { OverpaySummaryCards } from "./OverpaySummaryCards";
 import { OverpayVerdict } from "./OverpayVerdict";
 import { FloatingHeader } from "@/components/FloatingHeader";
 import { Footer } from "@/components/Footer";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
-import { DEFAULT_PRESET, REPAYMENT_START_MONTH } from "@/lib/presets";
+import { REPAYMENT_START_MONTH } from "@/lib/presets";
 
 export function OverpayPage() {
   const [repaymentDate, setRepaymentDate] = useState<Date>(
-    () => new Date(DEFAULT_PRESET.repaymentYear, REPAYMENT_START_MONTH, 1),
+    () => new Date(new Date().getFullYear(), REPAYMENT_START_MONTH, 1),
   );
   const analysis = useOverpayAnalysis(repaymentDate);
 
@@ -24,7 +25,7 @@ export function OverpayPage() {
       <FloatingHeader />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-4xl flex-1 space-y-8 px-4 py-6 md:px-6 md:py-8"
+        className="mx-auto w-full max-w-4xl flex-1 space-y-6 overflow-x-hidden px-4 py-6 md:px-6 md:py-8"
       >
         <div className="space-y-4">
           <Link
@@ -40,27 +41,31 @@ export function OverpayPage() {
               Should You Overpay?
             </h2>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Most graduates won&apos;t fully repay before write-off. See if
-              overpaying helps or if you&apos;d be better off investing.
+              See how much overpaying could save you.
             </p>
           </div>
         </div>
-
-        <div className="h-[300px] sm:h-[350px]">
-          <OverpayComparisonChart analysis={analysis} />
-        </div>
-
-        <OverpayInputs
-          repaymentDate={repaymentDate}
-          onRepaymentDateChange={setRepaymentDate}
-        />
 
         <OverpayVerdict
           recommendation={analysis.recommendation}
           reason={analysis.recommendationReason}
         />
 
-        <OverpaySummaryCards analysis={analysis} />
+        <div className="grid gap-6 md:grid-cols-[1fr_260px]">
+          <div className="h-[260px] min-w-0 sm:h-[300px] md:h-auto md:min-h-[300px]">
+            <OverpayComparisonChart analysis={analysis} />
+          </div>
+          <div className="min-w-0">
+            <OverpaySummaryCards analysis={analysis} />
+          </div>
+        </div>
+
+        <OverpayPrimaryInputs
+          repaymentDate={repaymentDate}
+          onRepaymentDateChange={setRepaymentDate}
+        />
+
+        <OverpaySecondaryInputs />
       </main>
       <Footer />
     </div>

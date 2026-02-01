@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import type { Metadata } from "next";
+import { LoanProvider } from "@/context/LoanContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 
@@ -89,7 +90,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <LoanProvider>{children}</LoanProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

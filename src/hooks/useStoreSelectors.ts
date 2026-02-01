@@ -40,7 +40,7 @@ export function useCurrentSalary(): number {
 interface OverpayConfig {
   monthlyOverpayment: number;
   salaryGrowthRate: SalaryGrowthRate;
-  alternativeSavingsRate: number;
+  lumpSumPayment: number;
 }
 
 /** Select overpay analysis configuration */
@@ -49,6 +49,6 @@ export function useOverpayConfig(): OverpayConfig {
   return {
     monthlyOverpayment: state.monthlyOverpayment,
     salaryGrowthRate: state.salaryGrowthRate,
-    alternativeSavingsRate: state.alternativeSavingsRate,
+    lumpSumPayment: state.lumpSumPayment,
   };
 }
