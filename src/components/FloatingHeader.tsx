@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useState, useEffect, useRef } from "react";
 import AdvancedInputs from "./AdvancedInputs";
 import { PresetPills } from "./PresetPills";
+import { ShareButton } from "./ShareButton";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
@@ -20,7 +21,11 @@ import {
 // This matches data-slot="popover-content" set by our own @/components/ui/popover.tsx wrapper.
 const POPOVER_CONTENT_SELECTOR = '[data-slot="popover-content"]';
 
-export function FloatingHeader() {
+interface FloatingHeaderProps {
+  repaymentYear?: number;
+}
+
+export function FloatingHeader({ repaymentYear }: FloatingHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isFullyOpen, setIsFullyOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -147,6 +152,7 @@ export function FloatingHeader() {
               </h1>
               <div className="flex shrink-0 items-center gap-2">
                 <ThemeToggle />
+                <ShareButton repaymentYear={repaymentYear} />
                 <Button
                   variant="outline"
                   size="sm"

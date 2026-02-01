@@ -1,6 +1,7 @@
 // Chart salary range
 export const MIN_SALARY = 25_000;
 export const MAX_SALARY = 150_000;
+export const DEFAULT_SALARY = 65_000;
 export const SALARY_STEP = 5_000;
 
 // Overpay analysis constants
