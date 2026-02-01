@@ -1,10 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import {
-  generateSalaryDataSeries,
-  calculateAnnualizedRate,
-} from "./loan-calculations";
+import { generateSalaryDataSeries } from "./loan-calculations";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
-import type { Loan, SimulationResult } from "@/lib/loans/types";
+import type { Loan } from "@/lib/loans/types";
 
 describe("generateSalaryDataSeries", () => {
   let loans: Loan[];
@@ -95,93 +92,6 @@ describe("generateSalaryDataSeries", () => {
   });
 });
 
-describe("calculateAnnualizedRate", () => {
-  it("returns 0 when principal is 0", () => {
-    const result: SimulationResult = {
-      loanResults: [],
-      totalRepayment: 0,
-      totalMonths: 0,
-    };
-
-    expect(calculateAnnualizedRate(result, 0)).toBe(0);
-  });
-
-  it("returns 0 when months is 0", () => {
-    const result: SimulationResult = {
-      loanResults: [],
-      totalRepayment: 0,
-      totalMonths: 0,
-    };
-
-    expect(calculateAnnualizedRate(result, 50_000)).toBe(0);
-  });
-
-  it("calculates positive rate when paid more than borrowed", () => {
-    const result: SimulationResult = {
-      loanResults: [
-        {
-          planType: "PLAN_2",
-          totalPaid: 70_000,
-          monthsToPayoff: 120,
-          remainingBalance: 0,
-          writtenOff: false,
-        },
-      ],
-      totalRepayment: 70_000,
-      totalMonths: 120, // 10 years
-    };
-
-    const rate = calculateAnnualizedRate(result, 50_000);
-    expect(rate).toBeGreaterThan(0);
-  });
-
-  it("calculates negative rate when paid less than borrowed (write-off)", () => {
-    const result: SimulationResult = {
-      loanResults: [
-        {
-          planType: "PLAN_2",
-          totalPaid: 30_000,
-          monthsToPayoff: 360,
-          remainingBalance: 30_000,
-          writtenOff: true,
-        },
-      ],
-      totalRepayment: 30_000,
-      totalMonths: 360, // 30 years
-    };
-
-    const rate = calculateAnnualizedRate(result, 50_000);
-    expect(rate).toBeLessThan(0);
-  });
-
-  it("handles combined undergraduate and postgraduate payments", () => {
-    const result: SimulationResult = {
-      loanResults: [
-        {
-          planType: "PLAN_2",
-          totalPaid: 60_000,
-          monthsToPayoff: 180,
-          remainingBalance: 0,
-          writtenOff: false,
-        },
-        {
-          planType: "POSTGRADUATE",
-          totalPaid: 40_000,
-          monthsToPayoff: 150,
-          remainingBalance: 0,
-          writtenOff: false,
-        },
-      ],
-      totalRepayment: 100_000,
-      totalMonths: 180, // 15 years
-    };
-
-    const rate = calculateAnnualizedRate(result, 75_000);
-    expect(rate).toBeGreaterThan(0);
-    expect(rate).toBeLessThan(1); // Reasonable upper bound
-  });
-});
-
 describe("integration: chart data generation", () => {
   let loans: Loan[];
 
@@ -208,19 +118,5 @@ describe("integration: chart data generation", () => {
     const firstYears = data[0].value;
     const lastYears = data[data.length - 1].value;
     expect(lastYears).toBeLessThanOrEqual(firstYears + 5); // Some tolerance
-  });
-
-  it("generates InterestRateChart data", () => {
-    const totalPrincipal = 60000;
-    const data = generateSalaryDataSeries(loans, (r) =>
-      calculateAnnualizedRate(r, totalPrincipal),
-    );
-
-    // All rates should be reasonable numbers
-    data.forEach(({ value: rate }) => {
-      expect(isFinite(rate)).toBe(true);
-      expect(rate).toBeGreaterThan(-1);
-      expect(rate).toBeLessThan(1);
-    });
   });
 });

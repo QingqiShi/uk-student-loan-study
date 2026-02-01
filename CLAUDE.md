@@ -18,6 +18,15 @@ UK student loan repayment calculator built with Next.js (App Router), React, and
 
 **Domain knowledge**: UK student loans have different plan types with varying thresholds, interest rates, and write-off periods. Plan configurations in `src/lib/loans/plans.ts` should be updated annually when GOV.UK announces changes.
 
+**Icons**: Use `@hugeicons/react` with icons from `@hugeicons/core-free-icons`. Example:
+
+```tsx
+import { Quiz01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+
+<HugeiconsIcon icon={Quiz01Icon} className="size-5" />;
+```
+
 ## Code Quality Rules
 
 **Never use these:**

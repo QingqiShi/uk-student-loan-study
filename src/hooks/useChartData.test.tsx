@@ -7,11 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import {
-  useTotalRepaymentData,
-  useBalanceOverTimeData,
-  useInterestRateData,
-} from "./useChartData";
+import { useTotalRepaymentData, useBalanceOverTimeData } from "./useChartData";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import { loanReducer, initialState } from "../context/loanReducer";
 import type { LoanState } from "@/types/store";
@@ -268,74 +264,6 @@ describe("useChartData hooks", () => {
 
       // Low earners should hit write-off (360 months for Plan 2)
       expect(result.current.writeOffMonth).not.toBeNull();
-    });
-  });
-
-  describe("useInterestRateData", () => {
-    it("returns data array with correct number of points", () => {
-      const { result } = renderHook(() => useInterestRateData(), {
-        wrapper: createWrapper({ underGradBalance: 50_000 }),
-      });
-
-      expect(result.current.data.length).toBe(expectedDataPoints);
-    });
-
-    it("returns rates as decimals (not percentages)", () => {
-      const { result } = renderHook(() => useInterestRateData(), {
-        wrapper: createWrapper({ underGradBalance: 50_000 }),
-      });
-
-      // Rates should be decimals (e.g., 0.05 for 5%, not 5)
-      // -1 means 100% written off (nothing paid back), which is valid for low salaries
-      result.current.data.forEach(({ value: rate }) => {
-        expect(isFinite(rate)).toBe(true);
-        expect(rate).toBeGreaterThanOrEqual(-1);
-        expect(rate).toBeLessThan(1);
-      });
-    });
-
-    it("returns annotationSalary when salary is in valid range", () => {
-      const { result } = renderHook(() => useInterestRateData(), {
-        wrapper: createWrapper({ salary: 60_000, underGradBalance: 50_000 }),
-      });
-
-      expect(result.current.annotationSalary).toBeDefined();
-    });
-
-    it("returns annotationSalary at exactly MIN_SALARY boundary", () => {
-      const { result } = renderHook(() => useInterestRateData(), {
-        wrapper: createWrapper({
-          salary: MIN_SALARY,
-          underGradBalance: 50_000,
-        }),
-      });
-
-      expect(result.current.annotationSalary).toBe(MIN_SALARY);
-      expect(result.current.annotationValue).toBeDefined();
-    });
-
-    it("returns annotationSalary at exactly MAX_SALARY boundary", () => {
-      const { result } = renderHook(() => useInterestRateData(), {
-        wrapper: createWrapper({
-          salary: MAX_SALARY,
-          underGradBalance: 50_000,
-        }),
-      });
-
-      expect(result.current.annotationSalary).toBe(MAX_SALARY);
-      expect(result.current.annotationValue).toBeDefined();
-    });
-
-    it("handles zero balance gracefully", () => {
-      const { result } = renderHook(() => useInterestRateData(), {
-        wrapper: createWrapper({ underGradBalance: 0, postGradBalance: 0 }),
-      });
-
-      // Should not throw, should return data with 0 rates
-      expect(result.current.data.length).toBe(expectedDataPoints);
-      result.current.data.forEach(({ value: rate }) => {
-        expect(rate).toBe(0);
-      });
     });
   });
 
