@@ -178,3 +178,61 @@ html.dark::view-transition-new(theme-icon) {
 ::view-transition-old(theme-icon) {
   animation: icon-exit 300ms ease-out;
 }
+
+/* Quiz step animations */
+@keyframes quiz-slide-in {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes quiz-slide-in-reverse {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes quiz-result-enter {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@utility animate-quiz-slide-in {
+  animation: quiz-slide-in 200ms ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility animate-quiz-slide-in-reverse {
+  animation: quiz-slide-in-reverse 200ms ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility animate-quiz-result-enter {
+  animation: quiz-result-enter 300ms ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}

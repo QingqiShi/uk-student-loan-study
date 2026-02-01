@@ -1,11 +1,13 @@
 import { FloatingHeader } from "./FloatingHeader";
 import { Footer } from "./Footer";
 import { HeroSection } from "./HeroSection";
+import { PlanFromQuery } from "./PlanFromQuery";
 import SecondaryCharts from "./SecondaryCharts";
 
 function App() {
   return (
     <div className="flex min-h-screen flex-col">
+      <PlanFromQuery />
       <FloatingHeader />
       <main
         id="main-content"
