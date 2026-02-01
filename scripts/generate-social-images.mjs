@@ -9,7 +9,10 @@ const appDir = join(__dirname, "..", "src", "app");
 
 // Load brand colors from single source of truth
 const brandColors = JSON.parse(
-  readFileSync(join(__dirname, "..", "src", "lib", "brand-colors.json"), "utf-8")
+  readFileSync(
+    join(__dirname, "..", "src", "lib", "brand-colors.json"),
+    "utf-8",
+  ),
 );
 
 // Social image dimensions

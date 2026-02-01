@@ -62,7 +62,10 @@ export function BrandLogo({
   const textColor = variant === "dark" ? "#FFFFFF" : "#111111";
 
   return (
-    <div className={className} style={{ display: "flex", alignItems: "center", gap }}>
+    <div
+      className={className}
+      style={{ display: "flex", alignItems: "center", gap }}
+    >
       <BrandIcon size={iconSize} />
       <div style={{ position: "relative" }}>
         {/* Shadow layer */}

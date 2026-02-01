@@ -41,13 +41,17 @@ export function BrandGuidelinesPage() {
         <header className="mb-12">
           <h1
             className="text-[32px] font-bold text-foreground"
-            style={{ fontFamily: "var(--font-display), 'Space Grotesk', sans-serif" }}
+            style={{
+              fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
+            }}
           >
             Brand Guidelines
           </h1>
           <p
             className="mt-2 text-base text-muted-foreground"
-            style={{ fontFamily: "var(--font-display), 'Space Grotesk', sans-serif" }}
+            style={{
+              fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
+            }}
           >
             studentloanstudy.uk
           </p>
@@ -68,7 +72,9 @@ export function BrandGuidelinesPage() {
             </div>
             {/* Light background */}
             <div className="flex flex-col gap-4">
-              <span className="text-[10px] text-muted-foreground">On Light</span>
+              <span className="text-[10px] text-muted-foreground">
+                On Light
+              </span>
               <Card className="flex items-center justify-center bg-white p-8 dark:bg-white">
                 <BrandLogo variant="light" />
               </Card>
@@ -82,7 +88,9 @@ export function BrandGuidelinesPage() {
             {ICON_SIZES.map((size) => (
               <div key={size} className="flex flex-col items-center gap-2">
                 <BrandIcon size={size} />
-                <span className="text-[10px] text-muted-foreground">{size}px</span>
+                <span className="text-[10px] text-muted-foreground">
+                  {size}px
+                </span>
               </div>
             ))}
           </div>
@@ -182,13 +190,17 @@ function ColorSwatch({
       <div className="flex flex-col gap-0.5">
         <span
           className="text-[13px] font-semibold text-foreground"
-          style={{ fontFamily: "var(--font-display), 'Space Grotesk', sans-serif" }}
+          style={{
+            fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
+          }}
         >
           {name}
         </span>
         <span
           className="text-xs text-muted-foreground"
-          style={{ fontFamily: "var(--font-mono), 'JetBrains Mono', monospace" }}
+          style={{
+            fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+          }}
         >
           {hex}
         </span>
@@ -221,7 +233,9 @@ function FontShowcase({
       <div className="flex flex-col gap-1">
         <span
           className="text-sm font-semibold text-foreground"
-          style={{ fontFamily: "var(--font-display), 'Space Grotesk', sans-serif" }}
+          style={{
+            fontFamily: "var(--font-display), 'Space Grotesk', sans-serif",
+          }}
         >
           {name}
         </span>

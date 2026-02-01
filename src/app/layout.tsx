@@ -90,7 +90,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(manrope.variable, spaceGrotesk.variable, jetbrainsMono.variable)} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(
+        manrope.variable,
+        spaceGrotesk.variable,
+        jetbrainsMono.variable,
+      )}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script

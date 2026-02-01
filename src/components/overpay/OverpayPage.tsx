@@ -77,5 +77,3 @@ export function OverpayPage() {
     </div>
   );
 }
-
-export default OverpayPage;

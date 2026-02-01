@@ -11,7 +11,10 @@ export function Footer() {
           a qualified financial adviser.
         </p>
         <p className="mt-4 text-center text-xs text-muted-foreground/60">
-          <Link href="/brand" className="hover:text-muted-foreground hover:underline">
+          <Link
+            href="/brand"
+            className="hover:text-muted-foreground hover:underline"
+          >
             Brand Guidelines
           </Link>
         </p>

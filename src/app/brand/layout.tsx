@@ -6,8 +6,7 @@ export const metadata: Metadata = {
     "Brand guidelines for studentloanstudy.uk including logo usage, color palette, and typography specifications.",
   openGraph: {
     title: "Brand Guidelines",
-    description:
-      "Brand guidelines and assets for studentloanstudy.uk",
+    description: "Brand guidelines and assets for studentloanstudy.uk",
     url: "https://studentloanstudy.uk/brand",
     siteName: "UK Student Loan Study",
     type: "website",
@@ -16,8 +15,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Brand Guidelines",
-    description:
-      "Brand guidelines and assets for studentloanstudy.uk",
+    description: "Brand guidelines and assets for studentloanstudy.uk",
   },
 };
 

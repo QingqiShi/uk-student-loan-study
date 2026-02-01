@@ -182,7 +182,9 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
                     setIsOpen(!isOpen);
                   }}
                   className="shrink-0 gap-1.5"
-                  aria-label={isOpen ? "Close settings" : "Personalise settings"}
+                  aria-label={
+                    isOpen ? "Close settings" : "Personalise settings"
+                  }
                 >
                   <HugeiconsIcon
                     icon={isOpen ? Cancel01Icon : Settings02Icon}
