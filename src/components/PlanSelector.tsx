@@ -2,6 +2,7 @@
 
 import { InformationCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 import type { UndergraduatePlanType } from "@/lib/loans/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -110,6 +111,13 @@ export function PlanSelector() {
             </div>
           </PopoverContent>
         </Popover>
+        <span className="text-muted-foreground/50">•</span>
+        <Link
+          href="/which-plan"
+          className="text-primary underline-offset-4 hover:underline"
+        >
+          Not sure?
+        </Link>
       </div>
     </div>
   );
