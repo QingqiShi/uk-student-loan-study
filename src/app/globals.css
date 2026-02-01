@@ -45,6 +45,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
 :root {
@@ -53,7 +55,10 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.6 0.13 163);
+  /* Brand colors - source of truth: src/lib/brand-colors.json */
+  --primary: #10B981;           /* brand-colors.json → primary.light (emerald-500) */
+  --primary-dark: #0D9668;      /* brand-colors.json → primaryDark (emerald-600) */
+  --brand-background: #0A0A0A;  /* brand-colors.json → background */
   --primary-foreground: oklch(0.98 0.02 166);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -89,7 +94,9 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.7 0.15 162);
+  /* Brand colors - source of truth: src/lib/brand-colors.json */
+  --primary: #34D399;           /* brand-colors.json → primary.dark (emerald-400) */
+  --primary-dark: #0D9668;      /* brand-colors.json → primaryDark (same) */
   --primary-foreground: oklch(0.26 0.05 173);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);

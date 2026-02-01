@@ -1,0 +1,26 @@
+{
+  "name": "UK Student Loan Study - Student Loan Repayment Calculator",
+  "short_name": "UK Student Loan Study",
+  "description": "Interactive calculator to understand UK student loan repayment. Compare Plan 2 and Plan 5, visualize total repayments, and see effective interest rates based on your salary.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

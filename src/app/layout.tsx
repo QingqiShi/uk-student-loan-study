@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
-import { Manrope } from "next/font/google";
+import { Manrope, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import type { Metadata } from "next";
 import { LoanProvider } from "@/context/LoanContext";
@@ -7,6 +7,14 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://studentloanstudy.uk"),
@@ -82,7 +90,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(manrope.variable)} suppressHydrationWarning>
+    <html lang="en" className={cn(manrope.variable, spaceGrotesk.variable, jetbrainsMono.variable)} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script

@@ -37,5 +37,6 @@ import { HugeiconsIcon } from "@hugeicons/react";
 - Unsafe type assertions (`as unknown as X`)
 - Manual memoization (`useMemo`, `useCallback`, `React.memo`) — React Compiler handles this automatically. Exception: auto-generated shadcn/ui components.
 - Barrel files (`index.ts` re-export files) — import directly from source modules instead (e.g., `@/lib/loans/types` not `@/lib/loans`).
+- Default exports — use named exports instead (e.g., `export function Header` not `export default Header`).
 
 Fix underlying issues instead of suppressing errors.
