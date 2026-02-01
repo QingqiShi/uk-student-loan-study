@@ -177,6 +177,24 @@ describe("useChartData hooks", () => {
       expect(result.current.annotationSalary).toBeUndefined();
     });
 
+    it("returns annotationSalary at exactly MIN_SALARY boundary", () => {
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({ salary: MIN_SALARY }),
+      });
+
+      expect(result.current.annotationSalary).toBe(MIN_SALARY);
+      expect(result.current.annotationValue).toBeDefined();
+    });
+
+    it("returns annotationSalary at exactly MAX_SALARY boundary", () => {
+      const { result } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({ salary: MAX_SALARY }),
+      });
+
+      expect(result.current.annotationSalary).toBe(MAX_SALARY);
+      expect(result.current.annotationValue).toBeDefined();
+    });
+
     it("calculates higher repayment for higher earners who pay off loan", () => {
       const { result } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper(),
@@ -282,6 +300,30 @@ describe("useChartData hooks", () => {
       });
 
       expect(result.current.annotationSalary).toBeDefined();
+    });
+
+    it("returns annotationSalary at exactly MIN_SALARY boundary", () => {
+      const { result } = renderHook(() => useInterestRateData(), {
+        wrapper: createWrapper({
+          salary: MIN_SALARY,
+          underGradBalance: 50_000,
+        }),
+      });
+
+      expect(result.current.annotationSalary).toBe(MIN_SALARY);
+      expect(result.current.annotationValue).toBeDefined();
+    });
+
+    it("returns annotationSalary at exactly MAX_SALARY boundary", () => {
+      const { result } = renderHook(() => useInterestRateData(), {
+        wrapper: createWrapper({
+          salary: MAX_SALARY,
+          underGradBalance: 50_000,
+        }),
+      });
+
+      expect(result.current.annotationSalary).toBe(MAX_SALARY);
+      expect(result.current.annotationValue).toBeDefined();
     });
 
     it("handles zero balance gracefully", () => {

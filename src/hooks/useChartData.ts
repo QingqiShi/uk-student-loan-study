@@ -22,8 +22,8 @@ function useAnnotationData(
 ): AnnotationData {
   if (
     data.length > 0 &&
-    salary > MIN_SALARY &&
-    salary < MAX_SALARY - maxSalaryOffset
+    salary >= MIN_SALARY &&
+    salary <= MAX_SALARY - maxSalaryOffset
   ) {
     // Find the data point closest to the annotation salary
     const closestPoint = data.reduce((closest, point) => {
