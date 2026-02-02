@@ -121,7 +121,3 @@ export function generateBalanceTimeSeries(
 
   return { data, writeOffMonth };
 }
-
-// Re-export for convenience
-export { simulateLoans } from "@/lib/loans/simulate";
-export type { SimulationResult, Loan } from "@/lib/loans/types";
