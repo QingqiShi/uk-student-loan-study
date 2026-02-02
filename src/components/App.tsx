@@ -12,7 +12,7 @@ function App() {
       <Header />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-4xl flex-1 space-y-8 px-4 py-6 md:px-6 md:py-8"
+        className="mx-auto w-full max-w-4xl flex-1 space-y-8 px-3 pt-36 pb-6 md:pb-8"
       >
         <HeroSection />
 
