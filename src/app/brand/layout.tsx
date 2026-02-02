@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Brand Guidelines",
   description:
     "Brand guidelines for studentloanstudy.uk including logo usage, color palette, and typography specifications.",
+  alternates: {
+    canonical: "/brand",
+  },
 };
 
 export default function BrandLayout({

@@ -15,7 +15,11 @@ export async function generateMetadata({
 
   // No share params - use defaults from layout
   if (!meta.hasShareParams) {
-    return {};
+    return {
+      alternates: {
+        canonical: "/overpay",
+      },
+    };
   }
 
   // Dynamic metadata for shared URLs
@@ -25,6 +29,9 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: "/overpay",
+    },
   };
 }
 
