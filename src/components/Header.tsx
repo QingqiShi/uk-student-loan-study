@@ -18,6 +18,7 @@ import {
   PLAN_DISPLAY_INFO,
   POSTGRADUATE_DISPLAY_INFO,
 } from "@/lib/loans/plans";
+import { PRESETS } from "@/lib/presets";
 
 // Selector for popover content rendered in portals.
 const POPOVER_CONTENT_SELECTOR = '[data-slot="popover-content"]';
@@ -86,6 +87,13 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
     salary,
     CURRENT_RATES.rpi,
     CURRENT_RATES.boeBaseRate,
+  );
+
+  const isCustomConfig = !PRESETS.some(
+    (p) =>
+      p.underGradBalance === underGradBalance &&
+      p.postGradBalance === postGradBalance &&
+      p.underGradPlanType === underGradPlanType,
   );
 
   function renderSummary() {
@@ -181,7 +189,7 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
                 <PresetPills />
               </div>
               <Button
-                variant="outline"
+                variant={isCustomConfig ? "default" : "outline"}
                 size="xs"
                 onClick={() => {
                   setIsOpen(!isOpen);
