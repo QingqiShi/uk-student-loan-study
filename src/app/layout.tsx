@@ -49,12 +49,12 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
+const webAppSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "UK Student Loan Study",
   description:
-    "Interactive calculator to understand UK student loan repayment under Plan 2, Plan 5, and Postgraduate schemes.",
+    "Calculate total UK student loan repayments based on salary, balance, and plan type. Compare outcomes across Plan 1, 2, 4, 5, and Postgraduate loans.",
   url: "https://studentloanstudy.uk",
   applicationCategory: "FinanceApplication",
   operatingSystem: "Any",
@@ -63,6 +63,42 @@ const jsonLd = {
     price: "0",
     priceCurrency: "GBP",
   },
+  about: {
+    "@type": "FinancialProduct",
+    name: "UK Student Loan",
+    category: "Student Loan",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Why do middle earners pay the most on UK student loans?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Middle earners often pay the most because high earners pay off their loans quickly (accumulating less interest), while low earners have their remaining debt written off after 25-40 years. Middle earners pay for decades, accumulating significant interest before write-off, often repaying more than the original loan amount.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How much will I repay on my UK student loan?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Your total repayment depends on your salary, loan balance, and plan type. You repay 9% of income above the threshold (6% for Postgraduate loans). Use our calculator to see your projected total repayment based on your specific situation.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "When does my UK student loan get written off?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Write-off periods vary by plan: Plan 1 writes off 25 years after the April you were first due to repay. Plan 2 writes off 30 years after. Plan 4 writes off 30 years after. Plan 5 writes off 40 years after. Postgraduate loans write off 30 years after.",
+      },
+    },
+  ],
 };
 
 // Inline script to prevent theme flash on page load
@@ -100,7 +136,11 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </head>
       <body>

@@ -1,0 +1,51 @@
+# UK Student Loan Study
+
+> Exposing how UK student loans hurt middle earners most, with interactive calculators to help graduates understand their repayments
+
+## Purpose
+
+UK student loans are often misunderstood. Middle earners typically repay the most - more than high earners (who pay off quickly) and low earners (who have debt written off). This site visualises this inequity and helps users understand their personal situation.
+
+## Tools
+
+- [Repayment Calculator](https://studentloanstudy.uk): See total repayments across all UK student loan plan types (Plan 1, 2, 4, 5, Postgraduate)
+- [Which Plan Quiz](https://studentloanstudy.uk/which-plan): Find your loan plan in 3 questions
+- [Overpay Calculator](https://studentloanstudy.uk/overpay): Should you overpay or invest?
+
+## Key Facts
+
+- UK student loans support multiple plan types: Plan 1, Plan 2, Plan 4, Plan 5, and Postgraduate Loans
+- Repayment rate: 9% of income above threshold (6% for Postgraduate)
+- Loans are written off after 25-40 years depending on plan type
+- Middle earners often pay the most in total repayments due to interest accumulation
+
+## Plan Types Summary
+
+### Plan 1
+- For students who started before September 2012 (England/Wales) or any time in Northern Ireland
+- 25-year write-off period
+- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower
+
+### Plan 2
+- For students who started between September 2012 and July 2023 (England/Wales)
+- 30-year write-off period
+- Interest rate: RPI + 0-3% depending on income
+
+### Plan 4
+- For Scottish students who started after September 1998
+- 30-year write-off period
+- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower
+
+### Plan 5
+- For students starting August 2023 or later (England)
+- 40-year write-off period
+- Interest rate: RPI only (no additional percentage)
+
+### Postgraduate Loan
+- For Master's or Doctoral study from 2016 onwards
+- 30-year write-off period
+- Repayment rate: 6% of income above threshold
+
+## Contact
+
+Website: https://studentloanstudy.uk
