@@ -37,8 +37,6 @@ export interface LoanState {
 export interface LoanActions {
   /** Update a single field in the store */
   updateField: <K extends keyof LoanState>(key: K, value: LoanState[K]) => void;
-  /** Reset store to initial state */
-  reset: () => void;
 }
 
 /**
