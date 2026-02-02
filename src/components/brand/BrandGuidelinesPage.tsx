@@ -6,13 +6,13 @@ import { Header } from "../Header";
 import { BrandIcon } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
 import { Card } from "@/components/ui/card";
-import { BRAND_COLORS } from "@/lib/brand-colors";
+import colors from "@/lib/brand-colors.json";
 
 const COLORS = [
-  { name: "Primary Green", hex: BRAND_COLORS.primary.light },
-  { name: "Dark Green", hex: BRAND_COLORS.primaryDark },
-  { name: "Background", hex: BRAND_COLORS.background, hasBorder: true },
-  { name: "Muted Text", hex: BRAND_COLORS.muted },
+  { name: "Primary Green", hex: colors.primary.light },
+  { name: "Dark Green", hex: colors.primaryDark },
+  { name: "Background", hex: colors.background, hasBorder: true },
+  { name: "Muted Text", hex: colors.muted },
 ];
 
 const ICON_SIZES = [64, 48, 32, 16];
