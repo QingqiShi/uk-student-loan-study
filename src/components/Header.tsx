@@ -37,7 +37,7 @@ export function Header({ variant = "full", repaymentYear }: HeaderProps) {
 
 function SimpleHeaderContent() {
   return (
-    <div className="sticky top-0 z-50 px-4 pt-3">
+    <div className="sticky top-0 z-50 px-3 pt-3">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-2 focus:text-foreground"
@@ -151,7 +151,7 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
   }, [isOpen]);
 
   return (
-    <div className="sticky top-0 z-50 px-4 pt-3">
+    <div className="sticky top-0 z-50 px-3 pt-3">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-2 focus:text-foreground"
@@ -159,8 +159,6 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
         Skip to main content
       </a>
       <div className="relative mx-auto max-w-4xl">
-        <div className="h-24" aria-hidden="true" />
-
         <header
           ref={headerRef}
           className="absolute inset-x-0 top-0 max-h-[85dvh] overflow-hidden rounded-xl border bg-muted/50 shadow-lg backdrop-blur-sm"

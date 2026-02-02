@@ -31,7 +31,7 @@ export function OverpayPage() {
       <Header repaymentYear={repaymentDate.getFullYear()} />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-4xl flex-1 space-y-6 overflow-x-hidden px-4 py-6 md:px-6 md:py-8"
+        className="mx-auto w-full max-w-4xl flex-1 space-y-6 overflow-x-hidden px-3 pt-36 pb-6 md:pb-8"
       >
         <div className="space-y-4">
           <Link
