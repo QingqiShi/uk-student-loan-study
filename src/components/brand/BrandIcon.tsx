@@ -1,4 +1,4 @@
-import { PRIMARY_DARK } from "@/lib/brand-colors";
+import colors from "@/lib/brand-colors.json";
 import { cn } from "@/lib/utils";
 
 interface BrandIconProps {
@@ -12,11 +12,12 @@ export function BrandIcon({ size = 44, className }: BrandIconProps) {
 
   return (
     <div
-      className={cn("relative overflow-hidden bg-primary", className)}
+      className={cn("relative overflow-hidden", className)}
       style={{
         width: size,
         height: size,
         borderRadius: cornerRadius,
+        backgroundColor: colors.primary.dark,
       }}
     >
       <svg
@@ -30,7 +31,7 @@ export function BrandIcon({ size = 44, className }: BrandIconProps) {
       >
         <path
           d="M44 44l0-20q-11-16-22-12-11 5-22 16l0 16z"
-          fill={PRIMARY_DARK}
+          fill={colors.primary.light}
         />
       </svg>
     </div>
