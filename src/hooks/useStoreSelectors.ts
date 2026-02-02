@@ -43,6 +43,12 @@ interface OverpayConfig {
   lumpSumPayment: number;
 }
 
+/** Select salary growth rate for charts */
+export function useSalaryGrowthRate(): SalaryGrowthRate {
+  const { state } = useLoanContext();
+  return state.salaryGrowthRate;
+}
+
 /** Select overpay analysis configuration */
 export function useOverpayConfig(): OverpayConfig {
   const { state } = useLoanContext();

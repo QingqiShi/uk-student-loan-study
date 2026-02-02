@@ -20,12 +20,14 @@ import { CURRENT_RATES } from "@/lib/loans/plans";
  * @param loans - Array of loans to simulate
  * @param mapper - Function to extract desired value from simulation result
  * @param rpiRate - Optional RPI rate override
+ * @param salaryGrowthRate - Annual salary growth rate (default 0)
  * @returns Array of [salary, value] data points
  */
 export function generateSalaryDataSeries(
   loans: Loan[],
   mapper: SimulationMapper,
   rpiRate = CURRENT_RATES.rpi,
+  salaryGrowthRate = 0,
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
@@ -35,6 +37,7 @@ export function generateSalaryDataSeries(
       annualSalary: salary,
       monthsElapsed: 0, // Simulate from repayment start
       rpiRate,
+      salaryGrowthRate,
     });
 
     // Convert to SimulationResult for mapper compatibility
@@ -67,12 +70,14 @@ export interface BalanceTimeSeriesResult {
  * @param loans - Array of loans to simulate
  * @param annualSalary - The user's current annual salary
  * @param rpiRate - Optional RPI rate override
+ * @param salaryGrowthRate - Annual salary growth rate (default 0)
  * @returns Balance data points and write-off month if applicable
  */
 export function generateBalanceTimeSeries(
   loans: Loan[],
   annualSalary: number,
   rpiRate = CURRENT_RATES.rpi,
+  salaryGrowthRate = 0,
 ): BalanceTimeSeriesResult {
   if (loans.length === 0 || loans.every((loan) => loan.balance <= 0)) {
     return { data: [], writeOffMonth: null };
@@ -83,6 +88,7 @@ export function generateBalanceTimeSeries(
     annualSalary,
     monthsElapsed: 0,
     rpiRate,
+    salaryGrowthRate,
   });
 
   const data: BalanceDataPoint[] = [];

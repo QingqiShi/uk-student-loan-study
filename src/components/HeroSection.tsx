@@ -1,3 +1,4 @@
+import { AdvancedConfigSection } from "./AdvancedConfigSection";
 import { InsightCallout } from "./InsightCallout";
 import { QuickInputs } from "./QuickInputs";
 import TotalRepaymentChart from "./TotalRepaymentChart";
@@ -21,6 +22,8 @@ export function HeroSection() {
       </div>
 
       <QuickInputs />
+
+      <AdvancedConfigSection />
 
       <InsightCallout />
     </section>

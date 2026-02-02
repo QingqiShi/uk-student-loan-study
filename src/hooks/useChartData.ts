@@ -1,6 +1,10 @@
-import { useLoanConfig, useCurrentSalary } from "./useStoreSelectors";
+import {
+  useLoanConfig,
+  useCurrentSalary,
+  useSalaryGrowthRate,
+} from "./useStoreSelectors";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
-import { MIN_SALARY, MAX_SALARY } from "@/constants";
+import { MIN_SALARY, MAX_SALARY, SALARY_GROWTH_RATES } from "@/constants";
 import {
   generateSalaryDataSeries,
   generateBalanceTimeSeries,
@@ -44,8 +48,15 @@ function useAnnotationData(
 export function useTotalRepaymentData() {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
+  const salaryGrowthRate = useSalaryGrowthRate();
+  const annualGrowthRate = SALARY_GROWTH_RATES[salaryGrowthRate];
 
-  const data = generateSalaryDataSeries(config.loans, (r) => r.totalRepayment);
+  const data = generateSalaryDataSeries(
+    config.loans,
+    (r) => r.totalRepayment,
+    undefined,
+    annualGrowthRate,
+  );
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
 
@@ -59,6 +70,13 @@ export function useBalanceOverTimeData(): {
 } {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
+  const salaryGrowthRate = useSalaryGrowthRate();
+  const annualGrowthRate = SALARY_GROWTH_RATES[salaryGrowthRate];
 
-  return generateBalanceTimeSeries(config.loans, salary);
+  return generateBalanceTimeSeries(
+    config.loans,
+    salary,
+    undefined,
+    annualGrowthRate,
+  );
 }
