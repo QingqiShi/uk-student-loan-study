@@ -6,9 +6,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
 import { OverpayPrimaryInputs } from "./OverpayPrimaryInputs";
-import { OverpaySecondaryInputs } from "./OverpaySecondaryInputs";
 import { OverpaySummaryCards } from "./OverpaySummaryCards";
 import { OverpayVerdict } from "./OverpayVerdict";
+import { AdvancedConfigSection } from "@/components/AdvancedConfigSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { PlanFromQuery } from "@/components/PlanFromQuery";
@@ -71,7 +71,7 @@ export function OverpayPage() {
           onRepaymentDateChange={setRepaymentDate}
         />
 
-        <OverpaySecondaryInputs />
+        <AdvancedConfigSection />
       </main>
       <Footer />
     </div>
