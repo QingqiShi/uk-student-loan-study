@@ -18,6 +18,7 @@ import {
   PLAN_DISPLAY_INFO,
   POSTGRADUATE_DISPLAY_INFO,
 } from "@/lib/loans/plans";
+import { PRESETS } from "@/lib/presets";
 
 // Selector for popover content rendered in portals.
 const POPOVER_CONTENT_SELECTOR = '[data-slot="popover-content"]';
@@ -86,6 +87,13 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
     salary,
     CURRENT_RATES.rpi,
     CURRENT_RATES.boeBaseRate,
+  );
+
+  const isCustomConfig = !PRESETS.some(
+    (p) =>
+      p.underGradBalance === underGradBalance &&
+      p.postGradBalance === postGradBalance &&
+      p.underGradPlanType === underGradPlanType,
   );
 
   function renderSummary() {
@@ -171,31 +179,29 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
               <div className="flex shrink-0 items-center gap-2">
                 <ThemeToggle />
                 <ShareButton repaymentYear={repaymentYear} />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setIsOpen(!isOpen);
-                  }}
-                  className="shrink-0 gap-1.5"
-                  aria-label={
-                    isOpen ? "Close settings" : "Personalise settings"
-                  }
-                >
-                  <HugeiconsIcon
-                    icon={isOpen ? Cancel01Icon : Settings02Icon}
-                    className="size-4"
-                    strokeWidth={2}
-                  />
-                  <span className="hidden sm:inline">
-                    {isOpen ? "Close" : "Personalise"}
-                  </span>
-                </Button>
               </div>
             </div>
 
-            <div className="mt-2 overflow-x-auto border-t pt-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
-              <PresetPills />
+            <div className="mt-2 flex items-center gap-2 border-t pt-2">
+              <div className="min-w-0 flex-1 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
+                <PresetPills />
+              </div>
+              <Button
+                variant={isCustomConfig ? "default" : "outline"}
+                size="xs"
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                }}
+                className="shrink-0 gap-1.5"
+                aria-label={isOpen ? "Close settings" : "Personalise settings"}
+              >
+                <HugeiconsIcon
+                  icon={isOpen ? Cancel01Icon : Settings02Icon}
+                  className="size-4"
+                  strokeWidth={2}
+                />
+                <span className="hidden sm:inline">Personalise</span>
+              </Button>
             </div>
 
             <div className="mt-1.5 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
