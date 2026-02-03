@@ -2,7 +2,6 @@
 
 import { Calendar03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import dayjs from "dayjs";
 import type { DateInputProps } from "@/types/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -12,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { formatDateLong } from "@/lib/date-utils";
 import { cn } from "@/lib/utils";
 
 export function DateInput({
@@ -36,7 +36,7 @@ export function DateInput({
               )}
             >
               <HugeiconsIcon icon={Calendar03Icon} className="mr-2 size-4" />
-              {value ? dayjs(value).format("MMMM D, YYYY") : "Pick a date"}
+              {value ? formatDateLong(value) : "Pick a date"}
             </Button>
           }
         />

@@ -1,29 +1,15 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
 import { simulateLoans } from "./simulate";
 import type { SimulationInput } from "./types";
-import type dayjs from "dayjs";
 
-// Mock dayjs to control "now" for deterministic tests
-vi.mock("dayjs", async (importOriginal) => {
-  const mod = await importOriginal<{ default: typeof dayjs }>();
-  const actualDayjs = mod.default;
-  const mockNow = actualDayjs("2024-01-15");
-
-  const mockDayjs = (date?: dayjs.ConfigType) => {
-    if (date === undefined) {
-      return mockNow;
-    }
-    return actualDayjs(date);
-  };
-
-  Object.assign(mockDayjs, actualDayjs);
-
-  return { default: mockDayjs };
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date("2024-01-15"));
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 describe("simulateLoans", () => {
