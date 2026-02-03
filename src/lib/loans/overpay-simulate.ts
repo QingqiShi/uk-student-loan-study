@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { simulate } from "./engine";
 import { CURRENT_RATES } from "./plans";
 import type {
@@ -10,6 +9,7 @@ import type {
 } from "./overpay-types";
 import type { Loan, SimulationTimeSeries } from "./types";
 import { SALARY_GROWTH_RATES, THRESHOLD_GROWTH_RATES } from "@/constants";
+import { monthsElapsedSince } from "@/lib/date-utils";
 
 /**
  * Applies a lump sum payment by reducing initial loan balances proportionally.
@@ -76,10 +76,7 @@ export function simulateOverpayScenarios(
   const lumpSumPaidOffEntireLoan = loansAfterLumpSum.length === 0;
 
   // Calculate months elapsed since repayment started
-  const monthsElapsed = Math.max(
-    0,
-    dayjs().diff(dayjs(repaymentStartDate), "months"),
-  );
+  const monthsElapsed = Math.max(0, monthsElapsedSince(repaymentStartDate));
 
   // Simulate baseline (no lump sum, no monthly overpayment)
   const baselineSimulation = simulate({

@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
 import { simulate } from "./engine";
 import type { SimulationInput, SimulationResult } from "./types";
+import { monthsElapsedSince } from "@/lib/date-utils";
 
 /**
  * Simulates repayment of multiple loans over time.
@@ -16,10 +16,7 @@ export function simulateLoans(input: SimulationInput): SimulationResult {
     input;
 
   // Calculate months elapsed since repayment started
-  const monthsElapsed = Math.max(
-    0,
-    dayjs().diff(dayjs(repaymentStartDate), "months"),
-  );
+  const monthsElapsed = Math.max(0, monthsElapsedSince(repaymentStartDate));
 
   const result = simulate({
     loans,
