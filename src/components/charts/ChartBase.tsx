@@ -62,22 +62,12 @@ export function ChartBase({
   series,
   annotations = [],
   showLegend = false,
-  xDomain,
+  xDomain: _xDomain,
 }: ChartBaseProps) {
   const gradientId = useId();
   const [isTooltipActive, setIsTooltipActive] = useState(false);
 
   const ChartComponent = type === "area" ? AreaChart : LineChart;
-
-  // Calculate label offset to avoid edge clipping
-  const getLabelOffset = (x: number) => {
-    if (!xDomain) return 0;
-    const [min, max] = xDomain;
-    const position = (x - min) / (max - min);
-    if (position < 0.25) return 35; // Push right
-    if (position > 0.75) return -35; // Push left
-    return 0;
-  };
 
   return (
     <div
@@ -101,7 +91,7 @@ export function ChartBase({
         <ChartComponent
           data={data}
           accessibilityLayer
-          margin={{ top: 5, right: 5, bottom: 25, left: 25 }}
+          margin={{ top: 25, right: 25, bottom: 25, left: 25 }}
         >
           {type === "area" && (
             <defs>
@@ -224,7 +214,7 @@ export function ChartBase({
                   fill: annotation.color ?? "var(--muted-foreground)",
                   fontSize: 11,
                   fontWeight: 500,
-                  dx: getLabelOffset(annotation.x),
+                  dy: -25,
                 }}
               />
             ))}
