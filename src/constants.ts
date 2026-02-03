@@ -25,6 +25,7 @@ export const THRESHOLD_GROWTH_RATES = {
   none: 0, // 0% - frozen thresholds (current policy)
   conservative: 0.02, // 2% - below-inflation growth
   moderate: 0.03, // 3% - typical RPI-linked growth
+  aggressive: 0.04, // 4% - above-inflation growth
 } as const;
 
 // Formatters for chart display

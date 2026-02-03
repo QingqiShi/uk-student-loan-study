@@ -34,6 +34,7 @@ const thresholdGrowthOptions: {
   },
   { value: "conservative", label: "2%", description: "Below-inflation growth" },
   { value: "moderate", label: "3%", description: "Typical RPI-linked growth" },
+  { value: "aggressive", label: "4%", description: "Above-inflation growth" },
 ];
 
 export function AdvancedConfigSection() {

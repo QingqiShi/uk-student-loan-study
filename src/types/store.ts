@@ -12,7 +12,11 @@ export type SalaryGrowthRate =
 /**
  * Threshold growth rate presets for simulation.
  */
-export type ThresholdGrowthRate = "none" | "conservative" | "moderate";
+export type ThresholdGrowthRate =
+  | "none"
+  | "conservative"
+  | "moderate"
+  | "aggressive";
 
 /**
  * Core loan state values stored in the application state.
