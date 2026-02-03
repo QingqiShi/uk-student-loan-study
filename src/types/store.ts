@@ -10,6 +10,15 @@ export type SalaryGrowthRate =
   | "aggressive";
 
 /**
+ * Threshold growth rate presets for simulation.
+ */
+export type ThresholdGrowthRate =
+  | "none"
+  | "conservative"
+  | "moderate"
+  | "aggressive";
+
+/**
  * Core loan state values stored in the application state.
  */
 export interface LoanState {
@@ -27,6 +36,8 @@ export interface LoanState {
   monthlyOverpayment: number;
   /** Expected salary growth rate preset */
   salaryGrowthRate: SalaryGrowthRate;
+  /** Expected threshold growth rate preset */
+  thresholdGrowthRate: ThresholdGrowthRate;
   /** One-off lump sum payment in GBP */
   lumpSumPayment: number;
 }

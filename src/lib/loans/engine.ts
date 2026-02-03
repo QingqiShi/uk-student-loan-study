@@ -1,4 +1,7 @@
-import { getAnnualInterestRate } from "./interest";
+import {
+  getAnnualInterestRate,
+  type InterestThresholdOverrides,
+} from "./interest";
 import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
 import type {
   Loan,
@@ -28,6 +31,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     monthsElapsed = 0,
     salaryGrowthRate = 0,
     monthlyOverpayment = 0,
+    thresholdGrowthRate = 0,
     rpiRate,
     boeBaseRate,
   } = config;
@@ -51,15 +55,51 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     writeOffMonth: getWriteOffMonth(loan.planType, monthsElapsed),
   }));
 
+  // Initialize dynamic thresholds per plan type (for threshold growth)
+  const planThresholds = new Map<string, number>();
+  for (const loan of activeLoans) {
+    if (!planThresholds.has(loan.planType)) {
+      planThresholds.set(
+        loan.planType,
+        PLAN_CONFIGS[loan.planType].monthlyThreshold,
+      );
+    }
+  }
+
+  // Track Plan 2 interest thresholds separately (they also grow with thresholds)
+  const hasPlan2 = activeLoans.some((loan) => loan.planType === "PLAN_2");
+  let interestThresholdOverrides: InterestThresholdOverrides | undefined;
+  let currentInterestLower: number | undefined;
+  let currentInterestUpper: number | undefined;
+  if (hasPlan2) {
+    currentInterestLower = PLAN_CONFIGS.PLAN_2.interestLowerThreshold;
+    currentInterestUpper = PLAN_CONFIGS.PLAN_2.interestUpperThreshold;
+  }
+
   const snapshots: MonthSnapshot[] = [];
   let currentSalary = annualSalary;
   let month = 0;
 
   // Continue while any loan is active
   while (hasActiveLoan(loanStates, month)) {
-    // Apply annual salary growth (at the start of each year, after first year)
+    // Apply annual salary and threshold growth (at the start of each year, after first year)
     if (month > 0 && month % 12 === 0) {
       currentSalary *= 1 + salaryGrowthRate;
+      for (const [planType, threshold] of planThresholds) {
+        planThresholds.set(planType, threshold * (1 + thresholdGrowthRate));
+      }
+      if (
+        hasPlan2 &&
+        currentInterestLower !== undefined &&
+        currentInterestUpper !== undefined
+      ) {
+        currentInterestLower *= 1 + thresholdGrowthRate;
+        currentInterestUpper *= 1 + thresholdGrowthRate;
+        interestThresholdOverrides = {
+          interestLowerThreshold: currentInterestLower,
+          interestUpperThreshold: currentInterestUpper,
+        };
+      }
     }
 
     const monthLoanStates: LoanMonthState[] = [];
@@ -75,6 +115,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
       const repayment = calculateBaseRepayment(
         state.loan.planType,
         currentSalary,
+        planThresholds.get(state.loan.planType),
       );
       baseRepayments.push({ index: i, repayment });
     }
@@ -117,6 +158,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
         currentSalary,
         rpi,
         boe,
+        interestThresholdOverrides,
       );
       const monthlyInterestRate = annualInterest / 100 / 12;
       const interestApplied = state.balance * monthlyInterestRate;
@@ -224,18 +266,18 @@ function getWriteOffMonth(
 
 /**
  * Calculates the base monthly repayment for a loan based on salary.
- * Each plan type uses its own threshold.
+ * Each plan type uses its own threshold. An optional threshold override
+ * allows dynamic threshold growth during simulation.
  */
 function calculateBaseRepayment(
   planType: Loan["planType"],
   annualSalary: number,
+  thresholdOverride?: number,
 ): number {
   const config = PLAN_CONFIGS[planType];
   const monthlySalary = annualSalary / 12;
-  return Math.max(
-    0,
-    (monthlySalary - config.monthlyThreshold) * config.repaymentRate,
-  );
+  const monthlyThreshold = thresholdOverride ?? config.monthlyThreshold;
+  return Math.max(0, (monthlySalary - monthlyThreshold) * config.repaymentRate);
 }
 
 /**
