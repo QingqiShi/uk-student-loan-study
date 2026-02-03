@@ -692,6 +692,126 @@ describe("simulate engine", () => {
     });
   });
 
+  describe("threshold growth", () => {
+    it("growing thresholds reduce repayments over time", () => {
+      const withGrowth = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03, // 3% annual threshold growth
+      });
+
+      const withoutGrowth = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0,
+      });
+
+      // With growing thresholds, total paid should be less (smaller repayments)
+      expect(withGrowth.summary.totalPaid).toBeLessThan(
+        withoutGrowth.summary.totalPaid,
+      );
+    });
+
+    it("threshold growth does not apply in the first year", () => {
+      const withGrowth = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+      });
+
+      const withoutGrowth = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0,
+      });
+
+      // First month repayment should be identical
+      expect(withGrowth.snapshots[0].loans[0].repayment).toBe(
+        withoutGrowth.snapshots[0].loans[0].repayment,
+      );
+    });
+
+    it("threshold growth reduces repayment in year 2 compared to static", () => {
+      const withGrowth = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+      });
+
+      const withoutGrowth = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0,
+      });
+
+      // After threshold grows at month 12, repayment should be lower
+      const growthRepayment =
+        withGrowth.snapshots[12]?.loans[0]?.repayment ?? 0;
+      const staticRepayment =
+        withoutGrowth.snapshots[12]?.loans[0]?.repayment ?? 0;
+
+      expect(growthRepayment).toBeLessThan(staticRepayment);
+    });
+
+    it("defaults to 0% threshold growth", () => {
+      const explicit = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0,
+      });
+
+      const implicit = simulate({
+        loans: defaultConfig.loans,
+        annualSalary: defaultConfig.annualSalary,
+        rpiRate: defaultConfig.rpiRate,
+        boeBaseRate: defaultConfig.boeBaseRate,
+      });
+
+      expect(explicit.summary.monthsToPayoff).toBe(
+        implicit.summary.monthsToPayoff,
+      );
+    });
+
+    it("threshold growth above salary growth can cause repayments to stop", () => {
+      const result = simulate({
+        ...defaultConfig,
+        loans: [{ planType: "PLAN_2", balance: 50000 }],
+        annualSalary: 35000, // Just above Plan 2 threshold (~£28,470)
+        salaryGrowthRate: 0.01, // 1% salary growth
+        thresholdGrowthRate: 0.05, // 5% threshold growth (outpaces salary)
+      });
+
+      // Eventually threshold should exceed salary, reducing repayments to 0
+      // The loan should be written off
+      expect(result.summary.perLoan[0].writtenOff).toBe(true);
+    });
+
+    it("grows Plan 2 interest thresholds alongside repayment thresholds", () => {
+      // Use a salary right at the Plan 2 interest lower threshold boundary
+      const salary = PLAN_CONFIGS.PLAN_2.interestLowerThreshold + 1000;
+
+      const withGrowth = simulate({
+        ...defaultConfig,
+        loans: [{ planType: "PLAN_2", balance: 50000 }],
+        annualSalary: salary,
+        thresholdGrowthRate: 0.03,
+      });
+
+      const withoutGrowth = simulate({
+        ...defaultConfig,
+        loans: [{ planType: "PLAN_2", balance: 50000 }],
+        annualSalary: salary,
+        thresholdGrowthRate: 0,
+      });
+
+      // With threshold growth, interest thresholds also grow, so interest rate
+      // changes differently. At month 12, the interest applied should differ.
+      if (withGrowth.snapshots[12] && withoutGrowth.snapshots[12]) {
+        const growthInterest =
+          withGrowth.snapshots[12].loans[0]?.interestApplied ?? 0;
+        const staticInterest =
+          withoutGrowth.snapshots[12].loans[0]?.interestApplied ?? 0;
+
+        // With growing interest thresholds, the salary is relatively lower in the
+        // sliding scale, so interest should be lower (closer to RPI only)
+        expect(growthInterest).not.toBe(staticInterest);
+      }
+    });
+  });
+
   describe("interest rate impact", () => {
     it("higher RPI results in more total repayment", () => {
       const lowRpi = simulate({

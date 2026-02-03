@@ -96,6 +96,8 @@ export interface SimulationConfig {
   salaryGrowthRate?: number;
   /** Extra payment per month distributed across loans (default 0) */
   monthlyOverpayment?: number;
+  /** Annual threshold growth rate (default 0) */
+  thresholdGrowthRate?: number;
   rpiRate?: number;
   boeBaseRate?: number;
 }

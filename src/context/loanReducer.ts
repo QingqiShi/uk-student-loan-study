@@ -11,6 +11,7 @@ export const initialState: LoanState = {
   // Overpay analysis defaults
   monthlyOverpayment: 0,
   salaryGrowthRate: "none",
+  thresholdGrowthRate: "none",
   lumpSumPayment: 10_000,
 };
 

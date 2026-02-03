@@ -17,6 +17,16 @@ export const SALARY_GROWTH_RATES = {
   aggressive: 0.06, // 6% - fast-track careers (tech, finance)
 } as const;
 
+/** Annual threshold growth rates by preset type.
+ * Thresholds are typically RPI-linked (2-3% historically).
+ * Note: Government has announced threshold freeze through 2027.
+ */
+export const THRESHOLD_GROWTH_RATES = {
+  none: 0, // 0% - frozen thresholds (current policy)
+  conservative: 0.02, // 2% - below-inflation growth
+  moderate: 0.03, // 3% - typical RPI-linked growth
+} as const;
+
 // Formatters for chart display
 export const currencyFormatter = new Intl.NumberFormat("en-GB", {
   style: "currency",

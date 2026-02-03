@@ -9,7 +9,7 @@ import type {
   RecommendationType,
 } from "./overpay-types";
 import type { Loan, SimulationTimeSeries } from "./types";
-import { SALARY_GROWTH_RATES } from "@/constants";
+import { SALARY_GROWTH_RATES, THRESHOLD_GROWTH_RATES } from "@/constants";
 
 /**
  * Applies a lump sum payment by reducing initial loan balances proportionally.
@@ -48,6 +48,7 @@ export function simulateOverpayScenarios(
     repaymentStartDate,
     monthlyOverpayment,
     salaryGrowthRate,
+    thresholdGrowthRate,
     rpiRate,
     boeBaseRate,
     lumpSumPayment = 0,
@@ -56,6 +57,7 @@ export function simulateOverpayScenarios(
   const rpi = rpiRate ?? CURRENT_RATES.rpi;
   const boe = boeBaseRate ?? CURRENT_RATES.boeBaseRate;
   const annualGrowthRate = SALARY_GROWTH_RATES[salaryGrowthRate];
+  const annualThresholdGrowth = THRESHOLD_GROWTH_RATES[thresholdGrowthRate];
 
   // Check for empty scenarios
   const validLoans = loans.filter((l) => l.balance > 0);
@@ -86,6 +88,7 @@ export function simulateOverpayScenarios(
     monthsElapsed,
     salaryGrowthRate: annualGrowthRate,
     monthlyOverpayment: 0,
+    thresholdGrowthRate: annualThresholdGrowth,
     rpiRate: rpi,
     boeBaseRate: boe,
   });
@@ -100,6 +103,7 @@ export function simulateOverpayScenarios(
           monthsElapsed,
           salaryGrowthRate: annualGrowthRate,
           monthlyOverpayment,
+          thresholdGrowthRate: annualThresholdGrowth,
           rpiRate: rpi,
           boeBaseRate: boe,
         });

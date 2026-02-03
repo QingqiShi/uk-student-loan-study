@@ -2,9 +2,15 @@ import {
   useLoanConfig,
   useCurrentSalary,
   useSalaryGrowthRate,
+  useThresholdGrowthRate,
 } from "./useStoreSelectors";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
-import { MIN_SALARY, MAX_SALARY, SALARY_GROWTH_RATES } from "@/constants";
+import {
+  MIN_SALARY,
+  MAX_SALARY,
+  SALARY_GROWTH_RATES,
+  THRESHOLD_GROWTH_RATES,
+} from "@/constants";
 import {
   generateSalaryDataSeries,
   generateBalanceTimeSeries,
@@ -49,13 +55,16 @@ export function useTotalRepaymentData() {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
+  const thresholdGrowthRate = useThresholdGrowthRate();
   const annualGrowthRate = SALARY_GROWTH_RATES[salaryGrowthRate];
+  const annualThresholdGrowth = THRESHOLD_GROWTH_RATES[thresholdGrowthRate];
 
   const data = generateSalaryDataSeries(
     config.loans,
     (r) => r.totalRepayment,
     undefined,
     annualGrowthRate,
+    annualThresholdGrowth,
   );
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
@@ -71,12 +80,15 @@ export function useBalanceOverTimeData(): {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
+  const thresholdGrowthRate = useThresholdGrowthRate();
   const annualGrowthRate = SALARY_GROWTH_RATES[salaryGrowthRate];
+  const annualThresholdGrowth = THRESHOLD_GROWTH_RATES[thresholdGrowthRate];
 
   return generateBalanceTimeSeries(
     config.loans,
     salary,
     undefined,
     annualGrowthRate,
+    annualThresholdGrowth,
   );
 }

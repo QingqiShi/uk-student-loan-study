@@ -21,8 +21,12 @@ export function useOverpayAnalysis(
 ): OverpayAnalysisResult {
   const { loans } = useLoanConfig();
   const salary = useCurrentSalary();
-  const { monthlyOverpayment, salaryGrowthRate, lumpSumPayment } =
-    useOverpayConfig();
+  const {
+    monthlyOverpayment,
+    salaryGrowthRate,
+    thresholdGrowthRate,
+    lumpSumPayment,
+  } = useOverpayConfig();
 
   return simulateOverpayScenarios({
     loans,
@@ -30,6 +34,7 @@ export function useOverpayAnalysis(
     repaymentStartDate,
     monthlyOverpayment,
     salaryGrowthRate,
+    thresholdGrowthRate,
     lumpSumPayment,
   });
 }

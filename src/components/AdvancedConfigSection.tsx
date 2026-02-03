@@ -3,7 +3,7 @@
 import { ArrowDown01Icon, ArrowUp01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
-import type { SalaryGrowthRate } from "@/types/store";
+import type { SalaryGrowthRate, ThresholdGrowthRate } from "@/types/store";
 import { Button } from "@/components/ui/button";
 import { useLoanContext } from "@/context/LoanContext";
 
@@ -20,6 +20,20 @@ const salaryGrowthOptions: {
     label: "6%",
     description: "Fast-track careers (tech, finance)",
   },
+];
+
+const thresholdGrowthOptions: {
+  value: ThresholdGrowthRate;
+  label: string;
+  description: string;
+}[] = [
+  {
+    value: "none",
+    label: "0%",
+    description: "Frozen thresholds (current policy)",
+  },
+  { value: "conservative", label: "2%", description: "Below-inflation growth" },
+  { value: "moderate", label: "3%", description: "Typical RPI-linked growth" },
 ];
 
 export function AdvancedConfigSection() {
@@ -52,7 +66,7 @@ export function AdvancedConfigSection() {
       <div
         id="advanced-config-content"
         className={`transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         } ${isOpen && isFullyOpen ? "overflow-visible" : "overflow-hidden"}`}
         onTransitionEnd={(e) => {
           if (e.propertyName === "max-height" && e.target === e.currentTarget) {
@@ -60,7 +74,7 @@ export function AdvancedConfigSection() {
           }
         }}
       >
-        <div className="pt-2 pb-2.5">
+        <div className="space-y-4 pt-2 pb-2.5">
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium">Salary Growth</legend>
             <div
@@ -93,6 +107,47 @@ export function AdvancedConfigSection() {
                   (o) => o.value === state.salaryGrowthRate,
                 )?.description
               }
+            </p>
+          </fieldset>
+
+          <fieldset className="space-y-2">
+            <legend className="text-sm font-medium">
+              Simulate threshold rising
+            </legend>
+            <div
+              role="group"
+              aria-label="Threshold growth rate options"
+              className="flex gap-1"
+            >
+              {thresholdGrowthOptions.map((option) => (
+                <Button
+                  key={option.value}
+                  variant={
+                    state.thresholdGrowthRate === option.value
+                      ? "default"
+                      : "outline"
+                  }
+                  size="sm"
+                  onClick={() => {
+                    updateField("thresholdGrowthRate", option.value);
+                  }}
+                  aria-pressed={state.thresholdGrowthRate === option.value}
+                  className="flex-1"
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {
+                thresholdGrowthOptions.find(
+                  (o) => o.value === state.thresholdGrowthRate,
+                )?.description
+              }
+            </p>
+            {/* UPDATE: Remove or revise this note once thresholds unfreeze (expected after 2027) */}
+            <p className="text-xs text-amber-600 dark:text-amber-400">
+              Note: Government has frozen thresholds through 2027.
             </p>
           </fieldset>
         </div>
