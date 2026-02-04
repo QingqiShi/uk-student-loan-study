@@ -12,7 +12,7 @@ describe("loanReducer", () => {
       expect(initialState.underGradPlanType).toBe("PLAN_2");
       expect(initialState.underGradBalance).toBe(45_000); // "2012-23 Grad" preset
       expect(initialState.postGradBalance).toBe(0);
-      expect(initialState.salary).toBe(65_000);
+      expect(initialState.salary).toBe(40_000);
     });
   });
 
@@ -80,7 +80,7 @@ describe("loanReducer", () => {
       expect(resetState.underGradBalance).toBe(45_000); // "2012-23 Grad" preset
       expect(resetState.postGradBalance).toBe(0);
       expect(resetState.underGradPlanType).toBe("PLAN_2");
-      expect(resetState.salary).toBe(65_000);
+      expect(resetState.salary).toBe(40_000);
     });
   });
 });
