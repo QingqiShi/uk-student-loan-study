@@ -1,3 +1,5 @@
+import type { SalaryGrowthRate } from "@/types/store";
+
 // Chart salary range
 export const MIN_SALARY = 25_000;
 export const MAX_SALARY = 150_000;
@@ -27,6 +29,22 @@ export const THRESHOLD_GROWTH_RATES = {
   moderate: 0.03, // 3% - typical RPI-linked growth
   aggressive: 0.04, // 4% - above-inflation growth
 } as const;
+
+/** Salary growth rate option labels for toggle buttons */
+export const SALARY_GROWTH_OPTIONS: {
+  value: SalaryGrowthRate;
+  label: string;
+  description: string;
+}[] = [
+  { value: "none", label: "0%", description: "No salary growth" },
+  { value: "conservative", label: "2%", description: "Matches inflation only" },
+  { value: "moderate", label: "4%", description: "Typical career progression" },
+  {
+    value: "aggressive",
+    label: "6%",
+    description: "Fast-track careers (tech, finance)",
+  },
+];
 
 // Formatters for chart display
 export const currencyFormatter = new Intl.NumberFormat("en-GB", {
