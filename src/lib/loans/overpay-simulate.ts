@@ -143,7 +143,13 @@ export function simulateOverpayScenarios(
   // Determine recommendation
   const hasOverpayment = monthlyOverpayment > 0 || lumpSumPayment > 0;
   const { recommendation, reason } = hasOverpayment
-    ? determineRecommendation(baseline, overpay, paymentDifference)
+    ? determineRecommendation(
+        baseline,
+        overpay,
+        paymentDifference,
+        monthlyOverpayment,
+        lumpSumPayment,
+      )
     : {
         recommendation: "marginal" as RecommendationType,
         reason: "Enter an overpayment amount to compare scenarios.",
@@ -228,13 +234,36 @@ function generateBalanceSeries(
 }
 
 /**
+ * Builds a human-readable summary of the overpayment inputs.
+ */
+function formatOverpaymentSummary(
+  monthlyOverpayment: number,
+  lumpSumPayment: number,
+): string {
+  const hasMonthly = monthlyOverpayment > 0;
+  const hasLumpSum = lumpSumPayment > 0;
+
+  if (hasLumpSum && hasMonthly) {
+    return `A lump sum of ${formatCurrency(lumpSumPayment)} and ${formatCurrency(monthlyOverpayment)}/month overpayment`;
+  }
+  if (hasLumpSum) {
+    return `A lump sum of ${formatCurrency(lumpSumPayment)}`;
+  }
+  return `Overpaying ${formatCurrency(monthlyOverpayment)}/month`;
+}
+
+/**
  * Determines the recommendation based on simulation results.
  */
 function determineRecommendation(
   baseline: ScenarioResult,
   overpay: ScenarioResult,
   paymentDifference: number,
+  monthlyOverpayment: number,
+  lumpSumPayment: number,
 ): { recommendation: RecommendationType; reason: string } {
+  const summary = formatOverpaymentSummary(monthlyOverpayment, lumpSumPayment);
+
   // If baseline loan is written off
   if (baseline.writtenOff) {
     // Check if overpaying prevents write-off
@@ -242,7 +271,7 @@ function determineRecommendation(
       // Still written off even with overpayment - definitely don't overpay
       return {
         recommendation: "dont-overpay",
-        reason: `Your loan will be written off regardless. Every pound you overpay is money lost.`,
+        reason: `Your loan will be written off regardless. ${summary} would not reduce the total amount you pay.`,
       };
     }
     // Overpaying prevents write-off - compare total outcomes
@@ -251,7 +280,7 @@ function determineRecommendation(
     if (extraPaidByOverpaying > 0) {
       return {
         recommendation: "dont-overpay",
-        reason: `Without overpaying, ${formatCurrency(baseline.amountWrittenOff)} would be written off. Overpaying would cost you ${formatCurrency(extraPaidByOverpaying)} more.`,
+        reason: `Without overpaying, ${formatCurrency(baseline.amountWrittenOff)} would be written off. ${summary} would increase total repayments by ${formatCurrency(extraPaidByOverpaying)}.`,
       };
     }
   }
@@ -263,22 +292,26 @@ function determineRecommendation(
       : 0;
 
   if (percentageDiff < 0.1 && Math.abs(paymentDifference) < 1000) {
+    const marginalDetail =
+      paymentDifference > 0
+        ? `would only save ${formatCurrency(paymentDifference)}`
+        : `would only cost an extra ${formatCurrency(Math.abs(paymentDifference))}`;
     return {
       recommendation: "marginal",
-      reason: `The difference is small (${formatCurrency(Math.abs(paymentDifference))}). Consider other factors like flexibility and peace of mind.`,
+      reason: `${summary} ${marginalDetail}. Other factors like flexibility and peace of mind may be worth considering.`,
     };
   }
 
   if (paymentDifference > 0) {
     return {
       recommendation: "overpay",
-      reason: `Overpaying saves ${formatCurrency(paymentDifference)} in total interest paid.`,
+      reason: `${summary} could save ${formatCurrency(paymentDifference)} in total interest based on these projections.`,
     };
   }
 
   return {
     recommendation: "dont-overpay",
-    reason: `Overpaying would cost you ${formatCurrency(Math.abs(paymentDifference))} more overall.`,
+    reason: `${summary} would increase total repayments by ${formatCurrency(Math.abs(paymentDifference))} based on these projections.`,
   };
 }
 
