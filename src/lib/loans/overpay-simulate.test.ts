@@ -86,7 +86,7 @@ describe("simulateOverpayScenarios", () => {
 
       // High salary pays off quickly, overpaying saves significant interest
       if (result.recommendation === "overpay") {
-        expect(result.recommendationReason).toContain("saves");
+        expect(result.recommendationReason).toContain("could save");
       }
     });
 
