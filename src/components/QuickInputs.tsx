@@ -10,6 +10,7 @@ import {
   currencyFormatter,
 } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
+import { trackSalaryChanged } from "@/lib/analytics";
 
 export function QuickInputs() {
   const { state, updateField } = useLoanContext();
@@ -33,6 +34,10 @@ export function QuickInputs() {
           id="salary-slider"
           value={[salary]}
           onValueChange={handleSalaryChange}
+          onValueCommitted={(value) => {
+            const salaryValue = typeof value === "number" ? value : value[0];
+            trackSalaryChanged(salaryValue);
+          }}
           min={MIN_SALARY}
           max={MAX_SALARY}
           step={SALARY_STEP}

@@ -11,7 +11,7 @@ export function ToolLinks() {
     <section className="space-y-4">
       <h3 className="text-base font-semibold">More Tools</h3>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link href="/which-plan" className="group block h-full">
+        <Link href="/which-plan?ref=tool-card" className="group block h-full">
           <div className="flex h-full flex-col rounded-xl bg-card p-5 ring-1 ring-foreground/10 transition-all duration-200 hover:bg-accent hover:ring-primary/30">
             <div className="mb-3 flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
@@ -33,7 +33,7 @@ export function ToolLinks() {
           </div>
         </Link>
 
-        <Link href="/overpay" className="group block h-full">
+        <Link href="/overpay?ref=tool-card" className="group block h-full">
           <div className="flex h-full flex-col rounded-xl bg-card p-5 ring-1 ring-foreground/10 transition-all duration-200 hover:bg-accent hover:ring-primary/30">
             <div className="mb-3 flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">

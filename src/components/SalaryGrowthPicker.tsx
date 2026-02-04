@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { SALARY_GROWTH_OPTIONS } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
+import { trackSalaryGrowthSelected } from "@/lib/analytics";
 
 export function SalaryGrowthPicker() {
   const { state, updateField } = useLoanContext();
@@ -23,6 +24,7 @@ export function SalaryGrowthPicker() {
             }
             size="sm"
             onClick={() => {
+              trackSalaryGrowthSelected(option.value);
               updateField("salaryGrowthRate", option.value);
             }}
             aria-pressed={state.salaryGrowthRate === option.value}

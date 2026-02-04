@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLoanContext } from "@/context/LoanContext";
+import { trackShareClicked } from "@/lib/analytics";
 import { generateShareUrl, generateShareText } from "@/lib/shareUrl";
 
 interface ShareButtonProps {
@@ -36,6 +37,7 @@ export function ShareButton({ repaymentYear }: ShareButtonProps) {
 
     // Try native share API first (mobile)
     if (typeof navigator.share === "function") {
+      trackShareClicked("native");
       navigator
         .share({
           title: "UK Student Loan Projection",
@@ -54,6 +56,7 @@ export function ShareButton({ repaymentYear }: ShareButtonProps) {
     }
 
     // Fall back to clipboard
+    trackShareClicked("clipboard");
     void copyToClipboard();
   };
 

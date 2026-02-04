@@ -9,6 +9,7 @@ export function CurrencyInput({
   helperText,
   value,
   onChange,
+  onBlur,
 }: CurrencyInputProps) {
   return (
     <div className="space-y-2">
@@ -25,6 +26,7 @@ export function CurrencyInput({
               onChange(values.floatValue);
             }
           }}
+          onBlur={onBlur}
           customInput={CustomInput}
           className="pl-7"
           decimalScale={2}

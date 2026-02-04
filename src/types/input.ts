@@ -18,6 +18,8 @@ export interface CurrencyInputProps extends BaseInputProps {
   value: number;
   /** Callback when value changes */
   onChange: (value: number) => void;
+  /** Callback when input loses focus */
+  onBlur?: () => void;
 }
 
 /**
