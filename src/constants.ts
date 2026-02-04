@@ -4,7 +4,7 @@ import type { SalaryGrowthRate } from "@/types/store";
 export const MIN_SALARY = 25_000;
 export const MAX_SALARY = 150_000;
 export const DEFAULT_SALARY = 40_000;
-export const SALARY_STEP = 5_000;
+export const SALARY_STEP = 1_000;
 
 // Overpay analysis constants
 export const MIN_MONTHLY_OVERPAYMENT = 0;
