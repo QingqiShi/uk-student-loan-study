@@ -16,13 +16,15 @@ export interface Insight {
   cta?: InsightCta;
 }
 
-// Threshold for "peak repayment zone" - overpaying more than this % of principal
-const PEAK_ZONE_OVERPAYMENT_THRESHOLD = 0.5; // 50%
+// Peak zone: paying more than this multiple of principal (e.g. 1.7 = 70% extra)
+const PEAK_ZONE_REPAYMENT_MULTIPLIER = 1.7;
 
 interface InsightConfig {
   loans: Loan[];
   underGradBalance: number;
   postGradBalance: number;
+  salaryGrowthRate?: number;
+  thresholdGrowthRate?: number;
 }
 
 /**
@@ -56,12 +58,23 @@ function calculateOverpayment(
 
 /**
  * Generates a personalized insight based on salary and loan configuration.
+ *
+ * Categorizes the user into one of three zones:
+ * - Peak zone: total repayment exceeds 1.7x the principal
+ * - Low earner: loan gets written off before paying too much
+ * - High earner: pays off quickly without excessive interest
  */
 export function generateInsight(
   salary: number,
   config: InsightConfig,
 ): Insight | null {
-  const { loans, underGradBalance, postGradBalance } = config;
+  const {
+    loans,
+    underGradBalance,
+    postGradBalance,
+    salaryGrowthRate = 0,
+    thresholdGrowthRate = 0,
+  } = config;
 
   // No insight if no loan balance
   if (underGradBalance <= 0 && postGradBalance <= 0) {
@@ -73,6 +86,8 @@ export function generateInsight(
     loans,
     annualSalary: salary,
     monthsElapsed: 0,
+    salaryGrowthRate,
+    thresholdGrowthRate,
   });
 
   const writeOffYears = getWriteOffYears(loans);
@@ -80,20 +95,23 @@ export function generateInsight(
   const overpayment = calculateOverpayment(result, principal);
   const overpaymentRatio = principal > 0 ? overpayment / principal : 0;
 
-  // Peak repayment zone: paying significantly more than borrowed (>50% extra)
-  if (overpaymentRatio > PEAK_ZONE_OVERPAYMENT_THRESHOLD) {
-    const formattedOverpayment = new Intl.NumberFormat("en-GB", {
+  // Peak repayment zone: paying 70%+ more than what you borrowed
+  if (
+    principal > 0 &&
+    result.summary.totalPaid > PEAK_ZONE_REPAYMENT_MULTIPLIER * principal
+  ) {
+    const gbp = new Intl.NumberFormat("en-GB", {
       style: "currency",
       currency: "GBP",
       maximumFractionDigits: 0,
-    }).format(overpayment);
-
-    const percentOver = (overpaymentRatio * 100).toFixed(0);
+    });
+    const formattedTotalPaid = gbp.format(result.summary.totalPaid);
+    const formattedPrincipal = gbp.format(principal);
 
     return {
       type: "middle-earner",
       title: "You're in the peak repayment zone",
-      description: `At this salary, you'll pay ${formattedOverpayment} (${percentOver}%) more than you borrowed.`,
+      description: `You'll repay ${formattedTotalPaid} in total on a ${formattedPrincipal} loan. At this salary, interest builds faster than your repayments reduce the balance.`,
       cta: {
         text: "See if overpaying could help",
         href: "/overpay",
@@ -101,7 +119,7 @@ export function generateInsight(
     };
   }
 
-  // Low earner: loan will be written off
+  // Low earner: loan will be written off with remaining balance
   if (willBeWrittenOff(result)) {
     const remaining = result.summary.perLoan.reduce(
       (sum, r) => sum + r.remainingBalance,
@@ -109,16 +127,17 @@ export function generateInsight(
     );
 
     if (remaining > 0) {
-      const formattedRemaining = new Intl.NumberFormat("en-GB", {
-        style: "currency",
-        currency: "GBP",
-        maximumFractionDigits: 0,
-      }).format(remaining);
+      const paidPercent =
+        principal > 0 ? (result.summary.totalPaid / principal) * 100 : 0;
+      const description =
+        overpaymentRatio > 0
+          ? `You'll pay ${(overpaymentRatio * 100).toFixed(0)}% more than you borrowed, but it's written off after ${String(writeOffYears)} years — reasonable given inflation. Treat repayments as a graduate tax, not a debt.`
+          : `You'll only repay ${paidPercent.toFixed(0)}% of what you borrowed before the rest is written off after ${String(writeOffYears)} years. Treat repayments as a graduate tax, not a debt.`;
 
       return {
         type: "low-earner",
         title: "Your loan will be written off",
-        description: `At your current salary, you'll pay for ${String(writeOffYears)} years and have ${formattedRemaining} written off. This is often the best outcome for lower earners.`,
+        description,
       };
     }
   }
@@ -130,9 +149,9 @@ export function generateInsight(
   return {
     type: "high-earner",
     title: "You'll pay off quickly",
-    description: `You'll clear your loan in about ${yearsToPayoff} years, paying ${interestPercent}% extra in interest.`,
+    description: `You'll clear your loan in about ${yearsToPayoff} years, paying ${interestPercent}% more than you borrowed.`,
     cta: {
-      text: "Should you overpay instead of investing?",
+      text: "See if overpaying saves you money",
       href: "/overpay",
     },
   };
