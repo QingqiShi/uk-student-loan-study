@@ -16,6 +16,11 @@ import {
 } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
 import { useLoanConfig } from "@/hooks/useStoreSelectors";
+import {
+  trackOverpaySalaryChanged,
+  trackOverpayMonthlyChanged,
+  trackOverpayLumpsumChanged,
+} from "@/lib/analytics";
 
 interface OverpayPrimaryInputsProps {
   repaymentDate: Date;
@@ -68,6 +73,9 @@ export function OverpayPrimaryInputs({
                       : state.lumpSumPayment.toLocaleString("en-GB")
                   }
                   onChange={handleLumpSumChange}
+                  onBlur={() => {
+                    trackOverpayLumpsumChanged(state.lumpSumPayment);
+                  }}
                   placeholder="0"
                   className="pl-6"
                   aria-label="Enter one-off lump sum payment"
@@ -95,6 +103,10 @@ export function OverpayPrimaryInputs({
             id="overpayment-slider"
             value={[state.monthlyOverpayment]}
             onValueChange={handleOverpaymentChange}
+            onValueCommitted={(value) => {
+              const overpayValue = typeof value === "number" ? value : value[0];
+              trackOverpayMonthlyChanged(overpayValue);
+            }}
             min={MIN_MONTHLY_OVERPAYMENT}
             max={MAX_MONTHLY_OVERPAYMENT}
             step={OVERPAYMENT_STEP}
@@ -119,6 +131,10 @@ export function OverpayPrimaryInputs({
             id="salary-slider"
             value={[state.salary]}
             onValueChange={handleSalaryChange}
+            onValueCommitted={(value) => {
+              const salaryValue = typeof value === "number" ? value : value[0];
+              trackOverpaySalaryChanged(salaryValue);
+            }}
             min={MIN_SALARY}
             max={MAX_SALARY}
             step={SALARY_STEP}

@@ -1,0 +1,141 @@
+import { track } from "@vercel/analytics";
+
+// =============================================================================
+// Home Page Events
+// =============================================================================
+
+export function trackSalaryChanged(value: number) {
+  track("salary_changed", { value });
+}
+
+export function trackSalaryGrowthSelected(rate: string) {
+  track("salary_growth_selected", { rate });
+}
+
+export function trackAdvancedConfigToggled(expanded: boolean) {
+  track("advanced_config_toggled", { expanded });
+}
+
+export function trackThresholdGrowthSelected(rate: string) {
+  track("threshold_growth_selected", { rate });
+}
+
+export function trackPersonalisePanelToggled(open: boolean) {
+  track("personalise_panel_toggled", { open });
+}
+
+export function trackPresetApplied(preset: string) {
+  track("preset_applied", { preset });
+}
+
+export function trackUndergradBalanceChanged(value: number) {
+  track("undergrad_balance_changed", { value });
+}
+
+export function trackPostgradBalanceChanged(value: number) {
+  track("postgrad_balance_changed", { value });
+}
+
+export function trackPlanSelected(plan: string) {
+  track("plan_selected", { plan });
+}
+
+export function trackPlanInfoViewed(plan: string) {
+  track("plan_info_viewed", { plan });
+}
+
+export function trackShareClicked(method: string) {
+  track("share_clicked", { method });
+}
+
+export function trackThemeChanged(theme: string) {
+  track("theme_changed", { theme });
+}
+
+// =============================================================================
+// Which-Plan Quiz Events
+// =============================================================================
+
+export function trackQuizStarted() {
+  track("quiz_started", {});
+}
+
+export function trackQuizRegionSelected(region: string) {
+  track("quiz_region_selected", { region });
+}
+
+export function trackQuizYearSelected(yearGroup: string) {
+  track("quiz_year_selected", { yearGroup });
+}
+
+export function trackQuizBackClicked(fromStep: number) {
+  track("quiz_back_clicked", { fromStep });
+}
+
+export function trackQuizRestarted() {
+  track("quiz_restarted", {});
+}
+
+export function trackQuizCompleted(result: string) {
+  track("quiz_completed", { result });
+}
+
+// =============================================================================
+// Overpay Page Events
+// =============================================================================
+
+export function trackOverpaySalaryChanged(value: number) {
+  track("overpay_salary_changed", { value });
+}
+
+export function trackOverpayMonthlyChanged(value: number) {
+  track("overpay_monthly_changed", { value });
+}
+
+export function trackOverpayLumpsumChanged(value: number) {
+  track("overpay_lumpsum_changed", { value });
+}
+
+export function trackOverpayYearSelected(year: number) {
+  track("overpay_year_selected", { year });
+}
+
+export function trackOverpayDecadeNavigated(direction: "previous" | "next") {
+  track("overpay_decade_navigated", { direction });
+}
+
+// =============================================================================
+// Shared URL Parameter Events
+// =============================================================================
+
+export function trackSharedPlanLoaded(plan: string) {
+  track("shared_plan_loaded", { plan });
+}
+
+export function trackSharedUndergradBalanceLoaded(value: number) {
+  track("shared_undergrad_balance_loaded", { value });
+}
+
+export function trackSharedPostgradBalanceLoaded(value: number) {
+  track("shared_postgrad_balance_loaded", { value });
+}
+
+export function trackSharedSalaryLoaded(value: number) {
+  track("shared_salary_loaded", { value });
+}
+
+export function trackSharedMonthlyOverpaymentLoaded(value: number) {
+  track("shared_monthly_overpayment_loaded", { value });
+}
+
+export function trackSharedSalaryGrowthLoaded(rate: string) {
+  track("shared_salary_growth_loaded", { rate });
+}
+
+export function trackSharedLumpSumLoaded(value: number) {
+  track("shared_lump_sum_loaded", { value });
+}
+
+export function trackSharedRepaymentYearLoaded(year: number) {
+  track("shared_repayment_year_loaded", { year });
+}

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/popover";
 import { currencyFormatter } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
+import { trackPlanSelected, trackPlanInfoViewed } from "@/lib/analytics";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const PLAN_TYPES: UndergraduatePlanType[] = [
@@ -50,6 +51,7 @@ export function PlanSelector() {
               variant={isSelected ? "default" : "outline"}
               size="sm"
               onClick={() => {
+                trackPlanSelected(planType);
                 updateField("underGradPlanType", planType);
               }}
             >
@@ -66,7 +68,13 @@ export function PlanSelector() {
           {currencyFormatter.format(selectedInfo.yearlyThreshold)}/year
           threshold • {selectedInfo.writeOffYears}yr write-off
         </span>
-        <Popover>
+        <Popover
+          onOpenChange={(open) => {
+            if (open) {
+              trackPlanInfoViewed(selectedPlan);
+            }
+          }}
+        >
           <PopoverTrigger
             render={
               <Button
@@ -113,7 +121,7 @@ export function PlanSelector() {
         </Popover>
         <span className="text-muted-foreground/50">•</span>
         <Link
-          href="/which-plan"
+          href="/which-plan?ref=plan-selector"
           className="text-primary underline-offset-4 hover:underline"
         >
           Not sure?

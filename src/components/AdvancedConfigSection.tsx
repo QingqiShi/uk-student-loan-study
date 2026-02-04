@@ -6,6 +6,10 @@ import { useState } from "react";
 import type { ThresholdGrowthRate } from "@/types/store";
 import { Button } from "@/components/ui/button";
 import { useLoanContext } from "@/context/LoanContext";
+import {
+  trackAdvancedConfigToggled,
+  trackThresholdGrowthSelected,
+} from "@/lib/analytics";
 
 const thresholdGrowthOptions: {
   value: ThresholdGrowthRate;
@@ -35,7 +39,9 @@ export function AdvancedConfigSection() {
       <button
         type="button"
         onClick={() => {
-          setIsOpen(!isOpen);
+          const newState = !isOpen;
+          trackAdvancedConfigToggled(newState);
+          setIsOpen(newState);
         }}
         className="flex w-full items-center justify-between rounded-lg py-2.5 text-left text-sm font-medium transition-all hover:underline focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
         aria-expanded={isOpen}
@@ -80,6 +86,7 @@ export function AdvancedConfigSection() {
                   }
                   size="sm"
                   onClick={() => {
+                    trackThresholdGrowthSelected(option.value);
                     updateField("thresholdGrowthRate", option.value);
                   }}
                   aria-pressed={state.thresholdGrowthRate === option.value}

@@ -10,6 +10,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  trackOverpayYearSelected,
+  trackOverpayDecadeNavigated,
+} from "@/lib/analytics";
 
 interface YearSelectorProps {
   id: string;
@@ -68,15 +72,18 @@ export function YearSelector({
   const decadeLabel = `${String(decadeStart)}-${String(decadeStart + 9)}`;
 
   function handleYearSelect(year: number) {
+    trackOverpayYearSelected(year);
     onChange(createDateFromYear(year));
     setIsOpen(false);
   }
 
   function prevDecade() {
+    trackOverpayDecadeNavigated("previous");
     setDecadeStart((d) => d - 10);
   }
 
   function nextDecade() {
+    trackOverpayDecadeNavigated("next");
     setDecadeStart((d) => d + 10);
   }
 

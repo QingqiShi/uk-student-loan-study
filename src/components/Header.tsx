@@ -12,6 +12,7 @@ import ThemeToggle from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
+import { trackPersonalisePanelToggled } from "@/lib/analytics";
 import { getAnnualInterestRate } from "@/lib/loans/interest";
 import {
   CURRENT_RATES,
@@ -190,7 +191,9 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
                 variant={isCustomConfig ? "default" : "outline"}
                 size="xs"
                 onClick={() => {
-                  setIsOpen(!isOpen);
+                  const newState = !isOpen;
+                  trackPersonalisePanelToggled(newState);
+                  setIsOpen(newState);
                 }}
                 className="shrink-0 gap-1.5"
                 aria-label={isOpen ? "Close settings" : "Personalise settings"}

@@ -4,6 +4,10 @@ import CurrencyInput from "./CurrencyInput";
 import PlanSelector from "./PlanSelector";
 import { currencyFormatter } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
+import {
+  trackUndergradBalanceChanged,
+  trackPostgradBalanceChanged,
+} from "@/lib/analytics";
 import { POSTGRADUATE_DISPLAY_INFO } from "@/lib/loans/plans";
 
 export function AdvancedInputs() {
@@ -32,6 +36,9 @@ export function AdvancedInputs() {
                 onChange={(value) => {
                   updateField("underGradBalance", value);
                 }}
+                onBlur={() => {
+                  trackUndergradBalanceChanged(state.underGradBalance);
+                }}
               />
             </div>
           </div>
@@ -59,6 +66,9 @@ export function AdvancedInputs() {
                 value={state.postGradBalance}
                 onChange={(value) => {
                   updateField("postGradBalance", value);
+                }}
+                onBlur={() => {
+                  trackPostgradBalanceChanged(state.postGradBalance);
                 }}
               />
             </div>

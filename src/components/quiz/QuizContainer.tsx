@@ -1,11 +1,17 @@
 "use client";
 
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
 import { QuizProgress } from "./QuizProgress";
 import { RegionQuestion } from "./RegionQuestion";
 import { ResultScreen } from "./ResultScreen";
 import { StartYearQuestion } from "./StartYearQuestion";
 import type { StartYearGroup, Region } from "@/lib/quiz/determinePlan";
+import {
+  trackQuizStarted,
+  trackQuizRegionSelected,
+  trackQuizYearSelected,
+  trackQuizBackClicked,
+} from "@/lib/analytics";
 import { determinePlan, canSkipStartYear } from "@/lib/quiz/determinePlan";
 
 type QuizStep = "region" | "start-year" | "result";
@@ -96,20 +102,29 @@ function getCurrentStepIndex(step: QuizStep, region: Region | null): number {
 
 export function QuizContainer() {
   const [state, dispatch] = useReducer(quizReducer, initialState);
+  const hasStartedRef = useRef(false);
 
   const handleRegionSelect = (region: Region) => {
+    if (!hasStartedRef.current) {
+      trackQuizStarted();
+      hasStartedRef.current = true;
+    }
+    trackQuizRegionSelected(region);
     dispatch({ type: "SET_REGION", payload: region });
   };
 
   const handleStartYearSelect = (yearGroup: StartYearGroup) => {
+    trackQuizYearSelected(yearGroup);
     dispatch({ type: "SET_START_YEAR", payload: yearGroup });
   };
 
   const handleBack = () => {
+    trackQuizBackClicked(currentStepIndex);
     dispatch({ type: "GO_BACK" });
   };
 
   const handleRestart = () => {
+    hasStartedRef.current = false;
     dispatch({ type: "RESTART" });
   };
 

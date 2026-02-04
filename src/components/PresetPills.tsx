@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useLoanContext } from "@/context/LoanContext";
+import { trackPresetApplied } from "@/lib/analytics";
 import { PRESETS } from "@/lib/presets";
 
 export function PresetPills() {
@@ -23,6 +24,7 @@ export function PresetPills() {
           variant={activePreset?.id === preset.id ? "default" : "outline"}
           size="xs"
           onClick={() => {
+            trackPresetApplied(preset.id);
             applyPreset(preset);
           }}
           aria-pressed={activePreset?.id === preset.id}

@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/context/ThemeContext";
+import { trackThemeChanged } from "@/lib/analytics";
 
 type ThemeOption = "light" | "dark" | "system";
 
@@ -58,11 +59,13 @@ export function ThemeToggle() {
       return;
     }
     const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+    trackThemeChanged(newTheme);
     setTheme(newTheme);
   };
 
   const handleSelectTheme = (newTheme: ThemeOption) => {
     if (newTheme !== theme) {
+      trackThemeChanged(newTheme);
       setTheme(newTheme);
     }
     setIsMenuOpen(false);

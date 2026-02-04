@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import type { UndergraduatePlanType } from "@/lib/loans/types";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
+import { trackQuizCompleted, trackQuizRestarted } from "@/lib/analytics";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 interface ResultScreenProps {
@@ -19,6 +21,20 @@ export function ResultScreen({
 }: ResultScreenProps) {
   const planInfo = PLAN_DISPLAY_INFO[planType];
   const calculatorUrl = `/?plan=${planType}`;
+  const hasTrackedCompletionRef = useRef(false);
+
+  useEffect(() => {
+    if (!hasTrackedCompletionRef.current) {
+      trackQuizCompleted(planType);
+      hasTrackedCompletionRef.current = true;
+    }
+  }, [planType]);
+
+  const handleRestart = () => {
+    trackQuizRestarted();
+    hasTrackedCompletionRef.current = false;
+    onRestart();
+  };
 
   return (
     <div
@@ -80,7 +96,7 @@ export function ResultScreen({
 
         <button
           type="button"
-          onClick={onRestart}
+          onClick={handleRestart}
           className="w-full py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           Not sure? Take the quiz again
