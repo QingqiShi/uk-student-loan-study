@@ -1,5 +1,4 @@
 import type { Loan } from "@/lib/loans/types";
-import type { SalaryGrowthRate, ThresholdGrowthRate } from "@/types/store";
 import { useLoanContext } from "@/context/LoanContext";
 
 interface LoanConfig {
@@ -39,19 +38,19 @@ export function useCurrentSalary(): number {
 
 interface OverpayConfig {
   monthlyOverpayment: number;
-  salaryGrowthRate: SalaryGrowthRate;
-  thresholdGrowthRate: ThresholdGrowthRate;
+  salaryGrowthRate: number;
+  thresholdGrowthRate: number;
   lumpSumPayment: number;
 }
 
 /** Select salary growth rate for charts */
-export function useSalaryGrowthRate(): SalaryGrowthRate {
+export function useSalaryGrowthRate(): number {
   const { state } = useLoanContext();
   return state.salaryGrowthRate;
 }
 
 /** Select threshold growth rate for charts */
-export function useThresholdGrowthRate(): ThresholdGrowthRate {
+export function useThresholdGrowthRate(): number {
   const { state } = useLoanContext();
   return state.thresholdGrowthRate;
 }

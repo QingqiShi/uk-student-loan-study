@@ -18,7 +18,7 @@ export function SalaryGrowthPicker() {
       >
         {SALARY_GROWTH_OPTIONS.map((option) => (
           <Button
-            key={option.value}
+            key={option.label}
             variant={
               state.salaryGrowthRate === option.value ? "default" : "outline"
             }

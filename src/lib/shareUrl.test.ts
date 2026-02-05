@@ -14,7 +14,8 @@ const mockState: LoanState = {
   postGradBalance: 12000,
   salary: 65000,
   monthlyOverpayment: 200,
-  salaryGrowthRate: "moderate",
+  salaryGrowthRate: 0.04,
+  thresholdGrowthRate: 0,
   lumpSumPayment: 10000,
 };
 
@@ -65,7 +66,7 @@ describe("encodeStateToParams", () => {
     });
 
     expect(params.get("ovp")).toBe("200");
-    expect(params.get("sgr")).toBe("moderate");
+    expect(params.get("sgr")).toBe("0.04");
     expect(params.get("lsp")).toBe("10000");
     expect(params.get("repy")).toBe("2018");
   });
@@ -76,7 +77,7 @@ describe("encodeStateToParams", () => {
     });
 
     expect(params.get("ovp")).toBe("200");
-    expect(params.get("sgr")).toBe("moderate");
+    expect(params.get("sgr")).toBe("0.04");
     expect(params.get("lsp")).toBe("10000");
     expect(params.get("repy")).toBeNull();
   });
@@ -164,16 +165,21 @@ describe("decodeParamsToState", () => {
     expect(state.postGradBalance).toBeUndefined();
   });
 
-  it("decodes overpay fields", () => {
-    const params = new URLSearchParams(
-      "ovp=300&sgr=aggressive&lsp=15000&repy=2020",
-    );
+  it("decodes overpay fields with numeric salaryGrowthRate", () => {
+    const params = new URLSearchParams("ovp=300&sgr=0.06&lsp=15000&repy=2020");
     const state = decodeParamsToState(params);
 
     expect(state.monthlyOverpayment).toBe(300);
-    expect(state.salaryGrowthRate).toBe("aggressive");
+    expect(state.salaryGrowthRate).toBe(0.06);
     expect(state.lumpSumPayment).toBe(15000);
     expect(state.repaymentYear).toBe(2020);
+  });
+
+  it("decodes legacy string salaryGrowthRate presets", () => {
+    const params = new URLSearchParams("sgr=aggressive");
+    const state = decodeParamsToState(params);
+
+    expect(state.salaryGrowthRate).toBe(0.06);
   });
 
   it("ignores invalid salaryGrowthRate values", () => {
@@ -183,18 +189,28 @@ describe("decodeParamsToState", () => {
     expect(state.salaryGrowthRate).toBeUndefined();
   });
 
-  it("validates salaryGrowthRate values", () => {
-    const validRates = [
-      "none",
-      "conservative",
-      "moderate",
-      "aggressive",
-    ] as const;
-    for (const rate of validRates) {
-      const params = new URLSearchParams(`sgr=${rate}`);
+  it("maps legacy salaryGrowthRate string values to numbers", () => {
+    const legacyMapping = [
+      { legacy: "none", expected: 0 },
+      { legacy: "conservative", expected: 0.02 },
+      { legacy: "moderate", expected: 0.04 },
+      { legacy: "aggressive", expected: 0.06 },
+    ];
+    for (const { legacy, expected } of legacyMapping) {
+      const params = new URLSearchParams(`sgr=${legacy}`);
       const state = decodeParamsToState(params);
-      expect(state.salaryGrowthRate).toBe(rate);
+      expect(state.salaryGrowthRate).toBe(expected);
     }
+  });
+
+  it("accepts arbitrary salaryGrowthRate values", () => {
+    // Negative (salary decline)
+    const paramsNegative = new URLSearchParams("sgr=-0.1");
+    expect(decodeParamsToState(paramsNegative).salaryGrowthRate).toBe(-0.1);
+
+    // High growth
+    const paramsHigh = new URLSearchParams("sgr=0.5");
+    expect(decodeParamsToState(paramsHigh).salaryGrowthRate).toBe(0.5);
   });
 
   it("clamps overpayment below minimum to 0", () => {
@@ -291,7 +307,7 @@ describe("round-trip encoding/decoding", () => {
   });
 
   it("round-trips for all salary growth rates", () => {
-    const rates = ["none", "conservative", "moderate", "aggressive"] as const;
+    const rates = [0, 0.02, 0.04, 0.06, 0.1];
     for (const rate of rates) {
       const state: LoanState = { ...mockState, salaryGrowthRate: rate };
       const params = encodeStateToParams(state, { includeOverpayFields: true });
@@ -379,7 +395,7 @@ describe("generateShareUrl", () => {
     const url = generateShareUrl(mockState, { repaymentYear: 2018 });
 
     expect(url).toContain("ovp=200");
-    expect(url).toContain("sgr=moderate");
+    expect(url).toContain("sgr=0.04");
     expect(url).toContain("lsp=10000");
     expect(url).toContain("repy=2018");
 

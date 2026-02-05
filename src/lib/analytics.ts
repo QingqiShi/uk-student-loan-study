@@ -8,7 +8,7 @@ export function trackSalaryChanged(value: number) {
   track("salary_changed", { value });
 }
 
-export function trackSalaryGrowthSelected(rate: string) {
+export function trackSalaryGrowthSelected(rate: number) {
   track("salary_growth_selected", { rate });
 }
 
@@ -16,7 +16,7 @@ export function trackAdvancedConfigToggled(expanded: boolean) {
   track("advanced_config_toggled", { expanded });
 }
 
-export function trackThresholdGrowthSelected(rate: string) {
+export function trackThresholdGrowthSelected(rate: number) {
   track("threshold_growth_selected", { rate });
 }
 
@@ -128,7 +128,7 @@ export function trackSharedMonthlyOverpaymentLoaded(value: number) {
   track("shared_monthly_overpayment_loaded", { value });
 }
 
-export function trackSharedSalaryGrowthLoaded(rate: string) {
+export function trackSharedSalaryGrowthLoaded(rate: number) {
   track("shared_salary_growth_loaded", { rate });
 }
 
