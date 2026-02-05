@@ -11,7 +11,6 @@ import {
   useRef,
   useSyncExternalStore,
   useDeferredValue,
-  ViewTransition,
 } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -101,7 +100,6 @@ export function ThemeToggle() {
   };
 
   const isDark = deferredResolvedTheme === "dark";
-  const Icon = isDark ? Moon02Icon : Sun02Icon;
 
   // Render skeleton during SSR to avoid hydration mismatch
   if (!mounted) {
@@ -131,9 +129,18 @@ export function ThemeToggle() {
             onPointerLeave={handlePointerLeave}
             aria-label={`Switch to ${isDark ? "light" : "dark"} theme. Right-click for more options.`}
           >
-            <ViewTransition name="theme-icon">
-              <HugeiconsIcon icon={Icon} className="size-4" strokeWidth={2} />
-            </ViewTransition>
+            <span className="relative grid size-4 place-items-center">
+              <HugeiconsIcon
+                icon={Sun02Icon}
+                className="col-start-1 row-start-1 size-4 scale-100 rotate-0 opacity-100 transition-[opacity,rotate,scale] duration-300 ease-out dark:scale-50 dark:-rotate-90 dark:opacity-0"
+                strokeWidth={2}
+              />
+              <HugeiconsIcon
+                icon={Moon02Icon}
+                className="col-start-1 row-start-1 size-4 translate-y-1 scale-[0.8] opacity-0 transition-[opacity,translate,scale] duration-300 ease-out dark:translate-y-0 dark:scale-100 dark:opacity-100"
+                strokeWidth={2}
+              />
+            </span>
           </Button>
         }
       />
