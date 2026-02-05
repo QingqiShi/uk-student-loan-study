@@ -1,24 +1,6 @@
 import type { UndergraduatePlanType } from "@/lib/loans/types";
 
 /**
- * Salary growth rate presets for overpay analysis.
- */
-export type SalaryGrowthRate =
-  | "none"
-  | "conservative"
-  | "moderate"
-  | "aggressive";
-
-/**
- * Threshold growth rate presets for simulation.
- */
-export type ThresholdGrowthRate =
-  | "none"
-  | "conservative"
-  | "moderate"
-  | "aggressive";
-
-/**
  * Core loan state values stored in the application state.
  */
 export interface LoanState {
@@ -34,10 +16,10 @@ export interface LoanState {
   // Overpay analysis fields
   /** Monthly overpayment amount in GBP (0-500) */
   monthlyOverpayment: number;
-  /** Expected salary growth rate preset */
-  salaryGrowthRate: SalaryGrowthRate;
-  /** Expected threshold growth rate preset */
-  thresholdGrowthRate: ThresholdGrowthRate;
+  /** Expected salary growth rate as decimal (e.g., 0.04 = 4%) */
+  salaryGrowthRate: number;
+  /** Expected threshold growth rate as decimal (e.g., 0.02 = 2%) */
+  thresholdGrowthRate: number;
   /** One-off lump sum payment in GBP */
   lumpSumPayment: number;
 }

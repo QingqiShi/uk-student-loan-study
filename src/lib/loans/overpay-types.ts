@@ -1,5 +1,4 @@
 import type { Loan } from "./types";
-import type { SalaryGrowthRate, ThresholdGrowthRate } from "@/types/store";
 
 /**
  * Input parameters for overpay analysis simulation.
@@ -9,8 +8,10 @@ export interface OverpayInput {
   startingSalary: number;
   repaymentStartDate: Date;
   monthlyOverpayment: number;
-  salaryGrowthRate: SalaryGrowthRate;
-  thresholdGrowthRate: ThresholdGrowthRate;
+  /** Salary growth rate as decimal (e.g., 0.04 = 4%) */
+  salaryGrowthRate: number;
+  /** Threshold growth rate as decimal (e.g., 0.02 = 2%) */
+  thresholdGrowthRate: number;
   rpiRate?: number;
   boeBaseRate?: number;
   lumpSumPayment?: number;

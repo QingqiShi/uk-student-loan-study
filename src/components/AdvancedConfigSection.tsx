@@ -3,28 +3,13 @@
 import { ArrowDown01Icon, ArrowUp01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
-import type { ThresholdGrowthRate } from "@/types/store";
 import { Button } from "@/components/ui/button";
+import { THRESHOLD_GROWTH_OPTIONS } from "@/constants";
 import { useLoanContext } from "@/context/LoanContext";
 import {
   trackAdvancedConfigToggled,
   trackThresholdGrowthSelected,
 } from "@/lib/analytics";
-
-const thresholdGrowthOptions: {
-  value: ThresholdGrowthRate;
-  label: string;
-  description: string;
-}[] = [
-  {
-    value: "none",
-    label: "0%",
-    description: "Frozen thresholds (current policy)",
-  },
-  { value: "conservative", label: "2%", description: "Below-inflation growth" },
-  { value: "moderate", label: "3%", description: "Typical RPI-linked growth" },
-  { value: "aggressive", label: "4%", description: "Above-inflation growth" },
-];
 
 export function AdvancedConfigSection() {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,9 +61,9 @@ export function AdvancedConfigSection() {
               aria-label="Threshold growth rate options"
               className="flex gap-1"
             >
-              {thresholdGrowthOptions.map((option) => (
+              {THRESHOLD_GROWTH_OPTIONS.map((option) => (
                 <Button
-                  key={option.value}
+                  key={option.label}
                   variant={
                     state.thresholdGrowthRate === option.value
                       ? "default"
@@ -98,7 +83,7 @@ export function AdvancedConfigSection() {
             </div>
             <p className="text-xs text-muted-foreground">
               {
-                thresholdGrowthOptions.find(
+                THRESHOLD_GROWTH_OPTIONS.find(
                   (o) => o.value === state.thresholdGrowthRate,
                 )?.description
               }

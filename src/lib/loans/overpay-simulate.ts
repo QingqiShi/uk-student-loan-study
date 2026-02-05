@@ -8,7 +8,6 @@ import type {
   RecommendationType,
 } from "./overpay-types";
 import type { Loan, SimulationTimeSeries } from "./types";
-import { SALARY_GROWTH_RATES, THRESHOLD_GROWTH_RATES } from "@/constants";
 import { monthsElapsedSince } from "@/lib/date-utils";
 
 /**
@@ -56,8 +55,6 @@ export function simulateOverpayScenarios(
 
   const rpi = rpiRate ?? CURRENT_RATES.rpi;
   const boe = boeBaseRate ?? CURRENT_RATES.boeBaseRate;
-  const annualGrowthRate = SALARY_GROWTH_RATES[salaryGrowthRate];
-  const annualThresholdGrowth = THRESHOLD_GROWTH_RATES[thresholdGrowthRate];
 
   // Check for empty scenarios
   const validLoans = loans.filter((l) => l.balance > 0);
@@ -83,9 +80,9 @@ export function simulateOverpayScenarios(
     loans: validLoans,
     annualSalary: startingSalary,
     monthsElapsed,
-    salaryGrowthRate: annualGrowthRate,
+    salaryGrowthRate,
     monthlyOverpayment: 0,
-    thresholdGrowthRate: annualThresholdGrowth,
+    thresholdGrowthRate,
     rpiRate: rpi,
     boeBaseRate: boe,
   });
@@ -98,9 +95,9 @@ export function simulateOverpayScenarios(
           loans: loansAfterLumpSum,
           annualSalary: startingSalary,
           monthsElapsed,
-          salaryGrowthRate: annualGrowthRate,
+          salaryGrowthRate,
           monthlyOverpayment,
-          thresholdGrowthRate: annualThresholdGrowth,
+          thresholdGrowthRate,
           rpiRate: rpi,
           boeBaseRate: boe,
         });

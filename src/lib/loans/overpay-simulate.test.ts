@@ -18,7 +18,8 @@ describe("simulateOverpayScenarios", () => {
     startingSalary: 50000,
     repaymentStartDate: new Date("2022-04-01"),
     monthlyOverpayment: 200,
-    salaryGrowthRate: "moderate",
+    salaryGrowthRate: 0.04, // 4% - typical career progression
+    thresholdGrowthRate: 0, // 0% - frozen thresholds
     rpiRate: CURRENT_RATES.rpi,
     boeBaseRate: CURRENT_RATES.boeBaseRate,
   };
@@ -67,7 +68,7 @@ describe("simulateOverpayScenarios", () => {
         loans: [{ planType: "PLAN_2", balance: 100000 }],
         startingSalary: 30000,
         monthlyOverpayment: 100,
-        salaryGrowthRate: "conservative",
+        salaryGrowthRate: 0.02, // 2% - conservative
       });
 
       expect(result.baseline.writtenOff).toBe(true);
@@ -151,12 +152,12 @@ describe("simulateOverpayScenarios", () => {
     it("aggressive growth results in faster payoff", () => {
       const conservative = simulateOverpayScenarios({
         ...defaultInput,
-        salaryGrowthRate: "conservative",
+        salaryGrowthRate: 0.02, // 2% - conservative
       });
 
       const aggressive = simulateOverpayScenarios({
         ...defaultInput,
-        salaryGrowthRate: "aggressive",
+        salaryGrowthRate: 0.06, // 6% - aggressive
       });
 
       expect(aggressive.baseline.monthsToPayoff).toBeLessThanOrEqual(
@@ -168,7 +169,7 @@ describe("simulateOverpayScenarios", () => {
       const result = simulateOverpayScenarios({
         ...defaultInput,
         startingSalary: 50000,
-        salaryGrowthRate: "moderate",
+        salaryGrowthRate: 0.04, // 4% - moderate
       });
 
       if (result.baseline.monthsToPayoff > 12) {
@@ -220,7 +221,7 @@ describe("simulateOverpayScenarios", () => {
         ...defaultInput,
         loans: [{ planType: "PLAN_2", balance: 100000 }],
         startingSalary: 30000,
-        salaryGrowthRate: "conservative",
+        salaryGrowthRate: 0.02, // 2% - conservative
       });
 
       if (result.baseline.writtenOff) {
@@ -300,7 +301,7 @@ describe("simulateOverpayScenarios", () => {
         ...defaultInput,
         loans: [{ planType: "PLAN_5", balance: 60000 }],
         startingSalary: 35000,
-        salaryGrowthRate: "conservative",
+        salaryGrowthRate: 0.02, // 2% - conservative
       });
 
       expect(result.baseline.monthsToPayoff).toBeGreaterThan(0);
@@ -424,7 +425,7 @@ describe("simulateOverpayScenarios", () => {
         startingSalary: 30000,
         monthlyOverpayment: 0,
         lumpSumPayment: 10000,
-        salaryGrowthRate: "conservative",
+        salaryGrowthRate: 0.02, // 2% - conservative
       });
 
       if (result.baseline.writtenOff) {

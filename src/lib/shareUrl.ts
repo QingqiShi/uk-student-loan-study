@@ -1,5 +1,5 @@
 import type { UndergraduatePlanType } from "@/lib/loans/types";
-import type { LoanState, SalaryGrowthRate } from "@/types/store";
+import type { LoanState } from "@/types/store";
 import {
   MIN_SALARY,
   MAX_SALARY,
@@ -31,6 +31,14 @@ const MAX_LUMP_SUM = 100_000;
 const MIN_REPAYMENT_YEAR = 2000;
 const MAX_REPAYMENT_YEAR = 2050;
 
+// Legacy mapping for old string presets to numeric values
+const LEGACY_SALARY_GROWTH_MAPPING: Record<string, number> = {
+  none: 0,
+  conservative: 0.02,
+  moderate: 0.04,
+  aggressive: 0.06,
+};
+
 const VALID_PLANS: UndergraduatePlanType[] = [
   "PLAN_1",
   "PLAN_2",
@@ -38,19 +46,8 @@ const VALID_PLANS: UndergraduatePlanType[] = [
   "PLAN_5",
 ];
 
-const VALID_SALARY_GROWTH_RATES: SalaryGrowthRate[] = [
-  "none",
-  "conservative",
-  "moderate",
-  "aggressive",
-];
-
 function isValidPlan(plan: string): plan is UndergraduatePlanType {
   return VALID_PLANS.includes(plan as UndergraduatePlanType);
-}
-
-function isValidSalaryGrowthRate(rate: string): rate is SalaryGrowthRate {
-  return VALID_SALARY_GROWTH_RATES.includes(rate as SalaryGrowthRate);
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -77,7 +74,7 @@ export function encodeStateToParams(
 
   if (options.includeOverpayFields) {
     params.set(PARAM_OVP, String(state.monthlyOverpayment));
-    params.set(PARAM_SGR, state.salaryGrowthRate);
+    params.set(PARAM_SGR, String(state.salaryGrowthRate));
     params.set(PARAM_LSP, String(state.lumpSumPayment));
     if (options.repaymentYear !== undefined) {
       params.set(PARAM_REPY, String(options.repaymentYear));
@@ -141,8 +138,15 @@ export function decodeParamsToState(params: URLSearchParams): DecodedState {
   }
 
   const sgrParam = params.get(PARAM_SGR);
-  if (sgrParam !== null && isValidSalaryGrowthRate(sgrParam)) {
-    result.salaryGrowthRate = sgrParam;
+  if (sgrParam !== null) {
+    // Try parsing as number first (new format)
+    const numValue = parseFloat(sgrParam);
+    if (!isNaN(numValue)) {
+      result.salaryGrowthRate = numValue;
+    } else if (sgrParam in LEGACY_SALARY_GROWTH_MAPPING) {
+      // Fall back to legacy string preset mapping
+      result.salaryGrowthRate = LEGACY_SALARY_GROWTH_MAPPING[sgrParam];
+    }
   }
 
   const lspParam = params.get(PARAM_LSP);
