@@ -1,11 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import {
-  createContext,
-  useContext,
-  useReducer,
-  useMemo,
-  type ReactNode,
-} from "react";
+import { createContext, use, useReducer, useMemo, type ReactNode } from "react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { useTotalRepaymentData, useBalanceOverTimeData } from "./useChartData";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
@@ -50,14 +44,10 @@ vi.mock("../context/LoanContext", () => {
         [state],
       );
 
-      return (
-        <LoanContext.Provider value={contextValue}>
-          {children}
-        </LoanContext.Provider>
-      );
+      return <LoanContext value={contextValue}>{children}</LoanContext>;
     },
     useLoanContext: () => {
-      const context = useContext(LoanContext);
+      const context = use(LoanContext);
       if (context === null) {
         throw new Error("useLoanContext must be used within a LoanProvider");
       }
