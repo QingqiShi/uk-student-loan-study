@@ -1,5 +1,8 @@
 import type { Loan } from "@/lib/loans/types";
-import { useLoanContext } from "@/context/LoanContext";
+import {
+  useLoanConfigState,
+  useLoanFrequentState,
+} from "@/context/LoanContext";
 
 interface LoanConfig {
   loans: Loan[];
@@ -9,31 +12,32 @@ interface LoanConfig {
 
 /** Select the loan configuration for simulation calculations */
 export function useLoanConfig(): LoanConfig {
-  const { state } = useLoanContext();
+  const { underGradPlanType, underGradBalance, postGradBalance } =
+    useLoanConfigState();
 
   const loans: Loan[] = [];
 
-  if (state.underGradBalance > 0) {
+  if (underGradBalance > 0) {
     loans.push({
-      planType: state.underGradPlanType,
-      balance: state.underGradBalance,
+      planType: underGradPlanType,
+      balance: underGradBalance,
     });
   }
-  if (state.postGradBalance > 0) {
-    loans.push({ planType: "POSTGRADUATE", balance: state.postGradBalance });
+  if (postGradBalance > 0) {
+    loans.push({ planType: "POSTGRADUATE", balance: postGradBalance });
   }
 
   return {
     loans,
-    underGradBalance: state.underGradBalance,
-    postGradBalance: state.postGradBalance,
+    underGradBalance,
+    postGradBalance,
   };
 }
 
 /** Select current salary for chart annotation */
 export function useCurrentSalary(): number {
-  const { state } = useLoanContext();
-  return state.salary;
+  const { salary } = useLoanFrequentState();
+  return salary;
 }
 
 interface OverpayConfig {
@@ -45,23 +49,24 @@ interface OverpayConfig {
 
 /** Select salary growth rate for charts */
 export function useSalaryGrowthRate(): number {
-  const { state } = useLoanContext();
-  return state.salaryGrowthRate;
+  const { salaryGrowthRate } = useLoanConfigState();
+  return salaryGrowthRate;
 }
 
 /** Select threshold growth rate for charts */
 export function useThresholdGrowthRate(): number {
-  const { state } = useLoanContext();
-  return state.thresholdGrowthRate;
+  const { thresholdGrowthRate } = useLoanConfigState();
+  return thresholdGrowthRate;
 }
 
 /** Select overpay analysis configuration */
 export function useOverpayConfig(): OverpayConfig {
-  const { state } = useLoanContext();
+  const { monthlyOverpayment, lumpSumPayment } = useLoanFrequentState();
+  const { salaryGrowthRate, thresholdGrowthRate } = useLoanConfigState();
   return {
-    monthlyOverpayment: state.monthlyOverpayment,
-    salaryGrowthRate: state.salaryGrowthRate,
-    thresholdGrowthRate: state.thresholdGrowthRate,
-    lumpSumPayment: state.lumpSumPayment,
+    monthlyOverpayment,
+    salaryGrowthRate,
+    thresholdGrowthRate,
+    lumpSumPayment,
   };
 }

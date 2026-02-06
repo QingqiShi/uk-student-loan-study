@@ -1,3 +1,4 @@
+import { useSimulationWorker } from "./useSimulationWorker";
 import {
   useLoanConfig,
   useCurrentSalary,
@@ -5,11 +6,11 @@ import {
   useThresholdGrowthRate,
 } from "./useStoreSelectors";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
+import type {
+  SalarySeriesPayload,
+  BalanceSeriesPayload,
+} from "@/workers/simulation.worker";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
-import {
-  generateSalaryDataSeries,
-  generateBalanceTimeSeries,
-} from "@/utils/loan-calculations";
 
 interface AnnotationData {
   annotationSalary: number | undefined;
@@ -45,27 +46,31 @@ function useAnnotationData(
   return { annotationSalary: undefined, annotationValue: undefined };
 }
 
-/** Hook for total repayment chart data */
+/** Hook for total repayment chart data (runs in Web Worker) */
 export function useTotalRepaymentData() {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
 
-  const data = generateSalaryDataSeries(
-    config.loans,
-    (r) => r.totalRepayment,
-    undefined,
+  const payload: SalarySeriesPayload = {
+    type: "SALARY_SERIES",
+    loans: config.loans,
     salaryGrowthRate,
     thresholdGrowthRate,
-  );
+  };
+
+  const result = useSimulationWorker(payload);
+
+  // Use empty array while waiting for worker result
+  const data = result?.data ?? [];
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
 
   return { data, annotationSalary, annotationValue };
 }
 
-/** Hook for balance over time chart data */
+/** Hook for balance over time chart data (runs in Web Worker) */
 export function useBalanceOverTimeData(): {
   data: BalanceDataPoint[];
   writeOffMonth: number | null;
@@ -75,11 +80,19 @@ export function useBalanceOverTimeData(): {
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
 
-  return generateBalanceTimeSeries(
-    config.loans,
-    salary,
-    undefined,
+  const payload: BalanceSeriesPayload = {
+    type: "BALANCE_SERIES",
+    loans: config.loans,
+    annualSalary: salary,
     salaryGrowthRate,
     thresholdGrowthRate,
-  );
+  };
+
+  const result = useSimulationWorker(payload);
+
+  // Use empty data while waiting for worker result
+  return {
+    data: result?.data ?? [],
+    writeOffMonth: result?.writeOffMonth ?? null,
+  };
 }

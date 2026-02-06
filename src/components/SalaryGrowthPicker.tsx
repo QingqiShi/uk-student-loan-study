@@ -2,11 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { SALARY_GROWTH_OPTIONS } from "@/constants";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { trackSalaryGrowthSelected } from "@/lib/analytics";
 
 export function SalaryGrowthPicker() {
-  const { state, updateField } = useLoanContext();
+  const { updateField } = useLoanActions();
+  const { salaryGrowthRate } = useLoanConfigState();
 
   return (
     <fieldset className="space-y-2">
@@ -18,16 +19,14 @@ export function SalaryGrowthPicker() {
       >
         {SALARY_GROWTH_OPTIONS.map((option) => (
           <Button
-            key={option.label}
-            variant={
-              state.salaryGrowthRate === option.value ? "default" : "outline"
-            }
+            key={option.value}
+            variant={salaryGrowthRate === option.value ? "default" : "outline"}
             size="sm"
             onClick={() => {
               trackSalaryGrowthSelected(option.value);
               updateField("salaryGrowthRate", option.value);
             }}
-            aria-pressed={state.salaryGrowthRate === option.value}
+            aria-pressed={salaryGrowthRate === option.value}
             className="flex-1"
           >
             {option.label}
@@ -36,7 +35,7 @@ export function SalaryGrowthPicker() {
       </div>
       <p className="text-xs text-muted-foreground">
         {
-          SALARY_GROWTH_OPTIONS.find((o) => o.value === state.salaryGrowthRate)
+          SALARY_GROWTH_OPTIONS.find((o) => o.value === salaryGrowthRate)
             ?.description
         }
       </p>

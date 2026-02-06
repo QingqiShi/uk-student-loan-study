@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef } from "react";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions } from "@/context/LoanContext";
 import {
   trackSharedPlanLoaded,
   trackSharedUndergradBalanceLoaded,
@@ -21,7 +21,7 @@ interface PlanFromQueryProps {
 
 function PlanFromQueryInner({ onRepaymentYearChange }: PlanFromQueryProps) {
   const searchParams = useSearchParams();
-  const { updateField } = useLoanContext();
+  const { updateField } = useLoanActions();
   const lastAppliedParams = useRef<string>("");
 
   useEffect(() => {

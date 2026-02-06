@@ -1,19 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { trackPresetApplied } from "@/lib/analytics";
 import { PRESETS } from "@/lib/presets";
 
 export function PresetPills() {
-  const { state, applyPreset } = useLoanContext();
+  const { applyPreset } = useLoanActions();
+  const config = useLoanConfigState();
 
   // Find matching preset based on loan configuration
   const activePreset = PRESETS.find(
     (p) =>
-      p.underGradBalance === state.underGradBalance &&
-      p.postGradBalance === state.postGradBalance &&
-      p.underGradPlanType === state.underGradPlanType,
+      p.underGradBalance === config.underGradBalance &&
+      p.postGradBalance === config.postGradBalance &&
+      p.underGradPlanType === config.underGradPlanType,
   );
 
   return (

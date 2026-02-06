@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { currencyFormatter } from "@/constants";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { trackPlanSelected, trackPlanInfoViewed } from "@/lib/analytics";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
@@ -26,8 +26,8 @@ const PLAN_TYPES: UndergraduatePlanType[] = [
 ];
 
 export function PlanSelector() {
-  const { state, updateField } = useLoanContext();
-  const selectedPlan = state.underGradPlanType;
+  const { updateField } = useLoanActions();
+  const { underGradPlanType: selectedPlan } = useLoanConfigState();
   const selectedInfo = PLAN_DISPLAY_INFO[selectedPlan];
 
   return (
