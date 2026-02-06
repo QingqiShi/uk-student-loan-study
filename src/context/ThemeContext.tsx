@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useSyncExternalStore,
-} from "react";
+import { createContext, use, useEffect, useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark" | "system";
 type ResolvedTheme = "light" | "dark";
@@ -99,9 +94,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+    <ThemeContext value={{ theme, resolvedTheme, setTheme }}>
       {children}
-    </ThemeContext.Provider>
+    </ThemeContext>
   );
 }
 
@@ -113,7 +108,7 @@ const defaultThemeValue: ThemeContextValue = {
 };
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
+  const context = use(ThemeContext);
   // Return default values if context is not available (SSR safety)
   return context ?? defaultThemeValue;
 }

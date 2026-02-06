@@ -38,6 +38,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 - Manual memoization (`useMemo`, `useCallback`, `React.memo`) — React Compiler handles this automatically. Exception: auto-generated shadcn/ui components.
 - Barrel files (`index.ts` re-export files) — import directly from source modules instead (e.g., `@/lib/loans/types` not `@/lib/loans`).
 - Default exports — use named exports instead (e.g., `export function Header` not `export default Header`). Exception: Next.js App Router requires default exports for `page.tsx` and `layout.tsx` files.
+- `Context.Provider` / `useContext` — use `<Context value={...}>` and `use(Context)` directly (React 19 pattern)
 
 Fix underlying issues instead of suppressing errors.
 

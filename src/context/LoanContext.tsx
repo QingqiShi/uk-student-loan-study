@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useReducer, type ReactNode } from "react";
+import { createContext, use, useReducer, type ReactNode } from "react";
 import {
   loanReducer,
   initialState,
@@ -37,14 +37,14 @@ export function LoanProvider({ children }: LoanProviderProps) {
   };
 
   return (
-    <LoanContext.Provider value={{ state, updateField, applyPreset }}>
+    <LoanContext value={{ state, updateField, applyPreset }}>
       {children}
-    </LoanContext.Provider>
+    </LoanContext>
   );
 }
 
 export function useLoanContext(): LoanContextValue {
-  const context = useContext(LoanContext);
+  const context = use(LoanContext);
   if (context === null) {
     throw new Error("useLoanContext must be used within a LoanProvider");
   }
