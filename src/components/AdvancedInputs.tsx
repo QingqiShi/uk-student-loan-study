@@ -3,7 +3,7 @@
 import CurrencyInput from "./CurrencyInput";
 import PlanSelector from "./PlanSelector";
 import { currencyFormatter } from "@/constants";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import {
   trackUndergradBalanceChanged,
   trackPostgradBalanceChanged,
@@ -11,9 +11,10 @@ import {
 import { POSTGRADUATE_DISPLAY_INFO } from "@/lib/loans/plans";
 
 export function AdvancedInputs() {
-  const { state, updateField } = useLoanContext();
-  const hasUndergrad = state.underGradBalance > 0;
-  const hasPostgrad = state.postGradBalance > 0;
+  const { updateField } = useLoanActions();
+  const config = useLoanConfigState();
+  const hasUndergrad = config.underGradBalance > 0;
+  const hasPostgrad = config.postGradBalance > 0;
 
   return (
     <div className="space-y-6">
@@ -32,12 +33,12 @@ export function AdvancedInputs() {
             <div className="w-32">
               <CurrencyInput
                 id="adv-undergrad-balance"
-                value={state.underGradBalance}
+                value={config.underGradBalance}
                 onChange={(value) => {
                   updateField("underGradBalance", value);
                 }}
                 onBlur={() => {
-                  trackUndergradBalanceChanged(state.underGradBalance);
+                  trackUndergradBalanceChanged(config.underGradBalance);
                 }}
               />
             </div>
@@ -63,12 +64,12 @@ export function AdvancedInputs() {
             <div className="w-32">
               <CurrencyInput
                 id="adv-postgrad-balance"
-                value={state.postGradBalance}
+                value={config.postGradBalance}
                 onChange={(value) => {
                   updateField("postGradBalance", value);
                 }}
                 onBlur={() => {
-                  trackPostgradBalanceChanged(state.postGradBalance);
+                  trackPostgradBalanceChanged(config.postGradBalance);
                 }}
               />
             </div>

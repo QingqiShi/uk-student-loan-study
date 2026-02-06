@@ -11,7 +11,10 @@ import { ShareButton } from "./ShareButton";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
-import { useLoanContext } from "@/context/LoanContext";
+import {
+  useLoanFrequentState,
+  useLoanConfigState,
+} from "@/context/LoanContext";
 import { trackPersonalisePanelToggled } from "@/lib/analytics";
 import { getAnnualInterestRate } from "@/lib/loans/interest";
 import {
@@ -69,9 +72,9 @@ function FullHeaderContent({ repaymentYear }: FullHeaderContentProps) {
   const [isFullyOpen, setIsFullyOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
-  const { state } = useLoanContext();
-  const { underGradPlanType, underGradBalance, postGradBalance, salary } =
-    state;
+  const { salary } = useLoanFrequentState();
+  const { underGradPlanType, underGradBalance, postGradBalance } =
+    useLoanConfigState();
 
   const hasUndergrad = underGradBalance > 0;
   const hasPostgrad = postGradBalance > 0;

@@ -14,7 +14,7 @@ import {
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions, useLoanFrequentState } from "@/context/LoanContext";
 import { useLoanConfig } from "@/hooks/useStoreSelectors";
 import {
   trackOverpaySalaryChanged,
@@ -31,7 +31,8 @@ export function OverpayPrimaryInputs({
   repaymentDate,
   onRepaymentDateChange,
 }: OverpayPrimaryInputsProps) {
-  const { state, updateField } = useLoanContext();
+  const { updateField } = useLoanActions();
+  const { salary, monthlyOverpayment, lumpSumPayment } = useLoanFrequentState();
   const { underGradBalance, postGradBalance } = useLoanConfig();
   const totalBalance = underGradBalance + postGradBalance;
 
@@ -68,13 +69,13 @@ export function OverpayPrimaryInputs({
                   type="text"
                   inputMode="numeric"
                   value={
-                    state.lumpSumPayment === 0
+                    lumpSumPayment === 0
                       ? ""
-                      : state.lumpSumPayment.toLocaleString("en-GB")
+                      : lumpSumPayment.toLocaleString("en-GB")
                   }
                   onChange={handleLumpSumChange}
                   onBlur={() => {
-                    trackOverpayLumpsumChanged(state.lumpSumPayment);
+                    trackOverpayLumpsumChanged(lumpSumPayment);
                   }}
                   placeholder="0"
                   className="pl-6"
@@ -96,12 +97,12 @@ export function OverpayPrimaryInputs({
           <div className="flex items-center justify-between">
             <Label htmlFor="overpayment-slider">Monthly Overpayment</Label>
             <span className="text-sm font-medium tabular-nums">
-              {currencyFormatter.format(state.monthlyOverpayment)}
+              {currencyFormatter.format(monthlyOverpayment)}
             </span>
           </div>
           <Slider
             id="overpayment-slider"
-            value={[state.monthlyOverpayment]}
+            value={[monthlyOverpayment]}
             onValueChange={handleOverpaymentChange}
             onValueCommitted={(value) => {
               const overpayValue = typeof value === "number" ? value : value[0];
@@ -124,12 +125,12 @@ export function OverpayPrimaryInputs({
           <div className="flex items-center justify-between">
             <Label htmlFor="salary-slider">Current Salary</Label>
             <span className="text-sm font-medium tabular-nums">
-              {currencyFormatter.format(state.salary)}
+              {currencyFormatter.format(salary)}
             </span>
           </div>
           <Slider
             id="salary-slider"
-            value={[state.salary]}
+            value={[salary]}
             onValueChange={handleSalaryChange}
             onValueCommitted={(value) => {
               const salaryValue = typeof value === "number" ? value : value[0];

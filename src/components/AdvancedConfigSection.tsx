@@ -5,7 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { THRESHOLD_GROWTH_OPTIONS } from "@/constants";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import {
   trackAdvancedConfigToggled,
   trackThresholdGrowthSelected,
@@ -17,7 +17,8 @@ export function AdvancedConfigSection() {
   // This matches the Header personalise panel animation pattern (CSS transitions)
   // rather than shadcn Collapsible's accordion animation.
   const [isFullyOpen, setIsFullyOpen] = useState(false);
-  const { state, updateField } = useLoanContext();
+  const { updateField } = useLoanActions();
+  const { thresholdGrowthRate } = useLoanConfigState();
 
   return (
     <div>
@@ -65,16 +66,14 @@ export function AdvancedConfigSection() {
                 <Button
                   key={option.label}
                   variant={
-                    state.thresholdGrowthRate === option.value
-                      ? "default"
-                      : "outline"
+                    thresholdGrowthRate === option.value ? "default" : "outline"
                   }
                   size="sm"
                   onClick={() => {
                     trackThresholdGrowthSelected(option.value);
                     updateField("thresholdGrowthRate", option.value);
                   }}
-                  aria-pressed={state.thresholdGrowthRate === option.value}
+                  aria-pressed={thresholdGrowthRate === option.value}
                   className="flex-1"
                 >
                   {option.label}
@@ -84,7 +83,7 @@ export function AdvancedConfigSection() {
             <p className="text-xs text-muted-foreground">
               {
                 THRESHOLD_GROWTH_OPTIONS.find(
-                  (o) => o.value === state.thresholdGrowthRate,
+                  (o) => o.value === thresholdGrowthRate,
                 )?.description
               }
             </p>

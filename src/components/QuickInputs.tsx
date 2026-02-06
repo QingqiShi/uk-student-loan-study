@@ -9,12 +9,12 @@ import {
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
-import { useLoanContext } from "@/context/LoanContext";
+import { useLoanActions, useLoanFrequentState } from "@/context/LoanContext";
 import { trackSalaryChanged } from "@/lib/analytics";
 
 export function QuickInputs() {
-  const { state, updateField } = useLoanContext();
-  const salary = state.salary;
+  const { updateField } = useLoanActions();
+  const { salary } = useLoanFrequentState();
 
   const handleSalaryChange = (value: number | readonly number[]) => {
     const newSalary = typeof value === "number" ? value : value[0];
