@@ -1,9 +1,25 @@
 "use client";
 
 import { Slider as SliderPrimitive } from "@base-ui/react/slider";
+import { useDebouncedFunction } from "@/hooks/useDebouncedFunction";
 import { cn } from "@/lib/utils";
 
-function Slider({ className, ...props }: SliderPrimitive.Root.Props) {
+function Slider({
+  className,
+  onValueCommitted,
+  ...props
+}: SliderPrimitive.Root.Props) {
+  // Workaround: @base-ui/react v1.1.0 fires onValueCommitted multiple times
+  // per touch drag (dual touchend + pointerup listeners). Debounce to dedup.
+  // Remove once the upstream bug is fixed, and re-apply if regenerating this
+  // shadcn component.
+  const debouncedCommit = useDebouncedFunction(
+    (...args: Parameters<NonNullable<typeof onValueCommitted>>) => {
+      onValueCommitted?.(...args);
+    },
+    50,
+  );
+
   return (
     <SliderPrimitive.Root
       data-slot="slider"
@@ -11,6 +27,7 @@ function Slider({ className, ...props }: SliderPrimitive.Root.Props) {
         "relative flex w-full touch-none items-center select-none",
         className,
       )}
+      onValueCommitted={debouncedCommit}
       {...props}
     >
       <SliderPrimitive.Control className="flex w-full items-center py-2">
