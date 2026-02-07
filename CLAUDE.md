@@ -10,6 +10,10 @@ pnpm format        # Format with Prettier
 pnpm test          # Run tests
 ```
 
+## Tech Stack
+
+This project uses TypeScript and React 19. When making changes, ensure compatibility with React 19 patterns (no legacy context, proper use of hooks). Always run the full test suite (`pnpm test`), lint, and build after multi-file refactors.
+
 ## Architecture
 
 UK student loan repayment calculator built with Next.js (App Router), React, and TypeScript.
@@ -26,6 +30,18 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 <HugeiconsIcon icon={Quiz01Icon} className="size-5" />;
 ```
+
+## UI Development
+
+When building UI components or design boards, always verify that content fits within its parent container boundaries. Check for overflow issues before presenting results.
+
+Always support both light and dark mode when creating or modifying UI components and design elements. Never deliver a light-mode-only implementation unless explicitly told to.
+
+When verifying visual elements (fonts, colors, layouts), always cross-reference the actual rendered output via browser rather than relying solely on code/variable values. Visual inspection is the source of truth for design work.
+
+## Design System
+
+When updating design tokens (CSS variables, color tokens, etc.), always propagate changes to ALL references including hardcoded values in brand guidelines, component swatches, and semantic color mappings. Never assume a variable change is complete until all consumers are updated.
 
 ## Code Quality Rules
 
