@@ -58,6 +58,22 @@ When updating design tokens (CSS variables, color tokens, etc.), always propagat
 
 Fix underlying issues instead of suppressing errors.
 
+## Testing
+
+When testing hooks that consume React Context, use the real `LoanProvider` with its `initialStateOverride` prop instead of mocking the context module with `vi.mock`. This keeps tests coupled to the public API, not internal context structure.
+
+```tsx
+import { LoanProvider } from "../context/LoanContext";
+
+function createWrapper(overrides?: Partial<LoanState>) {
+  return function Wrapper({ children }: { children: ReactNode }) {
+    return (
+      <LoanProvider initialStateOverride={overrides}>{children}</LoanProvider>
+    );
+  };
+}
+```
+
 ## SEO Maintenance
 
 When making changes that affect site content or structure, update the following SEO assets:

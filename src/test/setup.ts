@@ -4,6 +4,7 @@ import type {
   WorkerMessage,
   WorkerResultType,
 } from "@/workers/simulation.worker";
+import { simulate } from "@/lib/loans/engine";
 import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
 import { generateInsight } from "@/utils/insights";
 import {
@@ -65,7 +66,25 @@ class MockWorker {
           salaryGrowthRate: payload.salaryGrowthRate,
           thresholdGrowthRate: payload.thresholdGrowthRate,
         });
-        result = { type: "INSIGHT", insight };
+        let summary = null;
+        if (payload.underGradBalance > 0 || payload.postGradBalance > 0) {
+          const simResult = simulate({
+            loans: payload.loans,
+            annualSalary: payload.salary,
+            monthsElapsed: 0,
+            salaryGrowthRate: payload.salaryGrowthRate,
+            thresholdGrowthRate: payload.thresholdGrowthRate,
+          });
+          summary = {
+            totalPaid: simResult.summary.totalPaid,
+            monthlyRepayment:
+              simResult.snapshots.length > 0
+                ? simResult.snapshots[0].totalRepayment
+                : 0,
+            monthsToPayoff: simResult.summary.monthsToPayoff,
+          };
+        }
+        result = { type: "INSIGHT", insight, summary };
         break;
       }
     }

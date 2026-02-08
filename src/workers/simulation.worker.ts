@@ -15,6 +15,7 @@ import type {
 } from "@/lib/loans/overpay-types";
 import type { Loan } from "@/lib/loans/types";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
+import { simulate } from "@/lib/loans/engine";
 import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
 import { generateInsight, type Insight } from "@/utils/insights";
 import {
@@ -76,6 +77,12 @@ export interface WorkerMessage {
   payload: WorkerPayload;
 }
 
+export interface InsightSummary {
+  totalPaid: number;
+  monthlyRepayment: number;
+  monthsToPayoff: number;
+}
+
 export type WorkerResultType =
   | { type: "SALARY_SERIES"; data: DataPoint[] }
   | {
@@ -84,7 +91,7 @@ export type WorkerResultType =
       writeOffMonth: number | null;
     }
   | { type: "OVERPAY_ANALYSIS"; result: OverpayAnalysisResult }
-  | { type: "INSIGHT"; insight: Insight | null };
+  | { type: "INSIGHT"; insight: Insight | null; summary: InsightSummary | null };
 
 export interface WorkerResponse {
   id: number;
@@ -128,14 +135,37 @@ function handleOverpayAnalysis(
   return simulateOverpayScenarios(input);
 }
 
-function handleInsight(payload: InsightPayload): Insight | null {
-  return generateInsight(payload.salary, {
+function handleInsight(
+  payload: InsightPayload,
+): { insight: Insight | null; summary: InsightSummary | null } {
+  const insight = generateInsight(payload.salary, {
     loans: payload.loans,
     underGradBalance: payload.underGradBalance,
     postGradBalance: payload.postGradBalance,
     salaryGrowthRate: payload.salaryGrowthRate,
     thresholdGrowthRate: payload.thresholdGrowthRate,
   });
+
+  if (payload.underGradBalance <= 0 && payload.postGradBalance <= 0) {
+    return { insight, summary: null };
+  }
+
+  const result = simulate({
+    loans: payload.loans,
+    annualSalary: payload.salary,
+    monthsElapsed: 0,
+    salaryGrowthRate: payload.salaryGrowthRate,
+    thresholdGrowthRate: payload.thresholdGrowthRate,
+  });
+
+  const summary: InsightSummary = {
+    totalPaid: result.summary.totalPaid,
+    monthlyRepayment:
+      result.snapshots.length > 0 ? result.snapshots[0].totalRepayment : 0,
+    monthsToPayoff: result.summary.monthsToPayoff,
+  };
+
+  return { insight, summary };
 }
 
 // ============================================================================
@@ -164,8 +194,8 @@ self.onmessage = (event: MessageEvent<WorkerMessage>) => {
       break;
     }
     case "INSIGHT": {
-      const insight = handleInsight(payload);
-      result = { type: "INSIGHT", insight };
+      const { insight, summary } = handleInsight(payload);
+      result = { type: "INSIGHT", insight, summary };
       break;
     }
   }
