@@ -5,7 +5,10 @@ import {
   useSalaryGrowthRate,
   useThresholdGrowthRate,
 } from "./useStoreSelectors";
-import type { InsightSummary, InsightPayload } from "@/workers/simulation.worker";
+import type {
+  InsightSummary,
+  InsightPayload,
+} from "@/workers/simulation.worker";
 
 /**
  * Hook that returns key result metrics (total repaid, monthly payment, years to payoff).

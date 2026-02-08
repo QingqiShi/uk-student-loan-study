@@ -91,7 +91,11 @@ export type WorkerResultType =
       writeOffMonth: number | null;
     }
   | { type: "OVERPAY_ANALYSIS"; result: OverpayAnalysisResult }
-  | { type: "INSIGHT"; insight: Insight | null; summary: InsightSummary | null };
+  | {
+      type: "INSIGHT";
+      insight: Insight | null;
+      summary: InsightSummary | null;
+    };
 
 export interface WorkerResponse {
   id: number;
@@ -135,9 +139,10 @@ function handleOverpayAnalysis(
   return simulateOverpayScenarios(input);
 }
 
-function handleInsight(
-  payload: InsightPayload,
-): { insight: Insight | null; summary: InsightSummary | null } {
+function handleInsight(payload: InsightPayload): {
+  insight: Insight | null;
+  summary: InsightSummary | null;
+} {
   const insight = generateInsight(payload.salary, {
     loans: payload.loans,
     underGradBalance: payload.underGradBalance,
