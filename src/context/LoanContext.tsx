@@ -42,10 +42,19 @@ const LoanConfigContext = createContext<LoanConfigState | null>(null);
 
 interface LoanProviderProps {
   children: ReactNode;
+  initialStateOverride?: Partial<LoanState>;
 }
 
-export function LoanProvider({ children }: LoanProviderProps) {
-  const [state, dispatch] = useReducer(loanReducer, initialState);
+export function LoanProvider({
+  children,
+  initialStateOverride,
+}: LoanProviderProps) {
+  const [state, dispatch] = useReducer(
+    loanReducer,
+    initialStateOverride
+      ? { ...initialState, ...initialStateOverride }
+      : initialState,
+  );
 
   const updateField = <K extends keyof LoanState>(
     key: K,
