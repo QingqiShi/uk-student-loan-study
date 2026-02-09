@@ -25,7 +25,7 @@ export function OptionCard({
       aria-checked={isSelected}
       onClick={onClick}
       className={cn(
-        "group relative flex min-h-[72px] w-full items-center gap-4 rounded-xl border-2 px-5 py-4 text-left transition-all duration-150",
+        "group relative flex h-full min-h-[72px] w-full items-center gap-4 rounded-xl border-2 px-5 py-4 text-left transition-all duration-150",
         "hover:border-primary/50 hover:bg-accent/50",
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none",
         "active:scale-[0.98]",
