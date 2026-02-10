@@ -19,22 +19,26 @@ const insightConfig: Record<
     icon: typeof InformationCircleIcon;
     iconClass: string;
     bgClass: string;
+    borderClass: string;
   }
 > = {
   "low-earner": {
     icon: InformationCircleIcon,
     iconClass: "text-blue-600 dark:text-blue-400",
     bgClass: "bg-blue-50/60 dark:bg-blue-950/20",
+    borderClass: "border-blue-200 dark:border-blue-800",
   },
   "middle-earner": {
     icon: Alert02Icon,
     iconClass: "text-red-600 dark:text-red-400",
     bgClass: "bg-red-50/60 dark:bg-red-950/20",
+    borderClass: "border-red-200 dark:border-red-800",
   },
   "high-earner": {
     icon: Tick02Icon,
     iconClass: "text-emerald-600 dark:text-emerald-400",
     bgClass: "bg-emerald-50/60 dark:bg-emerald-950/20",
+    borderClass: "border-emerald-200 dark:border-emerald-800",
   },
 };
 
@@ -53,7 +57,11 @@ export function ResultSummary() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl border border-border bg-card"
+      className={`relative overflow-hidden rounded-2xl border ${
+        insight
+          ? `${insightConfig[insight.type].bgClass} ${insightConfig[insight.type].borderClass}`
+          : "border-border bg-card"
+      }`}
       role="status"
       aria-live="polite"
     >
@@ -104,9 +112,7 @@ export function ResultSummary() {
 
       {/* Personalized insight footer */}
       {insight && (
-        <div
-          className={`relative flex items-start gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5 ${insightConfig[insight.type].bgClass}`}
-        >
+        <div className="relative flex items-start gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5">
           <HugeiconsIcon
             icon={insightConfig[insight.type].icon}
             className={`mt-0.5 size-4 shrink-0 ${insightConfig[insight.type].iconClass}`}
