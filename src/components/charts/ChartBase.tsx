@@ -77,7 +77,7 @@ export function ChartBase({
     <div
       role="img"
       aria-label={ariaLabel}
-      className="size-full touch-pinch-zoom overflow-hidden select-none"
+      className="size-full overflow-hidden select-none"
       {...(showTooltip
         ? {
             onMouseEnter: () => {
@@ -166,6 +166,7 @@ export function ChartBase({
           {showTooltip && (
             <ChartTooltip
               cursor={false}
+              isAnimationActive={false}
               active={isTooltipActive}
               content={
                 <ChartTooltipContent
