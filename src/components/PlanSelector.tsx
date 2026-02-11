@@ -16,6 +16,10 @@ import {
 import { currencyFormatter } from "@/constants";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { trackPlanSelected, trackPlanInfoViewed } from "@/lib/analytics";
+import {
+  getUndergraduatePlanType,
+  setUndergraduatePlanType,
+} from "@/lib/loanHelpers";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const PLAN_TYPES: UndergraduatePlanType[] = [
@@ -27,7 +31,8 @@ const PLAN_TYPES: UndergraduatePlanType[] = [
 
 export function PlanSelector() {
   const { updateField } = useLoanActions();
-  const { underGradPlanType: selectedPlan } = useLoanConfigState();
+  const { loans } = useLoanConfigState();
+  const selectedPlan = getUndergraduatePlanType(loans);
   const selectedInfo = PLAN_DISPLAY_INFO[selectedPlan];
 
   return (
@@ -52,7 +57,7 @@ export function PlanSelector() {
               size="sm"
               onClick={() => {
                 trackPlanSelected(planType);
-                updateField("underGradPlanType", planType);
+                updateField("loans", setUndergraduatePlanType(loans, planType));
               }}
             >
               {info.name}

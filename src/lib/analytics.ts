@@ -137,16 +137,13 @@ export function trackOverpayDecadeNavigated(direction: "previous" | "next") {
 // Shared URL Parameter Events
 // =============================================================================
 
-export function trackSharedPlanLoaded(plan: string) {
-  track("shared_plan_loaded", { plan });
-}
-
-export function trackSharedUndergradBalanceLoaded(value: number) {
-  track("shared_undergrad_balance_loaded", { value });
-}
-
-export function trackSharedPostgradBalanceLoaded(value: number) {
-  track("shared_postgrad_balance_loaded", { value });
+export function trackSharedLoansLoaded(
+  loans: { planType: string; balance: number }[],
+) {
+  track("shared_loans_loaded", {
+    count: loans.length,
+    plans: loans.map((l) => l.planType).join(","),
+  });
 }
 
 export function trackSharedSalaryLoaded(value: number) {

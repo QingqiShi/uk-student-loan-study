@@ -1,3 +1,4 @@
+import type { Loan } from "@/lib/loans/types";
 import { currencyFormatter, DEFAULT_SALARY } from "@/constants";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 import { DEFAULT_PRESET } from "@/lib/presets";
@@ -6,12 +7,8 @@ import { decodeParamsToState } from "@/lib/shareUrl";
 /**
  * Default values derived from DEFAULT_PRESET to stay in sync.
  */
-const DEFAULTS = {
-  planType: DEFAULT_PRESET.underGradPlanType,
-  balance: DEFAULT_PRESET.underGradBalance,
-  pgBalance: DEFAULT_PRESET.postGradBalance,
-  salary: DEFAULT_SALARY,
-};
+const DEFAULT_LOANS: Loan[] = DEFAULT_PRESET.loans;
+const DEFAULT_SALARY_VALUE = DEFAULT_SALARY;
 
 export interface DecodedMetadataParams {
   planName: string;
@@ -44,12 +41,20 @@ export function parseMetadataParams(
   const decoded = decodeParamsToState(urlParams);
   const hasShareParams = Object.keys(decoded).length > 0;
 
-  const planType = decoded.underGradPlanType ?? DEFAULTS.planType;
-  const planName = PLAN_DISPLAY_INFO[planType].name;
-  const balance = decoded.underGradBalance ?? DEFAULTS.balance;
-  const pgBalance = decoded.postGradBalance ?? DEFAULTS.pgBalance;
-  const salary = decoded.salary ?? DEFAULTS.salary;
+  const loans = decoded.loans ?? DEFAULT_LOANS;
+  const salary = decoded.salary ?? DEFAULT_SALARY_VALUE;
+
+  const ugLoans = loans.filter((l) => l.planType !== "POSTGRADUATE");
+  const pgLoans = loans.filter((l) => l.planType === "POSTGRADUATE");
+  const balance = ugLoans.reduce((s, l) => s + l.balance, 0);
+  const pgBalance = pgLoans.reduce((s, l) => s + l.balance, 0);
   const totalBalance = balance + pgBalance;
+
+  const firstUgLoan = ugLoans.length > 0 ? ugLoans[0] : undefined;
+  const planName = firstUgLoan
+    ? PLAN_DISPLAY_INFO[firstUgLoan.planType as keyof typeof PLAN_DISPLAY_INFO]
+        .name
+    : "Postgraduate";
 
   return {
     planName,

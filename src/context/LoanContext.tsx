@@ -7,7 +7,7 @@ import {
   updateFieldAction,
   applyPresetAction,
 } from "./loanReducer";
-import type { UndergraduatePlanType } from "@/lib/loans/types";
+import type { Loan } from "@/lib/loans/types";
 import type { Preset } from "@/lib/presets";
 import type { LoanState } from "@/types/store";
 
@@ -25,9 +25,7 @@ interface LoanFrequentState {
 }
 
 interface LoanConfigState {
-  underGradPlanType: UndergraduatePlanType;
-  underGradBalance: number;
-  postGradBalance: number;
+  loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
 }
@@ -76,9 +74,7 @@ export function LoanProvider({
   };
 
   const config: LoanConfigState = {
-    underGradPlanType: state.underGradPlanType,
-    underGradBalance: state.underGradBalance,
-    postGradBalance: state.postGradBalance,
+    loans: state.loans,
     salaryGrowthRate: state.salaryGrowthRate,
     thresholdGrowthRate: state.thresholdGrowthRate,
   };

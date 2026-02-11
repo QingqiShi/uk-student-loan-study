@@ -19,6 +19,7 @@ import {
   trackWizardSkippedUndergrad,
   trackWizardSkippedPostgrad,
 } from "@/lib/analytics";
+import { getPostgraduateLoan } from "@/lib/loanHelpers";
 
 const loanReducer = createWizardReducer(
   LOAN_STEP_ORDER,
@@ -47,7 +48,8 @@ export function ConfigWizard({
       : initialLoanWizardState,
   );
   const { updateField } = useLoanActions();
-  const { postGradBalance } = useLoanConfigState();
+  const { loans } = useLoanConfigState();
+  const postGradBalance = getPostgraduateLoan(loans)?.balance ?? 0;
 
   const isEditJump = entryStep !== undefined;
   const { currentStep, direction } = state;
@@ -65,13 +67,21 @@ export function ConfigWizard({
 
   function handleSkipUndergrad() {
     trackWizardSkippedUndergrad();
-    updateField("underGradBalance", 0);
+    // Remove undergraduate loans, keep postgraduate
+    updateField(
+      "loans",
+      loans.filter((l) => l.planType === "POSTGRADUATE"),
+    );
     goToStep("postgrad");
   }
 
   function handleSkipPostgrad() {
     trackWizardSkippedPostgrad();
-    updateField("postGradBalance", 0);
+    // Remove postgraduate loans, keep undergraduate
+    updateField(
+      "loans",
+      loans.filter((l) => l.planType !== "POSTGRADUATE"),
+    );
     goToStep("salary");
   }
 

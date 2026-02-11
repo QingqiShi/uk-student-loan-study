@@ -12,20 +12,14 @@ interface LoanConfig {
 
 /** Select the loan configuration for simulation calculations */
 export function useLoanConfig(): LoanConfig {
-  const { underGradPlanType, underGradBalance, postGradBalance } =
-    useLoanConfigState();
+  const { loans } = useLoanConfigState();
 
-  const loans: Loan[] = [];
-
-  if (underGradBalance > 0) {
-    loans.push({
-      planType: underGradPlanType,
-      balance: underGradBalance,
-    });
-  }
-  if (postGradBalance > 0) {
-    loans.push({ planType: "POSTGRADUATE", balance: postGradBalance });
-  }
+  const underGradBalance = loans
+    .filter((l) => l.planType !== "POSTGRADUATE")
+    .reduce((s, l) => s + l.balance, 0);
+  const postGradBalance = loans
+    .filter((l) => l.planType === "POSTGRADUATE")
+    .reduce((s, l) => s + l.balance, 0);
 
   return {
     loans,

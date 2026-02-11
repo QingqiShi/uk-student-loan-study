@@ -24,8 +24,6 @@ export function useResultSummary(): InsightSummary | null {
     type: "INSIGHT",
     salary,
     loans: config.loans,
-    underGradBalance: config.underGradBalance,
-    postGradBalance: config.postGradBalance,
     salaryGrowthRate,
     thresholdGrowthRate,
   };

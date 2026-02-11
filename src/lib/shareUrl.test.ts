@@ -9,9 +9,10 @@ import type { LoanState } from "@/types/store";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
 
 const mockState: LoanState = {
-  underGradPlanType: "PLAN_2",
-  underGradBalance: 45000,
-  postGradBalance: 12000,
+  loans: [
+    { planType: "PLAN_2", balance: 45000 },
+    { planType: "POSTGRADUATE", balance: 12000 },
+  ],
   salary: 65000,
   monthlyOverpayment: 200,
   salaryGrowthRate: 0.04,
@@ -20,33 +21,32 @@ const mockState: LoanState = {
 };
 
 describe("encodeStateToParams", () => {
-  it("encodes all shareable fields", () => {
+  it("encodes loans and salary", () => {
     const params = encodeStateToParams(mockState);
 
-    expect(params.get("plan")).toBe("PLAN_2");
-    expect(params.get("ug")).toBe("45000");
-    expect(params.get("pg")).toBe("12000");
+    expect(params.get("loans")).toBe("PLAN_2:45000,POSTGRADUATE:12000");
     expect(params.get("sal")).toBe("65000");
   });
 
-  it("handles zero balances", () => {
+  it("handles single loan", () => {
     const state: LoanState = {
       ...mockState,
-      underGradBalance: 0,
-      postGradBalance: 0,
+      loans: [{ planType: "PLAN_5", balance: 50000 }],
     };
     const params = encodeStateToParams(state);
 
-    expect(params.get("ug")).toBe("0");
-    expect(params.get("pg")).toBe("0");
+    expect(params.get("loans")).toBe("PLAN_5:50000");
   });
 
   it("handles all plan types", () => {
     const plans = ["PLAN_1", "PLAN_2", "PLAN_4", "PLAN_5"] as const;
     for (const plan of plans) {
-      const state: LoanState = { ...mockState, underGradPlanType: plan };
+      const state: LoanState = {
+        ...mockState,
+        loans: [{ planType: plan, balance: 30000 }],
+      };
       const params = encodeStateToParams(state);
-      expect(params.get("plan")).toBe(plan);
+      expect(params.get("loans")).toBe(`${plan}:30000`);
     }
   });
 
@@ -84,54 +84,73 @@ describe("encodeStateToParams", () => {
 });
 
 describe("decodeParamsToState", () => {
-  it("decodes all valid params", () => {
+  it("decodes new loans format", () => {
+    const params = new URLSearchParams(
+      "loans=PLAN_2:45000,POSTGRADUATE:12000&sal=65000",
+    );
+    const state = decodeParamsToState(params);
+
+    expect(state.loans).toEqual([
+      { planType: "PLAN_2", balance: 45000 },
+      { planType: "POSTGRADUATE", balance: 12000 },
+    ]);
+    expect(state.salary).toBe(65000);
+  });
+
+  it("decodes legacy plan/ug/pg format", () => {
     const params = new URLSearchParams(
       "plan=PLAN_2&ug=45000&pg=12000&sal=65000",
     );
     const state = decodeParamsToState(params);
 
-    expect(state.underGradPlanType).toBe("PLAN_2");
-    expect(state.underGradBalance).toBe(45000);
-    expect(state.postGradBalance).toBe(12000);
+    expect(state.loans).toEqual([
+      { planType: "PLAN_2", balance: 45000 },
+      { planType: "POSTGRADUATE", balance: 12000 },
+    ]);
     expect(state.salary).toBe(65000);
   });
 
-  it("ignores invalid plan types", () => {
-    const params = new URLSearchParams("plan=INVALID_PLAN");
+  it("decodes legacy format without postgrad", () => {
+    const params = new URLSearchParams("plan=PLAN_5&ug=50000&sal=40000");
     const state = decodeParamsToState(params);
 
-    expect(state.underGradPlanType).toBeUndefined();
+    expect(state.loans).toEqual([{ planType: "PLAN_5", balance: 50000 }]);
+    expect(state.salary).toBe(40000);
   });
 
-  it("ignores non-numeric balance values", () => {
-    const params = new URLSearchParams("ug=abc&pg=xyz");
+  it("decodes legacy format with zero postgrad balance", () => {
+    const params = new URLSearchParams("plan=PLAN_2&ug=45000&pg=0&sal=40000");
     const state = decodeParamsToState(params);
 
-    expect(state.underGradBalance).toBeUndefined();
-    expect(state.postGradBalance).toBeUndefined();
+    expect(state.loans).toEqual([{ planType: "PLAN_2", balance: 45000 }]);
   });
 
-  it("ignores non-numeric salary values", () => {
-    const params = new URLSearchParams("sal=not-a-number");
+  it("ignores invalid plan types in new format", () => {
+    const params = new URLSearchParams("loans=INVALID:45000");
     const state = decodeParamsToState(params);
 
-    expect(state.salary).toBeUndefined();
+    expect(state.loans).toBeUndefined();
   });
 
-  it("clamps negative balances to 0", () => {
-    const params = new URLSearchParams("ug=-5000&pg=-1000");
+  it("ignores non-numeric balance in new format", () => {
+    const params = new URLSearchParams("loans=PLAN_2:abc");
     const state = decodeParamsToState(params);
 
-    expect(state.underGradBalance).toBe(0);
-    expect(state.postGradBalance).toBe(0);
+    expect(state.loans).toBeUndefined();
   });
 
-  it("clamps excessively high balances", () => {
-    const params = new URLSearchParams("ug=500000&pg=300000");
+  it("clamps negative balances to 0 in new format", () => {
+    const params = new URLSearchParams("loans=PLAN_2:-5000");
     const state = decodeParamsToState(params);
 
-    expect(state.underGradBalance).toBe(200000);
-    expect(state.postGradBalance).toBe(200000);
+    expect(state.loans).toEqual([{ planType: "PLAN_2", balance: 0 }]);
+  });
+
+  it("clamps excessively high balances in new format", () => {
+    const params = new URLSearchParams("loans=PLAN_2:500000");
+    const state = decodeParamsToState(params);
+
+    expect(state.loans).toEqual([{ planType: "PLAN_2", balance: 200000 }]);
   });
 
   it("clamps salary below minimum", () => {
@@ -156,13 +175,11 @@ describe("decodeParamsToState", () => {
   });
 
   it("handles partial params", () => {
-    const params = new URLSearchParams("plan=PLAN_5&sal=80000");
+    const params = new URLSearchParams("loans=PLAN_5:50000");
     const state = decodeParamsToState(params);
 
-    expect(state.underGradPlanType).toBe("PLAN_5");
-    expect(state.salary).toBe(80000);
-    expect(state.underGradBalance).toBeUndefined();
-    expect(state.postGradBalance).toBeUndefined();
+    expect(state.loans).toEqual([{ planType: "PLAN_5", balance: 50000 }]);
+    expect(state.salary).toBeUndefined();
   });
 
   it("decodes overpay fields with numeric salaryGrowthRate", () => {
@@ -262,34 +279,36 @@ describe("round-trip encoding/decoding", () => {
     const params = encodeStateToParams(mockState);
     const decoded = decodeParamsToState(params);
 
-    expect(decoded.underGradPlanType).toBe(mockState.underGradPlanType);
-    expect(decoded.underGradBalance).toBe(mockState.underGradBalance);
-    expect(decoded.postGradBalance).toBe(mockState.postGradBalance);
+    expect(decoded.loans).toEqual(mockState.loans);
     expect(decoded.salary).toBe(mockState.salary);
   });
 
   it("round-trips for all plan types", () => {
     const plans = ["PLAN_1", "PLAN_2", "PLAN_4", "PLAN_5"] as const;
     for (const plan of plans) {
-      const state: LoanState = { ...mockState, underGradPlanType: plan };
+      const state: LoanState = {
+        ...mockState,
+        loans: [{ planType: plan, balance: 30000 }],
+      };
       const params = encodeStateToParams(state);
       const decoded = decodeParamsToState(params);
-      expect(decoded.underGradPlanType).toBe(plan);
+      expect(decoded.loans).toEqual([{ planType: plan, balance: 30000 }]);
     }
   });
 
   it("round-trips edge case values", () => {
     const state: LoanState = {
       ...mockState,
-      underGradBalance: 0,
-      postGradBalance: 200000,
+      loans: [
+        { planType: "PLAN_2", balance: 0 },
+        { planType: "POSTGRADUATE", balance: 200000 },
+      ],
       salary: MIN_SALARY,
     };
     const params = encodeStateToParams(state);
     const decoded = decodeParamsToState(params);
 
-    expect(decoded.underGradBalance).toBe(0);
-    expect(decoded.postGradBalance).toBe(200000);
+    expect(decoded.loans).toEqual(state.loans);
     expect(decoded.salary).toBe(MIN_SALARY);
   });
 
@@ -322,9 +341,7 @@ describe("generateShareUrl", () => {
     const url = generateShareUrl(mockState, { baseUrl: "https://example.com" });
 
     expect(url).toContain("https://example.com/");
-    expect(url).toContain("plan=PLAN_2");
-    expect(url).toContain("ug=45000");
-    expect(url).toContain("pg=12000");
+    expect(url).toContain("loans=PLAN_2");
     expect(url).toContain("sal=65000");
   });
 
@@ -332,8 +349,7 @@ describe("generateShareUrl", () => {
     const url = generateShareUrl(mockState);
     // Should use window.location.origin in browser or fallback
     expect(url).toMatch(/^https?:\/\//);
-    expect(url).toContain("plan=PLAN_2");
-    expect(url).toContain("ug=45000");
+    expect(url).toContain("loans=PLAN_2");
   });
 
   it("preserves current pathname in generated URL", () => {
@@ -432,7 +448,6 @@ describe("generateShareText", () => {
     const text = generateShareText(mockState);
 
     expect(text).toContain("Check out my UK student loan projection:");
-    expect(text).toContain("plan=PLAN_2");
-    expect(text).toContain("ug=45000");
+    expect(text).toContain("loans=PLAN_2");
   });
 });

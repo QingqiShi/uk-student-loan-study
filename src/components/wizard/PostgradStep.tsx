@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { trackPostgradBalanceChanged } from "@/lib/analytics";
+import { getPostgraduateLoan, setPostgraduateLoan } from "@/lib/loanHelpers";
 
 interface PostgradStepProps {
   direction: "forward" | "backward";
@@ -27,7 +28,8 @@ export function PostgradStep({
   isDone = false,
 }: PostgradStepProps) {
   const { updateField } = useLoanActions();
-  const { postGradBalance } = useLoanConfigState();
+  const { loans } = useLoanConfigState();
+  const postGradBalance = getPostgraduateLoan(loans)?.balance ?? 0;
   const [hasPostgrad, setHasPostgrad] = useState<boolean | null>(
     showPreselection ? true : null,
   );
@@ -66,7 +68,7 @@ export function PostgradStep({
             label="Outstanding balance"
             value={showPreselection ? postGradBalance : postGradBalance || ""}
             onChange={(value) => {
-              updateField("postGradBalance", value);
+              updateField("loans", setPostgraduateLoan(loans, value));
             }}
             onBlur={() => {
               trackPostgradBalanceChanged(postGradBalance);
@@ -80,7 +82,7 @@ export function PostgradStep({
                 size="sm"
                 variant={postGradBalance === amount ? "default" : "outline"}
                 onClick={() => {
-                  updateField("postGradBalance", amount);
+                  updateField("loans", setPostgraduateLoan(loans, amount));
                   trackPostgradBalanceChanged(amount);
                 }}
               >

@@ -3,9 +3,7 @@ import { DEFAULT_SALARY } from "@/constants";
 import { DEFAULT_PRESET, type Preset } from "@/lib/presets";
 
 export const initialState: LoanState = {
-  underGradPlanType: DEFAULT_PRESET.underGradPlanType,
-  underGradBalance: DEFAULT_PRESET.underGradBalance,
-  postGradBalance: DEFAULT_PRESET.postGradBalance,
+  loans: DEFAULT_PRESET.loans,
   salary: DEFAULT_SALARY,
 
   // Overpay analysis defaults
@@ -59,9 +57,7 @@ export function loanReducer(state: LoanState, action: LoanAction): LoanState {
     case "APPLY_PRESET":
       return {
         ...state,
-        underGradBalance: action.preset.underGradBalance,
-        postGradBalance: action.preset.postGradBalance,
-        underGradPlanType: action.preset.underGradPlanType,
+        loans: action.preset.loans,
       };
     default:
       return state;

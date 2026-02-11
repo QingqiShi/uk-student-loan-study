@@ -13,6 +13,11 @@ import {
   trackPlanSelected,
   trackUndergradBalanceChanged,
 } from "@/lib/analytics";
+import {
+  getUndergraduatePlanType,
+  getUndergraduateLoan,
+  setUndergraduateLoan,
+} from "@/lib/loanHelpers";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 interface UndergradStepProps {
@@ -45,7 +50,9 @@ export function UndergradStep({
   isDone = false,
 }: UndergradStepProps) {
   const { updateField } = useLoanActions();
-  const { underGradPlanType, underGradBalance } = useLoanConfigState();
+  const { loans } = useLoanConfigState();
+  const underGradPlanType = getUndergraduatePlanType(loans);
+  const underGradBalance = getUndergraduateLoan(loans)?.balance ?? 0;
   const [hasUndergrad, setHasUndergrad] = useState<boolean | null>(
     showPreselection ? true : null,
   );
@@ -96,7 +103,10 @@ export function UndergradStep({
                 onClick={() => {
                   setHasPlanInteracted(true);
                   trackPlanSelected(option.value);
-                  updateField("underGradPlanType", option.value);
+                  updateField(
+                    "loans",
+                    setUndergraduateLoan(loans, option.value, underGradBalance),
+                  );
                 }}
               />
             ))}
@@ -119,7 +129,10 @@ export function UndergradStep({
             value={hasInteracted ? underGradBalance : ""}
             onChange={(value) => {
               setHasInteracted(true);
-              updateField("underGradBalance", value);
+              updateField(
+                "loans",
+                setUndergraduateLoan(loans, underGradPlanType, value),
+              );
             }}
             onBlur={() => {
               trackUndergradBalanceChanged(underGradBalance);
@@ -138,7 +151,10 @@ export function UndergradStep({
                 }
                 onClick={() => {
                   setHasInteracted(true);
-                  updateField("underGradBalance", amount);
+                  updateField(
+                    "loans",
+                    setUndergraduateLoan(loans, underGradPlanType, amount),
+                  );
                   trackUndergradBalanceChanged(amount);
                 }}
               >

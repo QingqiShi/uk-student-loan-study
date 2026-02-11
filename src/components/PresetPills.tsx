@@ -23,9 +23,13 @@ export function PresetPills({
   // Find matching preset based on loan configuration
   const activePreset = PRESETS.find(
     (p) =>
-      p.underGradBalance === config.underGradBalance &&
-      p.postGradBalance === config.postGradBalance &&
-      p.underGradPlanType === config.underGradPlanType,
+      p.loans.length === config.loans.length &&
+      p.loans.every(
+        (pl, i) =>
+          config.loans[i] &&
+          pl.planType === config.loans[i].planType &&
+          pl.balance === config.loans[i].balance,
+      ),
   );
 
   // Show "Edit configuration" active state only when personalized with custom (non-preset) config
