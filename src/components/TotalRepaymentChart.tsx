@@ -44,7 +44,7 @@ export function TotalRepaymentChart() {
       ariaLabel="Chart showing total student loan repayment amount by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
       chartConfig={chartConfig}
       series={[{ dataKey: "value" }]}
-      showTooltip={false}
+      interactionMode="none"
       annotations={annotations}
       xDomain={[MIN_SALARY, MAX_SALARY]}
       margin={{ top: 25, right: 25, bottom: 8, left: 25 }}
