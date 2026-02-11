@@ -56,9 +56,7 @@ interface ResultSummaryProps {
   onOpenAssumptions: () => void;
 }
 
-export function ResultSummary({
-  onOpenAssumptions,
-}: ResultSummaryProps) {
+export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
   const summary = useResultSummary();
   const insight = usePersonalizedInsight();
   const config = useLoanConfigState();
@@ -155,9 +153,7 @@ export function ResultSummary({
               }
             />
             <PopoverContent align="end" className="w-64 p-3">
-              <p className="text-sm font-medium">
-                {balanceSummary}
-              </p>
+              <p className="text-sm font-medium">{balanceSummary}</p>
               <div className="my-2 h-px bg-border" />
               <button
                 type="button"
@@ -175,9 +171,7 @@ export function ResultSummary({
 
         {/* Config summary — desktop inline */}
         <div className="hidden lg:block lg:pl-5">
-          <p className="text-sm/snug font-medium">
-            {balanceSummary}
-          </p>
+          <p className="text-sm/snug font-medium">{balanceSummary}</p>
           <button
             type="button"
             onClick={onOpenAssumptions}

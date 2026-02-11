@@ -11,10 +11,7 @@ interface SalaryGrowthStepProps {
   onNext: () => void;
 }
 
-export function SalaryGrowthStep({
-  direction,
-  onNext,
-}: SalaryGrowthStepProps) {
+export function SalaryGrowthStep({ direction, onNext }: SalaryGrowthStepProps) {
   const { updateField } = useLoanActions();
   const { salaryGrowthRate } = useLoanConfigState();
 

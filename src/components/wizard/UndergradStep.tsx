@@ -52,7 +52,8 @@ export function UndergradStep({
   const [hasInteracted, setHasInteracted] = useState(showPreselection);
   const [hasPlanInteracted, setHasPlanInteracted] = useState(showPreselection);
 
-  const quickPicks = QUICK_PICKS_BY_PLAN[underGradPlanType] ?? QUICK_PICKS_BY_PLAN.PLAN_2;
+  const quickPicks =
+    QUICK_PICKS_BY_PLAN[underGradPlanType] ?? QUICK_PICKS_BY_PLAN.PLAN_2;
   const planInfo = PLAN_DISPLAY_INFO[underGradPlanType];
 
   return (
@@ -64,7 +65,9 @@ export function UndergradStep({
         <OptionCard
           label="Yes"
           isSelected={hasUndergrad === true}
-          onClick={() => { setHasUndergrad(true); }}
+          onClick={() => {
+            setHasUndergrad(true);
+          }}
         />
         <OptionCard
           label="No"

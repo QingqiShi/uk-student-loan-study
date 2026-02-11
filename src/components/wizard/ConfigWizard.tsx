@@ -83,7 +83,9 @@ export function ConfigWizard({
         return (
           <UndergradStep
             direction={direction}
-            onNext={() => { goToStep("postgrad"); }}
+            onNext={() => {
+              goToStep("postgrad");
+            }}
             onSkipUndergrad={handleSkipUndergrad}
             showPreselection={hasPersonalized || isEditJump}
             isDone={isEditJump}
@@ -93,7 +95,9 @@ export function ConfigWizard({
         return (
           <PostgradStep
             direction={direction}
-            onNext={() => { goToStep("salary"); }}
+            onNext={() => {
+              goToStep("salary");
+            }}
             onSkipPostgrad={handleSkipPostgrad}
             showPreselection={
               (hasPersonalized || isEditJump) && postGradBalance > 0

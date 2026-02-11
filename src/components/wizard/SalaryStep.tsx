@@ -55,8 +55,7 @@ export function SalaryStep({
               updateField("salary", newSalary);
             }}
             onValueCommitted={(value) => {
-              const salaryValue =
-                typeof value === "number" ? value : value[0];
+              const salaryValue = typeof value === "number" ? value : value[0];
               trackSalaryChanged(salaryValue);
             }}
             min={MIN_SALARY}
