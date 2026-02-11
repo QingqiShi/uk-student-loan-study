@@ -155,7 +155,8 @@ export function OverpayPage() {
           className="text-sm text-primary underline-offset-4 hover:underline"
           aria-label="Edit growth assumptions"
         >
-          {growthLabel} salary growth &middot; {thresholdInfo} &rarr;
+          Assuming {growthLabel} salary growth, {thresholdInfo.toLowerCase()}{" "}
+          &rarr;
         </button>
       </main>
       <Footer />
