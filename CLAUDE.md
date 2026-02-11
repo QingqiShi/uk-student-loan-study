@@ -49,6 +49,10 @@ When verifying visual elements (fonts, colors, layouts), always cross-reference 
 
 When updating design tokens (CSS variables, color tokens, etc.), always propagate changes to ALL references including hardcoded values in brand guidelines, component swatches, and semantic color mappings. Never assume a variable change is complete until all consumers are updated.
 
+## Tailwind CSS
+
+Use built-in Tailwind breakpoints (`sm`, `md`, `lg`, `xl`, `2xl`) for responsive design. Do not introduce arbitrary breakpoint values like `min-[58rem]` — stick with the standard set for consistency. The only exception is `min-[30rem]` which is already established in the codebase for the mobile-to-tablet transition.
+
 ## Code Quality Rules
 
 **Never use these:**
