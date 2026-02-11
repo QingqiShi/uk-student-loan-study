@@ -1,10 +1,9 @@
 "use client";
 
-import { SalaryGrowthPicker } from "@/components/SalaryGrowthPicker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import YearSelector from "@/components/YearSelector";
+import { YearSelector } from "@/components/YearSelector";
 import {
   MIN_MONTHLY_OVERPAYMENT,
   MAX_MONTHLY_OVERPAYMENT,
@@ -120,7 +119,7 @@ export function OverpayPrimaryInputs({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="salary-slider">Current Salary</Label>
@@ -146,8 +145,6 @@ export function OverpayPrimaryInputs({
             <span>{currencyFormatter.format(MAX_SALARY)}</span>
           </div>
         </div>
-
-        <SalaryGrowthPicker />
 
         <YearSelector
           id="overpay-repayment-year"

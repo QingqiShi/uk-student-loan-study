@@ -6,10 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { THRESHOLD_GROWTH_OPTIONS } from "@/constants";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
-import {
-  trackAdvancedConfigToggled,
-  trackThresholdGrowthSelected,
-} from "@/lib/analytics";
+import { trackThresholdGrowthSelected } from "@/lib/analytics";
 
 export function AdvancedConfigSection() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +23,6 @@ export function AdvancedConfigSection() {
         type="button"
         onClick={() => {
           const newState = !isOpen;
-          trackAdvancedConfigToggled(newState);
           setIsOpen(newState);
         }}
         className="flex w-full items-center justify-between rounded-lg py-2.5 text-left text-sm font-medium transition-all hover:underline focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"

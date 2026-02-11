@@ -37,9 +37,9 @@ export interface ChartBaseProps {
   type: "area" | "line";
   data: object[];
   xDataKey: string;
-  xLabel: string;
+  xLabel?: string;
   xFormatter: (value: number) => string;
-  yLabel: string;
+  yLabel?: string;
   yFormatter: (value: number) => string;
   ariaLabel: string;
   chartConfig: ChartConfig;
@@ -47,6 +47,7 @@ export interface ChartBaseProps {
   annotations?: ChartAnnotationConfig[];
   showLegend?: boolean;
   xDomain?: [number, number];
+  margin?: { top?: number; right?: number; bottom?: number; left?: number };
 }
 
 export function ChartBase({
@@ -62,7 +63,8 @@ export function ChartBase({
   series,
   annotations = [],
   showLegend = false,
-  xDomain: _xDomain,
+  xDomain,
+  margin: marginProp,
 }: ChartBaseProps) {
   const gradientId = useId();
   const [isTooltipActive, setIsTooltipActive] = useState(false);
@@ -91,7 +93,7 @@ export function ChartBase({
         <ChartComponent
           data={data}
           accessibilityLayer
-          margin={{ top: 25, right: 25, bottom: 25, left: 25 }}
+          margin={marginProp ?? { top: 25, right: 25, bottom: 25, left: 25 }}
         >
           {type === "area" && (
             <defs>
@@ -122,30 +124,38 @@ export function ChartBase({
           <XAxis
             dataKey={xDataKey}
             type="number"
-            domain={["dataMin", "dataMax"]}
+            domain={xDomain ?? ["dataMin", "dataMax"]}
             tickFormatter={xFormatter}
             tickLine={false}
             axisLine={false}
             tickMargin={8}
-            label={{
-              value: xLabel,
-              position: "bottom",
-              offset: 5,
-              className: "fill-muted-foreground text-xs",
-            }}
+            {...(xLabel
+              ? {
+                  label: {
+                    value: xLabel,
+                    position: "bottom" as const,
+                    offset: 5,
+                    className: "fill-muted-foreground text-xs",
+                  },
+                }
+              : {})}
           />
           <YAxis
             tickFormatter={yFormatter}
             tickLine={false}
             axisLine={false}
             tickMargin={8}
-            label={{
-              value: yLabel,
-              angle: -90,
-              position: "left",
-              offset: 10,
-              className: "fill-muted-foreground text-xs",
-            }}
+            {...(yLabel
+              ? {
+                  label: {
+                    value: yLabel,
+                    angle: -90,
+                    position: "left" as const,
+                    offset: 10,
+                    className: "fill-muted-foreground text-xs",
+                  },
+                }
+              : {})}
           />
           <ChartTooltip
             cursor={false}
@@ -155,7 +165,8 @@ export function ChartBase({
                 labelFormatter={(_, payload) => {
                   const item = payload[0].payload as Record<string, unknown>;
                   if (xDataKey in item) {
-                    return `${xLabel}: ${xFormatter(Number(item[xDataKey]))}`;
+                    const formatted = xFormatter(Number(item[xDataKey]));
+                    return xLabel ? `${xLabel}: ${formatted}` : formatted;
                   }
                   return "";
                 }}

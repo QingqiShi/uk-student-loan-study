@@ -3,6 +3,7 @@ import type { UndergraduatePlanType } from "@/lib/loans/types";
 export interface Preset {
   id: string;
   label: string;
+  description: string;
   underGradBalance: number;
   postGradBalance: number;
   underGradPlanType: UndergraduatePlanType;
@@ -12,7 +13,8 @@ export interface Preset {
 export const PRESETS: Preset[] = [
   {
     id: "plan2-grad",
-    label: "2012-23 Grad",
+    label: "2012\u201323 Grad",
+    description: "Plan 2 \u00b7 \u00a345k balance",
     underGradBalance: 45_000,
     postGradBalance: 0,
     underGradPlanType: "PLAN_2",
@@ -21,6 +23,7 @@ export const PRESETS: Preset[] = [
   {
     id: "plan5-grad",
     label: "2023+ Grad",
+    description: "Plan 5 \u00b7 \u00a350k balance",
     underGradBalance: 50_000,
     postGradBalance: 0,
     underGradPlanType: "PLAN_5",
@@ -29,6 +32,7 @@ export const PRESETS: Preset[] = [
   {
     id: "plan1-legacy",
     label: "Pre-2012",
+    description: "Plan 1 \u00b7 \u00a320k balance",
     underGradBalance: 20_000,
     postGradBalance: 0,
     underGradPlanType: "PLAN_1",
@@ -36,7 +40,8 @@ export const PRESETS: Preset[] = [
   },
   {
     id: "ug-pg-combo",
-    label: "UG+Masters",
+    label: "UG + Masters",
+    description: "Plan 2 \u00b7 \u00a345k + \u00a312k postgrad",
     underGradBalance: 45_000,
     postGradBalance: 12_000,
     underGradPlanType: "PLAN_2",

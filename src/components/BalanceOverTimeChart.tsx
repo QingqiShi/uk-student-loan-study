@@ -43,5 +43,3 @@ export function BalanceOverTimeChart() {
     />
   );
 }
-
-export default BalanceOverTimeChart;
