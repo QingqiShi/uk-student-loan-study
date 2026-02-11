@@ -104,7 +104,7 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
 
       <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:p-5 lg:grid-cols-[1fr_1fr_1fr_2fr] lg:items-center">
         <div className="col-span-2 pb-3 min-[30rem]:col-span-1 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:pr-5 min-[30rem]:pb-0">
-          <p className="text-[0.6875rem] font-medium tracking-widest text-muted-foreground uppercase min-[30rem]:text-xs">
+          <p className="text-[0.6875rem] font-medium tracking-widest whitespace-nowrap text-muted-foreground uppercase min-[30rem]:text-xs">
             Total repayment
           </p>
           <p className="mt-0.5 font-mono text-xl font-semibold tracking-tight text-primary tabular-nums min-[30rem]:text-2xl">
@@ -182,35 +182,40 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
         </div>
       </div>
 
-      {/* Personalized insight footer */}
-      {insight && (
-        <div className="relative flex items-start gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5">
-          <HugeiconsIcon
-            icon={insightConfig[insight.type].icon}
-            className={`mt-0.5 size-4 shrink-0 ${insightConfig[insight.type].iconClass}`}
-            strokeWidth={2}
-          />
-          <div className="min-w-0 text-sm">
-            <span className="font-medium">{insight.title}</span>
-            <span className="text-muted-foreground">
-              {" \u2014 "}
-              {insight.description}
-            </span>
-            {insight.cta && (
-              <>
-                {" "}
-                <Link
-                  href={insight.cta.href}
-                  className="inline-flex items-center gap-0.5 font-medium text-foreground hover:underline"
-                >
-                  {insight.cta.text}
-                  <HugeiconsIcon icon={ArrowRight01Icon} className="size-3.5" />
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Personalized insight footer — fixed min-h to prevent layout shift */}
+      <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5 sm:min-h-21.5 lg:min-h-16.5">
+        {insight && (
+          <>
+            <HugeiconsIcon
+              icon={insightConfig[insight.type].icon}
+              className={`mt-0.5 size-4 shrink-0 ${insightConfig[insight.type].iconClass}`}
+              strokeWidth={2}
+            />
+            <div className="min-w-0 text-sm">
+              <span className="font-medium">{insight.title}</span>
+              <span className="text-muted-foreground">
+                {" \u2014 "}
+                {insight.description}
+              </span>
+              {insight.cta && (
+                <>
+                  {" "}
+                  <Link
+                    href={insight.cta.href}
+                    className="inline-flex items-center gap-0.5 font-medium text-foreground hover:underline"
+                  >
+                    {insight.cta.text}
+                    <HugeiconsIcon
+                      icon={ArrowRight01Icon}
+                      className="size-3.5"
+                    />
+                  </Link>
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
