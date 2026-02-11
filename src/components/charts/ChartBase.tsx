@@ -46,6 +46,7 @@ export interface ChartBaseProps {
   series: ChartSeriesConfig[];
   annotations?: ChartAnnotationConfig[];
   showLegend?: boolean;
+  showTooltip?: boolean;
   xDomain?: [number, number];
   margin?: { top?: number; right?: number; bottom?: number; left?: number };
 }
@@ -63,6 +64,7 @@ export function ChartBase({
   series,
   annotations = [],
   showLegend = false,
+  showTooltip = true,
   xDomain,
   margin: marginProp,
 }: ChartBaseProps) {
@@ -76,18 +78,22 @@ export function ChartBase({
       role="img"
       aria-label={ariaLabel}
       className="size-full touch-pinch-zoom overflow-hidden select-none"
-      onMouseEnter={() => {
-        setIsTooltipActive(true);
-      }}
-      onMouseLeave={() => {
-        setIsTooltipActive(false);
-      }}
-      onTouchStart={() => {
-        setIsTooltipActive(true);
-      }}
-      onTouchEnd={() => {
-        setIsTooltipActive(false);
-      }}
+      {...(showTooltip
+        ? {
+            onMouseEnter: () => {
+              setIsTooltipActive(true);
+            },
+            onMouseLeave: () => {
+              setIsTooltipActive(false);
+            },
+            onTouchStart: () => {
+              setIsTooltipActive(true);
+            },
+            onTouchEnd: () => {
+              setIsTooltipActive(false);
+            },
+          }
+        : {})}
     >
       <ChartContainer config={chartConfig} className="size-full">
         <ChartComponent
@@ -157,27 +163,29 @@ export function ChartBase({
                 }
               : {})}
           />
-          <ChartTooltip
-            cursor={false}
-            active={isTooltipActive}
-            content={
-              <ChartTooltipContent
-                labelFormatter={(_, payload) => {
-                  const item = payload[0].payload as Record<string, unknown>;
-                  if (xDataKey in item) {
-                    const formatted = xFormatter(Number(item[xDataKey]));
-                    return xLabel ? `${xLabel}: ${formatted}` : formatted;
-                  }
-                  return "";
-                }}
-                formatter={(value, name) => {
-                  // name corresponds to series dataKey, which must exist in chartConfig
-                  const label = chartConfig[name].label ?? String(name);
-                  return [yFormatter(Number(value)), label];
-                }}
-              />
-            }
-          />
+          {showTooltip && (
+            <ChartTooltip
+              cursor={false}
+              active={isTooltipActive}
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(_, payload) => {
+                    const item = payload[0].payload as Record<string, unknown>;
+                    if (xDataKey in item) {
+                      const formatted = xFormatter(Number(item[xDataKey]));
+                      return xLabel ? `${xLabel}: ${formatted}` : formatted;
+                    }
+                    return "";
+                  }}
+                  formatter={(value, name) => {
+                    // name corresponds to series dataKey, which must exist in chartConfig
+                    const label = chartConfig[name].label ?? String(name);
+                    return [yFormatter(Number(value)), label];
+                  }}
+                />
+              }
+            />
+          )}
           {showLegend && (
             <Legend
               verticalAlign="top"
