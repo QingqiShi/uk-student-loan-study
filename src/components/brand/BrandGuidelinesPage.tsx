@@ -27,7 +27,7 @@ const LOGO_ANATOMY = [
 export function BrandGuidelinesPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Header variant="simple" />
+      <Header />
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 md:px-6 md:py-8">
         <Link
           href="/"
