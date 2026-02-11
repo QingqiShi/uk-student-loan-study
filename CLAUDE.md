@@ -12,7 +12,13 @@ pnpm test          # Run tests
 
 ## Tech Stack
 
-This project uses TypeScript and React 19. When making changes, ensure compatibility with React 19 patterns (no legacy context, proper use of hooks). Always run the full test suite (`pnpm test`), lint, and build after multi-file refactors.
+This project uses TypeScript and React 19. When making changes, ensure compatibility with React 19 patterns (no legacy context, proper use of hooks).
+
+**Before considering any change done**, run all four checks and confirm they pass:
+
+```bash
+pnpm lint && pnpm test && pnpm build && pnpm format
+```
 
 ## Architecture
 
