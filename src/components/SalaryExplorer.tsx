@@ -8,10 +8,7 @@ import {
   SALARY_STEP,
   currencyFormatter,
 } from "@/constants";
-import {
-  useLoanFrequentState,
-  useLoanActions,
-} from "@/context/LoanContext";
+import { useLoanFrequentState, useLoanActions } from "@/context/LoanContext";
 import { trackSalaryChanged } from "@/lib/analytics";
 
 export function SalaryExplorer() {

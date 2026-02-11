@@ -42,7 +42,9 @@ export function PostgradStep({
         <OptionCard
           label="Yes"
           isSelected={hasPostgrad === true}
-          onClick={() => { setHasPostgrad(true); }}
+          onClick={() => {
+            setHasPostgrad(true);
+          }}
         />
         <OptionCard
           label="No"

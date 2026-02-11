@@ -1,6 +1,9 @@
 "use client";
 
-import type { LoanWizardStep, AssumptionsWizardStep } from "./wizard/wizardReducer";
+import type {
+  LoanWizardStep,
+  AssumptionsWizardStep,
+} from "./wizard/wizardReducer";
 import type { Preset } from "@/lib/presets";
 import { ConfigSummary } from "@/components/ConfigSummary";
 import { AssumptionsWizard } from "@/components/wizard/AssumptionsWizard";

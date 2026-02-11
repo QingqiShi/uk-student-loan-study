@@ -62,7 +62,10 @@ export function trackWizardCompleted(wizardType: WizardType) {
   track("wizard_completed", { wizardType });
 }
 
-export function trackWizardBackClicked(wizardType: WizardType, fromStep: string) {
+export function trackWizardBackClicked(
+  wizardType: WizardType,
+  fromStep: string,
+) {
   track("wizard_back_clicked", { wizardType, fromStep });
 }
 

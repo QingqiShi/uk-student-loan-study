@@ -72,15 +72,24 @@ export function HeroSection() {
         </h1>
         <ul className="max-w-2xl space-y-1 text-sm text-muted-foreground sm:text-base">
           <li className="flex items-baseline gap-2">
-            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40" aria-hidden="true" />
+            <span
+              className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40"
+              aria-hidden="true"
+            />
             Low earners get their loans written off.
           </li>
           <li className="flex items-baseline gap-2">
-            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40" aria-hidden="true" />
+            <span
+              className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40"
+              aria-hidden="true"
+            />
             High earners pay them off quickly.
           </li>
           <li className="flex items-baseline gap-2 text-foreground">
-            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary" aria-hidden="true" />
+            <span
+              className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary"
+              aria-hidden="true"
+            />
             Middle earners pay the most in total - and the most interest.
           </li>
         </ul>
@@ -98,9 +107,7 @@ export function HeroSection() {
       />
 
       <div className="space-y-4">
-        <ResultSummary
-          onOpenAssumptions={handleOpenAssumptions}
-        />
+        <ResultSummary onOpenAssumptions={handleOpenAssumptions} />
         <SalaryExplorer />
       </div>
     </section>

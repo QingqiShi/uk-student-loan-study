@@ -11,10 +11,7 @@ import {
   initialAssumptionsWizardState,
 } from "./wizardReducer";
 import type { AssumptionsWizardStep } from "./wizardReducer";
-import {
-  trackWizardStepViewed,
-  trackWizardBackClicked,
-} from "@/lib/analytics";
+import { trackWizardStepViewed, trackWizardBackClicked } from "@/lib/analytics";
 
 const assumptionsReducer = createWizardReducer(
   ASSUMPTIONS_STEP_ORDER,
@@ -67,10 +64,7 @@ export function AssumptionsWizard({
         );
       case "threshold-growth":
         return (
-          <ThresholdGrowthStep
-            direction={direction}
-            onComplete={onComplete}
-          />
+          <ThresholdGrowthStep direction={direction} onComplete={onComplete} />
         );
     }
   }
