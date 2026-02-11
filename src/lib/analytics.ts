@@ -12,16 +12,8 @@ export function trackSalaryGrowthSelected(rate: number) {
   track("salary_growth_selected", { rate });
 }
 
-export function trackAdvancedConfigToggled(expanded: boolean) {
-  track("advanced_config_toggled", { expanded });
-}
-
 export function trackThresholdGrowthSelected(rate: number) {
   track("threshold_growth_selected", { rate });
-}
-
-export function trackPersonalisePanelToggled(open: boolean) {
-  track("personalise_panel_toggled", { open });
 }
 
 export function trackPresetApplied(preset: string) {
@@ -50,6 +42,40 @@ export function trackShareClicked(method: string) {
 
 export function trackThemeChanged(theme: string) {
   track("theme_changed", { theme });
+}
+
+// =============================================================================
+// Config Wizard Events
+// =============================================================================
+
+type WizardType = "loan" | "assumptions";
+
+export function trackWizardStarted(wizardType: WizardType) {
+  track("wizard_started", { wizardType });
+}
+
+export function trackWizardStepViewed(wizardType: WizardType, step: string) {
+  track("wizard_step_viewed", { wizardType, step });
+}
+
+export function trackWizardCompleted(wizardType: WizardType) {
+  track("wizard_completed", { wizardType });
+}
+
+export function trackWizardBackClicked(wizardType: WizardType, fromStep: string) {
+  track("wizard_back_clicked", { wizardType, fromStep });
+}
+
+export function trackWizardSkippedUndergrad() {
+  track("wizard_skipped_undergrad", {});
+}
+
+export function trackWizardSkippedPostgrad() {
+  track("wizard_skipped_postgrad", {});
+}
+
+export function trackWizardRestarted(wizardType: WizardType) {
+  track("wizard_restarted", { wizardType });
 }
 
 // =============================================================================

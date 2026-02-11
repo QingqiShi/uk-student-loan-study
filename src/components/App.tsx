@@ -2,7 +2,7 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { HeroSection } from "./HeroSection";
 import { PlanFromQuery } from "./PlanFromQuery";
-import SecondaryCharts from "./SecondaryCharts";
+import { SecondaryCharts } from "./SecondaryCharts";
 import { ToolLinks } from "./ToolLinks";
 
 function App() {

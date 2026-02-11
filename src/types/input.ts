@@ -14,8 +14,8 @@ interface BaseInputProps {
  * Props for the CurrencyInput component.
  */
 export interface CurrencyInputProps extends BaseInputProps {
-  /** Current value in GBP */
-  value: number;
+  /** Current value in GBP (empty string for blank input) */
+  value: number | "";
   /** Callback when value changes */
   onChange: (value: number) => void;
   /** Callback when input loses focus */

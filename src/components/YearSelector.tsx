@@ -150,5 +150,3 @@ export function YearSelector({
     </div>
   );
 }
-
-export default YearSelector;

@@ -1,47 +1,108 @@
-import { AdvancedConfigSection } from "./AdvancedConfigSection";
-import { QuickInputs } from "./QuickInputs";
+"use client";
+
+import { useEffect, useState } from "react";
+import { InputPanel } from "./InputPanel";
 import { ResultSummary } from "./ResultSummary";
-import TotalRepaymentChart from "./TotalRepaymentChart";
+import { SalaryExplorer } from "./SalaryExplorer";
+import type { InputMode } from "./InputPanel";
+import type { Preset } from "@/lib/presets";
+import { useLoanActions } from "@/context/LoanContext";
+import {
+  trackPresetApplied,
+  trackWizardCompleted,
+  trackWizardRestarted,
+  trackWizardStarted,
+} from "@/lib/analytics";
 
 export function HeroSection() {
+  const [mode, setMode] = useState<InputMode>({ view: "summary" });
+  const [hasPersonalized, setHasPersonalized] = useState(false);
+  const { applyPreset } = useLoanActions();
+
+  useEffect(() => {
+    if (mode.view !== "summary") {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [mode.view]);
+
+  function handlePersonalise() {
+    if (hasPersonalized) {
+      trackWizardRestarted("loan");
+    } else {
+      trackWizardStarted("loan");
+    }
+    setMode({ view: "loan-wizard" });
+  }
+
+  function handleOpenAssumptions() {
+    trackWizardStarted("assumptions");
+    setMode({ view: "assumptions-wizard" });
+  }
+
+  function handleWizardComplete() {
+    trackWizardCompleted("loan");
+    setHasPersonalized(true);
+    setMode({ view: "summary" });
+  }
+
+  function handleAssumptionsComplete() {
+    trackWizardCompleted("assumptions");
+    setMode({ view: "summary" });
+  }
+
+  function handlePresetApplied(preset: Preset) {
+    trackPresetApplied(preset.id);
+    applyPreset(preset);
+    setMode({ view: "summary" });
+  }
+
+  function handleWizardClose() {
+    setMode({ view: "summary" });
+  }
+
   return (
-    <section className="space-y-8">
+    <section className="space-y-6">
       <div className="space-y-2">
-        <h2 className="font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]">
           Student Loans Hurt{" "}
           <span className="text-primary">Middle Earners</span> Most
-        </h2>
-        <ul className="max-w-2xl space-y-1 text-base text-muted-foreground sm:text-lg">
+        </h1>
+        <ul className="max-w-2xl space-y-1 text-sm text-muted-foreground sm:text-base">
           <li className="flex items-baseline gap-2">
-            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40" />
+            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40" aria-hidden="true" />
             Low earners get their loans written off.
           </li>
           <li className="flex items-baseline gap-2">
-            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40" />
+            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary/40" aria-hidden="true" />
             High earners pay them off quickly.
           </li>
           <li className="flex items-baseline gap-2 text-foreground">
-            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary" />
-            Middle earners pay the most in total—and the most interest.
+            <span className="size-1.5 shrink-0 -translate-y-px rounded-full bg-primary" aria-hidden="true" />
+            Middle earners pay the most in total - and the most interest.
           </li>
         </ul>
       </div>
 
-      <div className="space-y-6">
-        <ResultSummary />
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium text-muted-foreground">
-            Total repayment by salary
-          </h3>
-          <div className="h-[300px] sm:h-[400px] lg:h-[450px]">
-            <TotalRepaymentChart />
-          </div>
-        </div>
+      <InputPanel
+        hasPersonalized={hasPersonalized}
+        mode={mode}
+        onPersonalise={handlePersonalise}
+        onPresetApplied={handlePresetApplied}
+        onWizardComplete={handleWizardComplete}
+        onAssumptionsComplete={handleAssumptionsComplete}
+        onWizardClose={handleWizardClose}
+        onOpenAssumptions={handleOpenAssumptions}
+      />
+
+      <div className="space-y-4">
+        <ResultSummary
+          onOpenAssumptions={handleOpenAssumptions}
+        />
+        <SalaryExplorer />
       </div>
-
-      <QuickInputs />
-
-      <AdvancedConfigSection />
     </section>
   );
 }
