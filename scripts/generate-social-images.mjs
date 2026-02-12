@@ -1,29 +1,21 @@
 #!/usr/bin/env node
 import { Resvg } from "@resvg/resvg-js";
-import { writeFileSync, readFileSync } from "fs";
+import { writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appDir = join(__dirname, "..", "src", "app");
 
-// Load brand colors from single source of truth
-const brandColors = JSON.parse(
-  readFileSync(
-    join(__dirname, "..", "src", "lib", "brand-colors.json"),
-    "utf-8",
-  ),
-);
-
 // Social image dimensions
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// Brand colors from shared source
-const EMERALD_500 = brandColors.emerald["500"];
-const EMERALD_600 = brandColors.emerald["600"];
-const EMERALD_400 = brandColors.emerald["400"];
-const EMERALD_300 = brandColors.emerald["300"];
+// Brand emerald palette (Tailwind emerald scale)
+const EMERALD_300 = "#6EE7B7";
+const EMERALD_400 = "#34D399";
+const EMERALD_500 = "#10B981";
+const EMERALD_600 = "#0D9668";
 
 // Icon settings
 const ICON_SIZE = 100;

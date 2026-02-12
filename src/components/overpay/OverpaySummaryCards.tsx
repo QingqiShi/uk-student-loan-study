@@ -23,20 +23,20 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
 
   const getCardClassName = () => {
     if (hasSavings) {
-      return "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/20";
+      return "border-status-success-border bg-status-success-bg";
     }
     if (hasExtraCost) {
-      return "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20";
+      return "border-status-danger-border bg-status-danger-bg";
     }
     return "";
   };
 
   const getValueClassName = () => {
     if (hasSavings) {
-      return "text-emerald-700 dark:text-emerald-400";
+      return "text-status-success";
     }
     if (hasExtraCost) {
-      return "text-red-700 dark:text-red-400";
+      return "text-status-danger";
     }
     return "";
   };
@@ -99,7 +99,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {baseline.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium text-blue-600 tabular-nums dark:text-blue-400">
+              <span className="font-medium text-status-info tabular-nums">
                 {currencyFormatter.format(baseline.amountWrittenOff)}
               </span>
             </div>
@@ -132,7 +132,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {overpay.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium text-blue-600 tabular-nums dark:text-blue-400">
+              <span className="font-medium text-status-info tabular-nums">
                 {currencyFormatter.format(overpay.amountWrittenOff)}
               </span>
             </div>
@@ -140,9 +140,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {!overpay.writtenOff && baseline.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Status</span>
-              <span className="font-medium text-emerald-600 dark:text-emerald-400">
-                Paid off
-              </span>
+              <span className="font-medium text-status-success">Paid off</span>
             </div>
           )}
         </CardContent>

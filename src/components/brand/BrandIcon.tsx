@@ -1,5 +1,10 @@
-import colors from "@/lib/brand-colors.json";
 import { cn } from "@/lib/utils";
+
+/** Brand hex constants — the two fixed colors used in the icon and logo. */
+export const BRAND_HEX = {
+  green: "#0D9668",
+  emerald: "#34D399",
+} as const;
 
 interface BrandIconProps {
   size?: number;
@@ -17,7 +22,7 @@ export function BrandIcon({ size = 44, className }: BrandIconProps) {
         width: size,
         height: size,
         borderRadius: cornerRadius,
-        backgroundColor: colors.primary.dark,
+        backgroundColor: BRAND_HEX.emerald,
       }}
     >
       <svg
@@ -31,7 +36,7 @@ export function BrandIcon({ size = 44, className }: BrandIconProps) {
       >
         <path
           d="M44 44l0-20q-11-16-22-12-11 5-22 16l0 16z"
-          fill={colors.primary.light}
+          fill={BRAND_HEX.green}
         />
       </svg>
     </div>

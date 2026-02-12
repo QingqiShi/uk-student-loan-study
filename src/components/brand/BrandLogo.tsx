@@ -1,5 +1,4 @@
-import { BrandIcon } from "./BrandIcon";
-import colors from "@/lib/brand-colors.json";
+import { BrandIcon, BRAND_HEX } from "./BrandIcon";
 import { cn } from "@/lib/utils";
 
 interface BrandLogoProps {
@@ -68,7 +67,7 @@ export function BrandLogo({
             top: shadowOffset.y,
             left: shadowOffset.x,
             fontSize,
-            color: `${colors.primary.light}25`,
+            color: `${BRAND_HEX.green}25`,
           }}
         >
           StudentLoanStudy.uk
