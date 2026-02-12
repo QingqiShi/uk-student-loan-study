@@ -21,8 +21,6 @@ const PEAK_ZONE_REPAYMENT_MULTIPLIER = 1.7;
 
 interface InsightConfig {
   loans: Loan[];
-  underGradBalance: number;
-  postGradBalance: number;
   salaryGrowthRate?: number;
   thresholdGrowthRate?: number;
 }
@@ -68,16 +66,12 @@ export function generateInsight(
   salary: number,
   config: InsightConfig,
 ): Insight | null {
-  const {
-    loans,
-    underGradBalance,
-    postGradBalance,
-    salaryGrowthRate = 0,
-    thresholdGrowthRate = 0,
-  } = config;
+  const { loans, salaryGrowthRate = 0, thresholdGrowthRate = 0 } = config;
+
+  const principal = loans.reduce((s, l) => s + l.balance, 0);
 
   // No insight if no loan balance
-  if (underGradBalance <= 0 && postGradBalance <= 0) {
+  if (principal <= 0) {
     return null;
   }
 
@@ -91,7 +85,6 @@ export function generateInsight(
   });
 
   const writeOffYears = getWriteOffYears(loans);
-  const principal = underGradBalance + postGradBalance;
   const overpayment = calculateOverpayment(result, principal);
   const overpaymentRatio = principal > 0 ? overpayment / principal : 0;
 

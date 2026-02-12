@@ -69,7 +69,11 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
   const yearsDisplay = years >= 1 ? String(rounded) : "<1";
   const yearsUnit = pluralRules.select(rounded) === "one" ? "year" : "years";
 
-  const planInfo = PLAN_DISPLAY_INFO[config.underGradPlanType];
+  const ugLoans = config.loans.filter((l) => l.planType !== "POSTGRADUATE");
+  const pgLoans = config.loans.filter((l) => l.planType === "POSTGRADUATE");
+  const ugBalance = ugLoans.reduce((s, l) => s + l.balance, 0);
+  const pgBalance = pgLoans.reduce((s, l) => s + l.balance, 0);
+
   const growthLabel =
     SALARY_GROWTH_OPTIONS.find((o) => o.value === config.salaryGrowthRate)
       ?.label ?? `${(config.salaryGrowthRate * 100).toFixed(0)}%`;
@@ -79,15 +83,21 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
       ? "Frozen thresholds"
       : `+${(config.thresholdGrowthRate * 100).toFixed(0)}%/yr threshold`;
 
-  const hasUG = config.underGradBalance > 0;
-  const hasPostgrad = config.postGradBalance > 0;
+  const hasUG = ugBalance > 0;
+  const hasPostgrad = pgBalance > 0;
+
+  const ugSummary = ugLoans
+    .map((l) => {
+      const info =
+        PLAN_DISPLAY_INFO[l.planType as keyof typeof PLAN_DISPLAY_INFO];
+      return `${info.name} with ${currencyFormatter.format(l.balance)} balance`;
+    })
+    .join(" + ");
 
   const balanceSummary = hasUG
-    ? `${planInfo.name} with ${currencyFormatter.format(config.underGradBalance)} balance` +
-      (hasPostgrad
-        ? ` + ${currencyFormatter.format(config.postGradBalance)} postgrad`
-        : "")
-    : `${currencyFormatter.format(config.postGradBalance)} postgrad loan`;
+    ? ugSummary +
+      (hasPostgrad ? ` + ${currencyFormatter.format(pgBalance)} postgrad` : "")
+    : `${currencyFormatter.format(pgBalance)} postgrad loan`;
 
   return (
     <div

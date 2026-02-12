@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
 
@@ -8,12 +8,14 @@ interface QuizProgressProps {
   currentStep: number;
   totalSteps: number;
   onBack?: () => void;
+  onClose?: () => void;
 }
 
 export function QuizProgress({
   currentStep,
   totalSteps,
   onBack,
+  onClose,
 }: QuizProgressProps) {
   return (
     <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
@@ -49,7 +51,18 @@ export function QuizProgress({
           ))}
         </div>
 
-        <div className="w-10" />
+        <div className="w-10">
+          {onClose && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onClose}
+              aria-label="Exit quiz"
+            >
+              <HugeiconsIcon icon={Cancel01Icon} className="size-5" />
+            </Button>
+          )}
+        </div>
       </div>
     </header>
   );

@@ -8,8 +8,7 @@ import type { LoanState } from "@/types/store";
 
 // Default test configuration
 const defaultTestConfig: Partial<LoanState> = {
-  underGradBalance: 50_000,
-  postGradBalance: 0,
+  loans: [{ planType: "PLAN_2", balance: 50_000 }],
   salary: 45_000,
 };
 
@@ -100,7 +99,7 @@ describe("useResultSummary", () => {
 
   it("returns null summary when no loans have balance", async () => {
     const { result } = renderHook(() => useResultSummary(), {
-      wrapper: createWrapper({ underGradBalance: 0, postGradBalance: 0 }),
+      wrapper: createWrapper({ loans: [] }),
     });
 
     await vi.runAllTimersAsync();
@@ -148,16 +147,17 @@ describe("useResultSummary", () => {
   it("includes postgrad loan in summary when present", async () => {
     const { result: undergradOnly } = renderHook(() => useResultSummary(), {
       wrapper: createWrapper({
-        underGradBalance: 50_000,
-        postGradBalance: 0,
+        loans: [{ planType: "PLAN_2", balance: 50_000 }],
         salary: 45_000,
       }),
     });
 
     const { result: withPostgrad } = renderHook(() => useResultSummary(), {
       wrapper: createWrapper({
-        underGradBalance: 50_000,
-        postGradBalance: 25_000,
+        loans: [
+          { planType: "PLAN_2", balance: 50_000 },
+          { planType: "POSTGRADUATE", balance: 25_000 },
+        ],
         salary: 45_000,
       }),
     });
@@ -177,11 +177,17 @@ describe("useResultSummary", () => {
 
   it("returns different results for different plan types", async () => {
     const { result: plan2Result } = renderHook(() => useResultSummary(), {
-      wrapper: createWrapper({ underGradPlanType: "PLAN_2", salary: 45_000 }),
+      wrapper: createWrapper({
+        loans: [{ planType: "PLAN_2", balance: 50_000 }],
+        salary: 45_000,
+      }),
     });
 
     const { result: plan5Result } = renderHook(() => useResultSummary(), {
-      wrapper: createWrapper({ underGradPlanType: "PLAN_5", salary: 45_000 }),
+      wrapper: createWrapper({
+        loans: [{ planType: "PLAN_5", balance: 50_000 }],
+        salary: 45_000,
+      }),
     });
 
     await vi.runAllTimersAsync();

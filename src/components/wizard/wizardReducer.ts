@@ -1,24 +1,16 @@
-export type LoanWizardStep = "undergrad" | "postgrad" | "salary";
 export type AssumptionsWizardStep = "salary-growth" | "threshold-growth";
-export type WizardStep = LoanWizardStep | AssumptionsWizardStep;
 
 type WizardDirection = "forward" | "backward";
 
-export interface WizardState<S extends string = WizardStep> {
+export interface WizardState<S extends string = AssumptionsWizardStep> {
   currentStep: S;
   direction: WizardDirection;
 }
 
-type WizardAction<S extends string = WizardStep> =
+type WizardAction<S extends string = AssumptionsWizardStep> =
   | { type: "GO_TO_STEP"; step: S; direction?: WizardDirection }
   | { type: "GO_BACK" }
   | { type: "RESTART" };
-
-export const LOAN_STEP_ORDER: LoanWizardStep[] = [
-  "undergrad",
-  "postgrad",
-  "salary",
-];
 
 export const ASSUMPTIONS_STEP_ORDER: AssumptionsWizardStep[] = [
   "salary-growth",
@@ -33,16 +25,10 @@ function getPreviousStep<S extends string>(
   return index > 0 ? stepOrder[index - 1] : undefined;
 }
 
-export const initialLoanWizardState: WizardState<LoanWizardStep> = {
-  currentStep: "undergrad",
+export const initialAssumptionsWizardState: WizardState = {
+  currentStep: "salary-growth",
   direction: "forward",
 };
-
-export const initialAssumptionsWizardState: WizardState<AssumptionsWizardStep> =
-  {
-    currentStep: "salary-growth",
-    direction: "forward",
-  };
 
 export function createWizardReducer<S extends string>(
   stepOrder: S[],

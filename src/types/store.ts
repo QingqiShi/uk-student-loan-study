@@ -1,15 +1,11 @@
-import type { UndergraduatePlanType } from "@/lib/loans/types";
+import type { Loan, PlanType } from "@/lib/loans/types";
 
 /**
  * Core loan state values stored in the application state.
  */
 export interface LoanState {
-  /** Undergraduate loan plan type */
-  underGradPlanType: UndergraduatePlanType;
-  /** Undergraduate loan balance in GBP */
-  underGradBalance: number;
-  /** Postgraduate loan balance in GBP */
-  postGradBalance: number;
+  /** Array of loans with plan type and balance */
+  loans: Loan[];
   /** Current salary for annotation on charts */
   salary: number;
 
@@ -22,6 +18,9 @@ export interface LoanState {
   thresholdGrowthRate: number;
   /** One-off lump sum payment in GBP */
   lumpSumPayment: number;
+
+  /** Plan types discovered via the standalone /which-plan quiz, pending config panel open */
+  pendingQuizPlanTypes: PlanType[] | null;
 }
 
 /**

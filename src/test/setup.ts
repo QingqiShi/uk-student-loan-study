@@ -59,15 +59,17 @@ class MockWorker {
         break;
       }
       case "INSIGHT": {
+        const totalBalance = payload.loans.reduce(
+          (s: number, l: { balance: number }) => s + l.balance,
+          0,
+        );
         const insight = generateInsight(payload.salary, {
           loans: payload.loans,
-          underGradBalance: payload.underGradBalance,
-          postGradBalance: payload.postGradBalance,
           salaryGrowthRate: payload.salaryGrowthRate,
           thresholdGrowthRate: payload.thresholdGrowthRate,
         });
         let summary = null;
-        if (payload.underGradBalance > 0 || payload.postGradBalance > 0) {
+        if (totalBalance > 0) {
           const simResult = simulate({
             loans: payload.loans,
             annualSalary: payload.salary,

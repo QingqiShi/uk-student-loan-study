@@ -1,4 +1,4 @@
-import type { UndergraduatePlanType } from "@/lib/loans/types";
+import type { Loan, PlanType } from "@/lib/loans/types";
 import type { LoanState } from "@/types/store";
 import {
   MIN_SALARY,
@@ -7,11 +7,14 @@ import {
   MAX_MONTHLY_OVERPAYMENT,
 } from "@/constants";
 
-// URL param keys
+// URL param keys — new format
+const PARAM_LOANS = "loans";
+const PARAM_SAL = "sal";
+
+// Legacy URL param keys (for backward-compatible decoding)
 const PARAM_PLAN = "plan";
 const PARAM_UG = "ug";
 const PARAM_PG = "pg";
-const PARAM_SAL = "sal";
 
 // Overpay-specific param keys
 const PARAM_OVP = "ovp";
@@ -39,19 +42,49 @@ const LEGACY_SALARY_GROWTH_MAPPING: Record<string, number> = {
   aggressive: 0.06,
 };
 
-const VALID_PLANS: UndergraduatePlanType[] = [
+const VALID_PLANS: PlanType[] = [
   "PLAN_1",
   "PLAN_2",
   "PLAN_4",
   "PLAN_5",
+  "POSTGRADUATE",
 ];
 
-function isValidPlan(plan: string): plan is UndergraduatePlanType {
-  return VALID_PLANS.includes(plan as UndergraduatePlanType);
+function isValidPlan(plan: string): plan is PlanType {
+  return VALID_PLANS.includes(plan as PlanType);
 }
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
+}
+
+/**
+ * Encodes a loans array to the URL-safe format: "PLAN_2:45000,POSTGRADUATE:12000"
+ */
+function encodeLoans(loans: Loan[]): string {
+  return loans.map((l) => `${l.planType}:${String(l.balance)}`).join(",");
+}
+
+/**
+ * Decodes the URL loans param back to a Loan[].
+ * Returns undefined if the param is invalid.
+ */
+function decodeLoans(loansParam: string): Loan[] | undefined {
+  const pairs = loansParam.split(",");
+  const loans: Loan[] = [];
+
+  for (const pair of pairs) {
+    const [planType, balanceStr] = pair.split(":");
+    if (!planType || !balanceStr || !isValidPlan(planType)) return undefined;
+    const balance = parseInt(balanceStr, 10);
+    if (isNaN(balance)) return undefined;
+    loans.push({
+      planType,
+      balance: clamp(balance, MIN_BALANCE, MAX_BALANCE),
+    });
+  }
+
+  return loans.length > 0 ? loans : undefined;
 }
 
 export interface EncodeOptions {
@@ -67,9 +100,7 @@ export function encodeStateToParams(
   options: EncodeOptions = {},
 ): URLSearchParams {
   const params = new URLSearchParams();
-  params.set(PARAM_PLAN, state.underGradPlanType);
-  params.set(PARAM_UG, String(state.underGradBalance));
-  params.set(PARAM_PG, String(state.postGradBalance));
+  params.set(PARAM_LOANS, encodeLoans(state.loans));
   params.set(PARAM_SAL, String(state.salary));
 
   if (options.includeOverpayFields) {
@@ -84,35 +115,74 @@ export function encodeStateToParams(
   return params;
 }
 
-export interface DecodedState extends Partial<LoanState> {
+export interface DecodedState {
+  loans?: Loan[];
+  salary?: number;
+  monthlyOverpayment?: number;
+  salaryGrowthRate?: number;
+  lumpSumPayment?: number;
+  thresholdGrowthRate?: number;
   repaymentYear?: number;
 }
 
 /**
  * Decodes URL search params to partial loan state.
+ * Supports both new `loans` param format and legacy `plan`/`ug`/`pg` format.
  * Invalid values are ignored, out-of-range values are clamped.
  */
 export function decodeParamsToState(params: URLSearchParams): DecodedState {
   const result: DecodedState = {};
 
-  const planParam = params.get(PARAM_PLAN);
-  if (planParam && isValidPlan(planParam)) {
-    result.underGradPlanType = planParam;
-  }
-
-  const ugParam = params.get(PARAM_UG);
-  if (ugParam !== null) {
-    const value = parseInt(ugParam, 10);
-    if (!isNaN(value)) {
-      result.underGradBalance = clamp(value, MIN_BALANCE, MAX_BALANCE);
+  // Try new format first
+  const loansParam = params.get(PARAM_LOANS);
+  if (loansParam) {
+    const loans = decodeLoans(loansParam);
+    if (loans) {
+      result.loans = loans;
     }
   }
 
-  const pgParam = params.get(PARAM_PG);
-  if (pgParam !== null) {
-    const value = parseInt(pgParam, 10);
-    if (!isNaN(value)) {
-      result.postGradBalance = clamp(value, MIN_BALANCE, MAX_BALANCE);
+  // Fall back to legacy format if no `loans` param
+  if (!result.loans) {
+    const planParam = params.get(PARAM_PLAN);
+    const ugParam = params.get(PARAM_UG);
+    const pgParam = params.get(PARAM_PG);
+
+    if (planParam || ugParam !== null || pgParam !== null) {
+      const loans: Loan[] = [];
+
+      // Parse undergraduate loan from legacy params
+      const ugBalance = ugParam !== null ? parseInt(ugParam, 10) : NaN;
+      if (planParam && isValidPlan(planParam) && planParam !== "POSTGRADUATE") {
+        if (!isNaN(ugBalance)) {
+          const clampedBalance = clamp(ugBalance, MIN_BALANCE, MAX_BALANCE);
+          loans.push({ planType: planParam, balance: clampedBalance });
+        } else {
+          // Plan type specified but no balance — include with 0 balance to preserve plan type
+          loans.push({ planType: planParam, balance: 0 });
+        }
+      } else if (!isNaN(ugBalance)) {
+        // Balance specified but no valid plan — default to PLAN_2
+        loans.push({
+          planType: "PLAN_2",
+          balance: clamp(ugBalance, MIN_BALANCE, MAX_BALANCE),
+        });
+      }
+
+      // Parse postgraduate loan from legacy params
+      if (pgParam !== null) {
+        const pgBalance = parseInt(pgParam, 10);
+        if (!isNaN(pgBalance)) {
+          const clampedBalance = clamp(pgBalance, MIN_BALANCE, MAX_BALANCE);
+          if (clampedBalance > 0) {
+            loans.push({ planType: "POSTGRADUATE", balance: clampedBalance });
+          }
+        }
+      }
+
+      if (loans.length > 0) {
+        result.loans = loans;
+      }
     }
   }
 

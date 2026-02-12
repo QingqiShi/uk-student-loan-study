@@ -1,31 +1,36 @@
 "use client";
 
 import { useReducer, useRef } from "react";
+import { AdditionalCourseQuestion } from "./AdditionalCourseQuestion";
+import { PostgradQuestion } from "./PostgradQuestion";
 import { QuizProgress } from "./QuizProgress";
 import { RegionQuestion } from "./RegionQuestion";
 import { ResultScreen } from "./ResultScreen";
 import { StartYearQuestion } from "./StartYearQuestion";
-import type { StartYearGroup, Region } from "@/lib/quiz/determinePlan";
+import type { PlanType } from "@/lib/loans/types";
+import type {
+  QuizState,
+  QuizStep,
+  StartYearGroup,
+  Region,
+} from "@/lib/quiz/determinePlan";
 import {
   trackQuizStarted,
   trackQuizRegionSelected,
   trackQuizYearSelected,
   trackQuizBackClicked,
 } from "@/lib/analytics";
-import { determinePlan, canSkipStartYear } from "@/lib/quiz/determinePlan";
-
-type QuizStep = "region" | "start-year" | "result";
-
-interface QuizState {
-  currentStep: QuizStep;
-  region: Region | null;
-  startYearGroup: StartYearGroup | null;
-  direction: "forward" | "backward";
-}
+import {
+  canSkipStartYear,
+  determineAllLoans,
+  shouldAskAboutAdditionalCourse,
+} from "@/lib/quiz/determinePlan";
 
 type QuizAction =
   | { type: "SET_REGION"; payload: Region }
   | { type: "SET_START_YEAR"; payload: StartYearGroup }
+  | { type: "SET_ADDITIONAL_COURSE"; payload: boolean }
+  | { type: "SET_POSTGRAD"; payload: "loan" | "self-funded" | "no" }
   | { type: "GO_BACK" }
   | { type: "RESTART" };
 
@@ -33,50 +38,105 @@ const initialState: QuizState = {
   currentStep: "region",
   region: null,
   startYearGroup: null,
+  hasAdditionalCourse: null,
+  postgradAnswer: null,
   direction: "forward",
 };
+
+function getNextStepAfterYear(
+  region: Region,
+  yearGroup: StartYearGroup,
+): QuizStep {
+  if (shouldAskAboutAdditionalCourse(region, yearGroup)) {
+    return "additional-course";
+  }
+  return "postgrad";
+}
 
 function quizReducer(state: QuizState, action: QuizAction): QuizState {
   switch (action.type) {
     case "SET_REGION": {
       const region = action.payload;
-      // Scotland/NI → go directly to result, England/Wales → go to start-year
-      const nextStep = canSkipStartYear(region) ? "result" : "start-year";
+      if (canSkipStartYear(region)) {
+        // Scotland/NI → skip year, go to postgrad
+        return {
+          ...state,
+          region,
+          startYearGroup: null,
+          hasAdditionalCourse: null,
+          currentStep: "postgrad",
+          direction: "forward",
+        };
+      }
       return {
         ...state,
         region,
+        currentStep: "start-year",
+        direction: "forward",
+      };
+    }
+    case "SET_START_YEAR": {
+      const yearGroup = action.payload;
+      // region is guaranteed non-null — you can't reach start-year without selecting a region
+      const nextStep = state.region
+        ? getNextStepAfterYear(state.region, yearGroup)
+        : ("postgrad" as QuizStep);
+      return {
+        ...state,
+        startYearGroup: yearGroup,
         currentStep: nextStep,
         direction: "forward",
       };
     }
-    case "SET_START_YEAR":
+    case "SET_ADDITIONAL_COURSE":
       return {
         ...state,
-        startYearGroup: action.payload,
+        hasAdditionalCourse: action.payload,
+        currentStep: "postgrad",
+        direction: "forward",
+      };
+    case "SET_POSTGRAD":
+      return {
+        ...state,
+        postgradAnswer: action.payload,
         currentStep: "result",
         direction: "forward",
       };
     case "GO_BACK": {
-      if (state.currentStep === "start-year") {
-        return {
-          ...state,
-          currentStep: "region",
-          direction: "backward",
-        };
+      switch (state.currentStep) {
+        case "start-year":
+          return { ...state, currentStep: "region", direction: "backward" };
+        case "additional-course":
+          return { ...state, currentStep: "start-year", direction: "backward" };
+        case "postgrad": {
+          // If we came via additional-course, go back there
+          if (
+            state.region &&
+            state.startYearGroup &&
+            shouldAskAboutAdditionalCourse(state.region, state.startYearGroup)
+          ) {
+            return {
+              ...state,
+              currentStep: "additional-course",
+              direction: "backward",
+            };
+          }
+          // If we came via start-year (2023+)
+          if (state.startYearGroup) {
+            return {
+              ...state,
+              currentStep: "start-year",
+              direction: "backward",
+            };
+          }
+          // Scotland/NI — go back to region
+          return { ...state, currentStep: "region", direction: "backward" };
+        }
+        case "result":
+          return { ...state, currentStep: "postgrad", direction: "backward" };
+        default:
+          return state;
       }
-      if (state.currentStep === "result") {
-        // If region doesn't need start year, go back to region; otherwise go to start-year
-        const previousStep =
-          state.region && canSkipStartYear(state.region)
-            ? "region"
-            : "start-year";
-        return {
-          ...state,
-          currentStep: previousStep,
-          direction: "backward",
-        };
-      }
-      return state;
     }
     case "RESTART":
       return initialState;
@@ -85,22 +145,43 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
   }
 }
 
-function getTotalSteps(region: Region | null): number {
-  // Scotland/NI: 1 question, England/Wales: 2 questions
-  if (region && canSkipStartYear(region)) {
-    return 1;
+/**
+ * Always 4 steps with fixed positions so the indicator never grows mid-quiz.
+ * Skipped steps just cause the bar to jump forward.
+ *
+ *   region(0) → start-year(1) → additional-course(2) → postgrad(3)
+ */
+const TOTAL_STEPS = 4;
+
+function getCurrentStepIndex(step: QuizStep): number {
+  switch (step) {
+    case "region":
+      return 0;
+    case "start-year":
+      return 1;
+    case "additional-course":
+      return 2;
+    case "postgrad":
+      return 3;
+    default:
+      return TOTAL_STEPS;
   }
-  return 2;
 }
 
-function getCurrentStepIndex(step: QuizStep, region: Region | null): number {
-  if (step === "region") return 0;
-  if (step === "start-year") return 1;
-  // Result step - return the total steps (not shown in progress)
-  return getTotalSteps(region);
+interface QuizContainerProps {
+  /** When provided, quiz calls this instead of showing a link to home page */
+  onLoansDiscovered?: (planTypes: PlanType[]) => void;
+  /** When provided, shows a back button on first step to return to caller */
+  onBack?: () => void;
+  /** When provided, shows a close button to exit the quiz from any step */
+  onClose?: () => void;
 }
 
-export function QuizContainer() {
+export function QuizContainer({
+  onLoansDiscovered,
+  onBack,
+  onClose,
+}: QuizContainerProps) {
   const [state, dispatch] = useReducer(quizReducer, initialState);
   const hasStartedRef = useRef(false);
 
@@ -118,6 +199,14 @@ export function QuizContainer() {
     dispatch({ type: "SET_START_YEAR", payload: yearGroup });
   };
 
+  const handleAdditionalCourseSelect = (hasAdditionalCourse: boolean) => {
+    dispatch({ type: "SET_ADDITIONAL_COURSE", payload: hasAdditionalCourse });
+  };
+
+  const handlePostgradSelect = (answer: "loan" | "self-funded" | "no") => {
+    dispatch({ type: "SET_POSTGRAD", payload: answer });
+  };
+
   const handleBack = () => {
     trackQuizBackClicked(currentStepIndex);
     dispatch({ type: "GO_BACK" });
@@ -128,18 +217,27 @@ export function QuizContainer() {
     dispatch({ type: "RESTART" });
   };
 
-  const totalSteps = getTotalSteps(state.region);
-  const currentStepIndex = getCurrentStepIndex(state.currentStep, state.region);
+  const handleUseLoans = () => {
+    if (onLoansDiscovered) {
+      const planTypes = determineAllLoans(state);
+      onLoansDiscovered(planTypes);
+    }
+  };
+
+  const currentStepIndex = getCurrentStepIndex(state.currentStep);
   const showProgress = state.currentStep !== "result";
   const canGoBack = state.currentStep !== "region";
+
+  const backHandler = canGoBack ? handleBack : onBack;
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       {showProgress && (
         <QuizProgress
           currentStep={currentStepIndex}
-          totalSteps={totalSteps}
-          onBack={canGoBack ? handleBack : undefined}
+          totalSteps={TOTAL_STEPS}
+          onBack={backHandler}
+          onClose={onClose}
         />
       )}
 
@@ -161,14 +259,30 @@ export function QuizContainer() {
             />
           )}
 
+          {state.currentStep === "additional-course" &&
+            state.startYearGroup && (
+              <AdditionalCourseQuestion
+                onSelect={handleAdditionalCourseSelect}
+                selectedValue={state.hasAdditionalCourse}
+                direction={state.direction}
+                yearGroup={state.startYearGroup}
+              />
+            )}
+
+          {state.currentStep === "postgrad" && (
+            <PostgradQuestion
+              onSelect={handlePostgradSelect}
+              selectedValue={state.postgradAnswer}
+              direction={state.direction}
+            />
+          )}
+
           {state.currentStep === "result" && state.region && (
             <ResultScreen
-              planType={determinePlan({
-                region: state.region,
-                startYearGroup: state.startYearGroup ?? undefined,
-              })}
+              planTypes={determineAllLoans(state)}
               onRestart={handleRestart}
               direction={state.direction}
+              onUseLoans={onLoansDiscovered ? handleUseLoans : undefined}
             />
           )}
         </div>

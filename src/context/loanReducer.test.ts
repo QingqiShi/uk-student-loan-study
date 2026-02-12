@@ -4,45 +4,26 @@ import {
   initialState,
   updateFieldAction,
   resetAction,
+  applyPresetAction,
 } from "./loanReducer";
+import { PRESETS } from "@/lib/presets";
 
 describe("loanReducer", () => {
   describe("initial state", () => {
     it("should have correct initial values", () => {
-      expect(initialState.underGradPlanType).toBe("PLAN_2");
-      expect(initialState.underGradBalance).toBe(45_000); // "2012-23 Grad" preset
-      expect(initialState.postGradBalance).toBe(0);
+      expect(initialState.loans).toEqual([
+        { planType: "PLAN_2", balance: 45_000 },
+      ]);
       expect(initialState.salary).toBe(40_000);
     });
   });
 
   describe("UPDATE_FIELD action", () => {
-    it("should update underGradBalance", () => {
-      const action = updateFieldAction("underGradBalance", 75_000);
+    it("should update loans", () => {
+      const newLoans = [{ planType: "PLAN_5" as const, balance: 50_000 }];
+      const action = updateFieldAction("loans", newLoans);
       const newState = loanReducer(initialState, action);
-      expect(newState.underGradBalance).toBe(75_000);
-    });
-
-    it("should update postGradBalance", () => {
-      const action = updateFieldAction("postGradBalance", 25_000);
-      const newState = loanReducer(initialState, action);
-      expect(newState.postGradBalance).toBe(25_000);
-    });
-
-    it("should update underGradPlanType", () => {
-      const action = updateFieldAction("underGradPlanType", "PLAN_5");
-      const newState = loanReducer(initialState, action);
-      expect(newState.underGradPlanType).toBe("PLAN_5");
-    });
-
-    it("should update to different plan types", () => {
-      const action1 = updateFieldAction("underGradPlanType", "PLAN_1");
-      const state1 = loanReducer(initialState, action1);
-      expect(state1.underGradPlanType).toBe("PLAN_1");
-
-      const action2 = updateFieldAction("underGradPlanType", "PLAN_4");
-      const state2 = loanReducer(state1, action2);
-      expect(state2.underGradPlanType).toBe("PLAN_4");
+      expect(newState.loans).toEqual(newLoans);
     });
 
     it("should update salary", () => {
@@ -52,10 +33,38 @@ describe("loanReducer", () => {
     });
 
     it("should not mutate the original state", () => {
-      const originalState = { ...initialState };
+      const originalLoans = [...initialState.loans];
       const action = updateFieldAction("salary", 100_000);
       loanReducer(initialState, action);
-      expect(initialState.salary).toBe(originalState.salary);
+      expect(initialState.loans).toEqual(originalLoans);
+    });
+  });
+
+  describe("APPLY_PRESET action", () => {
+    it("should apply preset loans", () => {
+      const comboPreset = PRESETS.find((p) => p.id === "ug-pg-combo");
+      expect(comboPreset).toBeDefined();
+      const action = applyPresetAction(comboPreset as (typeof PRESETS)[number]);
+      const newState = loanReducer(initialState, action);
+      expect(newState.loans).toEqual([
+        { planType: "PLAN_2", balance: 45_000 },
+        { planType: "POSTGRADUATE", balance: 12_000 },
+      ]);
+    });
+
+    it("should preserve non-loan fields when applying preset", () => {
+      const modified = loanReducer(
+        initialState,
+        updateFieldAction("salary", 80_000),
+      );
+      const preset = PRESETS.find((p) => p.id === "plan5-grad");
+      expect(preset).toBeDefined();
+      const newState = loanReducer(
+        modified,
+        applyPresetAction(preset as (typeof PRESETS)[number]),
+      );
+      expect(newState.salary).toBe(80_000);
+      expect(newState.loans).toEqual([{ planType: "PLAN_5", balance: 50_000 }]);
     });
   });
 
@@ -64,12 +73,10 @@ describe("loanReducer", () => {
       // Start with modified state
       let state = loanReducer(
         initialState,
-        updateFieldAction("underGradBalance", 100_000),
-      );
-      state = loanReducer(state, updateFieldAction("postGradBalance", 30_000));
-      state = loanReducer(
-        state,
-        updateFieldAction("underGradPlanType", "PLAN_5"),
+        updateFieldAction("loans", [
+          { planType: "PLAN_5", balance: 100_000 },
+          { planType: "POSTGRADUATE", balance: 30_000 },
+        ]),
       );
       state = loanReducer(state, updateFieldAction("salary", 60_000));
 
@@ -77,9 +84,9 @@ describe("loanReducer", () => {
       const resetState = loanReducer(state, resetAction());
 
       // Verify all fields are back to initial values
-      expect(resetState.underGradBalance).toBe(45_000); // "2012-23 Grad" preset
-      expect(resetState.postGradBalance).toBe(0);
-      expect(resetState.underGradPlanType).toBe("PLAN_2");
+      expect(resetState.loans).toEqual([
+        { planType: "PLAN_2", balance: 45_000 },
+      ]);
       expect(resetState.salary).toBe(40_000);
     });
   });

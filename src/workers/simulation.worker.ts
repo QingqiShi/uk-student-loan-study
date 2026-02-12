@@ -60,8 +60,6 @@ export interface InsightPayload {
   type: "INSIGHT";
   salary: number;
   loans: Loan[];
-  underGradBalance: number;
-  postGradBalance: number;
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
 }
@@ -143,15 +141,15 @@ function handleInsight(payload: InsightPayload): {
   insight: Insight | null;
   summary: InsightSummary | null;
 } {
+  const totalBalance = payload.loans.reduce((s, l) => s + l.balance, 0);
+
   const insight = generateInsight(payload.salary, {
     loans: payload.loans,
-    underGradBalance: payload.underGradBalance,
-    postGradBalance: payload.postGradBalance,
     salaryGrowthRate: payload.salaryGrowthRate,
     thresholdGrowthRate: payload.thresholdGrowthRate,
   });
 
-  if (payload.underGradBalance <= 0 && payload.postGradBalance <= 0) {
+  if (totalBalance <= 0) {
     return { insight, summary: null };
   }
 

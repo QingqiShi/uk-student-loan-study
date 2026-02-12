@@ -62,7 +62,7 @@ export function OverpayPage() {
     } else {
       trackWizardStarted("loan");
     }
-    setMode({ view: "loan-wizard" });
+    setMode({ view: "loan-config" });
   }
 
   function handleOpenAssumptions() {
@@ -126,7 +126,6 @@ export function OverpayPage() {
           onWizardComplete={handleWizardComplete}
           onAssumptionsComplete={handleAssumptionsComplete}
           onWizardClose={handleWizardClose}
-          onOpenAssumptions={handleOpenAssumptions}
         />
 
         <OverpayVerdict

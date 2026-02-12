@@ -8,8 +8,7 @@ import type { LoanState } from "@/types/store";
 
 // Default test configuration
 const defaultTestConfig: Partial<LoanState> = {
-  underGradBalance: 50_000,
-  postGradBalance: 0,
+  loans: [{ planType: "PLAN_2", balance: 50_000 }],
   salary: 45_000,
 };
 
@@ -189,7 +188,9 @@ describe("useChartData hooks", () => {
 
     it("starts at month 0 with initial loan balance", async () => {
       const { result } = renderHook(() => useBalanceOverTimeData(), {
-        wrapper: createWrapper({ underGradBalance: 50_000 }),
+        wrapper: createWrapper({
+          loans: [{ planType: "PLAN_2", balance: 50_000 }],
+        }),
       });
 
       await vi.runAllTimersAsync();
@@ -203,7 +204,10 @@ describe("useChartData hooks", () => {
     it("balance decreases over time", async () => {
       // Use a high salary where repayments clearly exceed interest
       const { result } = renderHook(() => useBalanceOverTimeData(), {
-        wrapper: createWrapper({ underGradBalance: 50_000, salary: 100_000 }),
+        wrapper: createWrapper({
+          loans: [{ planType: "PLAN_2", balance: 50_000 }],
+          salary: 100_000,
+        }),
       });
 
       await vi.runAllTimersAsync();
@@ -219,7 +223,7 @@ describe("useChartData hooks", () => {
 
     it("returns empty data when no loans", async () => {
       const { result } = renderHook(() => useBalanceOverTimeData(), {
-        wrapper: createWrapper({ underGradBalance: 0, postGradBalance: 0 }),
+        wrapper: createWrapper({ loans: [] }),
       });
 
       await vi.runAllTimersAsync();
@@ -232,7 +236,7 @@ describe("useChartData hooks", () => {
     it("returns writeOffMonth for low earners who reach write-off", async () => {
       const { result } = renderHook(() => useBalanceOverTimeData(), {
         wrapper: createWrapper({
-          underGradBalance: 50_000,
+          loans: [{ planType: "PLAN_2", balance: 50_000 }],
           salary: MIN_SALARY,
         }),
       });
@@ -269,7 +273,9 @@ describe("useChartData hooks", () => {
     it("useTotalRepaymentData returns different data when config changes", async () => {
       // Test that different initial configs produce different data
       const { result: result1 } = renderHook(() => useTotalRepaymentData(), {
-        wrapper: createWrapper({ underGradBalance: 50_000 }),
+        wrapper: createWrapper({
+          loans: [{ planType: "PLAN_2", balance: 50_000 }],
+        }),
       });
 
       await vi.runAllTimersAsync();
@@ -281,7 +287,9 @@ describe("useChartData hooks", () => {
       const firstData = [...result1.current.data];
 
       const { result: result2 } = renderHook(() => useTotalRepaymentData(), {
-        wrapper: createWrapper({ underGradBalance: 75_000 }),
+        wrapper: createWrapper({
+          loans: [{ planType: "PLAN_2", balance: 75_000 }],
+        }),
       });
 
       await vi.runAllTimersAsync();
@@ -300,7 +308,9 @@ describe("useChartData hooks", () => {
       const { result: plan2Result } = renderHook(
         () => useTotalRepaymentData(),
         {
-          wrapper: createWrapper({ underGradPlanType: "PLAN_2" }),
+          wrapper: createWrapper({
+            loans: [{ planType: "PLAN_2", balance: 50_000 }],
+          }),
         },
       );
 
@@ -315,7 +325,9 @@ describe("useChartData hooks", () => {
       const { result: plan5Result } = renderHook(
         () => useTotalRepaymentData(),
         {
-          wrapper: createWrapper({ underGradPlanType: "PLAN_5" }),
+          wrapper: createWrapper({
+            loans: [{ planType: "PLAN_5", balance: 50_000 }],
+          }),
         },
       );
 
