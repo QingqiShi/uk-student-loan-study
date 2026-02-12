@@ -1,6 +1,10 @@
 "use client";
 
-import { Cancel01Icon, HelpCircleIcon } from "@hugeicons/core-free-icons";
+import {
+  Cancel01Icon,
+  HelpCircleIcon,
+  Quiz01Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import type { PlanType } from "@/lib/loans/types";
@@ -325,16 +329,32 @@ export function LoanConfigPanel({
             </div>
           </div>
 
+          {/* Divider with centered "or" */}
+          <div className="flex items-center gap-3">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
+              or
+            </span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          {/* Quiz CTA button */}
           <div className="text-center">
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="lg"
               onClick={() => {
                 setView("quiz");
               }}
-              className="text-sm text-primary underline-offset-4 hover:underline"
+              className="gap-2"
             >
-              Not sure which plan? Take the quiz
-            </button>
+              <HugeiconsIcon
+                icon={Quiz01Icon}
+                className="size-4 text-primary"
+                data-icon="inline-start"
+              />
+              Not sure? Take the quiz
+            </Button>
           </div>
         </div>
       </main>
