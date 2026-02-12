@@ -1,17 +1,15 @@
 "use client";
 
-import type {
-  LoanWizardStep,
-  AssumptionsWizardStep,
-} from "./wizard/wizardReducer";
+import type { AssumptionsWizardStep } from "./wizard/wizardReducer";
+import type { PlanType } from "@/lib/loans/types";
 import type { Preset } from "@/lib/presets";
 import { ConfigSummary } from "@/components/ConfigSummary";
+import { LoanConfigPanel } from "@/components/LoanConfigPanel";
 import { AssumptionsWizard } from "@/components/wizard/AssumptionsWizard";
-import { ConfigWizard } from "@/components/wizard/ConfigWizard";
 
 export type InputMode =
   | { view: "summary" }
-  | { view: "loan-wizard"; entryStep?: LoanWizardStep }
+  | { view: "loan-config"; initialPlanTypes?: PlanType[] }
   | { view: "assumptions-wizard"; entryStep?: AssumptionsWizardStep };
 
 interface InputPanelProps {
@@ -22,7 +20,6 @@ interface InputPanelProps {
   onWizardComplete: () => void;
   onAssumptionsComplete: () => void;
   onWizardClose: () => void;
-  onOpenAssumptions: () => void;
 }
 
 export function InputPanel({
@@ -33,27 +30,21 @@ export function InputPanel({
   onWizardComplete,
   onAssumptionsComplete,
   onWizardClose,
-  onOpenAssumptions,
 }: InputPanelProps) {
-  if (mode.view === "loan-wizard") {
+  if (mode.view === "loan-config") {
     return (
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Configure your loan"
+        aria-label="Configure your loans"
         className="fixed inset-0 z-50 flex min-h-dvh flex-col overflow-y-auto bg-background"
       >
-        <div className="flex flex-1 flex-col items-center justify-center px-4 py-8">
-          <div className="w-full max-w-lg">
-            <ConfigWizard
-              onComplete={onWizardComplete}
-              onClose={onWizardClose}
-              entryStep={mode.entryStep}
-              hasPersonalized={hasPersonalized}
-              onOpenAssumptions={onOpenAssumptions}
-            />
-          </div>
-        </div>
+        <LoanConfigPanel
+          isEditing={hasPersonalized}
+          initialPlanTypes={mode.initialPlanTypes}
+          onComplete={onWizardComplete}
+          onClose={onWizardClose}
+        />
       </div>
     );
   }

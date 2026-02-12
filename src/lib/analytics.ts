@@ -20,16 +20,12 @@ export function trackPresetApplied(preset: string) {
   track("preset_applied", { preset });
 }
 
-export function trackUndergradBalanceChanged(value: number) {
-  track("undergrad_balance_changed", { value });
+export function trackLoanToggled(planType: string, selected: boolean) {
+  track("loan_toggled", { planType, selected });
 }
 
-export function trackPostgradBalanceChanged(value: number) {
-  track("postgrad_balance_changed", { value });
-}
-
-export function trackPlanSelected(plan: string) {
-  track("plan_selected", { plan });
+export function trackBalanceChanged(planType: string, value: number) {
+  track("balance_changed", { planType, value });
 }
 
 export function trackPlanInfoViewed(plan: string) {
@@ -67,14 +63,6 @@ export function trackWizardBackClicked(
   fromStep: string,
 ) {
   track("wizard_back_clicked", { wizardType, fromStep });
-}
-
-export function trackWizardSkippedUndergrad() {
-  track("wizard_skipped_undergrad", {});
-}
-
-export function trackWizardSkippedPostgrad() {
-  track("wizard_skipped_postgrad", {});
 }
 
 export function trackWizardRestarted(wizardType: WizardType) {

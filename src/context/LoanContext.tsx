@@ -7,7 +7,7 @@ import {
   updateFieldAction,
   applyPresetAction,
 } from "./loanReducer";
-import type { Loan } from "@/lib/loans/types";
+import type { Loan, PlanType } from "@/lib/loans/types";
 import type { Preset } from "@/lib/presets";
 import type { LoanState } from "@/types/store";
 
@@ -28,6 +28,7 @@ interface LoanConfigState {
   loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  pendingQuizPlanTypes: PlanType[] | null;
 }
 
 // --- Contexts ---
@@ -77,6 +78,7 @@ export function LoanProvider({
     loans: state.loans,
     salaryGrowthRate: state.salaryGrowthRate,
     thresholdGrowthRate: state.thresholdGrowthRate,
+    pendingQuizPlanTypes: state.pendingQuizPlanTypes,
   };
 
   return (

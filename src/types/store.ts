@@ -1,4 +1,4 @@
-import type { Loan } from "@/lib/loans/types";
+import type { Loan, PlanType } from "@/lib/loans/types";
 
 /**
  * Core loan state values stored in the application state.
@@ -18,6 +18,9 @@ export interface LoanState {
   thresholdGrowthRate: number;
   /** One-off lump sum payment in GBP */
   lumpSumPayment: number;
+
+  /** Plan types discovered via the standalone /which-plan quiz, pending config panel open */
+  pendingQuizPlanTypes: PlanType[] | null;
 }
 
 /**

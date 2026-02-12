@@ -9,6 +9,7 @@ interface OptionCardProps {
   icon?: ReactNode;
   isSelected: boolean;
   onClick: () => void;
+  variant?: "radio" | "checkbox";
 }
 
 export function OptionCard({
@@ -17,11 +18,12 @@ export function OptionCard({
   icon,
   isSelected,
   onClick,
+  variant = "radio",
 }: OptionCardProps) {
   return (
     <button
       type="button"
-      role="radio"
+      role={variant}
       aria-checked={isSelected}
       onClick={onClick}
       className={cn(
@@ -63,26 +65,53 @@ export function OptionCard({
         )}
       </div>
 
-      <div
-        className={cn(
-          "size-5 shrink-0 rounded-full border-2 transition-colors",
-          isSelected ? "border-primary bg-primary" : "border-muted-foreground",
-        )}
-      >
-        {isSelected && (
-          <svg
-            className="size-full text-primary-foreground"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        )}
-      </div>
+      {variant === "radio" ? (
+        <div
+          className={cn(
+            "size-5 shrink-0 rounded-full border-2 transition-colors",
+            isSelected
+              ? "border-primary bg-primary"
+              : "border-muted-foreground",
+          )}
+        >
+          {isSelected && (
+            <svg
+              className="size-full text-primary-foreground"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          )}
+        </div>
+      ) : (
+        <div
+          className={cn(
+            "flex size-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors",
+            isSelected
+              ? "border-primary bg-primary"
+              : "border-muted-foreground",
+          )}
+        >
+          {isSelected && (
+            <svg
+              className="size-3.5 text-primary-foreground"
+              viewBox="0 0 14 14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M2.5 7.5L5.5 10.5L11.5 3.5" />
+            </svg>
+          )}
+        </div>
+      )}
     </button>
   );
 }

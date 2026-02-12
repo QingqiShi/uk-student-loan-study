@@ -6,7 +6,7 @@ import { ResultSummary } from "./ResultSummary";
 import { SalaryExplorer } from "./SalaryExplorer";
 import type { InputMode } from "./InputPanel";
 import type { Preset } from "@/lib/presets";
-import { useLoanActions } from "@/context/LoanContext";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import {
   trackPresetApplied,
   trackWizardCompleted,
@@ -15,9 +15,22 @@ import {
 } from "@/lib/analytics";
 
 export function HeroSection() {
-  const [mode, setMode] = useState<InputMode>({ view: "summary" });
+  const { applyPreset, updateField } = useLoanActions();
+  const { pendingQuizPlanTypes } = useLoanConfigState();
+
+  const [mode, setMode] = useState<InputMode>(() => {
+    if (pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0) {
+      return { view: "loan-config", initialPlanTypes: pendingQuizPlanTypes };
+    }
+    return { view: "summary" };
+  });
   const [hasPersonalized, setHasPersonalized] = useState(false);
-  const { applyPreset } = useLoanActions();
+
+  useEffect(() => {
+    if (pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0) {
+      updateField("pendingQuizPlanTypes", null);
+    }
+  }, [pendingQuizPlanTypes, updateField]);
 
   useEffect(() => {
     if (mode.view !== "summary") {
@@ -34,7 +47,7 @@ export function HeroSection() {
     } else {
       trackWizardStarted("loan");
     }
-    setMode({ view: "loan-wizard" });
+    setMode({ view: "loan-config" });
   }
 
   function handleOpenAssumptions() {
@@ -103,7 +116,6 @@ export function HeroSection() {
         onWizardComplete={handleWizardComplete}
         onAssumptionsComplete={handleAssumptionsComplete}
         onWizardClose={handleWizardClose}
-        onOpenAssumptions={handleOpenAssumptions}
       />
 
       <div className="space-y-4">

@@ -1,40 +1,51 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
-import type { UndergraduatePlanType } from "@/lib/loans/types";
+import { useEffect } from "react";
+import type { PlanType } from "@/lib/loans/types";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/constants";
+import { useLoanActions } from "@/context/LoanContext";
 import { trackQuizCompleted, trackQuizRestarted } from "@/lib/analytics";
-import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import {
+  PLAN_DISPLAY_INFO,
+  POSTGRADUATE_DISPLAY_INFO,
+} from "@/lib/loans/plans";
+
+function getPlanDisplayInfo(planType: PlanType) {
+  if (planType === "POSTGRADUATE") {
+    return POSTGRADUATE_DISPLAY_INFO;
+  }
+  return PLAN_DISPLAY_INFO[planType];
+}
 
 interface ResultScreenProps {
-  planType: UndergraduatePlanType;
+  planTypes: PlanType[];
   onRestart: () => void;
   direction: "forward" | "backward";
+  onUseLoans?: () => void;
 }
 
 export function ResultScreen({
-  planType,
+  planTypes,
   onRestart,
   direction,
+  onUseLoans,
 }: ResultScreenProps) {
-  const planInfo = PLAN_DISPLAY_INFO[planType];
-  const calculatorUrl = `/?plan=${planType}`;
-  const hasTrackedCompletionRef = useRef(false);
+  const { updateField } = useLoanActions();
 
   useEffect(() => {
-    if (!hasTrackedCompletionRef.current) {
-      trackQuizCompleted(planType);
-      hasTrackedCompletionRef.current = true;
-    }
-  }, [planType]);
+    trackQuizCompleted(planTypes.join(","));
+  }, [planTypes]);
 
   const handleRestart = () => {
     trackQuizRestarted();
-    hasTrackedCompletionRef.current = false;
     onRestart();
   };
+
+  function handleStandaloneClick() {
+    updateField("pendingQuizPlanTypes", planTypes);
+  }
 
   return (
     <div
@@ -47,52 +58,69 @@ export function ResultScreen({
     >
       <div className="text-center">
         <p className="mb-3 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-          Your plan type
+          {planTypes.length === 1 ? "Your plan type" : "Your plan types"}
         </p>
 
         <h1 className="mb-2 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-          {planInfo.name}
+          {planTypes.map((p) => getPlanDisplayInfo(p).name).join(" + ")}
         </h1>
-
-        <p className="text-muted-foreground">{planInfo.description}</p>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-border bg-card p-6">
-        <dl className="space-y-4">
-          <div className="flex items-center justify-between">
-            <dt className="text-muted-foreground">Repayment threshold</dt>
-            <dd className="font-semibold">
-              {currencyFormatter.format(planInfo.yearlyThreshold)}/year
-            </dd>
-          </div>
+      <div className="mt-8 space-y-4">
+        {planTypes.map((planType) => {
+          const info = getPlanDisplayInfo(planType);
+          return (
+            <div
+              key={planType}
+              className="rounded-2xl border border-border bg-card p-6"
+            >
+              <h2 className="mb-4 text-lg font-semibold">{info.name}</h2>
+              <dl className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground">Repayment threshold</dt>
+                  <dd className="font-semibold">
+                    {currencyFormatter.format(info.yearlyThreshold)}/year
+                  </dd>
+                </div>
 
-          <div className="h-px bg-border" />
+                <div className="h-px bg-border" />
 
-          <div className="flex items-center justify-between">
-            <dt className="text-muted-foreground">Repayment rate</dt>
-            <dd className="font-semibold">
-              {String(planInfo.repaymentRate * 100)}% of income above threshold
-            </dd>
-          </div>
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground">Repayment rate</dt>
+                  <dd className="font-semibold">
+                    {String(info.repaymentRate * 100)}% of income above
+                    threshold
+                  </dd>
+                </div>
 
-          <div className="h-px bg-border" />
+                <div className="h-px bg-border" />
 
-          <div className="flex items-center justify-between">
-            <dt className="text-muted-foreground">Write-off period</dt>
-            <dd className="font-semibold">{planInfo.writeOffYears} years</dd>
-          </div>
-        </dl>
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground">Write-off period</dt>
+                  <dd className="font-semibold">{info.writeOffYears} years</dd>
+                </div>
+              </dl>
+            </div>
+          );
+        })}
       </div>
 
       <div className="mt-8 space-y-3">
-        <Button
-          size="lg"
-          className="w-full"
-          render={<Link href={calculatorUrl} />}
-          nativeButton={false}
-        >
-          Calculate your repayments →
-        </Button>
+        {onUseLoans ? (
+          <Button size="lg" className="w-full" onClick={onUseLoans}>
+            Use these loans →
+          </Button>
+        ) : (
+          <Button
+            size="lg"
+            className="w-full"
+            render={<Link href="/" />}
+            nativeButton={false}
+            onClick={handleStandaloneClick}
+          >
+            Enter your balances →
+          </Button>
+        )}
 
         <button
           type="button"

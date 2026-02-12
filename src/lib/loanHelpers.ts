@@ -1,59 +1,24 @@
-import type { Loan, UndergraduatePlanType } from "@/lib/loans/types";
+import type { Loan, PlanType } from "@/lib/loans/types";
 
-/** Get the plan type of the first undergraduate loan, defaulting to PLAN_2 */
-export function getUndergraduatePlanType(loans: Loan[]): UndergraduatePlanType {
-  const ugLoan = loans.find((l) => l.planType !== "POSTGRADUATE");
-  if (!ugLoan) return "PLAN_2";
-  return ugLoan.planType as UndergraduatePlanType;
-}
-
-/** Get the first undergraduate loan or undefined */
-export function getUndergraduateLoan(loans: Loan[]): Loan | undefined {
-  return loans.find((l) => l.planType !== "POSTGRADUATE");
-}
-
-/** Get the postgraduate loan or undefined */
-export function getPostgraduateLoan(loans: Loan[]): Loan | undefined {
-  return loans.find((l) => l.planType === "POSTGRADUATE");
-}
-
-/** Return a new loans array with the undergraduate plan type changed */
-export function setUndergraduatePlanType(
-  loans: Loan[],
-  planType: UndergraduatePlanType,
-): Loan[] {
-  const idx = loans.findIndex((l) => l.planType !== "POSTGRADUATE");
-  if (idx >= 0) {
-    return loans.map((l, i) => (i === idx ? { ...l, planType } : l));
+/** Toggle a plan type: add with 0 balance if absent, remove if present */
+export function toggleLoanPlan(loans: Loan[], planType: PlanType): Loan[] {
+  const exists = loans.some((l) => l.planType === planType);
+  if (exists) {
+    return loans.filter((l) => l.planType !== planType);
   }
-  // No undergraduate loan exists — add one with 0 balance
-  return [{ planType, balance: 0 }, ...loans];
+  return [...loans, { planType, balance: 0 }];
 }
 
-/** Return a new loans array with the undergraduate loan updated or added */
-export function setUndergraduateLoan(
+/** Update balance for a specific plan type (no-op if plan not in array) */
+export function setLoanBalance(
   loans: Loan[],
-  planType: UndergraduatePlanType,
+  planType: PlanType,
   balance: number,
 ): Loan[] {
-  const idx = loans.findIndex((l) => l.planType !== "POSTGRADUATE");
-  if (idx >= 0) {
-    return loans.map((l, i) => (i === idx ? { planType, balance } : l));
-  }
-  return [{ planType, balance }, ...loans];
+  return loans.map((l) => (l.planType === planType ? { ...l, balance } : l));
 }
 
-/** Return a new loans array with the postgraduate balance updated or added */
-export function setPostgraduateLoan(loans: Loan[], balance: number): Loan[] {
-  const idx = loans.findIndex((l) => l.planType === "POSTGRADUATE");
-  if (idx >= 0) {
-    if (balance <= 0) {
-      return loans.filter((_, i) => i !== idx);
-    }
-    return loans.map((l, i) => (i === idx ? { ...l, balance } : l));
-  }
-  if (balance > 0) {
-    return [...loans, { planType: "POSTGRADUATE" as const, balance }];
-  }
-  return loans;
+/** Get the set of plan types currently in the loans array */
+export function getSelectedPlanTypes(loans: Loan[]): Set<PlanType> {
+  return new Set(loans.map((l) => l.planType));
 }

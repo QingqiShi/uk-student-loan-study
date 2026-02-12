@@ -11,6 +11,8 @@ export const initialState: LoanState = {
   salaryGrowthRate: 0.04, // 4% - typical career progression
   thresholdGrowthRate: 0, // 0% - frozen thresholds (current policy)
   lumpSumPayment: 10_000,
+
+  pendingQuizPlanTypes: null,
 };
 
 // Action types
