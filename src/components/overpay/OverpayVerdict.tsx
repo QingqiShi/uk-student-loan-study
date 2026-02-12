@@ -17,17 +17,17 @@ const verdictConfig: Record<
 > = {
   "dont-overpay": {
     title: "Overpaying Costs More",
-    className: "bg-status-danger-bg border-status-danger-border",
+    className: "bg-status-danger border-status-danger-border",
     icon: Cancel01Icon,
   },
   overpay: {
     title: "Overpaying Saves Money",
-    className: "bg-status-success-bg border-status-success-border",
+    className: "bg-status-success border-status-success-border",
     icon: Tick02Icon,
   },
   marginal: {
     title: "Marginal Difference",
-    className: "bg-status-warning-bg border-status-warning-border",
+    className: "bg-status-warning border-status-warning-border",
     icon: Alert02Icon,
   },
 };

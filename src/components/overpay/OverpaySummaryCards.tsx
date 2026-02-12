@@ -23,20 +23,20 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
 
   const getCardClassName = () => {
     if (hasSavings) {
-      return "border-status-success-border bg-status-success-bg";
+      return "border-status-success-border bg-status-success";
     }
     if (hasExtraCost) {
-      return "border-status-danger-border bg-status-danger-bg";
+      return "border-status-danger-border bg-status-danger";
     }
     return "";
   };
 
   const getValueClassName = () => {
     if (hasSavings) {
-      return "text-status-success";
+      return "text-status-success-foreground";
     }
     if (hasExtraCost) {
-      return "text-status-danger";
+      return "text-status-danger-foreground";
     }
     return "";
   };
@@ -99,7 +99,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {baseline.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium text-status-info tabular-nums">
+              <span className="font-medium text-status-info-foreground tabular-nums">
                 {currencyFormatter.format(baseline.amountWrittenOff)}
               </span>
             </div>
@@ -132,7 +132,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {overpay.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium text-status-info tabular-nums">
+              <span className="font-medium text-status-info-foreground tabular-nums">
                 {currencyFormatter.format(overpay.amountWrittenOff)}
               </span>
             </div>
@@ -140,7 +140,9 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
           {!overpay.writtenOff && baseline.writtenOff && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Status</span>
-              <span className="font-medium text-status-success">Paid off</span>
+              <span className="font-medium text-status-success-foreground">
+                Paid off
+              </span>
             </div>
           )}
         </CardContent>

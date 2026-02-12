@@ -20,15 +20,15 @@ const insightConfig: Record<
   }
 > = {
   "low-earner": {
-    className: "bg-status-info-bg border-status-info-border",
+    className: "bg-status-info border-status-info-border",
     icon: InformationCircleIcon,
   },
   "middle-earner": {
-    className: "bg-status-danger-bg border-status-danger-border",
+    className: "bg-status-danger border-status-danger-border",
     icon: Alert02Icon,
   },
   "high-earner": {
-    className: "bg-status-success-bg border-status-success-border",
+    className: "bg-status-success border-status-success-border",
     icon: Tick02Icon,
   },
 };

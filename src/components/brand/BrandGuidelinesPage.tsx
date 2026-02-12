@@ -30,32 +30,32 @@ const STATUS_GROUPS = [
   {
     name: "Info",
     tokens: [
-      { label: "Text", var: "--status-info" },
-      { label: "Background", var: "--status-info-bg" },
+      { label: "Foreground", var: "--status-info-foreground" },
+      { label: "Background", var: "--status-info" },
       { label: "Border", var: "--status-info-border" },
     ],
   },
   {
     name: "Success",
     tokens: [
-      { label: "Text", var: "--status-success" },
-      { label: "Background", var: "--status-success-bg" },
+      { label: "Foreground", var: "--status-success-foreground" },
+      { label: "Background", var: "--status-success" },
       { label: "Border", var: "--status-success-border" },
     ],
   },
   {
     name: "Warning",
     tokens: [
-      { label: "Text", var: "--status-warning" },
-      { label: "Background", var: "--status-warning-bg" },
+      { label: "Foreground", var: "--status-warning-foreground" },
+      { label: "Background", var: "--status-warning" },
       { label: "Border", var: "--status-warning-border" },
     ],
   },
   {
     name: "Danger",
     tokens: [
-      { label: "Text", var: "--status-danger" },
-      { label: "Background", var: "--status-danger-bg" },
+      { label: "Foreground", var: "--status-danger-foreground" },
+      { label: "Background", var: "--status-danger" },
       { label: "Border", var: "--status-danger-border" },
     ],
   },
@@ -187,24 +187,16 @@ export function BrandGuidelinesPage() {
                     <span className="font-display text-[13px] font-semibold text-foreground">
                       {group.name}
                     </span>
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-3 gap-2">
                       {group.tokens.map((token) => (
-                        <div
-                          key={token.label}
-                          className="flex items-center gap-3"
-                        >
+                        <div key={token.label} className="flex flex-col gap-2">
                           <div
-                            className="size-8 shrink-0 rounded-md ring-1 ring-border"
+                            className="h-10 w-full rounded-md ring-1 ring-border"
                             style={{ backgroundColor: `var(${token.var})` }}
                           />
-                          <div className="flex flex-col">
-                            <span className="text-xs font-medium text-foreground">
-                              {token.label}
-                            </span>
-                            <span className="font-mono text-[10px] text-muted-foreground">
-                              {token.var}
-                            </span>
-                          </div>
+                          <span className="text-[10px] text-muted-foreground">
+                            {token.label}
+                          </span>
                         </div>
                       ))}
                     </div>

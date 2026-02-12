@@ -32,20 +32,20 @@ const insightConfig: Record<
 > = {
   "low-earner": {
     icon: InformationCircleIcon,
-    iconClass: "text-status-info",
-    bgClass: "bg-status-info-bg",
+    iconClass: "text-status-info-foreground",
+    bgClass: "bg-status-info",
     borderClass: "border-status-info-border",
   },
   "middle-earner": {
     icon: Alert02Icon,
-    iconClass: "text-status-danger",
-    bgClass: "bg-status-danger-bg",
+    iconClass: "text-status-danger-foreground",
+    bgClass: "bg-status-danger",
     borderClass: "border-status-danger-border",
   },
   "high-earner": {
     icon: Tick02Icon,
-    iconClass: "text-status-success",
-    bgClass: "bg-status-success-bg",
+    iconClass: "text-status-success-foreground",
+    bgClass: "bg-status-success",
     borderClass: "border-status-success-border",
   },
 };
