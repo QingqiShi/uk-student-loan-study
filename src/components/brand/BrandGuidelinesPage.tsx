@@ -3,19 +3,71 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
-import { BrandIcon } from "./BrandIcon";
+import { BrandIcon, BRAND_HEX } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
 import { Card } from "@/components/ui/card";
-import colors from "@/lib/brand-colors.json";
 
-const COLORS = [
-  { name: "Primary Green", hex: colors.primary.light },
-  { name: "Dark Green", hex: colors.primaryDark },
-  { name: "Background", hex: colors.background, hasBorder: true },
-  { name: "Muted Text", hex: colors.muted },
+const BRAND_SWATCHES = [
+  { name: "Primary Green", hex: BRAND_HEX.green },
+  { name: "Primary Emerald", hex: BRAND_HEX.emerald },
 ];
 
 const ICON_SIZES = [64, 48, 32, 16];
+
+const CORE_TOKENS = [
+  { name: "Primary", var: "--primary" },
+  { name: "Secondary", var: "--secondary" },
+  { name: "Muted", var: "--muted" },
+  { name: "Accent", var: "--accent" },
+  { name: "Destructive", var: "--destructive" },
+  { name: "Background", var: "--background" },
+  { name: "Foreground", var: "--foreground" },
+  { name: "Card", var: "--card" },
+  { name: "Border", var: "--border" },
+];
+
+const STATUS_GROUPS = [
+  {
+    name: "Info",
+    tokens: [
+      { label: "Text", var: "--status-info" },
+      { label: "Background", var: "--status-info-bg" },
+      { label: "Border", var: "--status-info-border" },
+    ],
+  },
+  {
+    name: "Success",
+    tokens: [
+      { label: "Text", var: "--status-success" },
+      { label: "Background", var: "--status-success-bg" },
+      { label: "Border", var: "--status-success-border" },
+    ],
+  },
+  {
+    name: "Warning",
+    tokens: [
+      { label: "Text", var: "--status-warning" },
+      { label: "Background", var: "--status-warning-bg" },
+      { label: "Border", var: "--status-warning-border" },
+    ],
+  },
+  {
+    name: "Danger",
+    tokens: [
+      { label: "Text", var: "--status-danger" },
+      { label: "Background", var: "--status-danger-bg" },
+      { label: "Border", var: "--status-danger-border" },
+    ],
+  },
+];
+
+const CHART_TOKENS = [
+  { name: "Chart 1", var: "--chart-1" },
+  { name: "Chart 2", var: "--chart-2" },
+  { name: "Chart 3", var: "--chart-3" },
+  { name: "Chart 4", var: "--chart-4" },
+  { name: "Chart 5", var: "--chart-5" },
+];
 
 const LOGO_ANATOMY = [
   "Icon: The curve represents the peak repayment zone from the calculator chart",
@@ -86,17 +138,103 @@ export function BrandGuidelinesPage() {
           </div>
         </Section>
 
-        {/* Section: Color Palette */}
-        <Section title="COLOR PALETTE">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {COLORS.map((color) => (
-              <ColorSwatch
-                key={color.name}
-                name={color.name}
-                hex={color.hex}
-                hasBorder={color.hasBorder}
-              />
-            ))}
+        {/* Section: Colors (consolidated) */}
+        <Section title="COLORS">
+          <div className="space-y-10">
+            {/* Brand */}
+            <div>
+              <SubgroupLabel>Brand</SubgroupLabel>
+              <div className="grid grid-cols-2 gap-4">
+                {BRAND_SWATCHES.map((swatch) => (
+                  <ColorSwatch
+                    key={swatch.name}
+                    name={swatch.name}
+                    hex={swatch.hex}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Core */}
+            <div>
+              <SubgroupLabel>Core</SubgroupLabel>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                {CORE_TOKENS.map((token) => (
+                  <div key={token.var} className="flex flex-col gap-3">
+                    <div
+                      className="h-14 w-full rounded-[10px] ring-1 ring-border"
+                      style={{ backgroundColor: `var(${token.var})` }}
+                    />
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-display text-[13px] font-semibold text-foreground">
+                        {token.name}
+                      </span>
+                      <span className="font-mono text-[10px] text-muted-foreground">
+                        {token.var}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Status */}
+            <div>
+              <SubgroupLabel>Status</SubgroupLabel>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {STATUS_GROUPS.map((group) => (
+                  <div key={group.name} className="space-y-3">
+                    <span className="font-display text-[13px] font-semibold text-foreground">
+                      {group.name}
+                    </span>
+                    <div className="space-y-2">
+                      {group.tokens.map((token) => (
+                        <div
+                          key={token.label}
+                          className="flex items-center gap-3"
+                        >
+                          <div
+                            className="size-8 shrink-0 rounded-md ring-1 ring-border"
+                            style={{ backgroundColor: `var(${token.var})` }}
+                          />
+                          <div className="flex flex-col">
+                            <span className="text-xs font-medium text-foreground">
+                              {token.label}
+                            </span>
+                            <span className="font-mono text-[10px] text-muted-foreground">
+                              {token.var}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Chart */}
+            <div>
+              <SubgroupLabel>Chart</SubgroupLabel>
+              <div className="grid grid-cols-5 gap-4">
+                {CHART_TOKENS.map((token) => (
+                  <div key={token.var} className="flex flex-col gap-3">
+                    <div
+                      className="h-14 w-full rounded-[10px] ring-1 ring-border"
+                      style={{ backgroundColor: `var(${token.var})` }}
+                    />
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-display text-[13px] font-semibold text-foreground">
+                        {token.name}
+                      </span>
+                      <span className="font-mono text-[10px] text-muted-foreground">
+                        {token.var}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </Section>
 
@@ -159,19 +297,19 @@ function Section({
   );
 }
 
-function ColorSwatch({
-  name,
-  hex,
-  hasBorder,
-}: {
-  name: string;
-  hex: string;
-  hasBorder?: boolean;
-}) {
+function SubgroupLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="mb-4 block text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+      {children}
+    </span>
+  );
+}
+
+function ColorSwatch({ name, hex }: { name: string; hex: string }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className={`h-20 w-full rounded-[10px] ring-1 ring-border ${hasBorder ? "border border-border" : ""}`}
+        className="h-20 w-full rounded-[10px] ring-1 ring-border"
         style={{ backgroundColor: hex }}
       />
       <div className="flex flex-col gap-0.5">

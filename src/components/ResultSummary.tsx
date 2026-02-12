@@ -32,21 +32,21 @@ const insightConfig: Record<
 > = {
   "low-earner": {
     icon: InformationCircleIcon,
-    iconClass: "text-blue-600 dark:text-blue-400",
-    bgClass: "bg-blue-50/60 dark:bg-blue-950/20",
-    borderClass: "border-blue-200 dark:border-blue-800",
+    iconClass: "text-status-info",
+    bgClass: "bg-status-info-bg",
+    borderClass: "border-status-info-border",
   },
   "middle-earner": {
     icon: Alert02Icon,
-    iconClass: "text-red-600 dark:text-red-400",
-    bgClass: "bg-red-50/60 dark:bg-red-950/20",
-    borderClass: "border-red-200 dark:border-red-800",
+    iconClass: "text-status-danger",
+    bgClass: "bg-status-danger-bg",
+    borderClass: "border-status-danger-border",
   },
   "high-earner": {
     icon: Tick02Icon,
-    iconClass: "text-emerald-600 dark:text-emerald-400",
-    bgClass: "bg-emerald-50/60 dark:bg-emerald-950/20",
-    borderClass: "border-emerald-200 dark:border-emerald-800",
+    iconClass: "text-status-success",
+    bgClass: "bg-status-success-bg",
+    borderClass: "border-status-success-border",
   },
 };
 

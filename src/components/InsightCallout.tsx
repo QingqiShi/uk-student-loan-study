@@ -20,18 +20,15 @@ const insightConfig: Record<
   }
 > = {
   "low-earner": {
-    className:
-      "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
+    className: "bg-status-info-bg border-status-info-border",
     icon: InformationCircleIcon,
   },
   "middle-earner": {
-    className:
-      "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800",
+    className: "bg-status-danger-bg border-status-danger-border",
     icon: Alert02Icon,
   },
   "high-earner": {
-    className:
-      "bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800",
+    className: "bg-status-success-bg border-status-success-border",
     icon: Tick02Icon,
   },
 };
