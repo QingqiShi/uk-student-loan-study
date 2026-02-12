@@ -45,16 +45,16 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-status-info: var(--status-info);
-  --color-status-info-bg: var(--status-info-bg);
+  --color-status-info-foreground: var(--status-info-foreground);
   --color-status-info-border: var(--status-info-border);
   --color-status-success: var(--status-success);
-  --color-status-success-bg: var(--status-success-bg);
+  --color-status-success-foreground: var(--status-success-foreground);
   --color-status-success-border: var(--status-success-border);
   --color-status-warning: var(--status-warning);
-  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-warning-foreground: var(--status-warning-foreground);
   --color-status-warning-border: var(--status-warning-border);
   --color-status-danger: var(--status-danger);
-  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-danger-foreground: var(--status-danger-foreground);
   --color-status-danger-border: var(--status-danger-border);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
@@ -94,17 +94,17 @@
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  --status-info: oklch(0.546 0.245 262.881);
-  --status-info-bg: oklch(0.97 0.014 254.604);
+  --status-info-foreground: oklch(0.546 0.245 262.881);
+  --status-info: oklch(0.97 0.014 254.604);
   --status-info-border: oklch(0.882 0.059 254.128);
-  --status-success: oklch(0.596 0.145 163.225);
-  --status-success-bg: oklch(0.979 0.021 166.113);
+  --status-success-foreground: oklch(0.596 0.145 163.225);
+  --status-success: oklch(0.979 0.021 166.113);
   --status-success-border: oklch(0.905 0.093 164.15);
-  --status-warning: oklch(0.666 0.179 58.318);
-  --status-warning-bg: oklch(0.987 0.022 95.277);
+  --status-warning-foreground: oklch(0.666 0.179 58.318);
+  --status-warning: oklch(0.987 0.022 95.277);
   --status-warning-border: oklch(0.924 0.12 95.746);
-  --status-danger: oklch(0.577 0.245 27.325);
-  --status-danger-bg: oklch(0.971 0.013 17.38);
+  --status-danger-foreground: oklch(0.577 0.245 27.325);
+  --status-danger: oklch(0.971 0.013 17.38);
   --status-danger-border: oklch(0.885 0.062 18.334);
 }
 
@@ -140,17 +140,17 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --status-info: oklch(0.707 0.165 254.624);
-  --status-info-bg: oklch(0.282 0.091 267.935 / 30%);
+  --status-info-foreground: oklch(0.707 0.165 254.624);
+  --status-info: oklch(0.282 0.091 267.935 / 30%);
   --status-info-border: oklch(0.424 0.199 265.638);
-  --status-success: oklch(0.765 0.177 163.223);
-  --status-success-bg: oklch(0.262 0.051 172.552 / 20%);
+  --status-success-foreground: oklch(0.765 0.177 163.223);
+  --status-success: oklch(0.262 0.051 172.552 / 20%);
   --status-success-border: oklch(0.432 0.095 166.913);
-  --status-warning: oklch(0.828 0.189 84.429);
-  --status-warning-bg: oklch(0.279 0.077 45.635 / 30%);
+  --status-warning-foreground: oklch(0.828 0.189 84.429);
+  --status-warning: oklch(0.279 0.077 45.635 / 30%);
   --status-warning-border: oklch(0.473 0.137 46.201);
-  --status-danger: oklch(0.704 0.191 22.216);
-  --status-danger-bg: oklch(0.258 0.092 26.042 / 30%);
+  --status-danger-foreground: oklch(0.704 0.191 22.216);
+  --status-danger: oklch(0.258 0.092 26.042 / 30%);
   --status-danger-border: oklch(0.444 0.177 26.899);
 }
 

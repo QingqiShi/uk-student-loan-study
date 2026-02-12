@@ -84,7 +84,7 @@ export function AdvancedConfigSection() {
               }
             </p>
             {/* UPDATE: Remove or revise this note once thresholds unfreeze (expected after 2027) */}
-            <p className="text-xs text-status-warning">
+            <p className="text-xs text-status-warning-foreground">
               Note: Government has frozen thresholds through 2027.
             </p>
           </fieldset>
