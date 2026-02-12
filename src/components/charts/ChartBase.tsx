@@ -10,15 +10,11 @@ import {
   Legend,
   ReferenceLine,
   ReferenceDot,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
+import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 
 export interface ChartSeriesConfig {
   dataKey: string;
@@ -31,6 +27,11 @@ export interface ChartAnnotationConfig {
   color?: string;
   labelPosition?: "insideTop" | "insideTopLeft" | "insideTopRight";
   strokeDasharray?: string;
+}
+
+interface CrosshairPoint {
+  x: number;
+  values: Array<{ dataKey: string; y: number }>;
 }
 
 export interface ChartBaseProps {
@@ -46,7 +47,7 @@ export interface ChartBaseProps {
   series: ChartSeriesConfig[];
   annotations?: ChartAnnotationConfig[];
   showLegend?: boolean;
-  showTooltip?: boolean;
+  interactionMode?: "crosshair" | "none";
   xDomain?: [number, number];
   margin?: { top?: number; right?: number; bottom?: number; left?: number };
 }
@@ -64,33 +65,63 @@ export function ChartBase({
   series,
   annotations = [],
   showLegend = false,
-  showTooltip = true,
+  interactionMode = "crosshair",
   xDomain,
   margin: marginProp,
 }: ChartBaseProps) {
   const gradientId = useId();
-  const [isTooltipActive, setIsTooltipActive] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [crosshairPoint, setCrosshairPoint] = useState<CrosshairPoint | null>(
+    null,
+  );
 
   const ChartComponent = type === "area" ? AreaChart : LineChart;
+  const isCrosshair = interactionMode === "crosshair";
+
+  function handleChartMouseMove(state: {
+    activePayload?: Array<{
+      dataKey: string;
+      value: number;
+      payload: Record<string, unknown>;
+    }>;
+  }) {
+    if (!isCrosshair || !state.activePayload?.length) {
+      setCrosshairPoint(null);
+      return;
+    }
+    const payload = state.activePayload;
+    const xValue = Number(payload[0].payload[xDataKey]);
+    const values = series.map((s) => {
+      const match = payload.find((p) => p.dataKey === s.dataKey);
+      return { dataKey: s.dataKey, y: match ? match.value : 0 };
+    });
+    setCrosshairPoint({ x: xValue, values });
+  }
+
+  function handleChartMouseLeave() {
+    setCrosshairPoint(null);
+  }
+
+  const showCrosshair = isCrosshair && isActive && crosshairPoint !== null;
 
   return (
     <div
       role="img"
       aria-label={ariaLabel}
       className="size-full overflow-hidden select-none"
-      {...(showTooltip
+      {...(isCrosshair
         ? {
             onMouseEnter: () => {
-              setIsTooltipActive(true);
+              setIsActive(true);
             },
             onMouseLeave: () => {
-              setIsTooltipActive(false);
+              setIsActive(false);
             },
             onTouchStart: () => {
-              setIsTooltipActive(true);
+              setIsActive(true);
             },
             onTouchEnd: () => {
-              setIsTooltipActive(false);
+              setIsActive(false);
             },
           }
         : {})}
@@ -100,6 +131,8 @@ export function ChartBase({
           data={data}
           accessibilityLayer
           margin={marginProp ?? { top: 25, right: 25, bottom: 25, left: 25 }}
+          onMouseMove={isCrosshair ? handleChartMouseMove : undefined}
+          onMouseLeave={isCrosshair ? handleChartMouseLeave : undefined}
         >
           {type === "area" && (
             <defs>
@@ -163,35 +196,21 @@ export function ChartBase({
                 }
               : {})}
           />
-          {showTooltip && (
-            <ChartTooltip
-              cursor={false}
-              isAnimationActive={false}
-              active={isTooltipActive}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(_, payload) => {
-                    const item = payload[0].payload as Record<string, unknown>;
-                    if (xDataKey in item) {
-                      const formatted = xFormatter(Number(item[xDataKey]));
-                      return xLabel ? `${xLabel}: ${formatted}` : formatted;
-                    }
-                    return "";
-                  }}
-                  formatter={(value, name) => {
-                    // name corresponds to series dataKey, which must exist in chartConfig
-                    const label = chartConfig[name].label ?? String(name);
-                    return [yFormatter(Number(value)), label];
-                  }}
-                />
-              }
-            />
-          )}
           {showLegend && (
             <Legend
               verticalAlign="top"
               height={36}
               formatter={(value: string) => chartConfig[value].label ?? value}
+              wrapperStyle={
+                showCrosshair ? { visibility: "hidden" } : undefined
+              }
+            />
+          )}
+          {isCrosshair && (
+            <Tooltip
+              content={() => null}
+              isAnimationActive={false}
+              cursor={false}
             />
           )}
           {type === "area" &&
@@ -203,8 +222,9 @@ export function ChartBase({
                 fill={`url(#${gradientId}-${s.dataKey})`}
                 stroke={`var(--color-${s.dataKey})`}
                 strokeWidth={2}
-                activeDot={isTooltipActive}
+                activeDot={false}
                 isAnimationActive={false}
+                style={isCrosshair ? { touchAction: "none" } : undefined}
               />
             ))}
           {type === "line" &&
@@ -216,11 +236,67 @@ export function ChartBase({
                 stroke={`var(--color-${s.dataKey})`}
                 strokeWidth={2}
                 dot={false}
-                activeDot={isTooltipActive ? { r: 4 } : false}
+                activeDot={false}
                 isAnimationActive={false}
+                style={isCrosshair ? { touchAction: "none" } : undefined}
               />
             ))}
-          {!isTooltipActive &&
+          {showCrosshair && (
+            <ReferenceLine
+              x={crosshairPoint.x}
+              stroke="var(--muted-foreground)"
+              strokeWidth={1}
+              strokeDasharray="6 4"
+              label={({ viewBox }: { viewBox: { x: number; y: number } }) => {
+                const isMulti = crosshairPoint.values.length > 1;
+                const xText = xFormatter(crosshairPoint.x);
+                return (
+                  <text
+                    x={viewBox.x}
+                    y={viewBox.y}
+                    textAnchor="middle"
+                    fontSize={11}
+                    fontWeight={500}
+                  >
+                    {crosshairPoint.values.map((v, i) => {
+                      const yText = yFormatter(v.y);
+                      const configLabel = chartConfig[v.dataKey].label;
+                      const seriesName =
+                        typeof configLabel === "string"
+                          ? configLabel.toLowerCase()
+                          : v.dataKey;
+                      const text = isMulti
+                        ? `${yText} at ${xText} ${seriesName}`
+                        : `${yText} at ${xText}`;
+                      return (
+                        <tspan
+                          key={v.dataKey}
+                          x={viewBox.x}
+                          dy={i === 0 ? -10 - (isMulti ? 14 : 0) : 14}
+                          fill={`var(--color-${v.dataKey})`}
+                        >
+                          {text}
+                        </tspan>
+                      );
+                    })}
+                  </text>
+                );
+              }}
+            />
+          )}
+          {showCrosshair &&
+            crosshairPoint.values.map((v) => (
+              <ReferenceDot
+                key={`crosshair-dot-${v.dataKey}`}
+                x={crosshairPoint.x}
+                y={v.y}
+                r={4}
+                fill={`var(--color-${v.dataKey})`}
+                stroke="var(--background)"
+                strokeWidth={2}
+              />
+            ))}
+          {!showCrosshair &&
             annotations.map((annotation) => (
               <ReferenceLine
                 key={`line-${String(annotation.x)}-${annotation.label}`}
@@ -238,7 +314,7 @@ export function ChartBase({
                 }}
               />
             ))}
-          {!isTooltipActive &&
+          {!showCrosshair &&
             annotations
               .filter((a) => a.y !== undefined)
               .map((annotation) => (
