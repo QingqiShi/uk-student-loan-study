@@ -1,17 +1,26 @@
 # Feature Planning: UK Student Loan Calculator
 
-## Current State
+## Vision
 
-Your app has a **strong differentiator**: the visualization showing how middle earners pay the most. This "loan trap" insight isn't prominently featured by competitors - most focus on dry calculations rather than the emotional/financial impact.
+Visualization-first education for UK student loan repayments. The core differentiator is showing how **middle earners pay the most** — an insight competitors bury under dry forms and numbers.
 
-**Current features:**
+**Target audience**: UK graduates navigating repayments and overpayment decisions.
 
-- 3 interactive charts (Total Repayment, Years to Pay, Effective Interest Rate)
-- Salary slider with real-time annotations
-- Plan 2 vs Plan 5 toggle
-- Undergraduate + Postgraduate loan inputs
-- Personalized insights (low/middle/high earner callouts)
-- Dark mode
+---
+
+## Current Features
+
+- 4 preset personas (Plan 1, Plan 2, Plan 5, UG+PG) with one-click setup
+- "What Plan Am I On?" quiz at `/which-plan` (region → year → course → postgrad)
+- Shareable results via encoded URLs with dynamic OG metadata
+- "Should I Overpay?" calculator at `/overpay` with comparison chart, verdict, and lump sum support
+- Salary explorer with real-time chart annotations and growth rate assumptions
+- Balance over time and total repayment charts (Recharts)
+- All 5 plan types: Plan 1, 2, 4, 5, Postgraduate
+- Full dark mode with system preference detection
+- Full configuration wizard (loan amounts, assumptions)
+- Web Worker offloading for simulation calculations
+- Vercel Analytics instrumentation
 
 ---
 
@@ -24,208 +33,109 @@ Your app has a **strong differentiator**: the visualization showing how middle e
 | **studentfinancecalculator.co.uk** | Plan finder tool, career break modeling                      | Complex interface                          |
 | **mystudentloancalc.co.uk**        | Overpay vs invest comparison                                 | Limited visualization                      |
 
-**Gap in market**: No one does visualization-first education well. Most are dry forms with numbers.
+**Our edge**: No competitor does visualization-first education. We show the emotional and financial impact, not just numbers.
+
+_Last reviewed: Feb 2025. Re-check periodically to see if competitors have caught up._
 
 ---
 
-## Feature Suggestions
+## Next Up
 
-### Tier 1: High Impact, Aligned with Vision
+These are the highest-ROI features to work on next. They expand the site's content footprint for SEO, increase engagement, and are relatively lightweight to build.
 
-#### 1. "Should I Overpay?" Calculator
+### 1. Targeted Guide Pages (SEO + Education)
 
-Shows whether voluntary overpayments help or hurt you.
+Short, scannable pages with interactive chart examples embedded. Each targets a high-search-volume question graduates actually Google.
 
-**Why it matters**: This is the #1 misunderstood topic. High earners benefit from overpaying; most don't.
+**Priority topics:**
 
-**Inputs**: Current balance, salary, expected salary growth, savings interest rate
-**Outputs**:
-
-- Side-by-side comparison: Overpay vs Invest
-- Break-even salary threshold
-- Visualization of wealth outcomes over time
-
-**Differentiator**: Show a chart comparing net worth trajectories (overpay path vs invest path)
-
-#### 2. Preset Personas / Quick Profiles
-
-One-click profiles for common scenarios.
-
-**Suggestions**:
-
-- "Typical 3-year undergrad" (£45k debt, Plan 5)
-- "Postgrad add-on" (UG + PG loans)
-- "Legacy grad" (Plan 2, started 2015)
-- "Scottish student" (Plan 4)
-- "NHS/Teacher" (lower salary growth curve)
-- "Tech/Finance" (higher salary growth curve)
-
-**Implementation**: Presets populate the form fields + salary slider
-
-#### 3. "What Plan Am I On?" Tool
-
-Simple quiz: When did you start? Where? What course?
-
-**Why**: Many people genuinely don't know their plan type. Competitors have this but it's buried.
-
-#### 4. Shareable Results
-
-Generate a unique URL or image summarizing someone's situation:
-
-- "I'm in the middle earner trap - I'll pay £X more than someone earning £20k more"
-- Great for social sharing and virality
-
-**Why**: Your visualization tells a compelling story - let users share that story.
-
-#### 5. Email Summary / PDF Export
-
-"Send me a summary" - captures email + provides value
-
----
-
-### Tier 2: Content & Education
-
-#### 6. Targeted Guide Pages (SEO + Education)
-
-**High-value topics** (based on search volume and confusion):
-
-- "Student Loan vs Mortgage: Does it affect affordability?"
 - "Plan 2 vs Plan 5: Which is better?"
+- "Student Loan vs Mortgage: Does it affect affordability?"
+- "How interest works on UK student loans" (the sliding scale confuses everyone)
 - "Should I pay upfront or take the loan?" (for parents)
-- "How interest works on UK student loans" (the sliding scale is confusing)
 - "What happens if I move abroad?"
 - "Student loans and self-employment"
 
-**Format**: Short, scannable pages with your charts embedded as interactive examples.
+**Format**: Concise prose + embedded interactive calculator snippets showing the answer visually. Link back to the main calculator for full exploration.
 
-#### 7. Myth Buster Section
+**SEO impact**: Currently only 3 indexable routes. Guide pages could 3-4x the organic surface area.
 
-Interactive true/false cards debunking common misconceptions:
+### 2. Myth Buster Section
 
-- "Paying off faster saves you money" → Depends on salary
+Interactive true/false cards debunking common misconceptions. Lightweight, shareable, engaging.
+
+**Example myths:**
+
+- "Paying off faster saves you money" → Depends on your salary
 - "Student loans affect your credit score" → No
 - "You should avoid the loan if possible" → Usually wrong
+- "You'll be in debt for 30 years" → Most won't repay in full — it's written off
+
+**Implementation**: Could live as a standalone page (`/myths`) or as a section within guide pages. Cards with flip/reveal interaction.
+
+### 3. PDF / Email Export
+
+"Send me a summary" — captures email and provides a takeaway.
+
+**Outputs**: Personalized summary with plan type, projected repayment, key insight (e.g., "You're in the middle earner bracket"), and a link back to the full calculator.
+
+**Why**: Gives users a reason to engage beyond a single session. Email capture enables future re-engagement (e.g., when thresholds change annually).
 
 ---
 
-### Tier 3: Advanced Calculator Features
+## Future
 
-#### 8. Career Break / Part-Time Modeling
+Ambitious features that require more design and engineering investment. Worth doing eventually, but not urgent.
 
-Let users model: "What if I take 2 years off for kids?" or "What if I go part-time?"
+### 4. Salary Trajectory Builder
 
-**Why**: Major life decisions affect loan outcomes significantly.
-
-#### 9. Salary Trajectory Builder
-
-Instead of single salary, let users draw/define their expected career path:
+Replace the single salary + growth rate with a drawable career path:
 
 - Graduate starting salary
 - Peak earning years
-- Retirement/wind-down
+- Part-time / career break periods
+- Retirement wind-down
 
-**Visualization**: Show how the loan balance changes over this custom trajectory.
+**Visualization**: Show how the loan balance changes over the custom trajectory. This subsumes the career break modeling feature.
 
-#### 10. Multiple Loan Comparison
+### 5. Career Break / Part-Time Modeling
 
-For users with Plan 1 + Plan 2, or Plan 2 + Postgraduate - show combined repayment strategy.
+Let users model: "What if I take 2 years off?" or "What if I go part-time at 60%?"
 
-(Note: You already support UG + PG, but could expand to show them separately)
+**Why**: Major life decisions affect loan outcomes significantly. Could be built as a standalone feature or as part of the salary trajectory builder above.
 
-#### 11. Historical Rate Tracker
+### 6. Historical Rate Tracker
 
-Show how thresholds and interest rates have changed over time - builds trust and shows the political dimension.
+Show how thresholds and interest rates have changed over time. Builds trust and highlights the political dimension of student loans.
 
----
+### 7. Multiple Loan Breakdown
 
-## Recommended Priorities
-
-**Target audience**: Graduates (repayments, overpayment decisions)
-
-### Phase 1: Foundation
-
-1. **"What Plan Am I On?" quiz** - Simple entry point, captures confused visitors
-   - Quick 3-question flow: When did you start? Where? UG or PG?
-   - Links into the main calculator with correct plan pre-selected
-
-2. **Preset personas** - One-click profiles for common graduate scenarios
-   - "Plan 2 grad (2015-2023)" - £45k debt, Plan 2
-   - "New Plan 5 grad" - £50k+ debt, Plan 5, 40-year term
-   - "Legacy Plan 1" - Pre-2012, lower threshold
-   - "UG + Postgrad combo" - Both loan types
-
-3. **Shareable results** - Virality engine
-   - Generate shareable URL with encoded state
-   - Social preview image showing the "middle earner trap" visualization
-   - Copy-to-clipboard button with pre-written share text
-
-### Phase 2: Core Feature
-
-4. **"Should I Overpay?" calculator** - The key question for graduates
-
-   **Inputs:**
-   - Current balance
-   - Monthly overpayment amount (slider: £0-£500)
-   - Expected salary growth (conservative/moderate/aggressive)
-   - Alternative: savings interest rate you could earn instead
-
-   **Outputs (your visualization-first approach):**
-   - Chart: "Net worth over time" - two lines (overpay path vs invest path)
-   - Break-even salary (above this, overpaying helps)
-   - Total paid in each scenario
-   - Clear verdict: "For you: Invest instead" or "For you: Overpay"
-
-   **Differentiator**: Show the emotional impact - "By investing instead, you'd have £X more at age 50"
-
-### Phase 3: Future Expansion
-
-5. **Guide pages** - For SEO and education
-6. **Salary trajectory builder** - Model career path
-7. **Career break modeling** - What if I go part-time?
+For users with Plan 1 + Plan 2, or Plan 2 + Postgraduate — show each loan's repayment separately rather than combined. Helps users understand which loan costs more.
 
 ---
 
-## Implementation Notes
+## Technical Improvements
 
-### "What Plan Am I On?" Quiz
+Not user-facing features, but important for long-term quality.
 
-```
-Question 1: When did you start your course?
-- Before September 2012 → Plan 1 (England/Wales) or Plan 4 (Scotland)
-- September 2012 - July 2023 → Plan 2
-- August 2023 onwards → Plan 5
+| Area                      | Current State                                                                                             | Target                                                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Test coverage**         | Domain logic well-tested (engine, reducer, URL encoding). No integration or e2e tests. Thresholds at 20%. | Add component integration tests for key flows. Add Playwright e2e for preset → result and quiz → calculator journeys. Raise thresholds. |
+| **Accessibility testing** | Good ARIA foundations, semantic HTML, skip links. No automated testing.                                   | Add jest-axe or axe-playwright to CI. Verify focus management in wizard/modal flows.                                                    |
+| **Performance budgets**   | Web Worker + useTransition in place. No formal budgets.                                                   | Set bundle size and INP budgets. Monitor with Vercel Speed Insights.                                                                    |
 
-Question 2: Where did you study?
-- England → Plan 1/2/5 (based on Q1)
-- Scotland → Plan 4
-- Wales → Plan 1/2/5
-- Northern Ireland → Plan 1
+---
 
-Question 3: Was this undergraduate or postgraduate?
-- Undergrad → Use plan from Q1/Q2
-- Postgrad (Master's/PhD loan) → Postgraduate plan
-```
+## Completed
 
-### Preset Personas Data
+_For reference. These shipped and are live._
 
-| Persona                 | UG Balance | PG Balance | Plan   | Start Year |
-| ----------------------- | ---------- | ---------- | ------ | ---------- |
-| Plan 2 grad (2015-2023) | £45,000    | £0         | Plan 2 | 2018       |
-| New Plan 5 grad         | £50,000    | £0         | Plan 5 | 2026       |
-| Legacy Plan 1           | £20,000    | £0         | Plan 1 | 2010       |
-| UG + Postgrad combo     | £45,000    | £12,000    | Plan 2 | 2018       |
+### Phase 1: Foundation (Done)
 
-### "Should I Overpay?" Calculator
+- **"What Plan Am I On?" quiz** — 4-step flow at `/which-plan` with region, year, course type, and postgrad questions. Determines plan and links into calculator with correct config.
+- **Preset personas** — 4 one-click presets (2012-23 Grad, 2023+ Grad, Pre-2012, UG+Masters) displayed as responsive card grid with "Tailor to you" CTA.
+- **Shareable results** — URL-encoded state (`?loans=PLAN_2:45000&sal=40000`), native share API with clipboard fallback, dynamic OG metadata for social previews.
 
-Key insight to visualize: Most Plan 2/5 graduates won't fully repay before write-off. Overpaying gives the government free money.
+### Phase 2: Core Feature (Done)
 
-**Decision tree:**
-
-1. Calculate: Will you repay in full before write-off?
-   - Simulate with expected salary trajectory
-   - If NO → "Don't overpay, invest instead"
-   - If YES → Compare interest rate vs savings rate
-
-2. For those who will repay:
-   - Loan interest rate > savings rate → Overpay
-   - Loan interest rate < savings rate → Invest
+- **"Should I Overpay?" calculator** — Full page at `/overpay` with monthly overpayment slider, lump sum input, repayment date picker, comparison chart, summary cards, and verdict callout. Supports presets and URL sharing.
