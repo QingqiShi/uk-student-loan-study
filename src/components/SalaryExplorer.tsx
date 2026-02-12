@@ -49,70 +49,63 @@ export function SalaryExplorer({ onOpenAssumptions }: SalaryExplorerProps) {
 
   return (
     <div>
-      <div className="flex items-baseline justify-between gap-4">
+      <div className="mb-2 flex items-baseline justify-between gap-4">
         <h3 className="text-sm font-medium text-muted-foreground">
-          Total repayment by salary
+          Total repayment
         </h3>
-        <p className="flex items-center gap-1 text-sm text-muted-foreground">
-          Your salary:{" "}
-          <span className="font-mono font-semibold text-foreground tabular-nums">
-            {currencyFormatter.format(salary)}
-          </span>
-          <span className="text-xs text-muted-foreground/70">
-            +{growthLabel}/yr
-          </span>
-          <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-            <PopoverTrigger
-              openOnHover
-              delay={200}
-              closeDelay={200}
-              render={
-                <button
-                  type="button"
-                  className="rounded-md p-0.5 text-muted-foreground hover:text-foreground"
-                  aria-label="Salary growth info"
-                >
-                  <HugeiconsIcon
-                    icon={InformationCircleIcon}
-                    className="size-4"
-                  />
-                </button>
-              }
-            />
-            <PopoverContent align="end" className="w-64 p-3">
-              <p className="text-sm text-muted-foreground">
-                This is your starting annual salary. We assume it grows by{" "}
-                <span className="font-medium text-foreground">
-                  {growthLabel}
-                </span>{" "}
-                each year
-                {salaryGrowthRate > 0 &&
-                projectedSalary !== null &&
-                years !== null ? (
-                  <>
-                    , reaching{" "}
-                    <span className="font-medium text-foreground">
-                      {currencyFormatter.format(Math.round(projectedSalary))}
-                    </span>{" "}
-                    after {years} {years === 1 ? "year" : "years"}
-                  </>
-                ) : null}
-                .
-              </p>
-              <div className="my-2 h-px bg-border" />
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+          <PopoverTrigger
+            openOnHover
+            delay={200}
+            closeDelay={200}
+            render={
               <button
                 type="button"
-                onClick={() => {
-                  setPopoverOpen(false);
-                  onOpenAssumptions();
-                }}
-                className="w-full rounded-md px-2 py-1.5 text-left text-sm text-primary hover:bg-accent"
-              >
-                Update growth assumption &rarr;
-              </button>
-            </PopoverContent>
-          </Popover>
-        </p>
+                className="flex items-center gap-1 rounded-md text-sm text-muted-foreground hover:text-foreground"
+                aria-label="Salary growth info"
+              />
+            }
+          >
+            Your salary:{" "}
+            <span className="font-mono font-semibold text-foreground tabular-nums">
+              {currencyFormatter.format(salary)}
+            </span>
+            <span className="text-xs text-muted-foreground/70">
+              +{growthLabel}/yr
+            </span>
+            <HugeiconsIcon icon={InformationCircleIcon} className="size-4" />
+          </PopoverTrigger>
+          <PopoverContent align="end" className="w-64 p-3">
+            <p className="text-sm text-muted-foreground">
+              This is your starting annual salary. We assume it grows by{" "}
+              <span className="font-medium text-foreground">{growthLabel}</span>{" "}
+              each year
+              {salaryGrowthRate > 0 &&
+              projectedSalary !== null &&
+              years !== null ? (
+                <>
+                  , reaching{" "}
+                  <span className="font-medium text-foreground">
+                    {currencyFormatter.format(Math.round(projectedSalary))}
+                  </span>{" "}
+                  after {years} {years === 1 ? "year" : "years"}
+                </>
+              ) : null}
+              .
+            </p>
+            <div className="my-2 h-px bg-border" />
+            <button
+              type="button"
+              onClick={() => {
+                setPopoverOpen(false);
+                onOpenAssumptions();
+              }}
+              className="w-full rounded-md px-2 py-1.5 text-left text-sm text-primary hover:bg-accent"
+            >
+              Update growth assumption &rarr;
+            </button>
+          </PopoverContent>
+        </Popover>
       </div>
 
       <div className="h-[300px] sm:h-[400px] lg:h-[450px]">
