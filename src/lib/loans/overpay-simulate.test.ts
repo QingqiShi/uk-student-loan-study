@@ -43,8 +43,10 @@ describe("simulateOverpayScenarios", () => {
         lumpSumPayment: 0,
       });
 
-      expect(result.recommendation).toBe("marginal");
-      expect(result.recommendationReason).toContain("Enter an overpayment");
+      expect(result.recommendation).toBe("idle");
+      expect(result.recommendationReason).toContain(
+        "Enter a lump sum or monthly amount",
+      );
       // Chart data should still be generated for baseline visualization
       expect(result.balanceTimeSeries.length).toBeGreaterThan(0);
       expect(result.baseline.totalPaid).toBeGreaterThan(0);

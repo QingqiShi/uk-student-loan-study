@@ -2,6 +2,7 @@ import {
   Alert02Icon,
   Tick02Icon,
   Cancel01Icon,
+  InformationCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { RecommendationType } from "@/lib/loans/overpay-types";
@@ -30,20 +31,24 @@ const verdictConfig: Record<
     className: "bg-status-warning border-status-warning-border",
     icon: Alert02Icon,
   },
+  idle: {
+    title: "Ready to Compare",
+    className: "bg-muted/50 border-border",
+    icon: InformationCircleIcon,
+  },
 };
 
 interface OverpayVerdictProps {
   recommendation: RecommendationType;
   reason: string;
-  showDisclaimer: boolean;
 }
 
 export function OverpayVerdict({
   recommendation,
   reason,
-  showDisclaimer,
 }: OverpayVerdictProps) {
   const config = verdictConfig[recommendation];
+  const isIdle = recommendation === "idle";
 
   return (
     <Alert className={config.className} role="status" aria-live="polite">
@@ -54,12 +59,11 @@ export function OverpayVerdict({
       />
       <AlertTitle>{config.title}</AlertTitle>
       <AlertDescription>{reason}</AlertDescription>
-      {showDisclaimer && (
-        <p className="col-span-full mt-2 text-xs text-muted-foreground">
-          This is an estimate, not financial advice. Consider speaking to a
-          financial adviser.
-        </p>
-      )}
+      <p className="col-span-full mt-2 text-xs text-muted-foreground">
+        {isIdle
+          ? "Adjust the inputs below to explore different scenarios."
+          : "This is an estimate, not financial advice. Consider speaking to a financial adviser."}
+      </p>
     </Alert>
   );
 }
