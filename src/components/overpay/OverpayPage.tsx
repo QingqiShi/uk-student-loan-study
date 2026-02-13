@@ -131,7 +131,6 @@ export function OverpayPage() {
         <OverpayVerdict
           recommendation={analysis.recommendation}
           reason={analysis.recommendationReason}
-          showDisclaimer={analysis.overpaymentContributions > 0}
         />
 
         <div className="grid gap-6 md:grid-cols-[1fr_260px]">

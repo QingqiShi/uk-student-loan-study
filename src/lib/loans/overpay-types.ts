@@ -34,7 +34,8 @@ export interface ScenarioResult {
 export type RecommendationType =
   | "dont-overpay" // Loan will be written off anyway
   | "overpay" // Overpaying saves money
-  | "marginal"; // Within 10% - personal preference
+  | "marginal" // Within 10% - personal preference
+  | "idle"; // No overpayment entered — prompt state
 
 /**
  * A single data point in the balance time series for charting.

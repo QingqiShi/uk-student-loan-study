@@ -96,14 +96,14 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
               {formatYears(baseline.monthsToPayoff)}
             </span>
           </div>
-          {baseline.writtenOff && (
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium text-status-info-foreground tabular-nums">
-                {currencyFormatter.format(baseline.amountWrittenOff)}
-              </span>
-            </div>
-          )}
+          <div
+            className={`flex justify-between text-sm ${!baseline.writtenOff ? "invisible" : ""}`}
+          >
+            <span className="text-muted-foreground">Written off</span>
+            <span className="font-medium text-status-info-foreground tabular-nums">
+              {currencyFormatter.format(baseline.amountWrittenOff)}
+            </span>
+          </div>
         </CardContent>
       </Card>
 
@@ -129,19 +129,25 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
               {formatYears(overpay.monthsToPayoff)}
             </span>
           </div>
-          {overpay.writtenOff && (
+          {overpay.writtenOff ? (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Written off</span>
               <span className="font-medium text-status-info-foreground tabular-nums">
                 {currencyFormatter.format(overpay.amountWrittenOff)}
               </span>
             </div>
-          )}
-          {!overpay.writtenOff && baseline.writtenOff && (
+          ) : baseline.writtenOff ? (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Status</span>
               <span className="font-medium text-status-success-foreground">
                 Paid off
+              </span>
+            </div>
+          ) : (
+            <div className="invisible flex justify-between text-sm">
+              <span className="text-muted-foreground">Written off</span>
+              <span className="font-medium tabular-nums">
+                {currencyFormatter.format(0)}
               </span>
             </div>
           )}

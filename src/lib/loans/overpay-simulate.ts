@@ -148,8 +148,9 @@ export function simulateOverpayScenarios(
         lumpSumPayment,
       )
     : {
-        recommendation: "marginal" as RecommendationType,
-        reason: "Enter an overpayment amount to compare scenarios.",
+        recommendation: "idle" as RecommendationType,
+        reason:
+          "Enter a lump sum or monthly amount to see if overpaying saves you money.",
       };
 
   return {
