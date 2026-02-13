@@ -55,17 +55,13 @@ export function InputPanel({
         role="dialog"
         aria-modal="true"
         aria-label="Adjust assumptions"
-        className="fixed inset-0 z-50 flex min-h-dvh flex-col overflow-y-auto bg-background"
+        className="fixed inset-0 z-50 overflow-y-auto"
       >
-        <div className="flex flex-1 flex-col items-center justify-center px-4 py-8">
-          <div className="w-full max-w-lg">
-            <AssumptionsWizard
-              onComplete={onAssumptionsComplete}
-              onClose={onWizardClose}
-              entryStep={mode.entryStep}
-            />
-          </div>
-        </div>
+        <AssumptionsWizard
+          onComplete={onAssumptionsComplete}
+          onClose={onWizardClose}
+          entryStep={mode.entryStep}
+        />
       </div>
     );
   }

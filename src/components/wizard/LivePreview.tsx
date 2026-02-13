@@ -12,28 +12,30 @@ export function LivePreview() {
   const durationDisplay = years >= 1 ? `${String(Math.round(years))}y` : "<1y";
 
   return (
-    <div
-      className="flex items-center justify-center gap-6 border-t py-3 text-sm"
+    <footer
+      className="sticky bottom-0 border-t border-border/50 bg-background/80 py-3 text-sm backdrop-blur-sm"
       role="status"
       aria-live="polite"
     >
-      <span>
-        <span className="font-mono font-medium tabular-nums">
-          {currencyFormatter.format(summary.totalPaid)}
-        </span>{" "}
-        total
-      </span>
-      <span>
-        <span className="font-mono font-medium tabular-nums">
-          {currencyFormatter.format(summary.monthlyRepayment)}
+      <div className="mx-auto flex max-w-lg items-center justify-center gap-6 px-4">
+        <span>
+          <span className="font-mono font-medium tabular-nums">
+            {currencyFormatter.format(summary.totalPaid)}
+          </span>{" "}
+          total
         </span>
-        /month
-      </span>
-      <span>
-        <span className="font-mono font-medium tabular-nums">
-          {durationDisplay}
+        <span>
+          <span className="font-mono font-medium tabular-nums">
+            {currencyFormatter.format(summary.monthlyRepayment)}
+          </span>
+          /month
         </span>
-      </span>
-    </div>
+        <span>
+          <span className="font-mono font-medium tabular-nums">
+            {durationDisplay}
+          </span>
+        </span>
+      </div>
+    </footer>
   );
 }
