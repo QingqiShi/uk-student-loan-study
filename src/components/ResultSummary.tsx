@@ -8,18 +8,10 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
-import { useState } from "react";
 import type { InsightType } from "@/utils/insights";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { currencyFormatter, SALARY_GROWTH_OPTIONS } from "@/constants";
-import { useLoanConfigState } from "@/context/LoanContext";
+import { currencyFormatter } from "@/constants";
 import { usePersonalizedInsight } from "@/hooks/usePersonalizedInsight";
 import { useResultSummary } from "@/hooks/useResultSummary";
-import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const insightConfig: Record<
   InsightType,
@@ -52,15 +44,9 @@ const insightConfig: Record<
 
 const pluralRules = new Intl.PluralRules("en-GB");
 
-interface ResultSummaryProps {
-  onOpenAssumptions: () => void;
-}
-
-export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
+export function ResultSummary() {
   const summary = useResultSummary();
   const insight = usePersonalizedInsight();
-  const config = useLoanConfigState();
-  const [popoverOpen, setPopoverOpen] = useState(false);
 
   if (!summary) return null;
 
@@ -68,36 +54,6 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
   const rounded = Math.max(1, Math.round(years));
   const yearsDisplay = years >= 1 ? String(rounded) : "<1";
   const yearsUnit = pluralRules.select(rounded) === "one" ? "year" : "years";
-
-  const ugLoans = config.loans.filter((l) => l.planType !== "POSTGRADUATE");
-  const pgLoans = config.loans.filter((l) => l.planType === "POSTGRADUATE");
-  const ugBalance = ugLoans.reduce((s, l) => s + l.balance, 0);
-  const pgBalance = pgLoans.reduce((s, l) => s + l.balance, 0);
-
-  const growthLabel =
-    SALARY_GROWTH_OPTIONS.find((o) => o.value === config.salaryGrowthRate)
-      ?.label ?? `${(config.salaryGrowthRate * 100).toFixed(0)}%`;
-
-  const thresholdInfo =
-    config.thresholdGrowthRate === 0
-      ? "Frozen thresholds"
-      : `+${(config.thresholdGrowthRate * 100).toFixed(0)}%/yr threshold`;
-
-  const hasUG = ugBalance > 0;
-  const hasPostgrad = pgBalance > 0;
-
-  const ugSummary = ugLoans
-    .map((l) => {
-      const info =
-        PLAN_DISPLAY_INFO[l.planType as keyof typeof PLAN_DISPLAY_INFO];
-      return `${info.name} with ${currencyFormatter.format(l.balance)} balance`;
-    })
-    .join(" + ");
-
-  const balanceSummary = hasUG
-    ? ugSummary +
-      (hasPostgrad ? ` + ${currencyFormatter.format(pgBalance)} postgrad` : "")
-    : `${currencyFormatter.format(pgBalance)} postgrad loan`;
 
   return (
     <div
@@ -112,7 +68,7 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
       {/* Subtle gradient wash behind the hero stat */}
       <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/6 via-transparent to-transparent dark:from-primary/10" />
 
-      <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:p-5 lg:grid-cols-[1fr_1fr_1fr_2fr] lg:items-center">
+      <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:items-center min-[30rem]:p-5">
         <div className="col-span-2 pb-3 min-[30rem]:col-span-1 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:pr-5 min-[30rem]:pb-0">
           <p className="text-[0.6875rem] font-medium tracking-widest whitespace-nowrap text-muted-foreground uppercase min-[30rem]:text-xs">
             Total repayment
@@ -134,7 +90,7 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
           </p>
         </div>
 
-        <div className="relative border-t border-border py-3 pl-4 min-[30rem]:border-t-0 min-[30rem]:py-0 min-[30rem]:pl-5 lg:border-r lg:border-border lg:px-5">
+        <div className="border-t border-border py-3 pl-4 min-[30rem]:border-t-0 min-[30rem]:py-0 min-[30rem]:pl-5">
           <p className="text-[0.6875rem] font-medium tracking-widest text-muted-foreground uppercase min-[30rem]:text-xs">
             Duration
           </p>
@@ -145,50 +101,6 @@ export function ResultSummary({ onOpenAssumptions }: ResultSummaryProps) {
               {yearsUnit}
             </span>
           </p>
-
-          {/* Info icon — small screens only */}
-          <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-            <PopoverTrigger
-              render={
-                <button
-                  type="button"
-                  className="absolute top-0 right-0 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
-                  aria-label="View configuration details"
-                >
-                  <HugeiconsIcon
-                    icon={InformationCircleIcon}
-                    className="size-4"
-                  />
-                </button>
-              }
-            />
-            <PopoverContent align="end" className="w-64 p-3">
-              <p className="text-sm font-medium">{balanceSummary}</p>
-              <div className="my-2 h-px bg-border" />
-              <button
-                type="button"
-                onClick={() => {
-                  setPopoverOpen(false);
-                  onOpenAssumptions();
-                }}
-                className="w-full rounded-md px-2 py-1.5 text-left text-sm text-primary hover:bg-accent"
-              >
-                {growthLabel} salary growth &middot; {thresholdInfo} &rarr;
-              </button>
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        {/* Config summary — desktop inline */}
-        <div className="hidden lg:block lg:pl-5">
-          <p className="text-sm/snug font-medium">{balanceSummary}</p>
-          <button
-            type="button"
-            onClick={onOpenAssumptions}
-            className="mt-0.5 text-xs text-primary underline-offset-4 hover:underline"
-          >
-            {growthLabel} salary growth &middot; {thresholdInfo} &rarr;
-          </button>
         </div>
       </div>
 
