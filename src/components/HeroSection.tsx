@@ -119,7 +119,7 @@ export function HeroSection() {
       />
 
       <div className="space-y-4">
-        <ResultSummary onOpenAssumptions={handleOpenAssumptions} />
+        <ResultSummary />
         <SalaryExplorer onOpenAssumptions={handleOpenAssumptions} />
       </div>
     </section>
