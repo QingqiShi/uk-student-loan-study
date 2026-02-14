@@ -150,8 +150,11 @@ export function trackSharedMonthlyOverpaymentLoaded(value: number) {
   track("shared_monthly_overpayment_loaded", { value });
 }
 
-export function trackSharedSalaryGrowthLoaded(rate: number) {
-  track("shared_salary_growth_loaded", { rate });
+export function trackSharedAssumptionLoaded(
+  analyticsName: string,
+  value: number,
+) {
+  track(`shared_${analyticsName}_loaded`, { value });
 }
 
 export function trackSharedLumpSumLoaded(value: number) {

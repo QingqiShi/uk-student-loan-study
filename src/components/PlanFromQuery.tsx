@@ -7,11 +7,15 @@ import {
   trackSharedLoansLoaded,
   trackSharedSalaryLoaded,
   trackSharedMonthlyOverpaymentLoaded,
-  trackSharedSalaryGrowthLoaded,
+  trackSharedAssumptionLoaded,
   trackSharedLumpSumLoaded,
   trackSharedRepaymentYearLoaded,
 } from "@/lib/analytics";
-import { decodeParamsToState } from "@/lib/shareUrl";
+import {
+  decodeParamsToState,
+  ASSUMPTION_PARAMS,
+  type DecodedState,
+} from "@/lib/shareUrl";
 
 interface PlanFromQueryProps {
   onRepaymentYearChange?: (year: number) => void;
@@ -44,9 +48,12 @@ function PlanFromQueryInner({ onRepaymentYearChange }: PlanFromQueryProps) {
       trackSharedMonthlyOverpaymentLoaded(decoded.monthlyOverpayment);
       updateField("monthlyOverpayment", decoded.monthlyOverpayment);
     }
-    if (decoded.salaryGrowthRate !== undefined) {
-      trackSharedSalaryGrowthLoaded(decoded.salaryGrowthRate);
-      updateField("salaryGrowthRate", decoded.salaryGrowthRate);
+    for (const field of ASSUMPTION_PARAMS) {
+      const value = decoded[field.stateKey as keyof DecodedState];
+      if (value !== undefined) {
+        trackSharedAssumptionLoaded(field.analyticsName, value as number);
+        updateField(field.stateKey, value as number);
+      }
     }
     if (decoded.lumpSumPayment !== undefined) {
       trackSharedLumpSumLoaded(decoded.lumpSumPayment);

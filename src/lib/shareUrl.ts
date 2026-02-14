@@ -18,7 +18,6 @@ const PARAM_PG = "pg";
 
 // Overpay-specific param keys
 const PARAM_OVP = "ovp";
-const PARAM_SGR = "sgr";
 const PARAM_LSP = "lsp";
 const PARAM_REPY = "repy";
 
@@ -41,6 +40,37 @@ const LEGACY_SALARY_GROWTH_MAPPING: Record<string, number> = {
   moderate: 0.04,
   aggressive: 0.06,
 };
+
+// ---------------------------------------------------------------------------
+// Config-driven assumption params
+// ---------------------------------------------------------------------------
+
+export interface AssumptionParamConfig {
+  /** LoanState field name */
+  stateKey: keyof LoanState;
+  /** Short URL param key */
+  urlParam: string;
+  /** Analytics event name suffix, e.g. "salary_growth" → "shared_salary_growth_loaded" */
+  analyticsName: string;
+  /** Optional legacy string→number mapping (only salaryGrowthRate has this) */
+  legacyMapping?: Record<string, number>;
+}
+
+export const ASSUMPTION_PARAMS: AssumptionParamConfig[] = [
+  {
+    stateKey: "salaryGrowthRate",
+    urlParam: "sgr",
+    analyticsName: "salary_growth",
+    legacyMapping: LEGACY_SALARY_GROWTH_MAPPING,
+  },
+  {
+    stateKey: "thresholdGrowthRate",
+    urlParam: "tgr",
+    analyticsName: "threshold_growth",
+  },
+  { stateKey: "rpiRate", urlParam: "rpi", analyticsName: "rpi_rate" },
+  { stateKey: "boeBaseRate", urlParam: "boe", analyticsName: "boe_base_rate" },
+];
 
 const VALID_PLANS: PlanType[] = [
   "PLAN_1",
@@ -103,9 +133,14 @@ export function encodeStateToParams(
   params.set(PARAM_LOANS, encodeLoans(state.loans));
   params.set(PARAM_SAL, String(state.salary));
 
+  // Assumption fields — always included
+  for (const field of ASSUMPTION_PARAMS) {
+    const value = state[field.stateKey] as number;
+    params.set(field.urlParam, String(value));
+  }
+
   if (options.includeOverpayFields) {
     params.set(PARAM_OVP, String(state.monthlyOverpayment));
-    params.set(PARAM_SGR, String(state.salaryGrowthRate));
     params.set(PARAM_LSP, String(state.lumpSumPayment));
     if (options.repaymentYear !== undefined) {
       params.set(PARAM_REPY, String(options.repaymentYear));
@@ -120,8 +155,10 @@ export interface DecodedState {
   salary?: number;
   monthlyOverpayment?: number;
   salaryGrowthRate?: number;
-  lumpSumPayment?: number;
   thresholdGrowthRate?: number;
+  rpiRate?: number;
+  boeBaseRate?: number;
+  lumpSumPayment?: number;
   repaymentYear?: number;
 }
 
@@ -207,15 +244,17 @@ export function decodeParamsToState(params: URLSearchParams): DecodedState {
     }
   }
 
-  const sgrParam = params.get(PARAM_SGR);
-  if (sgrParam !== null) {
-    // Try parsing as number first (new format)
-    const numValue = parseFloat(sgrParam);
-    if (!isNaN(numValue)) {
-      result.salaryGrowthRate = numValue;
-    } else if (sgrParam in LEGACY_SALARY_GROWTH_MAPPING) {
-      // Fall back to legacy string preset mapping
-      result.salaryGrowthRate = LEGACY_SALARY_GROWTH_MAPPING[sgrParam];
+  // Assumption fields — unclamped (user-chosen modelling assumptions)
+  for (const field of ASSUMPTION_PARAMS) {
+    const raw = params.get(field.urlParam);
+    if (raw !== null) {
+      const num = parseFloat(raw);
+      if (!isNaN(num)) {
+        (result as Record<string, unknown>)[field.stateKey] = num;
+      } else if (field.legacyMapping && raw in field.legacyMapping) {
+        (result as Record<string, unknown>)[field.stateKey] =
+          field.legacyMapping[raw];
+      }
     }
   }
 
