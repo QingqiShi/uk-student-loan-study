@@ -3,9 +3,9 @@ import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, TUITION_FEE_CAP } from "@/lib/loans/plans";
 
 export const metadata: Metadata = {
-  title: "Should I Pay Tuition Upfront or Take the Student Loan?",
+  title: "Pay Tuition Upfront or Take the Loan? It's Not Obvious",
   description:
-    "Starting salary alone doesn't tell the whole story. See how salary growth pushes many graduates into the middle-earner zone where they pay more than the upfront cost.",
+    "The loan feels free until you realise middle earners can repay more than the original tuition. See where the break-even point is for your expected career path.",
   keywords: [
     "pay tuition upfront",
     "pay university fees upfront",

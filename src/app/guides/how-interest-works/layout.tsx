@@ -3,9 +3,9 @@ import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 
 export const metadata: Metadata = {
-  title: "How Interest Works on UK Student Loans",
+  title: "Why Your Student Loan Balance Keeps Growing",
   description:
-    "Understand how interest is calculated on UK student loans. Learn the sliding scale for Plan 2, RPI-only for Plan 5, and how each plan type charges interest.",
+    "You're making repayments but your balance goes up? That's not a bug — it's how the interest works. See exactly how much interest you're being charged and why it matters less than you think.",
   keywords: [
     "UK student loan interest",
     "student loan interest rate",

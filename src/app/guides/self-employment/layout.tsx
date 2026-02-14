@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 
 export const metadata: Metadata = {
-  title: "Student Loans and Self-Employment: What You Need to Know",
+  title: "Self-Employed? Your Student Loan Repayments Work Differently",
   description:
-    "Learn how UK student loan repayments work when you're self-employed. Understand Self Assessment, mixed income, and practical tips for freelancers.",
+    "No employer deducting it from your payslip means you handle repayments through Self Assessment. Get the timing, thresholds, and mixed-income rules straight before your next tax return.",
   keywords: [
     "student loan self employed",
     "self assessment student loan",

@@ -21,11 +21,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://studentloanstudy.uk"),
   title: {
-    default: "UK Student Loan Study - Student Loan Repayment Calculator",
+    default: "UK Student Loan Study — Are You Paying More Than You Should?",
     template: "%s | UK Student Loan Study",
   },
   description:
-    "Interactive calculator to understand UK student loan repayment. Compare Plan 2 and Plan 5, visualize total repayments, and see effective interest rates based on your salary.",
+    "Middle earners pay the most on student loans — more than high earners, and far more than low earners who get written off. See where you fall and what your loan really costs.",
   keywords: [
     "UK student loan",
     "student loan calculator",
