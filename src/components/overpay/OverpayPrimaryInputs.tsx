@@ -1,5 +1,6 @@
 "use client";
 
+import { SalaryGrowthBadge } from "@/components/SalaryGrowthBadge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -123,9 +124,12 @@ export function OverpayPrimaryInputs({
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="salary-slider">Current Salary</Label>
-            <span className="text-sm font-medium tabular-nums">
-              {currencyFormatter.format(salary)}
-            </span>
+            <div className="flex items-center gap-1">
+              <span className="text-sm font-medium tabular-nums">
+                {currencyFormatter.format(salary)}
+              </span>
+              <SalaryGrowthBadge />
+            </div>
           </div>
           <Slider
             id="salary-slider"
