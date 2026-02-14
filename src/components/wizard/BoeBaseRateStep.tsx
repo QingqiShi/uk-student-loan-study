@@ -5,16 +5,17 @@ import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { THRESHOLD_GROWTH_OPTIONS } from "@/constants";
+import { BOE_BASE_RATE_OPTIONS } from "@/constants";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
-import { trackThresholdGrowthSelected } from "@/lib/analytics";
+import { trackBoeBaseRateSelected } from "@/lib/analytics";
 
-interface ThresholdGrowthStepProps {
+interface BoeBaseRateStepProps {
   direction: "forward" | "backward";
   onNext: () => void;
+  done?: boolean;
 }
 
-const presetValues = new Set(THRESHOLD_GROWTH_OPTIONS.map((o) => o.value));
+const presetValues = new Set(BOE_BASE_RATE_OPTIONS.map((o) => o.value));
 
 function CustomInput({
   ref,
@@ -23,34 +24,35 @@ function CustomInput({
   return <Input ref={ref} {...props} />;
 }
 
-export function ThresholdGrowthStep({
+export function BoeBaseRateStep({
   direction,
   onNext,
-}: ThresholdGrowthStepProps) {
+  done,
+}: BoeBaseRateStepProps) {
   const { updateField } = useLoanActions();
-  const { thresholdGrowthRate } = useLoanConfigState();
+  const { boeBaseRate } = useLoanConfigState();
 
-  const isPreset = presetValues.has(thresholdGrowthRate);
-  const customDisplayValue = isPreset ? "" : thresholdGrowthRate * 100;
+  const isPreset = presetValues.has(boeBaseRate);
+  const customDisplayValue = isPreset ? "" : boeBaseRate;
 
   return (
     <QuestionStep
-      title="How will repayment thresholds change?"
-      subtitle="Thresholds determine when you start repaying"
+      title="What Bank of England base rate do you expect?"
+      subtitle="Plan 1 &amp; 4 interest is the lesser of RPI or base rate + 1%"
       direction={direction}
     >
       <div className="space-y-6">
         <div className="space-y-3">
           <div className="grid grid-cols-2 grid-rows-2 gap-3">
-            {THRESHOLD_GROWTH_OPTIONS.map((option) => (
+            {BOE_BASE_RATE_OPTIONS.map((option) => (
               <OptionCard
                 key={option.label}
                 label={option.label}
                 sublabel={option.description}
-                isSelected={thresholdGrowthRate === option.value}
+                isSelected={boeBaseRate === option.value}
                 onClick={() => {
-                  trackThresholdGrowthSelected(option.value);
-                  updateField("thresholdGrowthRate", option.value);
+                  trackBoeBaseRateSelected(option.value);
+                  updateField("boeBaseRate", option.value);
                 }}
               />
             ))}
@@ -65,31 +67,25 @@ export function ThresholdGrowthStep({
                 value={customDisplayValue}
                 onValueChange={(values) => {
                   if (typeof values.floatValue === "number") {
-                    updateField("thresholdGrowthRate", values.floatValue / 100);
-                  } else if (values.value === "" || values.value === "-") {
-                    // Keep current value while user is clearing/typing
+                    updateField("boeBaseRate", values.floatValue);
                   }
                 }}
                 customInput={CustomInput}
-                className="pr-12"
-                allowNegative
-                decimalScale={1}
+                className="pr-8"
+                allowNegative={false}
+                decimalScale={2}
                 inputMode="decimal"
-                placeholder="e.g. 3"
+                placeholder="e.g. 4"
               />
               <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs text-muted-foreground">
-                %/yr
+                %
               </span>
             </div>
           </div>
-
-          <p className="text-xs text-status-warning-foreground">
-            Note: Government has frozen thresholds through 2027.
-          </p>
         </div>
 
         <Button className="w-full" onClick={onNext}>
-          Next
+          {done ? "Done" : "Next"}
         </Button>
       </div>
     </QuestionStep>

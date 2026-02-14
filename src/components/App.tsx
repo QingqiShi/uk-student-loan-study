@@ -1,3 +1,4 @@
+import { AssumptionsCallout } from "./AssumptionsCallout";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { HeroSection } from "./HeroSection";
@@ -17,6 +18,8 @@ function App() {
         <HeroSection />
 
         <SecondaryCharts />
+
+        <AssumptionsCallout />
 
         <ToolLinks />
       </main>

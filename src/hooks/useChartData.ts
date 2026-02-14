@@ -4,6 +4,8 @@ import {
   useCurrentSalary,
   useSalaryGrowthRate,
   useThresholdGrowthRate,
+  useRpiRate,
+  useBoeBaseRate,
 } from "./useStoreSelectors";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import type {
@@ -52,12 +54,16 @@ export function useTotalRepaymentData() {
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const rpiRate = useRpiRate();
+  const boeBaseRate = useBoeBaseRate();
 
   const payload: SalarySeriesPayload = {
     type: "SALARY_SERIES",
     loans: config.loans,
     salaryGrowthRate,
     thresholdGrowthRate,
+    rpiRate,
+    boeBaseRate,
   };
 
   const result = useSimulationWorker(payload);
@@ -79,6 +85,8 @@ export function useBalanceOverTimeData(): {
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const rpiRate = useRpiRate();
+  const boeBaseRate = useBoeBaseRate();
 
   const payload: BalanceSeriesPayload = {
     type: "BALANCE_SERIES",
@@ -86,6 +94,8 @@ export function useBalanceOverTimeData(): {
     annualSalary: salary,
     salaryGrowthRate,
     thresholdGrowthRate,
+    rpiRate,
+    boeBaseRate,
   };
 
   const result = useSimulationWorker(payload);

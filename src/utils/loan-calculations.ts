@@ -27,9 +27,10 @@ import { CURRENT_RATES } from "@/lib/loans/plans";
 export function generateSalaryDataSeries(
   loans: Loan[],
   mapper: SimulationMapper,
-  rpiRate = CURRENT_RATES.rpi,
+  rpiRate: number = CURRENT_RATES.rpi,
   salaryGrowthRate = 0,
   thresholdGrowthRate = 0,
+  boeBaseRate: number = CURRENT_RATES.boeBaseRate,
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
@@ -41,6 +42,7 @@ export function generateSalaryDataSeries(
       rpiRate,
       salaryGrowthRate,
       thresholdGrowthRate,
+      boeBaseRate,
     });
 
     // Convert to SimulationResult for mapper compatibility
@@ -80,9 +82,10 @@ export interface BalanceTimeSeriesResult {
 export function generateBalanceTimeSeries(
   loans: Loan[],
   annualSalary: number,
-  rpiRate = CURRENT_RATES.rpi,
+  rpiRate: number = CURRENT_RATES.rpi,
   salaryGrowthRate = 0,
   thresholdGrowthRate = 0,
+  boeBaseRate: number = CURRENT_RATES.boeBaseRate,
 ): BalanceTimeSeriesResult {
   if (loans.length === 0 || loans.every((loan) => loan.balance <= 0)) {
     return { data: [], writeOffMonth: null };
@@ -95,6 +98,7 @@ export function generateBalanceTimeSeries(
     rpiRate,
     salaryGrowthRate,
     thresholdGrowthRate,
+    boeBaseRate,
   });
 
   const data: BalanceDataPoint[] = [];

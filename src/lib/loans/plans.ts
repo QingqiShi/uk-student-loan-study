@@ -43,7 +43,7 @@ export const PLAN_CONFIGS = {
  */
 export const CURRENT_RATES = {
   rpi: 3.2, // Sept 2025 - Aug 2026
-  boeBaseRate: 4.0,
+  boeBaseRate: 3.75, // Feb 2026 MPC decision
 } as const;
 
 /**

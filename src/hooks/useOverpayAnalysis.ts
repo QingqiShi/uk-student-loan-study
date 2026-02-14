@@ -53,6 +53,8 @@ export function useOverpayAnalysis(
     monthlyOverpayment,
     salaryGrowthRate,
     thresholdGrowthRate,
+    rpiRate,
+    boeBaseRate,
     lumpSumPayment,
   } = useOverpayConfig();
 
@@ -66,6 +68,8 @@ export function useOverpayAnalysis(
       monthlyOverpayment,
       salaryGrowthRate,
       thresholdGrowthRate,
+      rpiRate,
+      boeBaseRate,
       lumpSumPayment,
     },
   };

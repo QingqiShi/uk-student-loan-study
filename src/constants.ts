@@ -40,6 +40,30 @@ export const THRESHOLD_GROWTH_OPTIONS: {
   { value: 0.04, label: "4%", description: "Above-inflation growth" },
 ];
 
+/** RPI rate options for the assumptions wizard (percentage format, e.g. 3.2 = 3.2%) */
+export const RPI_OPTIONS: {
+  value: number;
+  label: string;
+  description: string;
+}[] = [
+  { value: 0, label: "0%", description: "No inflation" },
+  { value: 2, label: "2%", description: "BoE target level" },
+  { value: 3.2, label: "3.2%", description: "Current rate (Sept 2025)" },
+  { value: 5, label: "5%", description: "High inflation scenario" },
+];
+
+/** BOE base rate options for the assumptions wizard (percentage format, e.g. 3.75 = 3.75%) */
+export const BOE_BASE_RATE_OPTIONS: {
+  value: number;
+  label: string;
+  description: string;
+}[] = [
+  { value: 2, label: "2%", description: "Low rate environment" },
+  { value: 3, label: "3%", description: "Rate-cutting cycle" },
+  { value: 3.75, label: "3.75%", description: "Current rate (Feb 2026)" },
+  { value: 5.25, label: "5.25%", description: "2023 peak rate" },
+];
+
 // Formatters for chart display
 export const currencyFormatter = new Intl.NumberFormat("en-GB", {
   style: "currency",

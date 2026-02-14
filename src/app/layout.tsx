@@ -3,6 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Manrope, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import type { Metadata } from "next";
+import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
@@ -146,7 +147,9 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
-          <LoanProvider>{children}</LoanProvider>
+          <LoanProvider>
+            <AssumptionsWizardProvider>{children}</AssumptionsWizardProvider>
+          </LoanProvider>
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

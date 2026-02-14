@@ -1,16 +1,13 @@
 "use client";
 
-import type { AssumptionsWizardStep } from "./wizard/wizardReducer";
 import type { PlanType } from "@/lib/loans/types";
 import type { Preset } from "@/lib/presets";
 import { ConfigSummary } from "@/components/ConfigSummary";
 import { LoanConfigPanel } from "@/components/LoanConfigPanel";
-import { AssumptionsWizard } from "@/components/wizard/AssumptionsWizard";
 
 export type InputMode =
   | { view: "summary" }
-  | { view: "loan-config"; initialPlanTypes?: PlanType[] }
-  | { view: "assumptions-wizard"; entryStep?: AssumptionsWizardStep };
+  | { view: "loan-config"; initialPlanTypes?: PlanType[] };
 
 interface InputPanelProps {
   hasPersonalized: boolean;
@@ -18,7 +15,6 @@ interface InputPanelProps {
   onPersonalise: () => void;
   onPresetApplied: (preset: Preset) => void;
   onWizardComplete: () => void;
-  onAssumptionsComplete: () => void;
   onWizardClose: () => void;
 }
 
@@ -28,7 +24,6 @@ export function InputPanel({
   onPersonalise,
   onPresetApplied,
   onWizardComplete,
-  onAssumptionsComplete,
   onWizardClose,
 }: InputPanelProps) {
   if (mode.view === "loan-config") {
@@ -44,23 +39,6 @@ export function InputPanel({
           initialPlanTypes={mode.initialPlanTypes}
           onComplete={onWizardComplete}
           onClose={onWizardClose}
-        />
-      </div>
-    );
-  }
-
-  if (mode.view === "assumptions-wizard") {
-    return (
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Adjust assumptions"
-        className="fixed inset-0 z-50 overflow-y-auto"
-      >
-        <AssumptionsWizard
-          onComplete={onAssumptionsComplete}
-          onClose={onWizardClose}
-          entryStep={mode.entryStep}
         />
       </div>
     );

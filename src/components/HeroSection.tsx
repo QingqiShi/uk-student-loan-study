@@ -50,19 +50,9 @@ export function HeroSection() {
     setMode({ view: "loan-config" });
   }
 
-  function handleOpenAssumptions() {
-    trackWizardStarted("assumptions");
-    setMode({ view: "assumptions-wizard" });
-  }
-
   function handleWizardComplete() {
     trackWizardCompleted("loan");
     setHasPersonalized(true);
-    setMode({ view: "summary" });
-  }
-
-  function handleAssumptionsComplete() {
-    trackWizardCompleted("assumptions");
     setMode({ view: "summary" });
   }
 
@@ -114,13 +104,12 @@ export function HeroSection() {
         onPersonalise={handlePersonalise}
         onPresetApplied={handlePresetApplied}
         onWizardComplete={handleWizardComplete}
-        onAssumptionsComplete={handleAssumptionsComplete}
         onWizardClose={handleWizardClose}
       />
 
       <div className="space-y-4">
         <ResultSummary />
-        <SalaryExplorer onOpenAssumptions={handleOpenAssumptions} />
+        <SalaryExplorer />
       </div>
     </section>
   );

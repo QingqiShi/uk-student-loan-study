@@ -38,6 +38,8 @@ interface OverpayConfig {
   monthlyOverpayment: number;
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  rpiRate: number;
+  boeBaseRate: number;
   lumpSumPayment: number;
 }
 
@@ -53,14 +55,29 @@ export function useThresholdGrowthRate(): number {
   return thresholdGrowthRate;
 }
 
+/** Select RPI rate for simulation */
+export function useRpiRate(): number {
+  const { rpiRate } = useLoanConfigState();
+  return rpiRate;
+}
+
+/** Select BOE base rate for simulation */
+export function useBoeBaseRate(): number {
+  const { boeBaseRate } = useLoanConfigState();
+  return boeBaseRate;
+}
+
 /** Select overpay analysis configuration */
 export function useOverpayConfig(): OverpayConfig {
   const { monthlyOverpayment, lumpSumPayment } = useLoanFrequentState();
-  const { salaryGrowthRate, thresholdGrowthRate } = useLoanConfigState();
+  const { salaryGrowthRate, thresholdGrowthRate, rpiRate, boeBaseRate } =
+    useLoanConfigState();
   return {
     monthlyOverpayment,
     salaryGrowthRate,
     thresholdGrowthRate,
+    rpiRate,
+    boeBaseRate,
     lumpSumPayment,
   };
 }

@@ -4,6 +4,8 @@ import {
   useCurrentSalary,
   useSalaryGrowthRate,
   useThresholdGrowthRate,
+  useRpiRate,
+  useBoeBaseRate,
 } from "./useStoreSelectors";
 import type {
   InsightSummary,
@@ -19,6 +21,8 @@ export function useResultSummary(): InsightSummary | null {
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const rpiRate = useRpiRate();
+  const boeBaseRate = useBoeBaseRate();
 
   const payload: InsightPayload = {
     type: "INSIGHT",
@@ -26,6 +30,8 @@ export function useResultSummary(): InsightSummary | null {
     loans: config.loans,
     salaryGrowthRate,
     thresholdGrowthRate,
+    rpiRate,
+    boeBaseRate,
   };
 
   const result = useSimulationWorker(payload);

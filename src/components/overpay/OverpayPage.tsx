@@ -15,6 +15,7 @@ import { Header } from "@/components/Header";
 import { InputPanel } from "@/components/InputPanel";
 import { PlanFromQuery } from "@/components/PlanFromQuery";
 import { SALARY_GROWTH_OPTIONS } from "@/constants";
+import { useAssumptionsWizard } from "@/context/AssumptionsWizardContext";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
 import {
@@ -34,6 +35,7 @@ export function OverpayPage() {
   const [hasPersonalized, setHasPersonalized] = useState(false);
   const { applyPreset } = useLoanActions();
   const config = useLoanConfigState();
+  const { openAssumptions } = useAssumptionsWizard();
 
   const growthLabel =
     SALARY_GROWTH_OPTIONS.find((o) => o.value === config.salaryGrowthRate)
@@ -65,19 +67,9 @@ export function OverpayPage() {
     setMode({ view: "loan-config" });
   }
 
-  function handleOpenAssumptions() {
-    trackWizardStarted("assumptions");
-    setMode({ view: "assumptions-wizard" });
-  }
-
   function handleWizardComplete() {
     trackWizardCompleted("loan");
     setHasPersonalized(true);
-    setMode({ view: "summary" });
-  }
-
-  function handleAssumptionsComplete() {
-    trackWizardCompleted("assumptions");
     setMode({ view: "summary" });
   }
 
@@ -124,7 +116,6 @@ export function OverpayPage() {
           onPersonalise={handlePersonalise}
           onPresetApplied={handlePresetApplied}
           onWizardComplete={handleWizardComplete}
-          onAssumptionsComplete={handleAssumptionsComplete}
           onWizardClose={handleWizardClose}
         />
 
@@ -149,7 +140,9 @@ export function OverpayPage() {
 
         <button
           type="button"
-          onClick={handleOpenAssumptions}
+          onClick={() => {
+            openAssumptions();
+          }}
           className="text-sm text-primary underline-offset-4 hover:underline"
           aria-label="Edit growth assumptions"
         >
