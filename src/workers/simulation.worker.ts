@@ -39,6 +39,8 @@ export interface SalarySeriesPayload {
   loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  rpiRate: number;
+  boeBaseRate: number;
 }
 
 export interface BalanceSeriesPayload {
@@ -47,6 +49,8 @@ export interface BalanceSeriesPayload {
   annualSalary: number;
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  rpiRate: number;
+  boeBaseRate: number;
 }
 
 export interface OverpayAnalysisPayload {
@@ -62,6 +66,8 @@ export interface InsightPayload {
   loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  rpiRate: number;
+  boeBaseRate: number;
 }
 
 export type WorkerPayload =
@@ -108,9 +114,10 @@ function handleSalarySeries(payload: SalarySeriesPayload): DataPoint[] {
   return generateSalaryDataSeries(
     payload.loans,
     (r) => r.totalRepayment,
-    undefined,
+    payload.rpiRate,
     payload.salaryGrowthRate,
     payload.thresholdGrowthRate,
+    payload.boeBaseRate,
   );
 }
 
@@ -120,9 +127,10 @@ function handleBalanceSeries(
   return generateBalanceTimeSeries(
     payload.loans,
     payload.annualSalary,
-    undefined,
+    payload.rpiRate,
     payload.salaryGrowthRate,
     payload.thresholdGrowthRate,
+    payload.boeBaseRate,
   );
 }
 
@@ -159,6 +167,8 @@ function handleInsight(payload: InsightPayload): {
     monthsElapsed: 0,
     salaryGrowthRate: payload.salaryGrowthRate,
     thresholdGrowthRate: payload.thresholdGrowthRate,
+    rpiRate: payload.rpiRate,
+    boeBaseRate: payload.boeBaseRate,
   });
 
   const summary: InsightSummary = {

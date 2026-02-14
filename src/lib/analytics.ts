@@ -16,6 +16,14 @@ export function trackThresholdGrowthSelected(rate: number) {
   track("threshold_growth_selected", { rate });
 }
 
+export function trackRpiRateSelected(rate: number) {
+  track("rpi_rate_selected", { rate });
+}
+
+export function trackBoeBaseRateSelected(rate: number) {
+  track("boe_base_rate_selected", { rate });
+}
+
 export function trackPresetApplied(preset: string) {
   track("preset_applied", { preset });
 }

@@ -6,6 +6,7 @@ import {
   resetAction,
   applyPresetAction,
 } from "./loanReducer";
+import { CURRENT_RATES } from "@/lib/loans/plans";
 import { PRESETS } from "@/lib/presets";
 
 describe("loanReducer", () => {
@@ -15,6 +16,14 @@ describe("loanReducer", () => {
         { planType: "PLAN_2", balance: 45_000 },
       ]);
       expect(initialState.salary).toBe(40_000);
+    });
+
+    it("should have rpiRate equal to CURRENT_RATES.rpi", () => {
+      expect(initialState.rpiRate).toBe(CURRENT_RATES.rpi);
+    });
+
+    it("should have boeBaseRate equal to CURRENT_RATES.boeBaseRate", () => {
+      expect(initialState.boeBaseRate).toBe(CURRENT_RATES.boeBaseRate);
     });
   });
 
@@ -30,6 +39,18 @@ describe("loanReducer", () => {
       const action = updateFieldAction("salary", 45_000);
       const newState = loanReducer(initialState, action);
       expect(newState.salary).toBe(45_000);
+    });
+
+    it("should update rpiRate", () => {
+      const action = updateFieldAction("rpiRate", 5.0);
+      const newState = loanReducer(initialState, action);
+      expect(newState.rpiRate).toBe(5.0);
+    });
+
+    it("should update boeBaseRate", () => {
+      const action = updateFieldAction("boeBaseRate", 4.5);
+      const newState = loanReducer(initialState, action);
+      expect(newState.boeBaseRate).toBe(4.5);
     });
 
     it("should not mutate the original state", () => {
@@ -66,6 +87,20 @@ describe("loanReducer", () => {
       expect(newState.salary).toBe(80_000);
       expect(newState.loans).toEqual([{ planType: "PLAN_5", balance: 50_000 }]);
     });
+
+    it("should preserve custom rpiRate and boeBaseRate when applying preset", () => {
+      let state = loanReducer(initialState, updateFieldAction("rpiRate", 6.0));
+      state = loanReducer(state, updateFieldAction("boeBaseRate", 5.5));
+
+      const preset = PRESETS.find((p) => p.id === "plan5-grad");
+      expect(preset).toBeDefined();
+      const newState = loanReducer(
+        state,
+        applyPresetAction(preset as (typeof PRESETS)[number]),
+      );
+      expect(newState.rpiRate).toBe(6.0);
+      expect(newState.boeBaseRate).toBe(5.5);
+    });
   });
 
   describe("RESET action", () => {
@@ -88,6 +123,15 @@ describe("loanReducer", () => {
         { planType: "PLAN_2", balance: 45_000 },
       ]);
       expect(resetState.salary).toBe(40_000);
+    });
+
+    it("should restore rpiRate and boeBaseRate to initial values", () => {
+      let state = loanReducer(initialState, updateFieldAction("rpiRate", 7.0));
+      state = loanReducer(state, updateFieldAction("boeBaseRate", 6.0));
+
+      const resetState = loanReducer(state, resetAction());
+      expect(resetState.rpiRate).toBe(CURRENT_RATES.rpi);
+      expect(resetState.boeBaseRate).toBe(CURRENT_RATES.boeBaseRate);
     });
   });
 });

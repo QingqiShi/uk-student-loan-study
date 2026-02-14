@@ -1,5 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { generateSalaryDataSeries } from "./loan-calculations";
+import {
+  generateSalaryDataSeries,
+  generateBalanceTimeSeries,
+} from "./loan-calculations";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import type { Loan } from "@/lib/loans/types";
 
@@ -118,5 +121,96 @@ describe("integration: chart data generation", () => {
     const firstYears = data[0].value;
     const lastYears = data[data.length - 1].value;
     expect(lastYears).toBeLessThanOrEqual(firstYears + 5); // Some tolerance
+  });
+});
+
+describe("generateSalaryDataSeries: rpiRate and boeBaseRate", () => {
+  it("different RPI rates produce different total repayment", () => {
+    const loans: Loan[] = [{ planType: "PLAN_2", balance: 50000 }];
+
+    const dataLowRpi = generateSalaryDataSeries(
+      loans,
+      (r) => r.totalRepayment,
+      0,
+    );
+    const dataHighRpi = generateSalaryDataSeries(
+      loans,
+      (r) => r.totalRepayment,
+      5,
+    );
+
+    // Compare at a mid-range salary point
+    const midIndex = Math.floor(dataLowRpi.length / 2);
+    expect(dataLowRpi[midIndex].value).not.toBe(dataHighRpi[midIndex].value);
+  });
+
+  it("different BOE base rates produce different results for Plan 1", () => {
+    const loans: Loan[] = [{ planType: "PLAN_1", balance: 30000 }];
+
+    const dataLowBoe = generateSalaryDataSeries(
+      loans,
+      (r) => r.totalRepayment,
+      undefined,
+      0,
+      0,
+      2,
+    );
+    const dataHighBoe = generateSalaryDataSeries(
+      loans,
+      (r) => r.totalRepayment,
+      undefined,
+      0,
+      0,
+      5,
+    );
+
+    const midIndex = Math.floor(dataLowBoe.length / 2);
+    expect(dataLowBoe[midIndex].value).not.toBe(dataHighBoe[midIndex].value);
+  });
+
+  it("default values work without explicit rpiRate or boeBaseRate", () => {
+    const loans: Loan[] = [{ planType: "PLAN_2", balance: 50000 }];
+
+    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
+
+    expect(data.length).toBeGreaterThan(0);
+    data.forEach(({ value }) => {
+      expect(typeof value).toBe("number");
+    });
+  });
+});
+
+describe("generateBalanceTimeSeries", () => {
+  it("returns data points for a valid loan", () => {
+    const loans: Loan[] = [{ planType: "PLAN_2", balance: 50000 }];
+
+    const { data } = generateBalanceTimeSeries(loans, 45000);
+
+    expect(data.length).toBeGreaterThan(0);
+    expect(data[0].month).toBe(0);
+    expect(data[0].balance).toBe(50000);
+  });
+
+  it("returns empty data for empty loans", () => {
+    const { data, writeOffMonth } = generateBalanceTimeSeries([], 45000);
+
+    expect(data).toHaveLength(0);
+    expect(writeOffMonth).toBeNull();
+  });
+
+  it("different RPI rates produce different balance trajectories", () => {
+    const loans: Loan[] = [{ planType: "PLAN_2", balance: 50000 }];
+
+    const resultLowRpi = generateBalanceTimeSeries(loans, 45000, 0);
+    const resultHighRpi = generateBalanceTimeSeries(loans, 45000, 5);
+
+    // Both should have data
+    expect(resultLowRpi.data.length).toBeGreaterThan(1);
+    expect(resultHighRpi.data.length).toBeGreaterThan(1);
+
+    // Compare balance at second data point (first yearly snapshot)
+    expect(resultLowRpi.data[1].balance).not.toBe(
+      resultHighRpi.data[1].balance,
+    );
   });
 });

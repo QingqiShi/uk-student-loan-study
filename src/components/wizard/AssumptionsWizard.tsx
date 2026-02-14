@@ -1,22 +1,25 @@
 "use client";
 
 import { useReducer } from "react";
+import { BoeBaseRateStep } from "./BoeBaseRateStep";
 import { LivePreview } from "./LivePreview";
+import { RpiStep } from "./RpiStep";
 import { SalaryGrowthStep } from "./SalaryGrowthStep";
 import { ThresholdGrowthStep } from "./ThresholdGrowthStep";
 import {
   createWizardReducer,
-  ASSUMPTIONS_STEP_ORDER,
+  ALL_ASSUMPTIONS_STEPS,
+  getNextStep,
+  isLastStep,
   initialAssumptionsWizardState,
 } from "./wizardReducer";
 import type { AssumptionsWizardStep } from "./wizardReducer";
 import { QuizProgress } from "@/components/quiz/QuizProgress";
+import { useLoanConfigState } from "@/context/LoanContext";
 import { trackWizardStepViewed, trackWizardBackClicked } from "@/lib/analytics";
 
-const assumptionsReducer = createWizardReducer(
-  ASSUMPTIONS_STEP_ORDER,
-  initialAssumptionsWizardState,
-);
+/** BOE base rate only affects Plan 1 & Plan 4 interest */
+const BOE_RELEVANT_PLANS = new Set(["PLAN_1", "PLAN_4"]);
 
 interface AssumptionsWizardProps {
   onComplete: () => void;
@@ -29,15 +32,27 @@ export function AssumptionsWizard({
   onClose,
   entryStep,
 }: AssumptionsWizardProps) {
+  const { loans } = useLoanConfigState();
+
+  const hasBoeRelevantLoan = loans.some((l) =>
+    BOE_RELEVANT_PLANS.has(l.planType),
+  );
+
+  const stepOrder = ALL_ASSUMPTIONS_STEPS.filter(
+    (step) => step !== "boe-base-rate" || hasBoeRelevantLoan,
+  );
+
+  const reducer = createWizardReducer(stepOrder, initialAssumptionsWizardState);
+
   const [state, dispatch] = useReducer(
-    assumptionsReducer,
+    reducer,
     entryStep
       ? { currentStep: entryStep, direction: "forward" as const }
       : initialAssumptionsWizardState,
   );
 
   const { currentStep, direction } = state;
-  const stepIndex = ASSUMPTIONS_STEP_ORDER.indexOf(currentStep);
+  const stepIndex = stepOrder.indexOf(currentStep);
 
   function goToStep(step: AssumptionsWizardStep) {
     trackWizardStepViewed("assumptions", step);
@@ -49,22 +64,33 @@ export function AssumptionsWizard({
     dispatch({ type: "GO_BACK" });
   }
 
-  const canGoBack = currentStep !== "salary-growth";
+  function advance() {
+    const next = getNextStep(currentStep, stepOrder);
+    if (next) {
+      goToStep(next);
+    } else {
+      onComplete();
+    }
+  }
+
+  const canGoBack = currentStep !== stepOrder[0];
+  const lastStep = isLastStep(currentStep, stepOrder);
 
   function renderStep() {
     switch (currentStep) {
       case "salary-growth":
-        return (
-          <SalaryGrowthStep
-            direction={direction}
-            onNext={() => {
-              goToStep("threshold-growth");
-            }}
-          />
-        );
+        return <SalaryGrowthStep direction={direction} onNext={advance} />;
       case "threshold-growth":
+        return <ThresholdGrowthStep direction={direction} onNext={advance} />;
+      case "rpi":
+        return lastStep ? (
+          <RpiStep direction={direction} onNext={onComplete} done />
+        ) : (
+          <RpiStep direction={direction} onNext={advance} />
+        );
+      case "boe-base-rate":
         return (
-          <ThresholdGrowthStep direction={direction} onComplete={onComplete} />
+          <BoeBaseRateStep direction={direction} onNext={onComplete} done />
         );
     }
   }
@@ -73,7 +99,7 @@ export function AssumptionsWizard({
     <div className="flex min-h-dvh flex-col bg-background">
       <QuizProgress
         currentStep={stepIndex}
-        totalSteps={ASSUMPTIONS_STEP_ORDER.length}
+        totalSteps={stepOrder.length}
         onBack={canGoBack ? goBack : undefined}
         onClose={onClose}
       />

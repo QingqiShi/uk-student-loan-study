@@ -16,6 +16,10 @@ export interface LoanState {
   salaryGrowthRate: number;
   /** Expected threshold growth rate as decimal (e.g., 0.02 = 2%) */
   thresholdGrowthRate: number;
+  /** RPI rate as percentage (e.g., 3.2 = 3.2%), matching CURRENT_RATES format */
+  rpiRate: number;
+  /** BOE base rate as percentage (e.g., 3.75 = 3.75%), matching CURRENT_RATES format */
+  boeBaseRate: number;
   /** One-off lump sum payment in GBP */
   lumpSumPayment: number;
 

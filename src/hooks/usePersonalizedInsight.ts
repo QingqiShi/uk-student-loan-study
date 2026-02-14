@@ -4,6 +4,8 @@ import {
   useCurrentSalary,
   useSalaryGrowthRate,
   useThresholdGrowthRate,
+  useRpiRate,
+  useBoeBaseRate,
 } from "./useStoreSelectors";
 import type { Insight } from "@/utils/insights";
 import type { InsightPayload } from "@/workers/simulation.worker";
@@ -17,6 +19,8 @@ export function usePersonalizedInsight(): Insight | null {
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const rpiRate = useRpiRate();
+  const boeBaseRate = useBoeBaseRate();
 
   const payload: InsightPayload = {
     type: "INSIGHT",
@@ -24,6 +28,8 @@ export function usePersonalizedInsight(): Insight | null {
     loans: config.loans,
     salaryGrowthRate,
     thresholdGrowthRate,
+    rpiRate,
+    boeBaseRate,
   };
 
   const result = useSimulationWorker(payload);

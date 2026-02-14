@@ -17,6 +17,7 @@ import {
   SALARY_GROWTH_OPTIONS,
   currencyFormatter,
 } from "@/constants";
+import { useAssumptionsWizard } from "@/context/AssumptionsWizardContext";
 import {
   useLoanFrequentState,
   useLoanConfigState,
@@ -25,11 +26,8 @@ import {
 import { useResultSummary } from "@/hooks/useResultSummary";
 import { trackSalaryChanged } from "@/lib/analytics";
 
-interface SalaryExplorerProps {
-  onOpenAssumptions: () => void;
-}
-
-export function SalaryExplorer({ onOpenAssumptions }: SalaryExplorerProps) {
+export function SalaryExplorer() {
+  const { openAssumptions } = useAssumptionsWizard();
   const { salary } = useLoanFrequentState();
   const { salaryGrowthRate } = useLoanConfigState();
   const { updateField } = useLoanActions();
@@ -98,7 +96,7 @@ export function SalaryExplorer({ onOpenAssumptions }: SalaryExplorerProps) {
               type="button"
               onClick={() => {
                 setPopoverOpen(false);
-                onOpenAssumptions();
+                openAssumptions();
               }}
               className="w-full rounded-md px-2 py-1.5 text-left text-sm text-primary hover:bg-accent"
             >

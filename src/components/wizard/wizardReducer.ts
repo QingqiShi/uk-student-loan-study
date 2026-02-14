@@ -1,4 +1,8 @@
-export type AssumptionsWizardStep = "salary-growth" | "threshold-growth";
+export type AssumptionsWizardStep =
+  | "salary-growth"
+  | "threshold-growth"
+  | "rpi"
+  | "boe-base-rate";
 
 type WizardDirection = "forward" | "backward";
 
@@ -12,9 +16,12 @@ type WizardAction<S extends string = AssumptionsWizardStep> =
   | { type: "GO_BACK" }
   | { type: "RESTART" };
 
-export const ASSUMPTIONS_STEP_ORDER: AssumptionsWizardStep[] = [
+/** All possible assumption steps in order. Filter at runtime based on loan config. */
+export const ALL_ASSUMPTIONS_STEPS: AssumptionsWizardStep[] = [
   "salary-growth",
   "threshold-growth",
+  "rpi",
+  "boe-base-rate",
 ];
 
 function getPreviousStep<S extends string>(
@@ -23,6 +30,21 @@ function getPreviousStep<S extends string>(
 ): S | undefined {
   const index = stepOrder.indexOf(current);
   return index > 0 ? stepOrder[index - 1] : undefined;
+}
+
+export function getNextStep<S extends string>(
+  current: S,
+  stepOrder: S[],
+): S | undefined {
+  const index = stepOrder.indexOf(current);
+  return index < stepOrder.length - 1 ? stepOrder[index + 1] : undefined;
+}
+
+export function isLastStep<S extends string>(
+  current: S,
+  stepOrder: S[],
+): boolean {
+  return stepOrder.indexOf(current) === stepOrder.length - 1;
 }
 
 export const initialAssumptionsWizardState: WizardState = {
