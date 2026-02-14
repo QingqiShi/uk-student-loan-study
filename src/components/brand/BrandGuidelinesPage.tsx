@@ -1,6 +1,4 @@
-import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import Link from "next/link";
+import { Breadcrumb } from "../Breadcrumb";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
 import { BrandIcon, BRAND_HEX } from "./BrandIcon";
@@ -81,13 +79,9 @@ export function BrandGuidelinesPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 md:px-6 md:py-8">
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <HugeiconsIcon icon={ArrowLeft01Icon} className="size-4" />
-          Back to Calculator
-        </Link>
+        <div className="mb-8">
+          <Breadcrumb currentTitle="Brand Guidelines" />
+        </div>
 
         {/* Header */}
         <header className="mb-12">

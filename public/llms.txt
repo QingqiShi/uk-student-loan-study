@@ -12,6 +12,16 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Which Plan Quiz](https://studentloanstudy.uk/which-plan): Find your loan plan in 3 questions
 - [Overpay Calculator](https://studentloanstudy.uk/overpay): Should you overpay or invest?
 
+## Guides
+
+- [All Guides](https://studentloanstudy.uk/guides): Index page listing all student loan guides
+- [Plan 2 vs Plan 5](https://studentloanstudy.uk/guides/plan-2-vs-plan-5): Compare thresholds, interest rates, and total repayments between Plan 2 and Plan 5
+- [How Interest Works](https://studentloanstudy.uk/guides/how-interest-works): Understand the sliding scale for Plan 2, RPI-only for Plan 5, and why balances grow
+- [Student Loan & Mortgage](https://studentloanstudy.uk/guides/student-loan-vs-mortgage): How student loan repayments affect mortgage affordability and borrowing capacity
+- [Pay Upfront or Take Loan?](https://studentloanstudy.uk/guides/pay-upfront-or-take-loan): Should parents pay tuition upfront or let their child take the loan?
+- [Moving Abroad](https://studentloanstudy.uk/guides/moving-abroad): What happens to your student loan if you leave the UK
+- [Self-Employment](https://studentloanstudy.uk/guides/self-employment): How repayments work through Self Assessment for freelancers
+
 ## Key Facts
 
 - UK student loans support multiple plan types: Plan 1, Plan 2, Plan 4, Plan 5, and Postgraduate Loans

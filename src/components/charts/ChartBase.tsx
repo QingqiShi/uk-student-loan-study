@@ -25,7 +25,7 @@ export interface ChartAnnotationConfig {
   y?: number;
   label: string;
   color?: string;
-  labelPosition?: "insideTop" | "insideTopLeft" | "insideTopRight";
+  labelAnchor?: "start" | "end";
   strokeDasharray?: string;
 }
 
@@ -186,13 +186,25 @@ export function ChartBase({
             tickMargin={8}
             {...(yLabel
               ? {
-                  label: {
-                    value: yLabel,
-                    angle: -90,
-                    position: "left" as const,
-                    offset: 10,
-                    className: "fill-muted-foreground text-xs",
-                  },
+                  label: ({
+                    viewBox,
+                  }: {
+                    viewBox: {
+                      x: number;
+                      y: number;
+                      height: number;
+                    };
+                  }) => (
+                    <text
+                      x={viewBox.x - 10}
+                      y={viewBox.y + viewBox.height / 2}
+                      transform={`rotate(-90, ${String(viewBox.x - 10)}, ${String(viewBox.y + viewBox.height / 2)})`}
+                      textAnchor="middle"
+                      className="fill-muted-foreground text-xs"
+                    >
+                      {yLabel}
+                    </text>
+                  ),
                 }
               : {})}
           />
@@ -304,14 +316,29 @@ export function ChartBase({
                 stroke={annotation.color ?? "var(--muted-foreground)"}
                 strokeWidth={1.5}
                 strokeDasharray={annotation.strokeDasharray ?? "6 4"}
-                label={{
-                  value: annotation.label,
-                  position: annotation.labelPosition ?? "insideTop",
-                  fill: annotation.color ?? "var(--muted-foreground)",
-                  fontSize: 11,
-                  fontWeight: 500,
-                  dy: -25,
-                }}
+                label={
+                  annotation.labelAnchor
+                    ? ({ viewBox }: { viewBox: { x: number; y: number } }) => (
+                        <text
+                          x={viewBox.x}
+                          y={viewBox.y - 20}
+                          fill={annotation.color ?? "var(--muted-foreground)"}
+                          fontSize={11}
+                          fontWeight={500}
+                          textAnchor={annotation.labelAnchor}
+                        >
+                          <tspan dy="0.355em">{annotation.label}</tspan>
+                        </text>
+                      )
+                    : {
+                        value: annotation.label,
+                        position: "insideTop" as const,
+                        fill: annotation.color ?? "var(--muted-foreground)",
+                        fontSize: 11,
+                        fontWeight: 500,
+                        dy: -25,
+                      }
+                }
               />
             ))}
           {!showCrosshair &&

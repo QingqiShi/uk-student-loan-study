@@ -1,8 +1,5 @@
 "use client";
 
-import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
 import { OverpayPrimaryInputs } from "./OverpayPrimaryInputs";
@@ -11,6 +8,7 @@ import { OverpayVerdict } from "./OverpayVerdict";
 import type { InputMode } from "@/components/InputPanel";
 import type { Preset } from "@/lib/presets";
 import { AssumptionsCallout } from "@/components/AssumptionsCallout";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { InputPanel } from "@/components/InputPanel";
@@ -81,13 +79,7 @@ export function OverpayPage() {
         className="mx-auto w-full max-w-4xl flex-1 space-y-6 overflow-x-hidden px-3 pt-13 pb-6 md:pb-8"
       >
         <div className="space-y-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <HugeiconsIcon icon={ArrowLeft01Icon} className="size-4" />
-            Back to Calculator
-          </Link>
+          <Breadcrumb currentTitle="Overpay Calculator" />
 
           <div className="space-y-2">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
