@@ -4,6 +4,7 @@ import {
   decodeParamsToState,
   generateShareUrl,
   generateShareText,
+  ASSUMPTION_PARAMS,
 } from "./shareUrl";
 import type { LoanState } from "@/types/store";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
@@ -16,8 +17,11 @@ const mockState: LoanState = {
   salary: 65000,
   monthlyOverpayment: 200,
   salaryGrowthRate: 0.04,
-  thresholdGrowthRate: 0,
+  thresholdGrowthRate: 0.02,
+  rpiRate: 3.2,
+  boeBaseRate: 3.75,
   lumpSumPayment: 10000,
+  pendingQuizPlanTypes: null,
 };
 
 describe("encodeStateToParams", () => {
@@ -50,11 +54,19 @@ describe("encodeStateToParams", () => {
     }
   });
 
+  it.each(ASSUMPTION_PARAMS)(
+    "always includes assumption field $urlParam",
+    (field) => {
+      const params = encodeStateToParams(mockState);
+      const expected = mockState[field.stateKey] as number;
+      expect(params.get(field.urlParam)).toBe(String(expected));
+    },
+  );
+
   it("excludes overpay fields by default", () => {
     const params = encodeStateToParams(mockState);
 
     expect(params.get("ovp")).toBeNull();
-    expect(params.get("sgr")).toBeNull();
     expect(params.get("lsp")).toBeNull();
     expect(params.get("repy")).toBeNull();
   });
@@ -66,7 +78,6 @@ describe("encodeStateToParams", () => {
     });
 
     expect(params.get("ovp")).toBe("200");
-    expect(params.get("sgr")).toBe("0.04");
     expect(params.get("lsp")).toBe("10000");
     expect(params.get("repy")).toBe("2018");
   });
@@ -77,7 +88,6 @@ describe("encodeStateToParams", () => {
     });
 
     expect(params.get("ovp")).toBe("200");
-    expect(params.get("sgr")).toBe("0.04");
     expect(params.get("lsp")).toBe("10000");
     expect(params.get("repy")).toBeNull();
   });
@@ -220,15 +230,45 @@ describe("decodeParamsToState", () => {
     }
   });
 
-  it("accepts arbitrary salaryGrowthRate values", () => {
-    // Negative (salary decline)
-    const paramsNegative = new URLSearchParams("sgr=-0.1");
-    expect(decodeParamsToState(paramsNegative).salaryGrowthRate).toBe(-0.1);
+  it.each(ASSUMPTION_PARAMS)("decodes $urlParam to $stateKey", (field) => {
+    const testValue = field.stateKey === "salaryGrowthRate" ? "0.04" : "3.5";
+    const params = new URLSearchParams(`${field.urlParam}=${testValue}`);
+    const state = decodeParamsToState(params);
 
-    // High growth
-    const paramsHigh = new URLSearchParams("sgr=0.5");
-    expect(decodeParamsToState(paramsHigh).salaryGrowthRate).toBe(0.5);
+    expect(state[field.stateKey as keyof typeof state]).toBe(
+      parseFloat(testValue),
+    );
   });
+
+  it.each(ASSUMPTION_PARAMS)(
+    "does not clamp $urlParam — accepts negative values",
+    (field) => {
+      const params = new URLSearchParams(`${field.urlParam}=-5`);
+      const state = decodeParamsToState(params);
+
+      expect(state[field.stateKey as keyof typeof state]).toBe(-5);
+    },
+  );
+
+  it.each(ASSUMPTION_PARAMS)(
+    "does not clamp $urlParam — accepts large values",
+    (field) => {
+      const params = new URLSearchParams(`${field.urlParam}=999`);
+      const state = decodeParamsToState(params);
+
+      expect(state[field.stateKey as keyof typeof state]).toBe(999);
+    },
+  );
+
+  it.each(ASSUMPTION_PARAMS.filter((f) => !f.legacyMapping))(
+    "ignores non-numeric value for $urlParam",
+    (field) => {
+      const params = new URLSearchParams(`${field.urlParam}=abc`);
+      const state = decodeParamsToState(params);
+
+      expect(state[field.stateKey as keyof typeof state]).toBeUndefined();
+    },
+  );
 
   it("clamps overpayment below minimum to 0", () => {
     const params = new URLSearchParams("ovp=-100");
@@ -281,6 +321,11 @@ describe("round-trip encoding/decoding", () => {
 
     expect(decoded.loans).toEqual(mockState.loans);
     expect(decoded.salary).toBe(mockState.salary);
+    for (const field of ASSUMPTION_PARAMS) {
+      expect(decoded[field.stateKey as keyof typeof decoded]).toBe(
+        mockState[field.stateKey],
+      );
+    }
   });
 
   it("round-trips for all plan types", () => {
@@ -418,7 +463,7 @@ describe("generateShareUrl", () => {
     vi.unstubAllGlobals();
   });
 
-  it("excludes overpay fields when on root path", () => {
+  it("excludes overpay fields but includes assumption fields when on root path", () => {
     const mockLocation = {
       pathname: "/",
       origin: "https://example.com",
@@ -434,10 +479,16 @@ describe("generateShareUrl", () => {
 
     const url = generateShareUrl(mockState, { repaymentYear: 2018 });
 
+    // Overpay fields excluded
     expect(url).not.toContain("ovp=");
-    expect(url).not.toContain("sgr=");
     expect(url).not.toContain("lsp=");
     expect(url).not.toContain("repy=");
+
+    // Assumption fields always included
+    expect(url).toContain("sgr=");
+    expect(url).toContain("tgr=");
+    expect(url).toContain("rpi=");
+    expect(url).toContain("boe=");
 
     vi.unstubAllGlobals();
   });
