@@ -24,7 +24,7 @@ import {
   trackWizardRestarted,
   trackWizardStarted,
 } from "@/lib/analytics";
-import { REPAYMENT_START_MONTH } from "@/lib/presets";
+import { isPresetConfig, REPAYMENT_START_MONTH } from "@/lib/presets";
 
 export function OverpayPage() {
   const [repaymentDate, setRepaymentDate] = useState<Date>(
@@ -32,9 +32,9 @@ export function OverpayPage() {
   );
   const analysis = useOverpayAnalysis(repaymentDate);
   const [mode, setMode] = useState<InputMode>({ view: "summary" });
-  const [hasPersonalized, setHasPersonalized] = useState(false);
   const { applyPreset } = useLoanActions();
   const config = useLoanConfigState();
+  const hasPersonalized = !isPresetConfig(config.loans);
   const { openAssumptions } = useAssumptionsWizard();
 
   const growthLabel =
@@ -69,7 +69,6 @@ export function OverpayPage() {
 
   function handleWizardComplete() {
     trackWizardCompleted("loan");
-    setHasPersonalized(true);
     setMode({ view: "summary" });
   }
 

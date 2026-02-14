@@ -44,6 +44,20 @@ export const PRESETS: Preset[] = [
 
 export const DEFAULT_PRESET_ID = "plan2-grad";
 
+/** Returns true if the given loans exactly match any preset configuration. */
+export function isPresetConfig(loans: Loan[]): boolean {
+  return PRESETS.some(
+    (p) =>
+      p.loans.length === loans.length &&
+      p.loans.every(
+        (pl, i) =>
+          loans[i] &&
+          pl.planType === loans[i].planType &&
+          pl.balance === loans[i].balance,
+      ),
+  );
+}
+
 /** April is when UK student loan repayments typically start (0-indexed month) */
 export const REPAYMENT_START_MONTH = 3;
 

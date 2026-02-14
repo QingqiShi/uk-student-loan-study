@@ -13,10 +13,12 @@ import {
   trackWizardRestarted,
   trackWizardStarted,
 } from "@/lib/analytics";
+import { isPresetConfig } from "@/lib/presets";
 
 export function HeroSection() {
   const { applyPreset, updateField } = useLoanActions();
-  const { pendingQuizPlanTypes } = useLoanConfigState();
+  const config = useLoanConfigState();
+  const { pendingQuizPlanTypes } = config;
 
   const [mode, setMode] = useState<InputMode>(() => {
     if (pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0) {
@@ -24,7 +26,7 @@ export function HeroSection() {
     }
     return { view: "summary" };
   });
-  const [hasPersonalized, setHasPersonalized] = useState(false);
+  const hasPersonalized = !isPresetConfig(config.loans);
 
   useEffect(() => {
     if (pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0) {
@@ -52,7 +54,6 @@ export function HeroSection() {
 
   function handleWizardComplete() {
     trackWizardCompleted("loan");
-    setHasPersonalized(true);
     setMode({ view: "summary" });
   }
 
