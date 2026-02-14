@@ -105,6 +105,12 @@ export const POSTGRADUATE_DISPLAY_INFO = {
   repaymentRate: PLAN_CONFIGS.POSTGRADUATE.repaymentRate,
 } as const;
 
+/**
+ * Maximum tuition fee per year (England).
+ * Update when the government changes the cap.
+ */
+export const TUITION_FEE_CAP = 9_250;
+
 // =============================================================================
 // END OF ANNUAL UPDATE SECTION
 // =============================================================================
