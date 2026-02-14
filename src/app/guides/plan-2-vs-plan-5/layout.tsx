@@ -5,7 +5,7 @@ import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 export const metadata: Metadata = {
   title: "Plan 2 vs Plan 5: Which Student Loan Is Better?",
   description:
-    "Compare UK student loan Plan 2 and Plan 5 side by side. See how thresholds, interest rates, and write-off periods affect what you actually repay.",
+    "Plan 5 has lower interest but a longer repayment window. Plan 2 can cost more — or get written off sooner. See which one hits your wallet harder at your salary.",
   keywords: [
     "Plan 2 vs Plan 5",
     "UK student loan comparison",

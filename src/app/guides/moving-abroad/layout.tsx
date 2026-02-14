@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "What Happens to Your Student Loan If You Move Abroad?",
   description:
-    "Find out how UK student loan repayments work when you move overseas. Learn about SLC obligations, country-specific thresholds, and penalties for non-compliance.",
+    "Moving overseas doesn't make your student loan disappear — the SLC will find you. Here's what they expect, what the penalties look like, and how repayment thresholds change by country.",
   keywords: [
     "student loan abroad",
     "SLC overseas",

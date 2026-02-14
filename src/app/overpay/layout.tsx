@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Should I Overpay My Student Loan?",
   description:
-    "Calculate whether overpaying your UK student loan is worth it. Compare overpayment vs investing and see the best strategy for Plan 2, Plan 5, and Postgraduate loans.",
+    "That spare cash could overpay your loan or grow in an index fund. See which one leaves you better off — the answer depends on your salary trajectory, not just the interest rate.",
   keywords: [
     "UK student loan overpayment",
     "should I overpay student loan",

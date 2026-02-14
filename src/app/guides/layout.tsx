@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Student Loan Guides",
+  title: "Student Loan Guides — The Stuff They Don't Tell You",
   description:
-    "In-depth guides on UK student loan repayment. Understand plan differences, interest rates, mortgage impact, self-employment, and more.",
+    "The real questions graduates ask: Will my loan affect my mortgage? Should I overpay? What if I move abroad? Clear answers with interactive charts, not jargon.",
   keywords: [
     "UK student loan guides",
     "student loan repayment guide",

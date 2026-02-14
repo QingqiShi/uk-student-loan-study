@@ -5,7 +5,7 @@ import { PLAN_CONFIGS } from "@/lib/loans/plans";
 export const metadata: Metadata = {
   title: "Does Your Student Loan Affect Your Mortgage?",
   description:
-    "Understand how UK student loan repayments reduce your mortgage borrowing power. See monthly repayment impact by salary for Plan 2 and Plan 5.",
+    "Yes — and it's not about the balance. Lenders care about your monthly repayment, which quietly shrinks how much you can borrow. See the exact impact at your salary.",
   keywords: [
     "student loan mortgage",
     "mortgage affordability student loan",
