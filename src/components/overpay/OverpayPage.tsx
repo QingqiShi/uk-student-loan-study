@@ -10,12 +10,11 @@ import { OverpaySummaryCards } from "./OverpaySummaryCards";
 import { OverpayVerdict } from "./OverpayVerdict";
 import type { InputMode } from "@/components/InputPanel";
 import type { Preset } from "@/lib/presets";
+import { AssumptionsCallout } from "@/components/AssumptionsCallout";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { InputPanel } from "@/components/InputPanel";
 import { PlanFromQuery } from "@/components/PlanFromQuery";
-import { SALARY_GROWTH_OPTIONS } from "@/constants";
-import { useAssumptionsWizard } from "@/context/AssumptionsWizardContext";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
 import {
@@ -35,15 +34,6 @@ export function OverpayPage() {
   const { applyPreset } = useLoanActions();
   const config = useLoanConfigState();
   const hasPersonalized = !isPresetConfig(config.loans);
-  const { openAssumptions } = useAssumptionsWizard();
-
-  const growthLabel =
-    SALARY_GROWTH_OPTIONS.find((o) => o.value === config.salaryGrowthRate)
-      ?.label ?? `${(config.salaryGrowthRate * 100).toFixed(0)}%`;
-  const thresholdInfo =
-    config.thresholdGrowthRate === 0
-      ? "Frozen thresholds"
-      : `+${(config.thresholdGrowthRate * 100).toFixed(0)}%/yr threshold`;
 
   useEffect(() => {
     if (mode.view !== "summary") {
@@ -137,17 +127,7 @@ export function OverpayPage() {
           onRepaymentDateChange={setRepaymentDate}
         />
 
-        <button
-          type="button"
-          onClick={() => {
-            openAssumptions();
-          }}
-          className="text-sm text-primary underline-offset-4 hover:underline"
-          aria-label="Edit growth assumptions"
-        >
-          Assuming {growthLabel} salary growth, {thresholdInfo.toLowerCase()}{" "}
-          &rarr;
-        </button>
+        <AssumptionsCallout />
       </main>
       <Footer />
     </div>
