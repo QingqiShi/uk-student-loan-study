@@ -1,7 +1,7 @@
-import { cleanup, render, renderHook, screen } from "@testing-library/react";
+import { render, renderHook, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ReactNode } from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   AssumptionsWizardProvider,
   useAssumptionsWizard,
@@ -56,10 +56,6 @@ function renderWithProviders(ui: ReactNode) {
 // --- Tests ---
 
 describe("AssumptionsWizardContext", () => {
-  afterEach(() => {
-    cleanup();
-  });
-
   beforeEach(() => {
     vi.clearAllMocks();
     document.body.style.overflow = "";

@@ -1,5 +1,6 @@
 import * as matchers from "@testing-library/jest-dom/matchers";
-import { expect, vi } from "vitest";
+import { cleanup } from "@testing-library/react";
+import { afterEach, expect, vi } from "vitest";
 import type {
   WorkerMessage,
   WorkerResultType,
@@ -13,6 +14,10 @@ import {
 } from "@/utils/loan-calculations";
 
 expect.extend(matchers);
+
+afterEach(() => {
+  cleanup();
+});
 
 /**
  * Mock Worker class for testing.
