@@ -2,6 +2,7 @@
 
 import { ChartBase } from "./charts/ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useBalanceOverTimeData } from "@/hooks/useChartData";
 
@@ -22,8 +23,12 @@ export function BalanceOverTimeChart() {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center text-muted-foreground">
-        Enter loan details to see your balance over time
+      <div
+        className="flex h-full items-center justify-center"
+        role="status"
+        aria-label="Loading chart"
+      >
+        <Skeleton className="h-[80%] w-[90%]" />
       </div>
     );
   }

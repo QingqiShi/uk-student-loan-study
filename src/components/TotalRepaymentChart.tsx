@@ -3,6 +3,7 @@
 import { useDeferredValue } from "react";
 import { ChartBase } from "./charts/ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter, MIN_SALARY, MAX_SALARY } from "@/constants";
 import { useTotalRepaymentData } from "@/hooks/useChartData";
 
@@ -21,6 +22,18 @@ export function TotalRepaymentChart() {
   // but the annotation position does, and re-rendering the chart is expensive.
   const deferredSalary = useDeferredValue(annotationSalary);
   const deferredValue = useDeferredValue(annotationValue);
+
+  if (data.length === 0) {
+    return (
+      <div
+        className="flex h-full items-center justify-center"
+        role="status"
+        aria-label="Loading chart"
+      >
+        <Skeleton className="h-[80%] w-[90%]" />
+      </div>
+    );
+  }
 
   const annotations =
     deferredSalary !== undefined && deferredValue !== undefined

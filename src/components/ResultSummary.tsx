@@ -9,6 +9,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import type { InsightType } from "@/utils/insights";
+import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { usePersonalizedInsight } from "@/hooks/usePersonalizedInsight";
 import { useResultSummary } from "@/hooks/useResultSummary";
@@ -44,11 +45,43 @@ const insightConfig: Record<
 
 const pluralRules = new Intl.PluralRules("en-GB");
 
+function StatBlockSkeleton() {
+  return (
+    <div>
+      <Skeleton className="h-4 w-20" />
+      <Skeleton className="mt-0.5 h-7 w-24 min-[30rem]:h-8" />
+    </div>
+  );
+}
+
 export function ResultSummary() {
   const summary = useResultSummary();
   const insight = usePersonalizedInsight();
 
-  if (!summary) return null;
+  if (!summary) {
+    return (
+      <div
+        className="relative overflow-hidden rounded-2xl border border-border bg-card"
+        role="status"
+        aria-label="Loading results"
+      >
+        <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:items-center min-[30rem]:p-5">
+          <div className="col-span-2 pb-3 min-[30rem]:col-span-1 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:pr-5 min-[30rem]:pb-0">
+            <StatBlockSkeleton />
+          </div>
+          <div className="border-t border-border py-3 pr-4 min-[30rem]:border-t-0 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:px-5 min-[30rem]:py-0">
+            <StatBlockSkeleton />
+          </div>
+          <div className="border-t border-border py-3 pl-4 min-[30rem]:border-t-0 min-[30rem]:py-0 min-[30rem]:pl-5">
+            <StatBlockSkeleton />
+          </div>
+        </div>
+        <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5 sm:min-h-21.5 lg:min-h-16.5">
+          <Skeleton className="h-4 w-full max-w-md" />
+        </div>
+      </div>
+    );
+  }
 
   const years = summary.monthsToPayoff / 12;
   const rounded = Math.max(1, Math.round(years));
@@ -106,7 +139,7 @@ export function ResultSummary() {
 
       {/* Personalized insight footer — fixed min-h to prevent layout shift */}
       <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5 sm:min-h-21.5 lg:min-h-16.5">
-        {insight && (
+        {insight ? (
           <>
             <HugeiconsIcon
               icon={insightConfig[insight.type].icon}
@@ -136,6 +169,8 @@ export function ResultSummary() {
               )}
             </div>
           </>
+        ) : (
+          <Skeleton className="h-4 w-full max-w-md" />
         )}
       </div>
     </div>
