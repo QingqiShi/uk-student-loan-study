@@ -70,6 +70,11 @@ export default tseslint.config(
       ],
       // Disable line wrapping - causes React hydration mismatches with SSR
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",
+      // Allow theme-scoping class names used in brand demos
+      "better-tailwindcss/no-unknown-classes": [
+        "error",
+        { ignore: ["dark", "light"] },
+      ],
     },
   },
   {

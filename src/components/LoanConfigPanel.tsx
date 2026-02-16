@@ -238,9 +238,12 @@ export function LoanConfigPanel({
           <div className="overflow-hidden">
             <div className="border-t border-border/50 px-4 pt-3 pb-4">
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-xs font-medium text-muted-foreground">
+                <label
+                  htmlFor={`balance-${planType}`}
+                  className="text-xs font-medium text-muted-foreground"
+                >
                   {info.name} balance
-                </span>
+                </label>
                 <BalanceHelper />
               </div>
               <CurrencyInput

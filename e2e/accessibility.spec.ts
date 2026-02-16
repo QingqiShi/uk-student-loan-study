@@ -1,17 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
 import { type Page, test, expect } from "@playwright/test";
 
-// Pre-existing violations tracked separately — these rules are excluded so
-// the e2e suite catches *new* regressions without failing on known issues.
-const DISABLED_RULES = [
-  "color-contrast", // Multiple elements have insufficient contrast (tracked)
-  "label", // Some balance inputs in wizard lack explicit labels (tracked)
-];
-
 function axeScan(page: Page) {
-  return new AxeBuilder({ page })
-    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-    .disableRules(DISABLED_RULES);
+  return new AxeBuilder({ page }).withTags([
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+  ]);
 }
 
 test.describe("Accessibility", () => {

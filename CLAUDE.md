@@ -51,7 +51,15 @@ When updating design tokens (CSS variables, color tokens, etc.), always propagat
 
 ## Tailwind CSS
 
+**No arbitrary values.** Always use standard Tailwind utility classes for sizing, spacing, typography, border radius, tracking, etc. Never introduce arbitrary values like `text-[13px]`, `rounded-[10px]`, or `tracking-[2px]` — use the closest standard token (`text-sm`, `rounded-lg`, `tracking-widest`). This applies to all properties, not just breakpoints.
+
 Use built-in Tailwind breakpoints (`sm`, `md`, `lg`, `xl`, `2xl`) for responsive design. Do not introduce arbitrary breakpoint values like `min-[58rem]` — stick with the standard set for consistency. The only exception is `min-[30rem]` which is already established in the codebase for the mobile-to-tablet transition.
+
+## Brand Colors & Theme Scoping
+
+**Brand green:** `#2B7F55` — used as `--primary` in light mode, in `BRAND_HEX.green` (`src/components/brand/BrandIcon.tsx`), `icon.svg`, and `scripts/generate-social-images.mjs`. When changing the brand color, update ALL of these locations.
+
+**Theme scoping with `dark` / `light` classes:** The CSS defines `:root, .light { ... }` and `.dark { ... }` blocks. Adding `class="dark"` or `class="light"` to a container scopes all CSS variables for that subtree, useful for brand demos that need to show both themes regardless of the current page theme (see `BrandGuidelinesPage.tsx`).
 
 ## Code Quality Rules
 
