@@ -45,7 +45,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
     <div className="-mx-4 flex snap-x scroll-pl-4 gap-3 overflow-x-auto px-4 py-1 sm:mx-0 sm:grid sm:scroll-pl-0 sm:grid-cols-3 sm:p-1 md:grid-cols-1 md:overflow-visible">
       <Card
         size="sm"
-        className={`min-w-[200px] shrink-0 snap-start sm:min-w-0 sm:shrink ${getCardClassName()}`}
+        className={`min-w-50 shrink-0 snap-start sm:min-w-0 sm:shrink ${getCardClassName()}`}
       >
         <CardHeader>
           <CardTitle className="text-sm font-normal text-muted-foreground">
@@ -76,7 +76,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
 
       <Card
         size="sm"
-        className="min-w-[200px] shrink-0 snap-start sm:min-w-0 sm:shrink"
+        className="min-w-50 shrink-0 snap-start sm:min-w-0 sm:shrink"
       >
         <CardHeader>
           <CardTitle className="text-sm font-normal text-muted-foreground">
@@ -109,7 +109,7 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
 
       <Card
         size="sm"
-        className="min-w-[200px] shrink-0 snap-start sm:min-w-0 sm:shrink"
+        className="min-w-50 shrink-0 snap-start sm:min-w-0 sm:shrink"
       >
         <CardHeader>
           <CardTitle className="text-sm font-normal text-muted-foreground">

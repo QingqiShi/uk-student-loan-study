@@ -95,7 +95,7 @@ export function MortgageGuide() {
             <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
               Monthly Repayment by Salary
             </h2>
-            <div className="h-[300px] sm:h-[360px]">
+            <div className="h-75 sm:h-90">
               <RepaymentImpactChart />
             </div>
             <p className="text-sm text-muted-foreground">

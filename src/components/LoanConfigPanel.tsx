@@ -186,7 +186,7 @@ export function LoanConfigPanel({
           className={cn(
             "flex w-full items-center gap-3 px-4 py-3.5 text-left",
             "hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none",
-            isSelected ? "rounded-t-[10px]" : "rounded-[10px]",
+            isSelected ? "rounded-t-xl" : "rounded-xl",
           )}
         >
           {/* Checkbox */}

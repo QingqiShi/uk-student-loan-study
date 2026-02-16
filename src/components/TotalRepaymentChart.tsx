@@ -30,7 +30,7 @@ export function TotalRepaymentChart() {
         role="status"
         aria-label="Loading chart"
       >
-        <Skeleton className="h-[80%] w-[90%]" />
+        <Skeleton className="h-full w-full" />
       </div>
     );
   }
