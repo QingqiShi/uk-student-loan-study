@@ -48,9 +48,7 @@ export function SalaryGrowthBadge() {
           />
         }
       >
-        <span className="text-xs text-muted-foreground/70">
-          +{growthLabel}/yr
-        </span>
+        <span className="text-xs text-muted-foreground">+{growthLabel}/yr</span>
         <HugeiconsIcon icon={InformationCircleIcon} className="size-4" />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-64 p-3">

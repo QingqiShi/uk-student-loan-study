@@ -85,7 +85,7 @@ export function BrandGuidelinesPage() {
 
         {/* Header */}
         <header className="mb-12">
-          <h1 className="font-display text-[32px] font-bold text-foreground">
+          <h1 className="font-display text-3xl font-bold text-foreground">
             Brand Guidelines
           </h1>
           <p className="mt-2 font-display text-base text-muted-foreground">
@@ -101,17 +101,15 @@ export function BrandGuidelinesPage() {
           <div className="grid gap-8 md:grid-cols-2">
             {/* Dark background */}
             <div className="flex flex-col gap-4">
-              <span className="text-[10px] text-muted-foreground">On Dark</span>
-              <Card className="flex items-center justify-center bg-zinc-900 p-8 dark:bg-zinc-900">
+              <span className="text-xs text-muted-foreground">On Dark</span>
+              <Card className="dark flex items-center justify-center p-8">
                 <BrandLogo variant="dark" />
               </Card>
             </div>
             {/* Light background */}
             <div className="flex flex-col gap-4">
-              <span className="text-[10px] text-muted-foreground">
-                On Light
-              </span>
-              <Card className="flex items-center justify-center bg-white p-8 dark:bg-white">
+              <span className="text-xs text-muted-foreground">On Light</span>
+              <Card className="light flex items-center justify-center p-8">
                 <BrandLogo variant="light" />
               </Card>
             </div>
@@ -124,9 +122,7 @@ export function BrandGuidelinesPage() {
             {ICON_SIZES.map((size) => (
               <div key={size} className="flex flex-col items-center gap-2">
                 <BrandIcon size={size} />
-                <span className="text-[10px] text-muted-foreground">
-                  {size}px
-                </span>
+                <span className="text-xs text-muted-foreground">{size}px</span>
               </div>
             ))}
           </div>
@@ -156,14 +152,14 @@ export function BrandGuidelinesPage() {
                 {CORE_TOKENS.map((token) => (
                   <div key={token.var} className="flex flex-col gap-3">
                     <div
-                      className="h-14 w-full rounded-[10px] ring-1 ring-border"
+                      className="h-14 w-full rounded-lg ring-1 ring-border"
                       style={{ backgroundColor: `var(${token.var})` }}
                     />
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-display text-[13px] font-semibold text-foreground">
+                      <span className="font-display text-sm font-semibold text-foreground">
                         {token.name}
                       </span>
-                      <span className="font-mono text-[10px] text-muted-foreground">
+                      <span className="font-mono text-xs text-muted-foreground">
                         {token.var}
                       </span>
                     </div>
@@ -178,7 +174,7 @@ export function BrandGuidelinesPage() {
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {STATUS_GROUPS.map((group) => (
                   <div key={group.name} className="space-y-3">
-                    <span className="font-display text-[13px] font-semibold text-foreground">
+                    <span className="font-display text-sm font-semibold text-foreground">
                       {group.name}
                     </span>
                     <div className="grid grid-cols-3 gap-2">
@@ -188,7 +184,7 @@ export function BrandGuidelinesPage() {
                             className="h-10 w-full rounded-md ring-1 ring-border"
                             style={{ backgroundColor: `var(${token.var})` }}
                           />
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {token.label}
                           </span>
                         </div>
@@ -206,14 +202,14 @@ export function BrandGuidelinesPage() {
                 {CHART_TOKENS.map((token) => (
                   <div key={token.var} className="flex flex-col gap-3">
                     <div
-                      className="h-14 w-full rounded-[10px] ring-1 ring-border"
+                      className="h-14 w-full rounded-lg ring-1 ring-border"
                       style={{ backgroundColor: `var(${token.var})` }}
                     />
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-display text-[13px] font-semibold text-foreground">
+                      <span className="font-display text-sm font-semibold text-foreground">
                         {token.name}
                       </span>
-                      <span className="font-mono text-[10px] text-muted-foreground">
+                      <span className="font-mono text-xs text-muted-foreground">
                         {token.var}
                       </span>
                     </div>
@@ -253,7 +249,7 @@ export function BrandGuidelinesPage() {
             {LOGO_ANATOMY.map((point, index) => (
               <li key={index} className="flex items-start gap-3">
                 <span className="mt-1.5 size-1.5 shrink-0 rounded-sm bg-primary" />
-                <span className="text-[13px] leading-relaxed text-muted-foreground">
+                <span className="text-sm/relaxed text-muted-foreground">
                   {point}
                 </span>
               </li>
@@ -275,7 +271,7 @@ function Section({
 }) {
   return (
     <section className="mb-12">
-      <h2 className="mb-6 text-[11px] font-bold tracking-[2px] text-primary uppercase">
+      <h2 className="mb-6 text-xs font-bold tracking-widest text-primary uppercase">
         {title}
       </h2>
       {children}
@@ -285,7 +281,7 @@ function Section({
 
 function SubgroupLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mb-4 block text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+    <span className="mb-4 block text-xs font-medium tracking-wider text-muted-foreground uppercase">
       {children}
     </span>
   );
@@ -295,11 +291,11 @@ function ColorSwatch({ name, hex }: { name: string; hex: string }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="h-20 w-full rounded-[10px] ring-1 ring-border"
+        className="h-20 w-full rounded-lg ring-1 ring-border"
         style={{ backgroundColor: hex }}
       />
       <div className="flex flex-col gap-0.5">
-        <span className="font-display text-[13px] font-semibold text-foreground">
+        <span className="font-display text-sm font-semibold text-foreground">
           {name}
         </span>
         <span className="font-mono text-xs text-muted-foreground">{hex}</span>
@@ -334,7 +330,7 @@ function FontShowcase({
           {name}
         </span>
         <span className="text-xs text-muted-foreground">{usage}</span>
-        <span className="text-[11px] text-muted-foreground/70">{weights}</span>
+        <span className="text-xs text-muted-foreground">{weights}</span>
       </div>
     </div>
   );

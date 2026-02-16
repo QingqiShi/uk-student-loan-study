@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const NAV_LINK_CLASS =
-  "text-muted-foreground/70 transition-colors hover:text-foreground";
+  "text-muted-foreground transition-colors hover:text-foreground";
 
 export function Footer() {
   return (
@@ -12,7 +12,7 @@ export function Footer() {
           className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3"
         >
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground/50 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
               Calculators
             </h3>
             <ul className="space-y-2">
@@ -34,7 +34,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground/50 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
               Learn
             </h3>
             <ul className="space-y-2">
@@ -62,7 +62,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="col-span-2 space-y-3 sm:col-span-1">
-            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground/50 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
               About
             </h3>
             <ul className="space-y-2">
@@ -76,7 +76,7 @@ export function Footer() {
         </nav>
 
         <div className="mt-8 border-t pt-6">
-          <p className="text-center text-xs text-muted-foreground/60 sm:text-sm">
+          <p className="text-center text-xs text-muted-foreground sm:text-sm">
             This calculator is for illustrative purposes only and does not
             constitute financial advice. Calculations are based on current UK
             student loan rules and may change. For personalised guidance,

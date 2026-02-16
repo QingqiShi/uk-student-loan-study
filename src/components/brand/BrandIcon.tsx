@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 /** Brand hex constants — the two fixed colors used in the icon and logo. */
 export const BRAND_HEX = {
-  green: "#0D9668",
+  green: "#2B7F55",
   emerald: "#34D399",
 } as const;
 

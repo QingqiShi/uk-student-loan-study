@@ -15,7 +15,7 @@ const HEIGHT = 630;
 const EMERALD_300 = "#6EE7B7";
 const EMERALD_400 = "#34D399";
 const EMERALD_500 = "#10B981";
-const EMERALD_600 = "#0D9668";
+const EMERALD_600 = "#2B7F55";
 
 // Icon settings
 const ICON_SIZE = 100;
