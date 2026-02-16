@@ -19,8 +19,11 @@ next-env.d.ts
 # TypeScript
 *.tsbuildinfo
 
-# Playwright CLI
+# Playwright
 .playwright-cli
+test-results/
+playwright-report/
+.playwright/
 
 # Editor directories and files
 .vscode/*

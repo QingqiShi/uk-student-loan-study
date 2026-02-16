@@ -73,6 +73,16 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["node_modules", ".next", "out"],
+    ignores: [
+      "node_modules",
+      ".next",
+      "out",
+      "coverage",
+      "dist",
+      "playwright-report",
+      "test-results",
+      "scripts",
+      "**/*.{js,mjs}",
+    ],
   },
 );
