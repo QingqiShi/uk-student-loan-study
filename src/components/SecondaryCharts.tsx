@@ -7,7 +7,7 @@ export function SecondaryCharts() {
         <h2 className="text-sm font-medium text-muted-foreground">
           Your Balance Over Time
         </h2>
-        <div className="h-[300px] sm:h-[350px]">
+        <div className="h-75 sm:h-88">
           <BalanceOverTimeChart />
         </div>
       </section>

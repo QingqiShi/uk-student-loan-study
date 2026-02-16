@@ -31,12 +31,12 @@ export function SalaryExplorer() {
         </div>
       </div>
 
-      <div className="h-[300px] sm:h-[400px] lg:h-[450px]">
+      <div className="h-75 sm:h-100 lg:h-112">
         <TotalRepaymentChart />
       </div>
 
       {/* Padding aligns slider track with chart plot area (25px margin + ~60px YAxis) */}
-      <div className="-mt-1 pr-[25px] pl-[85px]">
+      <div className="-mt-1 pr-6 pl-21">
         <Slider
           value={salary}
           min={MIN_SALARY}

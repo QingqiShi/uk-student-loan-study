@@ -70,7 +70,7 @@ export function HeroSection() {
   return (
     <section className="space-y-6">
       <div className="space-y-2">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
           Student Loans Hurt{" "}
           <span className="text-primary">Middle Earners</span> Most
         </h1>

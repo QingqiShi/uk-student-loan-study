@@ -25,7 +25,7 @@ export function AdvancedConfigSection() {
           const newState = !isOpen;
           setIsOpen(newState);
         }}
-        className="flex w-full items-center justify-between rounded-lg py-2.5 text-left text-sm font-medium transition-all hover:underline focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+        className="flex w-full items-center justify-between rounded-lg py-2.5 text-left text-sm font-medium transition-all hover:underline focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
         aria-expanded={isOpen}
         aria-controls="advanced-config-content"
       >

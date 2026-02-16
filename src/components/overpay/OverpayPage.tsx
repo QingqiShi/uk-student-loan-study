@@ -31,14 +31,14 @@ function OverpayPageSkeleton() {
       <Skeleton className="h-28 w-full rounded-lg" />
 
       {/* Chart + cards grid skeleton */}
-      <div className="grid gap-6 md:grid-cols-[1fr_260px]">
-        <div className="h-[260px] min-w-0 sm:h-[300px] md:h-auto md:min-h-[300px]">
+      <div className="grid gap-6 md:flex">
+        <div className="h-65 min-w-0 sm:h-75 md:h-auto md:min-h-75 md:flex-1">
           <Skeleton className="h-full w-full" />
         </div>
-        <div className="-mx-4 flex gap-3 px-4 py-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:p-1 md:grid-cols-1">
-          <Skeleton className="h-36 min-w-[200px] shrink-0 sm:min-w-0" />
-          <Skeleton className="h-36 min-w-[200px] shrink-0 sm:min-w-0" />
-          <Skeleton className="h-36 min-w-[200px] shrink-0 sm:min-w-0" />
+        <div className="-mx-4 flex gap-3 px-4 py-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:p-1 md:w-65 md:shrink-0 md:grid-cols-1">
+          <Skeleton className="h-36 min-w-50 shrink-0 sm:min-w-0" />
+          <Skeleton className="h-36 min-w-50 shrink-0 sm:min-w-0" />
+          <Skeleton className="h-36 min-w-50 shrink-0 sm:min-w-0" />
         </div>
       </div>
     </>
@@ -129,11 +129,11 @@ export function OverpayPage() {
               reason={analysis.recommendationReason}
             />
 
-            <div className="grid gap-6 md:grid-cols-[1fr_260px]">
-              <div className="h-[260px] min-w-0 sm:h-[300px] md:h-auto md:min-h-[300px]">
+            <div className="grid gap-6 md:flex">
+              <div className="h-65 min-w-0 sm:h-75 md:h-auto md:min-h-75 md:flex-1">
                 <OverpayComparisonChart analysis={analysis} />
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 md:w-65 md:shrink-0">
                 <OverpaySummaryCards analysis={analysis} />
               </div>
             </div>

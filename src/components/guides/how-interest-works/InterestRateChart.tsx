@@ -68,7 +68,7 @@ export function InterestRateChart() {
   const data = buildChartData();
 
   return (
-    <div className="h-[300px] sm:h-[360px]">
+    <div className="h-75 sm:h-90">
       <ChartBase
         type="line"
         data={data}

@@ -61,7 +61,7 @@ export function Plan2VsPlan5Guide() {
               {"\u00a0"}
               {formatGBP(EXAMPLE_BALANCE)}.
             </p>
-            <div className="h-[300px] sm:h-[380px]">
+            <div className="h-75 sm:h-95">
               <TotalRepaymentBySalaryChart />
             </div>
           </section>
@@ -75,7 +75,7 @@ export function Plan2VsPlan5Guide() {
               between salary levels to see how income affects the repayment
               trajectory for each plan.
             </p>
-            <div className="h-[340px] sm:h-[420px]">
+            <div className="h-85 sm:h-105">
               <BalanceComparisonChart />
             </div>
           </section>

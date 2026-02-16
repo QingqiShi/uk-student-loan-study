@@ -103,7 +103,7 @@ export function ResultSummary() {
 
       <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:items-center min-[30rem]:p-5">
         <div className="col-span-2 pb-3 min-[30rem]:col-span-1 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:pr-5 min-[30rem]:pb-0">
-          <p className="text-[0.6875rem] font-medium tracking-widest whitespace-nowrap text-muted-foreground uppercase min-[30rem]:text-xs">
+          <p className="text-xs font-medium tracking-widest whitespace-nowrap text-muted-foreground uppercase">
             Total repayment
           </p>
           <p className="mt-0.5 font-mono text-xl font-semibold tracking-tight text-primary tabular-nums min-[30rem]:text-2xl">
@@ -112,7 +112,7 @@ export function ResultSummary() {
         </div>
 
         <div className="border-t border-border py-3 pr-4 min-[30rem]:border-t-0 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:px-5 min-[30rem]:py-0">
-          <p className="text-[0.6875rem] font-medium tracking-widest text-muted-foreground uppercase min-[30rem]:text-xs">
+          <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
             Monthly
           </p>
           <p className="mt-0.5 font-mono text-xl font-semibold tabular-nums min-[30rem]:text-2xl">
@@ -124,7 +124,7 @@ export function ResultSummary() {
         </div>
 
         <div className="border-t border-border py-3 pl-4 min-[30rem]:border-t-0 min-[30rem]:py-0 min-[30rem]:pl-5">
-          <p className="text-[0.6875rem] font-medium tracking-widest text-muted-foreground uppercase min-[30rem]:text-xs">
+          <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
             Duration
           </p>
           <p className="mt-0.5 font-mono text-xl font-semibold tabular-nums min-[30rem]:text-2xl">
