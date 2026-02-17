@@ -30,6 +30,8 @@ interface LoanConfigState {
   thresholdGrowthRate: number;
   rpiRate: number;
   boeBaseRate: number;
+  showPresentValue: boolean;
+  discountRate: number;
   pendingQuizPlanTypes: PlanType[] | null;
 }
 
@@ -82,6 +84,8 @@ export function LoanProvider({
     thresholdGrowthRate: state.thresholdGrowthRate,
     rpiRate: state.rpiRate,
     boeBaseRate: state.boeBaseRate,
+    showPresentValue: state.showPresentValue,
+    discountRate: state.discountRate,
     pendingQuizPlanTypes: state.pendingQuizPlanTypes,
   };
 

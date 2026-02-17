@@ -10,17 +10,21 @@ import {
   currencyFormatter,
 } from "@/constants";
 import { useLoanFrequentState, useLoanActions } from "@/context/LoanContext";
+import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 import { trackSalaryChanged } from "@/lib/analytics";
 
 export function SalaryExplorer() {
   const { salary } = useLoanFrequentState();
   const { updateField } = useLoanActions();
+  const showPresentValue = useShowPresentValue();
 
   return (
     <div>
       <div className="mb-2 flex items-baseline justify-between gap-4">
         <h2 className="text-sm font-medium text-muted-foreground">
-          Total repayment
+          {showPresentValue
+            ? "Total repayment (inflation-adjusted)"
+            : "Total repayment"}
         </h2>
         <div className="flex items-center gap-1 text-sm text-muted-foreground">
           Your salary:{" "}

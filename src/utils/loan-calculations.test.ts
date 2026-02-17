@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   generateSalaryDataSeries,
+  generateSalaryDataSeriesPV,
   generateBalanceTimeSeries,
 } from "./loan-calculations";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
@@ -177,6 +178,51 @@ describe("generateSalaryDataSeries: rpiRate and boeBaseRate", () => {
     data.forEach(({ value }) => {
       expect(typeof value).toBe("number");
     });
+  });
+});
+
+describe("generateSalaryDataSeriesPV", () => {
+  const loans: Loan[] = [{ planType: "PLAN_2", balance: 50000 }];
+
+  it("returns correct number of data points", () => {
+    const data = generateSalaryDataSeriesPV(loans, 0.05);
+    const expectedPoints =
+      Math.floor((MAX_SALARY - MIN_SALARY) / SALARY_STEP) + 1;
+
+    expect(data.length).toBe(expectedPoints);
+  });
+
+  it("all PV values are less than or equal to nominal values", () => {
+    const nominalData = generateSalaryDataSeries(
+      loans,
+      (r) => r.totalRepayment,
+    );
+    const pvData = generateSalaryDataSeriesPV(loans, 0.05);
+
+    for (let i = 0; i < nominalData.length; i++) {
+      expect(pvData[i].value).toBeLessThanOrEqual(nominalData[i].value);
+    }
+  });
+
+  it("discountRate 0 produces same values as nominal totalRepayment", () => {
+    const nominalData = generateSalaryDataSeries(
+      loans,
+      (r) => r.totalRepayment,
+    );
+    const pvData = generateSalaryDataSeriesPV(loans, 0);
+
+    for (let i = 0; i < nominalData.length; i++) {
+      expect(pvData[i].value).toBeCloseTo(nominalData[i].value, 2);
+    }
+  });
+
+  it("higher discount rate produces lower values", () => {
+    const lowRate = generateSalaryDataSeriesPV(loans, 0.02);
+    const highRate = generateSalaryDataSeriesPV(loans, 0.1);
+
+    // Compare at a mid-range salary point where repayment > 0
+    const midIndex = Math.floor(lowRate.length / 2);
+    expect(highRate[midIndex].value).toBeLessThan(lowRate[midIndex].value);
   });
 });
 

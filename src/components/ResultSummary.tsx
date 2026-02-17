@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { usePersonalizedInsight } from "@/hooks/usePersonalizedInsight";
 import { useResultSummary } from "@/hooks/useResultSummary";
+import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 const insightConfig: Record<
   InsightType,
@@ -57,6 +58,7 @@ function StatBlockSkeleton() {
 export function ResultSummary() {
   const summary = useResultSummary();
   const insight = usePersonalizedInsight();
+  const showPresentValue = useShowPresentValue();
 
   if (!summary) {
     return (
@@ -103,8 +105,8 @@ export function ResultSummary() {
 
       <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:items-center min-[30rem]:p-5">
         <div className="col-span-2 pb-3 min-[30rem]:col-span-1 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:pr-5 min-[30rem]:pb-0">
-          <p className="text-xs font-medium tracking-widest whitespace-nowrap text-muted-foreground uppercase">
-            Total repayment
+          <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
+            {showPresentValue ? "Total repayment (real)" : "Total repayment"}
           </p>
           <p className="mt-0.5 font-mono text-xl font-semibold tracking-tight text-primary tabular-nums min-[30rem]:text-2xl">
             {currencyFormatter.format(summary.totalPaid)}

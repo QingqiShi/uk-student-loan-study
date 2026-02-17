@@ -15,6 +15,9 @@ export const initialState: LoanState = {
   boeBaseRate: CURRENT_RATES.boeBaseRate, // 3.75% - Feb 2026 MPC
   lumpSumPayment: 10_000,
 
+  showPresentValue: false,
+  discountRate: 0.02, // 2% - CPI target
+
   pendingQuizPlanTypes: null,
 };
 

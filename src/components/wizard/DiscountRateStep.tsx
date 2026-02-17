@@ -5,17 +5,16 @@ import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { RPI_OPTIONS } from "@/constants";
+import { DISCOUNT_RATE_OPTIONS } from "@/constants";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
-import { trackRpiRateSelected } from "@/lib/analytics";
 
-interface RpiStepProps {
+interface DiscountRateStepProps {
   direction: "forward" | "backward";
   onNext: () => void;
   done?: boolean;
 }
 
-const presetValues = new Set(RPI_OPTIONS.map((o) => o.value));
+const presetValues = new Set(DISCOUNT_RATE_OPTIONS.map((o) => o.value));
 
 function CustomInput({
   ref,
@@ -24,40 +23,42 @@ function CustomInput({
   return <Input ref={ref} {...props} />;
 }
 
-export function RpiStep({ direction, onNext, done }: RpiStepProps) {
+export function DiscountRateStep({
+  direction,
+  onNext,
+  done,
+}: DiscountRateStepProps) {
   const { updateField } = useLoanActions();
-  const { rpiRate } = useLoanConfigState();
+  const { discountRate } = useLoanConfigState();
 
-  const isPreset = presetValues.has(rpiRate);
-  const customDisplayValue = isPreset ? "" : rpiRate;
+  const isPreset = presetValues.has(discountRate);
+  const customDisplayValue = isPreset ? "" : discountRate * 100;
 
   return (
     <QuestionStep
-      title="What RPI rate do you expect?"
-      subtitle="Used to set your student loan interest rate each year"
+      title="How fast will prices rise?"
+      subtitle="Unlike RPI, this uses general inflation to show amounts in today's money."
       direction={direction}
     >
       <div className="space-y-6">
         <div className="space-y-3">
-          <div className="grid grid-cols-2 grid-rows-2 gap-3">
-            {RPI_OPTIONS.map((option) => (
+          <div
+            role="radiogroup"
+            aria-label="Discount rate presets"
+            className="grid grid-cols-2 grid-rows-2 gap-3"
+          >
+            {DISCOUNT_RATE_OPTIONS.map((option) => (
               <OptionCard
                 key={option.label}
                 label={option.label}
                 sublabel={option.description}
-                isSelected={rpiRate === option.value}
+                isSelected={discountRate === option.value}
                 onClick={() => {
-                  trackRpiRateSelected(option.value);
-                  updateField("rpiRate", option.value);
+                  updateField("discountRate", option.value);
                 }}
               />
             ))}
           </div>
-
-          <p className="text-xs text-status-warning-foreground">
-            RPI includes housing costs, so it typically runs higher than general
-            inflation (CPI).
-          </p>
 
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-muted-foreground">
@@ -68,7 +69,7 @@ export function RpiStep({ direction, onNext, done }: RpiStepProps) {
                 value={customDisplayValue}
                 onValueChange={(values) => {
                   if (typeof values.floatValue === "number") {
-                    updateField("rpiRate", values.floatValue);
+                    updateField("discountRate", values.floatValue / 100);
                   }
                 }}
                 customInput={CustomInput}
@@ -76,7 +77,8 @@ export function RpiStep({ direction, onNext, done }: RpiStepProps) {
                 allowNegative={false}
                 decimalScale={1}
                 inputMode="decimal"
-                placeholder="e.g. 3"
+                placeholder="e.g. 2"
+                aria-label="Custom discount rate percentage"
               />
               <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs text-muted-foreground">
                 %

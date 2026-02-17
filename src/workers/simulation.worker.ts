@@ -20,9 +20,11 @@ import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
 import { generateInsight, type Insight } from "@/utils/insights";
 import {
   generateSalaryDataSeries,
+  generateSalaryDataSeriesPV,
   generateBalanceTimeSeries,
   type BalanceTimeSeriesResult,
 } from "@/utils/loan-calculations";
+import { toPresent, pvTotal } from "@/utils/present-value";
 
 // ============================================================================
 // Message Types
@@ -41,6 +43,7 @@ export interface SalarySeriesPayload {
   thresholdGrowthRate: number;
   rpiRate: number;
   boeBaseRate: number;
+  discountRate?: number;
 }
 
 export interface BalanceSeriesPayload {
@@ -51,6 +54,7 @@ export interface BalanceSeriesPayload {
   thresholdGrowthRate: number;
   rpiRate: number;
   boeBaseRate: number;
+  discountRate?: number;
 }
 
 export interface OverpayAnalysisPayload {
@@ -58,6 +62,7 @@ export interface OverpayAnalysisPayload {
   input: Omit<OverpayInput, "repaymentStartDate"> & {
     repaymentStartDate: string; // ISO string - Date can't be transferred
   };
+  discountRate?: number;
 }
 
 export interface InsightPayload {
@@ -68,6 +73,7 @@ export interface InsightPayload {
   thresholdGrowthRate: number;
   rpiRate: number;
   boeBaseRate: number;
+  discountRate?: number;
 }
 
 export type WorkerPayload =
@@ -85,6 +91,7 @@ export interface InsightSummary {
   totalPaid: number;
   monthlyRepayment: number;
   monthsToPayoff: number;
+  pvTotalPaid?: number;
 }
 
 export type WorkerResultType =
@@ -111,6 +118,16 @@ export interface WorkerResponse {
 // ============================================================================
 
 function handleSalarySeries(payload: SalarySeriesPayload): DataPoint[] {
+  if (payload.discountRate !== undefined && payload.discountRate > 0) {
+    return generateSalaryDataSeriesPV(
+      payload.loans,
+      payload.discountRate,
+      payload.rpiRate,
+      payload.salaryGrowthRate,
+      payload.thresholdGrowthRate,
+      payload.boeBaseRate,
+    );
+  }
   return generateSalaryDataSeries(
     payload.loans,
     (r) => r.totalRepayment,
@@ -124,7 +141,7 @@ function handleSalarySeries(payload: SalarySeriesPayload): DataPoint[] {
 function handleBalanceSeries(
   payload: BalanceSeriesPayload,
 ): BalanceTimeSeriesResult {
-  return generateBalanceTimeSeries(
+  const result = generateBalanceTimeSeries(
     payload.loans,
     payload.annualSalary,
     payload.rpiRate,
@@ -132,6 +149,19 @@ function handleBalanceSeries(
     payload.thresholdGrowthRate,
     payload.boeBaseRate,
   );
+
+  const { discountRate } = payload;
+  if (discountRate && discountRate > 0) {
+    return {
+      ...result,
+      data: result.data.map((point) => ({
+        ...point,
+        balance: toPresent(point.balance, discountRate, point.month),
+      })),
+    };
+  }
+
+  return result;
 }
 
 function handleOverpayAnalysis(
@@ -142,7 +172,7 @@ function handleOverpayAnalysis(
     ...payload.input,
     repaymentStartDate: new Date(payload.input.repaymentStartDate),
   };
-  return simulateOverpayScenarios(input);
+  return simulateOverpayScenarios(input, payload.discountRate);
 }
 
 function handleInsight(payload: InsightPayload): {
@@ -177,6 +207,16 @@ function handleInsight(payload: InsightPayload): {
       result.snapshots.length > 0 ? result.snapshots[0].totalRepayment : 0,
     monthsToPayoff: result.summary.monthsToPayoff,
   };
+
+  if (payload.discountRate !== undefined && payload.discountRate > 0) {
+    summary.pvTotalPaid = pvTotal(
+      result.snapshots.map((s) => ({
+        month: s.month,
+        amount: s.totalRepayment,
+      })),
+      payload.discountRate,
+    );
+  }
 
   return { insight, summary };
 }

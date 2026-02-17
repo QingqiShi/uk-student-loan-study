@@ -10,8 +10,10 @@ import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
 import { generateInsight } from "@/utils/insights";
 import {
   generateSalaryDataSeries,
+  generateSalaryDataSeriesPV,
   generateBalanceTimeSeries,
 } from "@/utils/loan-calculations";
+import { toPresent, pvTotal } from "@/utils/present-value";
 
 expect.extend(matchers);
 
@@ -34,32 +36,59 @@ class MockWorker {
 
     switch (payload.type) {
       case "SALARY_SERIES": {
-        const data = generateSalaryDataSeries(
-          payload.loans,
-          (r) => r.totalRepayment,
-          undefined,
-          payload.salaryGrowthRate,
-          payload.thresholdGrowthRate,
-        );
+        const data =
+          payload.discountRate !== undefined && payload.discountRate > 0
+            ? generateSalaryDataSeriesPV(
+                payload.loans,
+                payload.discountRate,
+                undefined,
+                payload.salaryGrowthRate,
+                payload.thresholdGrowthRate,
+              )
+            : generateSalaryDataSeries(
+                payload.loans,
+                (r) => r.totalRepayment,
+                undefined,
+                payload.salaryGrowthRate,
+                payload.thresholdGrowthRate,
+              );
         result = { type: "SALARY_SERIES", data };
         break;
       }
       case "BALANCE_SERIES": {
-        const { data, writeOffMonth } = generateBalanceTimeSeries(
+        const balanceResult = generateBalanceTimeSeries(
           payload.loans,
           payload.annualSalary,
           undefined,
           payload.salaryGrowthRate,
           payload.thresholdGrowthRate,
         );
-        result = { type: "BALANCE_SERIES", data, writeOffMonth };
+        const balanceData =
+          payload.discountRate !== undefined && payload.discountRate > 0
+            ? balanceResult.data.map((point) => ({
+                ...point,
+                balance: toPresent(
+                  point.balance,
+                  payload.discountRate as number,
+                  point.month,
+                ),
+              }))
+            : balanceResult.data;
+        result = {
+          type: "BALANCE_SERIES",
+          data: balanceData,
+          writeOffMonth: balanceResult.writeOffMonth,
+        };
         break;
       }
       case "OVERPAY_ANALYSIS": {
-        const analysisResult = simulateOverpayScenarios({
-          ...payload.input,
-          repaymentStartDate: new Date(payload.input.repaymentStartDate),
-        });
+        const analysisResult = simulateOverpayScenarios(
+          {
+            ...payload.input,
+            repaymentStartDate: new Date(payload.input.repaymentStartDate),
+          },
+          payload.discountRate,
+        );
         result = { type: "OVERPAY_ANALYSIS", result: analysisResult };
         break;
       }
@@ -73,7 +102,12 @@ class MockWorker {
           salaryGrowthRate: payload.salaryGrowthRate,
           thresholdGrowthRate: payload.thresholdGrowthRate,
         });
-        let summary = null;
+        let summary: {
+          totalPaid: number;
+          monthlyRepayment: number;
+          monthsToPayoff: number;
+          pvTotalPaid?: number;
+        } | null = null;
         if (totalBalance > 0) {
           const simResult = simulate({
             loans: payload.loans,
@@ -90,6 +124,15 @@ class MockWorker {
                 : 0,
             monthsToPayoff: simResult.summary.monthsToPayoff,
           };
+          if (payload.discountRate !== undefined && payload.discountRate > 0) {
+            summary.pvTotalPaid = pvTotal(
+              simResult.snapshots.map((s) => ({
+                month: s.month,
+                amount: s.totalRepayment,
+              })),
+              payload.discountRate,
+            );
+          }
         }
         result = { type: "INSIGHT", insight, summary };
         break;

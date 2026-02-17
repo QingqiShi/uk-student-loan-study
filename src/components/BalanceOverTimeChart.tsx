@@ -5,6 +5,7 @@ import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useBalanceOverTimeData } from "@/hooks/useChartData";
+import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 const chartConfig = {
   balance: {
@@ -20,6 +21,7 @@ function formatYear(month: number): string {
 
 export function BalanceOverTimeChart() {
   const { data } = useBalanceOverTimeData();
+  const showPresentValue = useShowPresentValue();
 
   if (data.length === 0) {
     return (
@@ -40,9 +42,13 @@ export function BalanceOverTimeChart() {
       xDataKey="month"
       xLabel="Time"
       xFormatter={formatYear}
-      yLabel="Balance"
+      yLabel={showPresentValue ? "Balance (inflation-adjusted)" : "Balance"}
       yFormatter={(v) => currencyFormatter.format(v)}
-      ariaLabel="Chart showing your loan balance decreasing over time. The balance starts at your total loan amount and decreases as you make repayments."
+      ariaLabel={
+        showPresentValue
+          ? "Chart showing your inflation-adjusted loan balance decreasing over time. The balance starts at your total loan amount and decreases as you make repayments."
+          : "Chart showing your loan balance decreasing over time. The balance starts at your total loan amount and decreases as you make repayments."
+      }
       chartConfig={chartConfig}
       series={[{ dataKey: "balance" }]}
     />

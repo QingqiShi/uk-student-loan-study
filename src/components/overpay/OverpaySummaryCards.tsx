@@ -1,13 +1,23 @@
 import type { OverpayAnalysisResult } from "@/lib/loans/overpay-types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { currencyFormatter } from "@/constants";
+import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 interface OverpaySummaryCardsProps {
   analysis: OverpayAnalysisResult;
 }
 
 export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
-  const { baseline, overpay, paymentDifference, monthsSaved } = analysis;
+  const showPresentValue = useShowPresentValue();
+  const { baseline, overpay, monthsSaved } = analysis;
+
+  // Use PV-adjusted values when available
+  const displayBaselineTotalPaid =
+    analysis.pvBaseline?.totalPaid ?? baseline.totalPaid;
+  const displayOverpayTotalPaid =
+    analysis.pvOverpay?.totalPaid ?? overpay.totalPaid;
+  const paymentDifference =
+    analysis.pvPaymentDifference ?? analysis.paymentDifference;
 
   const formatYears = (months: number) => {
     const years = Math.floor(months / 12);
@@ -42,7 +52,10 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
   };
 
   return (
-    <div className="-mx-4 flex snap-x scroll-pl-4 gap-3 overflow-x-auto px-4 py-1 sm:mx-0 sm:grid sm:scroll-pl-0 sm:grid-cols-3 sm:p-1 md:grid-cols-1 md:overflow-visible">
+    <div
+      aria-live="polite"
+      className="-mx-4 flex snap-x scroll-pl-4 gap-3 overflow-x-auto px-4 py-1 sm:mx-0 sm:grid sm:scroll-pl-0 sm:grid-cols-3 sm:p-1 md:grid-cols-1 md:overflow-visible"
+    >
       <Card
         size="sm"
         className={`min-w-50 shrink-0 snap-start sm:min-w-0 sm:shrink ${getCardClassName()}`}
@@ -86,9 +99,13 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
         <CardContent className="space-y-2">
           <div>
             <p className="text-2xl font-bold tabular-nums">
-              {currencyFormatter.format(baseline.totalPaid)}
+              {currencyFormatter.format(displayBaselineTotalPaid)}
             </p>
-            <p className="text-xs text-muted-foreground">Total paid</p>
+            <p className="text-xs text-muted-foreground">
+              {showPresentValue
+                ? "Total paid (inflation-adjusted)"
+                : "Total paid"}
+            </p>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Time</span>
@@ -119,9 +136,13 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
         <CardContent className="space-y-2">
           <div>
             <p className="text-2xl font-bold tabular-nums">
-              {currencyFormatter.format(overpay.totalPaid)}
+              {currencyFormatter.format(displayOverpayTotalPaid)}
             </p>
-            <p className="text-xs text-muted-foreground">Total paid</p>
+            <p className="text-xs text-muted-foreground">
+              {showPresentValue
+                ? "Total paid (inflation-adjusted)"
+                : "Total paid"}
+            </p>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Time</span>

@@ -3,6 +3,7 @@ import {
   useLoanConfig,
   useCurrentSalary,
   useOverpayConfig,
+  useActiveDiscountRate,
 } from "./useStoreSelectors";
 import type { OverpayAnalysisResult } from "@/lib/loans/overpay-types";
 import type { OverpayAnalysisPayload } from "@/workers/simulation.worker";
@@ -30,6 +31,7 @@ export function useOverpayAnalysis(
     boeBaseRate,
     lumpSumPayment,
   } = useOverpayConfig();
+  const activeDiscountRate = useActiveDiscountRate();
 
   // Convert Date to ISO string for worker transfer
   const payload: OverpayAnalysisPayload = {
@@ -45,6 +47,9 @@ export function useOverpayAnalysis(
       boeBaseRate,
       lumpSumPayment,
     },
+    ...(activeDiscountRate !== undefined
+      ? { discountRate: activeDiscountRate }
+      : {}),
   };
 
   const result = useSimulationWorker(payload);

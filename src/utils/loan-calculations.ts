@@ -7,6 +7,7 @@ import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
 import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
+import { pvTotal } from "@/utils/present-value";
 
 /**
  * Generates a data series for salary-based charts.
@@ -53,6 +54,55 @@ export function generateSalaryDataSeries(
     };
 
     data.push({ salary, value: mapper(result) });
+  }
+
+  return data;
+}
+
+/**
+ * Generates a PV-adjusted data series for salary-based charts.
+ *
+ * Similar to generateSalaryDataSeries but discounts each monthly repayment
+ * to present value before summing.
+ *
+ * @param loans - Array of loans to simulate
+ * @param discountRate - Annual discount rate for PV calculation
+ * @param rpiRate - Optional RPI rate override
+ * @param salaryGrowthRate - Annual salary growth rate (default 0)
+ * @param thresholdGrowthRate - Annual threshold growth rate (default 0)
+ * @param boeBaseRate - BOE base rate override
+ * @returns Array of [salary, value] data points with PV-adjusted values
+ */
+export function generateSalaryDataSeriesPV(
+  loans: Loan[],
+  discountRate: number,
+  rpiRate: number = CURRENT_RATES.rpi,
+  salaryGrowthRate = 0,
+  thresholdGrowthRate = 0,
+  boeBaseRate: number = CURRENT_RATES.boeBaseRate,
+): DataPoint[] {
+  const data: DataPoint[] = [];
+
+  for (let salary = MIN_SALARY; salary <= MAX_SALARY; salary += SALARY_STEP) {
+    const timeSeries = simulate({
+      loans,
+      annualSalary: salary,
+      monthsElapsed: 0,
+      rpiRate,
+      salaryGrowthRate,
+      thresholdGrowthRate,
+      boeBaseRate,
+    });
+
+    const total = pvTotal(
+      timeSeries.snapshots.map((s) => ({
+        month: s.month,
+        amount: s.totalRepayment,
+      })),
+      discountRate,
+    );
+
+    data.push({ salary, value: total });
   }
 
   return data;

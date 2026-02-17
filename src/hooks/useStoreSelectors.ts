@@ -67,6 +67,25 @@ export function useBoeBaseRate(): number {
   return boeBaseRate;
 }
 
+/** Select whether present value mode is active */
+export function useShowPresentValue(): boolean {
+  const { showPresentValue } = useLoanConfigState();
+  return showPresentValue;
+}
+
+/** Select the discount rate for present value calculations */
+export function useDiscountRate(): number {
+  const { discountRate } = useLoanConfigState();
+  return discountRate;
+}
+
+/** Select the active discount rate for worker payloads (undefined when PV is off or rate is 0) */
+export function useActiveDiscountRate(): number | undefined {
+  const showPresentValue = useShowPresentValue();
+  const discountRate = useDiscountRate();
+  return showPresentValue && discountRate > 0 ? discountRate : undefined;
+}
+
 /** Select overpay analysis configuration */
 export function useOverpayConfig(): OverpayConfig {
   const { monthlyOverpayment, lumpSumPayment } = useLoanFrequentState();

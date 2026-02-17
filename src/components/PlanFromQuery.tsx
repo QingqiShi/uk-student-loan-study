@@ -55,6 +55,9 @@ function PlanFromQueryInner({ onRepaymentYearChange }: PlanFromQueryProps) {
         updateField(field.stateKey, value as number);
       }
     }
+    if (decoded.showPresentValue) {
+      updateField("showPresentValue", true);
+    }
     if (decoded.lumpSumPayment !== undefined) {
       trackSharedLumpSumLoaded(decoded.lumpSumPayment);
       updateField("lumpSumPayment", decoded.lumpSumPayment);

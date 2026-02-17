@@ -67,4 +67,10 @@ export interface OverpayAnalysisResult {
   overpaymentContributions: number;
   /** Number of months saved by overpaying */
   monthsSaved: number;
+  /** PV-adjusted baseline total paid */
+  pvBaseline?: { totalPaid: number };
+  /** PV-adjusted overpay total paid */
+  pvOverpay?: { totalPaid: number };
+  /** PV-adjusted payment difference (pvBaseline.totalPaid - pvOverpay.totalPaid) */
+  pvPaymentDifference?: number;
 }

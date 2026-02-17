@@ -23,6 +23,11 @@ export interface LoanState {
   /** One-off lump sum payment in GBP */
   lumpSumPayment: number;
 
+  /** Whether to display monetary values adjusted for inflation (present value) */
+  showPresentValue: boolean;
+  /** Annual discount rate as decimal for PV calculations (e.g., 0.02 = 2%) */
+  discountRate: number;
+
   /** Plan types discovered via the standalone /which-plan quiz, pending config panel open */
   pendingQuizPlanTypes: PlanType[] | null;
 }

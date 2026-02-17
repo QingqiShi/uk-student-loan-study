@@ -2,7 +2,8 @@ export type AssumptionsWizardStep =
   | "salary-growth"
   | "threshold-growth"
   | "rpi"
-  | "boe-base-rate";
+  | "boe-base-rate"
+  | "discount-rate";
 
 type WizardDirection = "forward" | "backward";
 
@@ -22,6 +23,7 @@ export const ALL_ASSUMPTIONS_STEPS: AssumptionsWizardStep[] = [
   "threshold-growth",
   "rpi",
   "boe-base-rate",
+  "discount-rate",
 ];
 
 function getPreviousStep<S extends string>(
