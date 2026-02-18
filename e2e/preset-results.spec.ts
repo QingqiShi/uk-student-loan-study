@@ -47,6 +47,18 @@ test.describe("Home page preset selection", () => {
     expect(after.totalText).not.toBe(before.totalText);
   });
 
+  test("toggling inflation adjustment changes total repayment", async ({
+    page,
+  }) => {
+    const before = await getResultValues(page);
+
+    await page.getByRole("switch", { name: "Adjust for inflation" }).click();
+    await waitForResults(page);
+
+    const after = await getResultValues(page);
+    expect(after.totalText).not.toBe(before.totalText);
+  });
+
   test("insight text appears below results", async ({ page }) => {
     const results = page.locator("[role='status'][aria-live='polite']");
     // Insight footer has a title (bold text) and description

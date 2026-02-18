@@ -66,6 +66,40 @@ describe("AssumptionsCallout", () => {
     expect(screen.getByText(/base rate/)).not.toBeNull();
   });
 
+  it("shows discount rate when showPresentValue is true", () => {
+    render(<AssumptionsCallout />, {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <LoanProvider
+          initialStateOverride={{
+            showPresentValue: true,
+            discountRate: 0.02,
+          }}
+        >
+          {children}
+        </LoanProvider>
+      ),
+    });
+
+    expect(screen.getByText(/inflation/)).not.toBeNull();
+  });
+
+  it("hides discount rate when showPresentValue is false", () => {
+    render(<AssumptionsCallout />, {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <LoanProvider
+          initialStateOverride={{
+            showPresentValue: false,
+            discountRate: 0.02,
+          }}
+        >
+          {children}
+        </LoanProvider>
+      ),
+    });
+
+    expect(screen.queryByText(/inflation/)).toBeNull();
+  });
+
   it("hides BOE base rate when only Plan 2 is active", () => {
     render(<AssumptionsCallout />, {
       wrapper: ({ children }: { children: ReactNode }) => (

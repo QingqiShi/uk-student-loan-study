@@ -6,6 +6,7 @@ import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter, MIN_SALARY, MAX_SALARY } from "@/constants";
 import { useTotalRepaymentData } from "@/hooks/useChartData";
+import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 const chartConfig = {
   value: {
@@ -16,6 +17,7 @@ const chartConfig = {
 
 export function TotalRepaymentChart() {
   const { data, annotationSalary, annotationValue } = useTotalRepaymentData();
+  const showPresentValue = useShowPresentValue();
 
   // Defer annotation so slider interactions aren't blocked by chart re-renders.
   // The chart data itself doesn't change with salary (it's a full salary sweep),
@@ -53,8 +55,15 @@ export function TotalRepaymentChart() {
       data={data}
       xDataKey="salary"
       xFormatter={(v) => currencyFormatter.format(v)}
+      yLabel={
+        showPresentValue ? "Total repayment (inflation-adjusted)" : undefined
+      }
       yFormatter={(v) => currencyFormatter.format(v)}
-      ariaLabel="Chart showing total student loan repayment amount by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
+      ariaLabel={
+        showPresentValue
+          ? "Chart showing inflation-adjusted total student loan repayment by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
+          : "Chart showing total student loan repayment amount by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
+      }
       chartConfig={chartConfig}
       series={[{ dataKey: "value" }]}
       interactionMode="none"

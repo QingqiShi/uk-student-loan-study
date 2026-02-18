@@ -6,6 +6,7 @@ import {
   useThresholdGrowthRate,
   useRpiRate,
   useBoeBaseRate,
+  useActiveDiscountRate,
 } from "./useStoreSelectors";
 import type {
   InsightSummary,
@@ -23,6 +24,7 @@ export function useResultSummary(): InsightSummary | null {
   const thresholdGrowthRate = useThresholdGrowthRate();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
+  const activeDiscountRate = useActiveDiscountRate();
 
   const payload: InsightPayload = {
     type: "INSIGHT",
@@ -32,9 +34,16 @@ export function useResultSummary(): InsightSummary | null {
     thresholdGrowthRate,
     rpiRate,
     boeBaseRate,
+    ...(activeDiscountRate !== undefined
+      ? { discountRate: activeDiscountRate }
+      : {}),
   };
 
   const result = useSimulationWorker(payload);
 
-  return result?.summary ?? null;
+  const summary = result?.summary ?? null;
+  if (summary?.pvTotalPaid !== undefined) {
+    return { ...summary, totalPaid: summary.pvTotalPaid };
+  }
+  return summary;
 }

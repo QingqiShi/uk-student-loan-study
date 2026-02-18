@@ -27,6 +27,16 @@ describe("loanReducer", () => {
     });
   });
 
+  describe("present value initial state", () => {
+    it("should have showPresentValue false", () => {
+      expect(initialState.showPresentValue).toBe(false);
+    });
+
+    it("should have discountRate 0.02", () => {
+      expect(initialState.discountRate).toBe(0.02);
+    });
+  });
+
   describe("UPDATE_FIELD action", () => {
     it("should update loans", () => {
       const newLoans = [{ planType: "PLAN_5" as const, balance: 50_000 }];
@@ -51,6 +61,18 @@ describe("loanReducer", () => {
       const action = updateFieldAction("boeBaseRate", 4.5);
       const newState = loanReducer(initialState, action);
       expect(newState.boeBaseRate).toBe(4.5);
+    });
+
+    it("should update showPresentValue", () => {
+      const action = updateFieldAction("showPresentValue", true);
+      const newState = loanReducer(initialState, action);
+      expect(newState.showPresentValue).toBe(true);
+    });
+
+    it("should update discountRate", () => {
+      const action = updateFieldAction("discountRate", 0.05);
+      const newState = loanReducer(initialState, action);
+      expect(newState.discountRate).toBe(0.05);
     });
 
     it("should not mutate the original state", () => {
@@ -123,6 +145,18 @@ describe("loanReducer", () => {
         { planType: "PLAN_2", balance: 45_000 },
       ]);
       expect(resetState.salary).toBe(40_000);
+    });
+
+    it("should restore showPresentValue and discountRate to initial values", () => {
+      let state = loanReducer(
+        initialState,
+        updateFieldAction("showPresentValue", true),
+      );
+      state = loanReducer(state, updateFieldAction("discountRate", 0.1));
+
+      const resetState = loanReducer(state, resetAction());
+      expect(resetState.showPresentValue).toBe(false);
+      expect(resetState.discountRate).toBe(0.02);
     });
 
     it("should restore rpiRate and boeBaseRate to initial values", () => {

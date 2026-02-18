@@ -2,6 +2,7 @@
 
 import { useReducer } from "react";
 import { BoeBaseRateStep } from "./BoeBaseRateStep";
+import { DiscountRateStep } from "./DiscountRateStep";
 import { LivePreview } from "./LivePreview";
 import { RpiStep } from "./RpiStep";
 import { SalaryGrowthStep } from "./SalaryGrowthStep";
@@ -32,15 +33,17 @@ export function AssumptionsWizard({
   onClose,
   entryStep,
 }: AssumptionsWizardProps) {
-  const { loans } = useLoanConfigState();
+  const { loans, showPresentValue } = useLoanConfigState();
 
   const hasBoeRelevantLoan = loans.some((l) =>
     BOE_RELEVANT_PLANS.has(l.planType),
   );
 
-  const stepOrder = ALL_ASSUMPTIONS_STEPS.filter(
-    (step) => step !== "boe-base-rate" || hasBoeRelevantLoan,
-  );
+  const stepOrder = ALL_ASSUMPTIONS_STEPS.filter((step) => {
+    if (step === "boe-base-rate") return hasBoeRelevantLoan;
+    if (step === "discount-rate") return showPresentValue;
+    return true;
+  });
 
   const reducer = createWizardReducer(stepOrder, initialAssumptionsWizardState);
 
@@ -89,8 +92,16 @@ export function AssumptionsWizard({
           <RpiStep direction={direction} onNext={advance} />
         );
       case "boe-base-rate":
-        return (
+        return lastStep ? (
           <BoeBaseRateStep direction={direction} onNext={onComplete} done />
+        ) : (
+          <BoeBaseRateStep direction={direction} onNext={advance} />
+        );
+      case "discount-rate":
+        return lastStep ? (
+          <DiscountRateStep direction={direction} onNext={onComplete} done />
+        ) : (
+          <DiscountRateStep direction={direction} onNext={advance} />
         );
     }
   }

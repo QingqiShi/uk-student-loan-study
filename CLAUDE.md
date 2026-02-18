@@ -8,6 +8,7 @@ pnpm build         # Build for production
 pnpm lint          # Run ESLint
 pnpm format        # Format with Prettier
 pnpm test          # Run tests
+pnpm test:e2e      # Run Playwright e2e tests
 ```
 
 ## Tech Stack

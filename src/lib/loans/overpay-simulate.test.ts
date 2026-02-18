@@ -271,6 +271,78 @@ describe("simulateOverpayScenarios", () => {
     });
   });
 
+  describe("present value adjustments", () => {
+    it("pvBaseline.totalPaid is less than baseline.totalPaid for positive discount rate", () => {
+      const result = simulateOverpayScenarios(defaultInput, 0.05);
+
+      expect(result.pvBaseline).toBeDefined();
+      expect(result.pvBaseline?.totalPaid).toBeLessThan(
+        result.baseline.totalPaid,
+      );
+    });
+
+    it("pvOverpay.totalPaid is less than overpay.totalPaid", () => {
+      const result = simulateOverpayScenarios(defaultInput, 0.05);
+
+      expect(result.pvOverpay).toBeDefined();
+      expect(result.pvOverpay?.totalPaid).toBeLessThan(
+        result.overpay.totalPaid,
+      );
+    });
+
+    it("pvPaymentDifference equals pvBaseline.totalPaid - pvOverpay.totalPaid", () => {
+      const result = simulateOverpayScenarios(defaultInput, 0.05);
+      const { pvBaseline, pvOverpay } = result;
+
+      expect(pvBaseline).toBeDefined();
+      expect(pvOverpay).toBeDefined();
+
+      if (pvBaseline && pvOverpay) {
+        expect(result.pvPaymentDifference).toBeCloseTo(
+          pvBaseline.totalPaid - pvOverpay.totalPaid,
+          2,
+        );
+      }
+    });
+
+    it("balanceTimeSeries points are PV-discounted", () => {
+      const nominal = simulateOverpayScenarios(defaultInput);
+      const pv = simulateOverpayScenarios(defaultInput, 0.05);
+
+      // Month 0: no discounting, so values should be equal
+      expect(pv.balanceTimeSeries[0].baselineBalance).toBe(
+        nominal.balanceTimeSeries[0].baselineBalance,
+      );
+
+      // Find a mid-point with non-zero baseline balance for comparison
+      const midIndex = Math.floor(nominal.balanceTimeSeries.length / 2);
+      if (
+        midIndex > 0 &&
+        nominal.balanceTimeSeries[midIndex].baselineBalance > 0
+      ) {
+        expect(pv.balanceTimeSeries[midIndex].baselineBalance).toBeLessThan(
+          nominal.balanceTimeSeries[midIndex].baselineBalance,
+        );
+      }
+    });
+
+    it("no PV fields when discountRate is undefined", () => {
+      const result = simulateOverpayScenarios(defaultInput);
+
+      expect(result.pvBaseline).toBeUndefined();
+      expect(result.pvOverpay).toBeUndefined();
+      expect(result.pvPaymentDifference).toBeUndefined();
+    });
+
+    it("no PV fields when discountRate is 0", () => {
+      const result = simulateOverpayScenarios(defaultInput, 0);
+
+      expect(result.pvBaseline).toBeUndefined();
+      expect(result.pvOverpay).toBeUndefined();
+      expect(result.pvPaymentDifference).toBeUndefined();
+    });
+  });
+
   describe("result structure", () => {
     it("returns all required fields in OverpayAnalysisResult", () => {
       const result = simulateOverpayScenarios(defaultInput);

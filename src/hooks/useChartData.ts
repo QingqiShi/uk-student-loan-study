@@ -6,6 +6,7 @@ import {
   useThresholdGrowthRate,
   useRpiRate,
   useBoeBaseRate,
+  useActiveDiscountRate,
 } from "./useStoreSelectors";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import type {
@@ -56,6 +57,7 @@ export function useTotalRepaymentData() {
   const thresholdGrowthRate = useThresholdGrowthRate();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
+  const activeDiscountRate = useActiveDiscountRate();
 
   const payload: SalarySeriesPayload = {
     type: "SALARY_SERIES",
@@ -64,6 +66,9 @@ export function useTotalRepaymentData() {
     thresholdGrowthRate,
     rpiRate,
     boeBaseRate,
+    ...(activeDiscountRate !== undefined
+      ? { discountRate: activeDiscountRate }
+      : {}),
   };
 
   const result = useSimulationWorker(payload);
@@ -87,6 +92,7 @@ export function useBalanceOverTimeData(): {
   const thresholdGrowthRate = useThresholdGrowthRate();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
+  const activeDiscountRate = useActiveDiscountRate();
 
   const payload: BalanceSeriesPayload = {
     type: "BALANCE_SERIES",
@@ -96,6 +102,9 @@ export function useBalanceOverTimeData(): {
     thresholdGrowthRate,
     rpiRate,
     boeBaseRate,
+    ...(activeDiscountRate !== undefined
+      ? { discountRate: activeDiscountRate }
+      : {}),
   };
 
   const result = useSimulationWorker(payload);

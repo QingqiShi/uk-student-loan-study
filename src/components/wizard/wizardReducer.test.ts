@@ -15,10 +15,13 @@ describe("getNextStep", () => {
     );
     expect(getNextStep("threshold-growth", ALL_ASSUMPTIONS_STEPS)).toBe("rpi");
     expect(getNextStep("rpi", ALL_ASSUMPTIONS_STEPS)).toBe("boe-base-rate");
+    expect(getNextStep("boe-base-rate", ALL_ASSUMPTIONS_STEPS)).toBe(
+      "discount-rate",
+    );
   });
 
   it("returns undefined when on the last step", () => {
-    expect(getNextStep("boe-base-rate", ALL_ASSUMPTIONS_STEPS)).toBeUndefined();
+    expect(getNextStep("discount-rate", ALL_ASSUMPTIONS_STEPS)).toBeUndefined();
   });
 
   it("works with filtered step orders", () => {
@@ -34,13 +37,14 @@ describe("getNextStep", () => {
 
 describe("isLastStep", () => {
   it("returns true for the last step", () => {
-    expect(isLastStep("boe-base-rate", ALL_ASSUMPTIONS_STEPS)).toBe(true);
+    expect(isLastStep("discount-rate", ALL_ASSUMPTIONS_STEPS)).toBe(true);
   });
 
   it("returns false for non-last steps", () => {
     expect(isLastStep("salary-growth", ALL_ASSUMPTIONS_STEPS)).toBe(false);
     expect(isLastStep("threshold-growth", ALL_ASSUMPTIONS_STEPS)).toBe(false);
     expect(isLastStep("rpi", ALL_ASSUMPTIONS_STEPS)).toBe(false);
+    expect(isLastStep("boe-base-rate", ALL_ASSUMPTIONS_STEPS)).toBe(false);
   });
 });
 
@@ -99,12 +103,13 @@ describe("createWizardReducer", () => {
 });
 
 describe("ALL_ASSUMPTIONS_STEPS", () => {
-  it("contains exactly the four expected steps in order", () => {
+  it("contains exactly the five expected steps in order", () => {
     expect(ALL_ASSUMPTIONS_STEPS).toEqual([
       "salary-growth",
       "threshold-growth",
       "rpi",
       "boe-base-rate",
+      "discount-rate",
     ]);
   });
 });

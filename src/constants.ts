@@ -46,10 +46,10 @@ export const RPI_OPTIONS: {
   label: string;
   description: string;
 }[] = [
-  { value: 0, label: "0%", description: "No inflation" },
-  { value: 2, label: "2%", description: "BoE target level" },
+  { value: 0, label: "0%", description: "Prices stay flat" },
+  { value: 2, label: "2%", description: "Low and stable" },
   { value: 3.2, label: "3.2%", description: "Current rate (Sept 2025)" },
-  { value: 5, label: "5%", description: "High inflation scenario" },
+  { value: 5, label: "5%", description: "Prices rising fast" },
 ];
 
 /** BOE base rate options for the assumptions wizard (percentage format, e.g. 3.75 = 3.75%) */
@@ -62,6 +62,22 @@ export const BOE_BASE_RATE_OPTIONS: {
   { value: 3, label: "3%", description: "Rate-cutting cycle" },
   { value: 3.75, label: "3.75%", description: "Current rate (Feb 2026)" },
   { value: 5.25, label: "5.25%", description: "2023 peak rate" },
+];
+
+/** Discount rate options for the present value assumptions wizard step */
+export const DISCOUNT_RATE_OPTIONS: {
+  value: number;
+  label: string;
+  description: string;
+}[] = [
+  { value: 0, label: "0%", description: "Show future amounts as-is" },
+  {
+    value: 0.02,
+    label: "2%",
+    description: "Bank of England target (recommended)",
+  },
+  { value: 0.03, label: "3%", description: "Cautious estimate" },
+  { value: 0.05, label: "5%", description: "If investing instead" },
 ];
 
 // Formatters for chart display

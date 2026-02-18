@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { type ReactNode } from "react";
 import { describe, it, expect, vi } from "vitest";
 import { PresetPills } from "./PresetPills";
+import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
 import { type Loan } from "@/lib/loans/types";
 import { PRESETS } from "@/lib/presets";
@@ -10,7 +11,7 @@ function createWrapper(loans?: Loan[]) {
   return function Wrapper({ children }: { children: ReactNode }) {
     return (
       <LoanProvider initialStateOverride={loans ? { loans } : undefined}>
-        {children}
+        <AssumptionsWizardProvider>{children}</AssumptionsWizardProvider>
       </LoanProvider>
     );
   };

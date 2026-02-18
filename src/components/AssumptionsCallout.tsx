@@ -25,17 +25,27 @@ export function AssumptionsCallout() {
 
   const boeLabel = `${config.boeBaseRate % 1 === 0 ? config.boeBaseRate.toFixed(0) : config.boeBaseRate.toFixed(2)}%`;
 
+  const discountLabel = `${(config.discountRate * 100).toFixed(0)}%`;
+
+  const hasTrailingItem = showBoe || config.showPresentValue;
+
   const bold = "font-medium text-foreground";
 
   return (
     <p className="text-center text-xs text-muted-foreground">
       Based on <span className={bold}>{salaryLabel}</span> salary growth,{" "}
       <span className={bold}>{thresholdLabel}</span> thresholds,
-      {showBoe ? " " : " and "}
+      {hasTrailingItem ? " " : " and "}
       <span className={bold}>{rpiLabel}</span> RPI
       {showBoe && (
         <>
-          , and <span className={bold}>{boeLabel}</span> base rate
+          ,{config.showPresentValue ? " " : " and "}
+          <span className={bold}>{boeLabel}</span> base rate
+        </>
+      )}
+      {config.showPresentValue && (
+        <>
+          , adjusted for <span className={bold}>{discountLabel}</span> inflation
         </>
       )}
       .{" "}

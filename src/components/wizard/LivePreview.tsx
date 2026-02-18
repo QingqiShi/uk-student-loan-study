@@ -2,9 +2,11 @@
 
 import { currencyFormatter } from "@/constants";
 import { useResultSummary } from "@/hooks/useResultSummary";
+import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 export function LivePreview() {
   const summary = useResultSummary();
+  const showPresentValue = useShowPresentValue();
 
   if (!summary) return null;
 
@@ -22,7 +24,7 @@ export function LivePreview() {
           <span className="font-mono font-medium tabular-nums">
             {currencyFormatter.format(summary.totalPaid)}
           </span>{" "}
-          total
+          {showPresentValue ? "total (adj.)" : "total"}
         </span>
         <span>
           <span className="font-mono font-medium tabular-nums">

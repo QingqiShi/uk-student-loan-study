@@ -4,6 +4,7 @@ import { ChartBase } from "../charts/ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
 import type { OverpayAnalysisResult } from "@/lib/loans/overpay-types";
 import { currencyFormatter } from "@/constants";
+import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 const chartConfig = {
   baselineBalance: {
@@ -24,6 +25,7 @@ export function OverpayComparisonChart({
   analysis,
 }: OverpayComparisonChartProps) {
   const { balanceTimeSeries } = analysis;
+  const showPresentValue = useShowPresentValue();
 
   // Sample data to reduce chart complexity (every 12 months)
   const sampledData = balanceTimeSeries.filter(
@@ -50,9 +52,13 @@ export function OverpayComparisonChart({
       xDataKey="month"
       xLabel="Time"
       xFormatter={formatYear}
-      yLabel="Balance"
+      yLabel={showPresentValue ? "Balance (inflation-adjusted)" : "Balance"}
       yFormatter={(v) => currencyFormatter.format(v)}
-      ariaLabel="Loan balance comparison chart showing with and without overpaying over time"
+      ariaLabel={
+        showPresentValue
+          ? "Inflation-adjusted loan balance comparison chart showing with and without overpaying over time"
+          : "Loan balance comparison chart showing with and without overpaying over time"
+      }
       chartConfig={chartConfig}
       series={[{ dataKey: "baselineBalance" }, { dataKey: "overpayBalance" }]}
       showLegend

@@ -250,6 +250,76 @@ describe("useChartData hooks", () => {
     });
   });
 
+  describe("present value mode", () => {
+    it("useTotalRepaymentData with PV returns lower values than nominal", async () => {
+      const { result: nominalResult } = renderHook(
+        () => useTotalRepaymentData(),
+        {
+          wrapper: createWrapper({
+            showPresentValue: false,
+            discountRate: 0.05,
+          }),
+        },
+      );
+
+      const { result: pvResult } = renderHook(() => useTotalRepaymentData(), {
+        wrapper: createWrapper({
+          showPresentValue: true,
+          discountRate: 0.05,
+        }),
+      });
+
+      await vi.runAllTimersAsync();
+
+      await waitFor(() => {
+        expect(nominalResult.current.data.length).toBe(expectedDataPoints);
+        expect(pvResult.current.data.length).toBe(expectedDataPoints);
+      });
+
+      // Compare at a mid-range salary where repayment is non-zero
+      const midIndex = Math.floor(expectedDataPoints / 2);
+      expect(pvResult.current.data[midIndex].value).toBeLessThan(
+        nominalResult.current.data[midIndex].value,
+      );
+    });
+
+    it("useBalanceOverTimeData with PV returns lower balance values", async () => {
+      const { result: nominalResult } = renderHook(
+        () => useBalanceOverTimeData(),
+        {
+          wrapper: createWrapper({
+            showPresentValue: false,
+            discountRate: 0.05,
+          }),
+        },
+      );
+
+      const { result: pvResult } = renderHook(() => useBalanceOverTimeData(), {
+        wrapper: createWrapper({
+          showPresentValue: true,
+          discountRate: 0.05,
+        }),
+      });
+
+      await vi.runAllTimersAsync();
+
+      await waitFor(() => {
+        expect(nominalResult.current.data.length).toBeGreaterThan(1);
+        expect(pvResult.current.data.length).toBeGreaterThan(1);
+      });
+
+      // Later data points should have lower balance in PV mode
+      const lastNominal =
+        nominalResult.current.data[nominalResult.current.data.length - 1];
+      const lastPv = pvResult.current.data[pvResult.current.data.length - 1];
+
+      // If both have data beyond month 0, PV balance should be lower
+      if (lastNominal.month > 0 && lastPv.month > 0) {
+        expect(lastPv.balance).toBeLessThanOrEqual(lastNominal.balance);
+      }
+    });
+  });
+
   describe("hook memoization", () => {
     it("useTotalRepaymentData returns equivalent data on rerender", async () => {
       const { result, rerender } = renderHook(() => useTotalRepaymentData(), {

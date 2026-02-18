@@ -21,6 +21,8 @@ const mockState: LoanState = {
   rpiRate: 3.2,
   boeBaseRate: 3.75,
   lumpSumPayment: 10000,
+  showPresentValue: false,
+  discountRate: 0.02,
   pendingQuizPlanTypes: null,
 };
 
@@ -311,6 +313,42 @@ describe("decodeParamsToState", () => {
     expect(state.monthlyOverpayment).toBeUndefined();
     expect(state.lumpSumPayment).toBeUndefined();
     expect(state.repaymentYear).toBeUndefined();
+  });
+});
+
+describe("present value encoding/decoding", () => {
+  it("encoding with showPresentValue true produces pv=1", () => {
+    const state: LoanState = { ...mockState, showPresentValue: true };
+    const params = encodeStateToParams(state);
+
+    expect(params.get("pv")).toBe("1");
+  });
+
+  it("encoding with showPresentValue false does NOT produce pv param", () => {
+    const state: LoanState = { ...mockState, showPresentValue: false };
+    const params = encodeStateToParams(state);
+
+    expect(params.get("pv")).toBeNull();
+  });
+
+  it("decoding pv=1 returns showPresentValue true", () => {
+    const params = new URLSearchParams("pv=1");
+    const state = decodeParamsToState(params);
+
+    expect(state.showPresentValue).toBe(true);
+  });
+
+  it("round-trips PV state", () => {
+    const state: LoanState = {
+      ...mockState,
+      showPresentValue: true,
+      discountRate: 0.05,
+    };
+    const params = encodeStateToParams(state);
+    const decoded = decodeParamsToState(params);
+
+    expect(decoded.showPresentValue).toBe(true);
+    expect(decoded.discountRate).toBe(0.05);
   });
 });
 

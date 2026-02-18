@@ -3,6 +3,7 @@
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { Preset } from "@/lib/presets";
+import { PresentValueToggle } from "@/components/PresentValueToggle";
 import { useLoanConfigState } from "@/context/LoanContext";
 import { PRESETS } from "@/lib/presets";
 import { cn } from "@/lib/utils";
@@ -37,9 +38,12 @@ export function PresetPills({
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">
-        Pick a scenario that matches you
-      </p>
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-muted-foreground">
+          Pick a scenario that matches you
+        </p>
+        <PresentValueToggle />
+      </div>
 
       {/* Bleed wrapper — breaks out of body px-3 on mobile */}
       <div className="relative -mx-3 sm:mx-0">

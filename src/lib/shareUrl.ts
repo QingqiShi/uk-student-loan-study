@@ -70,6 +70,11 @@ export const ASSUMPTION_PARAMS: AssumptionParamConfig[] = [
   },
   { stateKey: "rpiRate", urlParam: "rpi", analyticsName: "rpi_rate" },
   { stateKey: "boeBaseRate", urlParam: "boe", analyticsName: "boe_base_rate" },
+  {
+    stateKey: "discountRate",
+    urlParam: "dr",
+    analyticsName: "discount_rate",
+  },
 ];
 
 const VALID_PLANS: PlanType[] = [
@@ -139,6 +144,10 @@ export function encodeStateToParams(
     params.set(field.urlParam, String(value));
   }
 
+  if (state.showPresentValue) {
+    params.set("pv", "1");
+  }
+
   if (options.includeOverpayFields) {
     params.set(PARAM_OVP, String(state.monthlyOverpayment));
     params.set(PARAM_LSP, String(state.lumpSumPayment));
@@ -160,6 +169,8 @@ export interface DecodedState {
   boeBaseRate?: number;
   lumpSumPayment?: number;
   repaymentYear?: number;
+  showPresentValue?: boolean;
+  discountRate?: number;
 }
 
 /**
@@ -256,6 +267,11 @@ export function decodeParamsToState(params: URLSearchParams): DecodedState {
           field.legacyMapping[raw];
       }
     }
+  }
+
+  const pvParam = params.get("pv");
+  if (pvParam === "1") {
+    result.showPresentValue = true;
   }
 
   const lspParam = params.get(PARAM_LSP);

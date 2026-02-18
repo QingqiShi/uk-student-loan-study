@@ -175,6 +175,61 @@ describe("useResultSummary", () => {
     );
   });
 
+  it("returns lower totalPaid with present value enabled", async () => {
+    const { result: nominalResult } = renderHook(() => useResultSummary(), {
+      wrapper: createWrapper({
+        showPresentValue: false,
+        discountRate: 0.05,
+      }),
+    });
+
+    const { result: pvResult } = renderHook(() => useResultSummary(), {
+      wrapper: createWrapper({
+        showPresentValue: true,
+        discountRate: 0.05,
+      }),
+    });
+
+    await vi.runAllTimersAsync();
+
+    await waitFor(() => {
+      expect(nominalResult.current).not.toBeNull();
+      expect(pvResult.current).not.toBeNull();
+      expect(pvResult.current?.totalPaid).toBeLessThan(
+        nominalResult.current?.totalPaid ?? Infinity,
+      );
+    });
+  });
+
+  it("monthlyRepayment and monthsToPayoff are the same in PV mode", async () => {
+    const { result: nominalResult } = renderHook(() => useResultSummary(), {
+      wrapper: createWrapper({
+        showPresentValue: false,
+        discountRate: 0.05,
+      }),
+    });
+
+    const { result: pvResult } = renderHook(() => useResultSummary(), {
+      wrapper: createWrapper({
+        showPresentValue: true,
+        discountRate: 0.05,
+      }),
+    });
+
+    await vi.runAllTimersAsync();
+
+    await waitFor(() => {
+      expect(nominalResult.current).not.toBeNull();
+      expect(pvResult.current).not.toBeNull();
+      expect(pvResult.current?.monthlyRepayment).toBe(
+        nominalResult.current?.monthlyRepayment,
+      );
+      expect(pvResult.current?.monthsToPayoff).toBe(
+        nominalResult.current?.monthsToPayoff,
+      );
+    });
+  });
+
   it("returns different results for different plan types", async () => {
     const { result: plan2Result } = renderHook(() => useResultSummary(), {
       wrapper: createWrapper({

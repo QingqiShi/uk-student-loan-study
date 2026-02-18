@@ -9,6 +9,7 @@ import type {
 } from "./overpay-types";
 import type { Loan, SimulationTimeSeries } from "./types";
 import { monthsElapsedSince } from "@/lib/date-utils";
+import { toPresent } from "@/utils/present-value";
 
 /**
  * Applies a lump sum payment by reducing initial loan balances proportionally.
@@ -40,6 +41,7 @@ function applyLumpSum(loans: Loan[], lumpSumPayment: number): Loan[] {
  */
 export function simulateOverpayScenarios(
   input: OverpayInput,
+  discountRate?: number,
 ): OverpayAnalysisResult {
   const {
     loans,
@@ -153,7 +155,7 @@ export function simulateOverpayScenarios(
           "Enter a lump sum or monthly amount to see if overpaying saves you money.",
       };
 
-  return {
+  const result: OverpayAnalysisResult = {
     baseline,
     overpay,
     recommendation,
@@ -164,6 +166,52 @@ export function simulateOverpayScenarios(
     overpaymentContributions,
     monthsSaved,
   };
+
+  if (discountRate !== undefined && discountRate > 0) {
+    // PV baseline total: sum of discounted monthly repayments
+    let pvBaselineTotalPaid = 0;
+    for (const snapshot of baselineSimulation.snapshots) {
+      pvBaselineTotalPaid += toPresent(
+        snapshot.totalRepayment,
+        discountRate,
+        snapshot.month,
+      );
+    }
+
+    // PV overpay total: sum of discounted monthly repayments + lump sum at month 0
+    // Lump sum at month 0 is not discounted (toPresent returns nominal for month 0)
+    let pvOverpayTotalPaid = actualLumpSumUsed;
+    if (!lumpSumPaidOffEntireLoan) {
+      for (const snapshot of overpaySimulation.snapshots) {
+        pvOverpayTotalPaid += toPresent(
+          snapshot.totalRepayment,
+          discountRate,
+          snapshot.month,
+        );
+      }
+    }
+
+    // Discount balance time series
+    result.balanceTimeSeries = balanceTimeSeries.map((point) => ({
+      ...point,
+      baselineBalance: toPresent(
+        point.baselineBalance,
+        discountRate,
+        point.month,
+      ),
+      overpayBalance: toPresent(
+        point.overpayBalance,
+        discountRate,
+        point.month,
+      ),
+    }));
+
+    result.pvBaseline = { totalPaid: pvBaselineTotalPaid };
+    result.pvOverpay = { totalPaid: pvOverpayTotalPaid };
+    result.pvPaymentDifference = pvBaselineTotalPaid - pvOverpayTotalPaid;
+  }
+
+  return result;
 }
 
 /**
