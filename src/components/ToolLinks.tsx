@@ -85,11 +85,11 @@ const GUIDES: ToolCardProps[] = [
     cta: "Read Guide",
   },
   {
-    href: "/guides/pay-upfront-or-take-loan",
+    href: "/guides/rpi-vs-cpi",
     icon: BookOpen01Icon,
-    title: "Pay Upfront or Take Loan?",
+    title: "RPI vs CPI",
     description:
-      "Why your starting salary is misleading when deciding whether to pay tuition upfront or take the loan.",
+      "Why your loan interest outpaces inflation and what \u2018adjusted for inflation\u2019 really means.",
     cta: "Read Guide",
   },
   {
@@ -128,6 +128,16 @@ export function ToolLinks() {
             <ToolCard key={guide.href} {...guide} />
           ))}
         </div>
+        <Link
+          href="/guides"
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+        >
+          View All Guides
+          <HugeiconsIcon
+            icon={ArrowRight01Icon}
+            className="size-4 transition-transform hover:translate-x-0.5"
+          />
+        </Link>
       </div>
     </section>
   );

@@ -169,7 +169,7 @@ export function InterestGuide() {
 
           <RelatedGuides
             current="how-interest-works"
-            order={["plan-2-vs-plan-5", "pay-upfront-or-take-loan"]}
+            order={["rpi-vs-cpi", "plan-2-vs-plan-5"]}
           />
         </article>
       </main>
