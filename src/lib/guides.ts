@@ -2,6 +2,7 @@ export type GuideSlug =
   | "plan-2-vs-plan-5"
   | "student-loan-vs-mortgage"
   | "how-interest-works"
+  | "rpi-vs-cpi"
   | "pay-upfront-or-take-loan"
   | "moving-abroad"
   | "self-employment";
@@ -30,6 +31,12 @@ export const GUIDES: GuideEntry[] = [
     title: "How Interest Works",
     description:
       "RPI, sliding scales, and why your balance can grow despite repayments.",
+  },
+  {
+    slug: "rpi-vs-cpi",
+    title: "RPI vs CPI",
+    description:
+      "Why your loan interest outpaces inflation and what \u2018adjusted for inflation\u2019 really means.",
   },
   {
     slug: "pay-upfront-or-take-loan",
