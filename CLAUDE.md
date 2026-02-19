@@ -6,6 +6,7 @@
 pnpm dev           # Start dev server (expect it to be already running)
 pnpm build         # Build for production
 pnpm lint          # Run ESLint
+pnpm typecheck    # Run TypeScript compiler (covers test files next build misses)
 pnpm format        # Format with Prettier
 pnpm test          # Run tests
 pnpm test:e2e      # Run Playwright e2e tests
@@ -15,10 +16,10 @@ pnpm test:e2e      # Run Playwright e2e tests
 
 This project uses TypeScript and React 19. When making changes, ensure compatibility with React 19 patterns (no legacy context, proper use of hooks).
 
-**Before considering any change done**, run all four checks and confirm they pass:
+**Before considering any change done**, run all five checks and confirm they pass:
 
 ```bash
-pnpm lint && pnpm test && pnpm build && pnpm format
+pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm format
 ```
 
 ## Architecture
@@ -67,6 +68,7 @@ Use built-in Tailwind breakpoints (`sm`, `md`, `lg`, `xl`, `2xl`) for responsive
 **Never use these:**
 
 - `eslint-disable` comments
+- Ignore eslint warnings
 - `any` type
 - `@ts-ignore` / `@ts-expect-error`
 - Unsafe type assertions (`as unknown as X`)

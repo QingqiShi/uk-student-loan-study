@@ -33,7 +33,7 @@ function OverpayPageSkeleton() {
       {/* Chart + cards grid skeleton */}
       <div className="grid gap-6 md:flex">
         <div className="h-65 min-w-0 sm:h-75 md:h-auto md:min-h-75 md:flex-1">
-          <Skeleton className="h-full w-full" />
+          <Skeleton className="size-full" />
         </div>
         <div className="-mx-4 flex gap-3 px-4 py-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:p-1 md:w-65 md:shrink-0 md:grid-cols-1">
           <Skeleton className="h-36 min-w-50 shrink-0 sm:min-w-0" />

@@ -2,8 +2,8 @@
  * Shared singleton Web Worker for loan simulation calculations.
  *
  * Manages a single Worker instance shared across all hooks that need simulation
- * computations. Uses ref-counting for lifecycle management and a listeners map
- * for multiplexed message routing.
+ * computations. The worker is created lazily on first message and lives for the
+ * duration of the app. A listeners map enables multiplexed message routing.
  *
  * This module MUST live in src/hooks/ so the relative path to the worker file
  * resolves correctly at build time (webpack statically analyzes the URL pattern).
@@ -18,7 +18,6 @@ import type {
 type Listener = (result: WorkerResultType) => void;
 
 let worker: Worker | null = null;
-let refCount = 0;
 let nextRequestId = 0;
 const listeners = new Map<number, Listener>();
 
@@ -41,31 +40,6 @@ function createWorker(): Worker {
   };
 
   return w;
-}
-
-/**
- * Acquire a reference to the shared worker. Call releaseWorker() on cleanup.
- * The worker is created lazily on first acquisition.
- */
-export function acquireWorker(): void {
-  refCount++;
-  if (!worker) {
-    worker = createWorker();
-  }
-}
-
-/**
- * Release a reference to the shared worker. When the last consumer releases,
- * the worker is terminated to free resources.
- */
-export function releaseWorker(): void {
-  refCount--;
-  if (refCount <= 0) {
-    worker?.terminate();
-    worker = null;
-    refCount = 0;
-    listeners.clear();
-  }
 }
 
 /**

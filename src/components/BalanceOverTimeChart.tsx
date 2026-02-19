@@ -30,7 +30,7 @@ export function BalanceOverTimeChart() {
         role="status"
         aria-label="Loading chart"
       >
-        <Skeleton className="h-full w-full" />
+        <Skeleton className="size-full" />
       </div>
     );
   }

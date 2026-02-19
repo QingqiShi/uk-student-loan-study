@@ -28,14 +28,12 @@ describe("useChartData hooks", () => {
     Math.floor((MAX_SALARY - MIN_SALARY) / SALARY_STEP) + 1;
 
   beforeEach(() => {
-    // Use shouldAdvanceTime to allow waitFor polling to work with fake timers
-    vi.useFakeTimers({ shouldAdvanceTime: true });
     vi.setSystemTime(new Date("2024-01-15"));
     localStorage.clear();
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    vi.setSystemTime(vi.getRealSystemTime());
   });
 
   describe("useTotalRepaymentData", () => {
@@ -43,9 +41,6 @@ describe("useChartData hooks", () => {
       const { result } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper(),
       });
-
-      // Wait for worker to respond
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(result.current.data.length).toBe(expectedDataPoints);
@@ -56,8 +51,6 @@ describe("useChartData hooks", () => {
       const { result } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper(),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(result.current.data[0]).toHaveProperty("salary");
@@ -72,8 +65,6 @@ describe("useChartData hooks", () => {
         wrapper: createWrapper(),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(result.current.data[0].salary).toBe(MIN_SALARY);
         expect(result.current.data[result.current.data.length - 1].salary).toBe(
@@ -87,30 +78,24 @@ describe("useChartData hooks", () => {
         wrapper: createWrapper({ salary: 50_000 }),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(result.current.annotationSalary).toBe(50_000);
       });
     });
 
-    it("returns undefined annotationSalary when salary is below MIN_SALARY", async () => {
+    it("returns undefined annotationSalary when salary is below MIN_SALARY", () => {
       const { result } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper({ salary: MIN_SALARY - 1000 }),
       });
-
-      await vi.runAllTimersAsync();
 
       // Even after data loads, annotation should be undefined for out-of-range salary
       expect(result.current.annotationSalary).toBeUndefined();
     });
 
-    it("returns undefined annotationSalary when salary is above MAX_SALARY", async () => {
+    it("returns undefined annotationSalary when salary is above MAX_SALARY", () => {
       const { result } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper({ salary: MAX_SALARY + 1000 }),
       });
-
-      await vi.runAllTimersAsync();
 
       // Even after data loads, annotation should be undefined for out-of-range salary
       expect(result.current.annotationSalary).toBeUndefined();
@@ -120,8 +105,6 @@ describe("useChartData hooks", () => {
       const { result } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper({ salary: MIN_SALARY }),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(result.current.annotationSalary).toBe(MIN_SALARY);
@@ -134,8 +117,6 @@ describe("useChartData hooks", () => {
         wrapper: createWrapper({ salary: MAX_SALARY }),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(result.current.annotationSalary).toBe(MAX_SALARY);
         expect(result.current.annotationValue).toBeDefined();
@@ -146,8 +127,6 @@ describe("useChartData hooks", () => {
       const { result } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper(),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         const lowSalaryRepayment = result.current.data[0].value;
@@ -166,8 +145,6 @@ describe("useChartData hooks", () => {
         wrapper: createWrapper(),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(result.current.data.length).toBeGreaterThan(0);
       });
@@ -177,8 +154,6 @@ describe("useChartData hooks", () => {
       const { result } = renderHook(() => useBalanceOverTimeData(), {
         wrapper: createWrapper(),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(result.current.data[0]).toHaveProperty("month");
@@ -192,8 +167,6 @@ describe("useChartData hooks", () => {
           loans: [{ planType: "PLAN_2", balance: 50_000 }],
         }),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(result.current.data[0].month).toBe(0);
@@ -210,8 +183,6 @@ describe("useChartData hooks", () => {
         }),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         const initialBalance = result.current.data[0].balance;
         const finalBalance =
@@ -221,12 +192,10 @@ describe("useChartData hooks", () => {
       });
     });
 
-    it("returns empty data when no loans", async () => {
+    it("returns empty data when no loans", () => {
       const { result } = renderHook(() => useBalanceOverTimeData(), {
         wrapper: createWrapper({ loans: [] }),
       });
-
-      await vi.runAllTimersAsync();
 
       // Empty loans should return empty data immediately (no worker call needed)
       expect(result.current.data.length).toBe(0);
@@ -240,8 +209,6 @@ describe("useChartData hooks", () => {
           salary: MIN_SALARY,
         }),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         // Low earners should hit write-off (360 months for Plan 2)
@@ -268,8 +235,6 @@ describe("useChartData hooks", () => {
           discountRate: 0.05,
         }),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(nominalResult.current.data.length).toBe(expectedDataPoints);
@@ -301,8 +266,6 @@ describe("useChartData hooks", () => {
         }),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(nominalResult.current.data.length).toBeGreaterThan(1);
         expect(pvResult.current.data.length).toBeGreaterThan(1);
@@ -326,8 +289,6 @@ describe("useChartData hooks", () => {
         wrapper: createWrapper(),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(result.current.data.length).toBe(expectedDataPoints);
       });
@@ -348,8 +309,6 @@ describe("useChartData hooks", () => {
         }),
       });
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(result1.current.data.length).toBe(expectedDataPoints);
       });
@@ -361,8 +320,6 @@ describe("useChartData hooks", () => {
           loans: [{ planType: "PLAN_2", balance: 75_000 }],
         }),
       });
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(result2.current.data.length).toBe(expectedDataPoints);
@@ -384,8 +341,6 @@ describe("useChartData hooks", () => {
         },
       );
 
-      await vi.runAllTimersAsync();
-
       await waitFor(() => {
         expect(plan2Result.current.data.length).toBe(expectedDataPoints);
       });
@@ -400,8 +355,6 @@ describe("useChartData hooks", () => {
           }),
         },
       );
-
-      await vi.runAllTimersAsync();
 
       await waitFor(() => {
         expect(plan5Result.current.data.length).toBe(expectedDataPoints);

@@ -3,10 +3,13 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [
+    react({ babel: { plugins: ["babel-plugin-react-compiler"] } }),
+    tsconfigPaths(),
+  ],
   test: {
     environment: "jsdom",
-    setupFiles: ["./src/test/setup.ts"],
+    setupFiles: ["@vitest/web-worker", "./src/test/setup.ts"],
     exclude: ["e2e/**", "node_modules/**"],
     coverage: {
       provider: "v8",

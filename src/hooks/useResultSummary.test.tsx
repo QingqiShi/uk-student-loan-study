@@ -25,13 +25,12 @@ function createWrapper(overrides?: Partial<LoanState>) {
 
 describe("useResultSummary", () => {
   beforeEach(() => {
-    vi.useFakeTimers({ shouldAdvanceTime: true });
     vi.setSystemTime(new Date("2024-01-15"));
     localStorage.clear();
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    vi.setSystemTime(vi.getRealSystemTime());
   });
 
   it("returns null initially before worker responds", () => {
@@ -47,8 +46,6 @@ describe("useResultSummary", () => {
       wrapper: createWrapper(),
     });
 
-    await vi.runAllTimersAsync();
-
     await waitFor(() => {
       expect(result.current).not.toBeNull();
     });
@@ -63,8 +60,6 @@ describe("useResultSummary", () => {
       wrapper: createWrapper(),
     });
 
-    await vi.runAllTimersAsync();
-
     await waitFor(() => {
       expect(result.current).not.toBeNull();
       expect(result.current?.totalPaid).toBeGreaterThan(0);
@@ -75,8 +70,6 @@ describe("useResultSummary", () => {
     const { result } = renderHook(() => useResultSummary(), {
       wrapper: createWrapper({ salary: 45_000 }),
     });
-
-    await vi.runAllTimersAsync();
 
     await waitFor(() => {
       expect(result.current).not.toBeNull();
@@ -89,8 +82,6 @@ describe("useResultSummary", () => {
       wrapper: createWrapper(),
     });
 
-    await vi.runAllTimersAsync();
-
     await waitFor(() => {
       expect(result.current).not.toBeNull();
       expect(result.current?.monthsToPayoff).toBeGreaterThan(0);
@@ -101,8 +92,6 @@ describe("useResultSummary", () => {
     const { result } = renderHook(() => useResultSummary(), {
       wrapper: createWrapper({ loans: [] }),
     });
-
-    await vi.runAllTimersAsync();
 
     await waitFor(() => {
       // Worker should respond, but summary should be null since no balances
@@ -119,24 +108,22 @@ describe("useResultSummary", () => {
       wrapper: createWrapper({ salary: 80_000 }),
     });
 
-    await vi.runAllTimersAsync();
-
     await waitFor(() => {
       expect(lowSalaryResult.current).not.toBeNull();
       expect(highSalaryResult.current).not.toBeNull();
     });
 
-    expect(highSalaryResult.current?.monthlyRepayment).toBeGreaterThan(
-      lowSalaryResult.current?.monthlyRepayment,
-    );
+    if (highSalaryResult.current !== null && lowSalaryResult.current !== null) {
+      expect(highSalaryResult.current.monthlyRepayment).toBeGreaterThan(
+        lowSalaryResult.current.monthlyRepayment,
+      );
+    }
   });
 
   it("returns zero monthlyRepayment for salary below threshold", async () => {
     const { result } = renderHook(() => useResultSummary(), {
       wrapper: createWrapper({ salary: MIN_SALARY }),
     });
-
-    await vi.runAllTimersAsync();
 
     await waitFor(() => {
       expect(result.current).not.toBeNull();
@@ -162,17 +149,17 @@ describe("useResultSummary", () => {
       }),
     });
 
-    await vi.runAllTimersAsync();
-
     await waitFor(() => {
       expect(undergradOnly.current).not.toBeNull();
       expect(withPostgrad.current).not.toBeNull();
     });
 
     // Adding a postgrad loan should increase total repayment
-    expect(withPostgrad.current?.totalPaid).toBeGreaterThan(
-      undergradOnly.current?.totalPaid,
-    );
+    if (withPostgrad.current !== null && undergradOnly.current !== null) {
+      expect(withPostgrad.current.totalPaid).toBeGreaterThan(
+        undergradOnly.current.totalPaid,
+      );
+    }
   });
 
   it("returns lower totalPaid with present value enabled", async () => {
@@ -189,8 +176,6 @@ describe("useResultSummary", () => {
         discountRate: 0.05,
       }),
     });
-
-    await vi.runAllTimersAsync();
 
     await waitFor(() => {
       expect(nominalResult.current).not.toBeNull();
@@ -215,8 +200,6 @@ describe("useResultSummary", () => {
         discountRate: 0.05,
       }),
     });
-
-    await vi.runAllTimersAsync();
 
     await waitFor(() => {
       expect(nominalResult.current).not.toBeNull();
@@ -244,8 +227,6 @@ describe("useResultSummary", () => {
         salary: 45_000,
       }),
     });
-
-    await vi.runAllTimersAsync();
 
     await waitFor(() => {
       expect(plan2Result.current).not.toBeNull();
