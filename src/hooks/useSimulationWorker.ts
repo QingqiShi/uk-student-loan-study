@@ -1,7 +1,5 @@
-import { useState, useEffect, useRef, useTransition } from "react";
+import { useState, useEffect, useTransition } from "react";
 import {
-  acquireWorker,
-  releaseWorker,
   postWorkerMessage,
   cancelWorkerMessage,
 } from "./simulationWorkerSingleton";
@@ -22,7 +20,7 @@ type ResultFor<P extends WorkerPayload> = Extract<
 /**
  * Hook for communicating with the simulation Web Worker.
  *
- * Uses a shared singleton worker (acquired on mount, released on unmount).
+ * Uses a shared singleton worker (created lazily on first message).
  * Handles request/response lifecycle and ignores stale responses.
  *
  * Two-pronged INP optimization:
@@ -39,15 +37,6 @@ export function useSimulationWorker<P extends WorkerPayload>(
 ): ResultFor<P> | null {
   const [result, setResult] = useState<ResultFor<P> | null>(null);
   const [, startTransition] = useTransition();
-  const activeRequestRef = useRef<number | null>(null);
-
-  // Acquire/release shared worker on mount/unmount
-  useEffect(() => {
-    acquireWorker();
-    return () => {
-      releaseWorker();
-    };
-  }, []);
 
   // Send message when payload changes
   useEffect(() => {
@@ -55,27 +44,19 @@ export function useSimulationWorker<P extends WorkerPayload>(
       return;
     }
 
-    // Cancel previous in-flight request
-    if (activeRequestRef.current !== null) {
-      cancelWorkerMessage(activeRequestRef.current);
-    }
+    let cancelled = false;
 
     const id = postWorkerMessage(payload, (workerResult) => {
-      if (activeRequestRef.current === id) {
+      if (!cancelled) {
         startTransition(() => {
           setResult(workerResult as ResultFor<P>);
         });
-        activeRequestRef.current = null;
       }
     });
 
-    activeRequestRef.current = id;
-
     return () => {
+      cancelled = true;
       cancelWorkerMessage(id);
-      if (activeRequestRef.current === id) {
-        activeRequestRef.current = null;
-      }
     };
   }, [payload]);
 
