@@ -1,8 +1,8 @@
-import { Breadcrumb } from "../Breadcrumb";
-import { Footer } from "../Footer";
-import { Header } from "../Header";
 import { BrandIcon, BRAND_HEX } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { Card } from "@/components/ui/card";
 
 const BRAND_SWATCHES = [

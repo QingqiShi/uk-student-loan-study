@@ -1,9 +1,9 @@
 "use client";
 
+import { ConfigSummary } from "./ConfigSummary";
+import { LoanConfigPanel } from "./LoanConfigPanel";
 import type { PlanType } from "@/lib/loans/types";
 import type { Preset } from "@/lib/presets";
-import { ConfigSummary } from "@/components/ConfigSummary";
-import { LoanConfigPanel } from "@/components/LoanConfigPanel";
 
 export type InputMode =
   | { view: "summary" }

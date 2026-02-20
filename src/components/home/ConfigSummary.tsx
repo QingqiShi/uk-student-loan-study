@@ -1,7 +1,7 @@
 "use client";
 
+import { PresetPills } from "./PresetPills";
 import type { Preset } from "@/lib/presets";
-import { PresetPills } from "@/components/PresetPills";
 
 interface ConfigSummaryProps {
   hasPersonalized: boolean;

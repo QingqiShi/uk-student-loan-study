@@ -12,7 +12,7 @@ vi.mock("@/context/AssumptionsWizardContext", () => ({
   useAssumptionsWizard: () => ({ openAssumptions: mockOpenAssumptions }),
 }));
 
-vi.mock("./TotalRepaymentChart", () => ({
+vi.mock("@/components/charts/TotalRepaymentChart", () => ({
   TotalRepaymentChart: () => <div data-testid="chart" />,
 }));
 

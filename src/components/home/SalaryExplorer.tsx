@@ -1,8 +1,8 @@
 "use client";
 
-import { SalaryGrowthBadge } from "./SalaryGrowthBadge";
-import { TotalRepaymentChart } from "./TotalRepaymentChart";
-import { Slider } from "./ui/slider";
+import { TotalRepaymentChart } from "@/components/charts/TotalRepaymentChart";
+import { SalaryGrowthBadge } from "@/components/shared/SalaryGrowthBadge";
+import { Slider } from "@/components/ui/slider";
 import {
   MIN_SALARY,
   MAX_SALARY,

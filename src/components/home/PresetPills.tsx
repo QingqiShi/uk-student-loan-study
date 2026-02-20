@@ -2,8 +2,8 @@
 
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { PresentValueToggle } from "./PresentValueToggle";
 import type { Preset } from "@/lib/presets";
-import { PresentValueToggle } from "@/components/PresentValueToggle";
 import { useLoanConfigState } from "@/context/LoanContext";
 import { PRESETS } from "@/lib/presets";
 import { cn } from "@/lib/utils";

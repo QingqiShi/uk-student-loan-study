@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { AppErrorBoundary } from "@/components/ErrorBoundary";
 import { Plan2VsPlan5Guide } from "@/components/guides/plan-2-vs-plan-5/Plan2VsPlan5Guide";
+import { AppErrorBoundary } from "@/components/shared/ErrorBoundary";
 
 export const metadata: Metadata = {
   alternates: {

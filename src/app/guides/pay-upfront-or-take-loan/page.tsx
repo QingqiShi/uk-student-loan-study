@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { AppErrorBoundary } from "@/components/ErrorBoundary";
 import { PayUpfrontGuide } from "@/components/guides/pay-upfront-or-take-loan/PayUpfrontGuide";
+import { AppErrorBoundary } from "@/components/shared/ErrorBoundary";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/guides/pay-upfront-or-take-loan" },

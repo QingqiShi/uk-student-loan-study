@@ -1,4 +1,4 @@
-import { BalanceOverTimeChart } from "./BalanceOverTimeChart";
+import { BalanceOverTimeChart } from "@/components/charts/BalanceOverTimeChart";
 
 export function SecondaryCharts() {
   return (

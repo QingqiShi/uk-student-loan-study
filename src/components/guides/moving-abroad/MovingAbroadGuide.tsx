@@ -5,10 +5,10 @@ import {
   CreditCardIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { Footer } from "@/components/Footer";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 

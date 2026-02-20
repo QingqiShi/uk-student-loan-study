@@ -7,8 +7,8 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
+import { CurrencyInput } from "./CurrencyInput";
 import type { PlanType } from "@/lib/loans/types";
-import { CurrencyInput } from "@/components/CurrencyInput";
 import { QuizContainer } from "@/components/quiz/QuizContainer";
 import { Button } from "@/components/ui/button";
 import {

@@ -1,9 +1,9 @@
 import { ArrowRight01Icon, BookOpen01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { GUIDES } from "@/lib/guides";
 
 export default function GuidesPage() {

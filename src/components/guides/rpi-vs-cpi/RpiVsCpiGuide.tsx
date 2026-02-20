@@ -1,8 +1,8 @@
 import { InflationComparisonChart } from "./InflationComparisonChart";
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { Footer } from "@/components/Footer";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 
