@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { CostComparisonChart } from "./CostComparisonChart";
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { Footer } from "@/components/Footer";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { formatGBP } from "@/lib/format";
 import {
   PLAN_CONFIGS,

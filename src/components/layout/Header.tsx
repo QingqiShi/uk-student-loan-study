@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { BrandLogo } from "./brand/BrandLogo";
 import { ShareButton } from "./ShareButton";
 import ThemeToggle from "./ThemeToggle";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 
 interface HeaderProps {
   repaymentYear?: number;

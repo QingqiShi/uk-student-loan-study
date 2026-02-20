@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { AppErrorBoundary } from "@/components/ErrorBoundary";
 import { OverpayPage } from "@/components/overpay/OverpayPage";
+import { AppErrorBoundary } from "@/components/shared/ErrorBoundary";
 import { parseMetadataParams } from "@/lib/metadata";
 
 interface Props {

@@ -1,10 +1,10 @@
-import { AssumptionsCallout } from "./AssumptionsCallout";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
-import { HeroSection } from "./HeroSection";
-import { PlanFromQuery } from "./PlanFromQuery";
-import { SecondaryCharts } from "./SecondaryCharts";
-import { ToolLinks } from "./ToolLinks";
+import { HeroSection } from "./home/HeroSection";
+import { SecondaryCharts } from "./home/SecondaryCharts";
+import { ToolLinks } from "./home/ToolLinks";
+import { Footer } from "./layout/Footer";
+import { Header } from "./layout/Header";
+import { AssumptionsCallout } from "./shared/AssumptionsCallout";
+import { PlanFromQuery } from "./shared/PlanFromQuery";
 
 function App() {
   return (

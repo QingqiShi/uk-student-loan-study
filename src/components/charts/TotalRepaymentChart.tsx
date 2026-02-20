@@ -1,7 +1,7 @@
 "use client";
 
 import { useDeferredValue } from "react";
-import { ChartBase } from "./charts/ChartBase";
+import { ChartBase } from "./ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter, MIN_SALARY, MAX_SALARY } from "@/constants";

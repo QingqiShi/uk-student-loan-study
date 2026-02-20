@@ -21,35 +21,3 @@ export interface CurrencyInputProps extends BaseInputProps {
   /** Callback when input loses focus */
   onBlur?: () => void;
 }
-
-/**
- * Props for the PercentageInput component.
- */
-export interface PercentageInputProps extends Omit<
-  BaseInputProps,
-  "helperText"
-> {
-  /** Current value as a percentage (e.g., 6.5 for 6.5%) */
-  value: number;
-  /** Callback when value changes */
-  onChange: (value: number) => void;
-}
-
-/**
- * Props for the DateInput component.
- */
-export interface DateInputProps extends BaseInputProps {
-  /** Current date value */
-  value: Date | null;
-  /** Callback when date changes */
-  onChange: (value: Date | null) => void;
-}
-
-/**
- * Props for numeric format custom input components.
- * Used internally by CurrencyInput and PercentageInput.
- */
-export interface NumericFormatInputProps {
-  /** Callback when numeric value changes */
-  onChange: (value: number) => void;
-}

@@ -1,10 +1,10 @@
 import { BalanceComparisonChart } from "./BalanceComparisonChart";
 import { ComparisonTable } from "./ComparisonTable";
 import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
-import { Breadcrumb } from "@/components/Breadcrumb";
-import { Footer } from "@/components/Footer";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { formatGBP } from "@/lib/format";
 
 const EXAMPLE_BALANCE = 45_000;

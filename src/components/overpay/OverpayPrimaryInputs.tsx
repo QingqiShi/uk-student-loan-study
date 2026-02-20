@@ -1,10 +1,10 @@
 "use client";
 
-import { SalaryGrowthBadge } from "@/components/SalaryGrowthBadge";
+import { YearSelector } from "./YearSelector";
+import { SalaryGrowthBadge } from "@/components/shared/SalaryGrowthBadge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { YearSelector } from "@/components/YearSelector";
 import {
   MIN_MONTHLY_OVERPAYMENT,
   MAX_MONTHLY_OVERPAYMENT,
