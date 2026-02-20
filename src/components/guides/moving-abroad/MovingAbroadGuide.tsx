@@ -5,6 +5,7 @@ import {
   CreditCardIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
@@ -288,6 +289,17 @@ export function MovingAbroadGuide() {
               <li>
                 Non-compliance can lead to legal action, collection agencies,
                 and credit impacts if you return to the UK.
+              </li>
+              <li>
+                Before you move, check your remaining balance and repayment
+                timeline with the{" "}
+                <Link
+                  href="/"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  repayment calculator
+                </Link>
+                .
               </li>
             </ul>
           </section>

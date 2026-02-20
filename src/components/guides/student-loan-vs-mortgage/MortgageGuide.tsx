@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { RepaymentImpactChart } from "./RepaymentImpactChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
@@ -129,6 +130,14 @@ export function MortgageGuide() {
                 repayment is roughly {formatGBP(example60kMonthly)}, trimming
                 potential borrowing by about{" "}
                 {formatGBP(example60kMortgageReduction)} on the same multiplier.
+                Use the{" "}
+                <Link
+                  href="/"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  student loan repayment calculator
+                </Link>{" "}
+                to see your exact monthly repayment at your salary.
               </p>
             </div>
           </section>

@@ -221,7 +221,7 @@ export function PayUpfrontGuide() {
                   href="/"
                   className="text-primary underline underline-offset-4 hover:text-primary/80"
                 >
-                  Use the calculator
+                  Use the student loan repayment calculator
                 </Link>{" "}
                 to model your specific scenario with your expected salary and
                 growth rate

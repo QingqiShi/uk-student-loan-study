@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { InflationComparisonChart } from "./InflationComparisonChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
@@ -236,6 +237,16 @@ export function RpiVsCpiGuide() {
                 <li>
                   RPI may align with CPIH by 2030, but current borrowers are
                   unlikely to benefit.
+                </li>
+                <li>
+                  See how inflation affects your total repayment with the{" "}
+                  <Link
+                    href="/"
+                    className="text-primary underline underline-offset-4 hover:text-primary/80"
+                  >
+                    student loan calculator
+                  </Link>
+                  .
                 </li>
               </ul>
             </div>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BalanceComparisonChart } from "./BalanceComparisonChart";
 import { ComparisonTable } from "./ComparisonTable";
 import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
@@ -6,8 +7,19 @@ import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { formatGBP } from "@/lib/format";
+import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const EXAMPLE_BALANCE = 45_000;
+const EXAMPLE_SALARY = 30_000;
+const plan2Threshold = PLAN_DISPLAY_INFO.PLAN_2.yearlyThreshold;
+const plan5Threshold = PLAN_DISPLAY_INFO.PLAN_5.yearlyThreshold;
+const repaymentRate = PLAN_CONFIGS.PLAN_2.repaymentRate;
+const plan2Annual = Math.round(
+  (EXAMPLE_SALARY - plan2Threshold) * repaymentRate,
+);
+const plan5Annual = Math.round(
+  (EXAMPLE_SALARY - plan5Threshold) * repaymentRate,
+);
 
 export function Plan2VsPlan5Guide() {
   return (
@@ -80,6 +92,123 @@ export function Plan2VsPlan5Guide() {
             </div>
           </section>
 
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              Which Plan Do I Have?
+            </h2>
+            <div className="space-y-2 text-muted-foreground">
+              <p>
+                You cannot choose between Plan 2 and Plan 5 &mdash; your plan is
+                determined by when and where you started your course. Plan 2
+                covers English and Welsh students who started university between
+                September 2012 and July 2023. Plan 5 applies to English students
+                who started from September 2023 onwards.
+              </p>
+              <p>
+                The cutoff is August 2023. If you started in the 2022&ndash;23
+                academic year, you are on Plan 2. If you started in September
+                2023 or later, you are on Plan 5. Note that Plan 5 is
+                England-only &mdash; Welsh students who started after August
+                2023 remain on Plan 2.
+              </p>
+              <p>
+                Not sure?{" "}
+                <Link
+                  href="/which-plan"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  Take the which plan quiz
+                </Link>{" "}
+                to find out.
+              </p>
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              How the Threshold Difference Affects You
+            </h2>
+            <div className="space-y-2 text-muted-foreground">
+              <p>
+                Plan 5&rsquo;s lower repayment threshold means you start
+                repaying sooner and pay more each month at the same salary. Both
+                plans charge 9% on income above the threshold, but the
+                thresholds are different: {formatGBP(plan2Threshold)} for Plan 2
+                versus {formatGBP(plan5Threshold)} for Plan 5.
+              </p>
+              <p>
+                For example, at a {formatGBP(EXAMPLE_SALARY)} salary, a Plan 2
+                borrower repays just {formatGBP(plan2Annual)} per year, while a
+                Plan 5 borrower repays {formatGBP(plan5Annual)} per year &mdash;
+                over three times as much. This gap narrows at higher salaries
+                where both plans collect substantial repayments, but at lower
+                salaries the threshold difference is the dominant factor.
+              </p>
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              Can You Switch Plans?
+            </h2>
+            <div className="space-y-2 text-muted-foreground">
+              <p>
+                No. Your plan is permanently determined by your course start
+                date. There is no mechanism to switch between Plan 2 and Plan 5.
+              </p>
+              <p>
+                If you take out a second degree after August 2023, the new loan
+                will be on Plan 5, but your original Plan 2 loan stays on Plan
+                2. The two loans are repaid separately under their own terms.
+              </p>
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              Which Plan Should You Worry About?
+            </h2>
+            <div className="space-y-2 text-muted-foreground">
+              <p>
+                For most borrowers, repayments are automatic through PAYE
+                &mdash; you do not need to do anything. The real question is
+                whether it makes sense to{" "}
+                <Link
+                  href="/overpay"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  overpay your loan
+                </Link>
+                .
+              </p>
+              <p>
+                Plan 2 middle earners are hit hardest. They earn too much for
+                the 30-year write-off to help significantly, but not enough to
+                pay off the balance quickly before{" "}
+                <Link
+                  href="/guides/how-interest-works"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  interest
+                </Link>{" "}
+                (up to RPI + 3%) compounds over decades. These borrowers often
+                end up repaying more in total than Plan 5 borrowers on the same
+                salary.
+              </p>
+              <p>
+                Use the{" "}
+                <Link
+                  href="/"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  student loan repayment calculator
+                </Link>{" "}
+                to model your specific scenario and see exactly how much
+                you&rsquo;ll repay under your plan.
+              </p>
+            </div>
+          </section>
+
           <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
             <h2 className="text-lg font-semibold tracking-tight">
               Key Takeaways
@@ -91,13 +220,29 @@ export function Plan2VsPlan5Guide() {
                 repayments.
               </li>
               <li>
-                Higher earners may pay <strong>more</strong> on Plan 2 because
-                interest can reach RPI + 3%, growing the balance faster.
+                Middle earners may pay <strong>more</strong> on Plan 2 because
+                interest can reach RPI + 3%, and they earn too much for
+                write-off to help but not enough to pay off the balance quickly.
               </li>
               <li>
                 Plan 5&rsquo;s simpler interest (RPI only) makes the balance
                 more predictable, but the longer write-off window is the real
                 cost driver.
+              </li>
+              <li>
+                Plan 5&rsquo;s lower threshold ({formatGBP(plan5Threshold)} vs{" "}
+                {formatGBP(plan2Threshold)}) means earlier and larger repayments
+                at the same salary.
+              </li>
+              <li>
+                Model your own salary in the{" "}
+                <Link
+                  href="/"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  student loan calculator
+                </Link>{" "}
+                to see the total cost under each plan.
               </li>
             </ul>
           </section>

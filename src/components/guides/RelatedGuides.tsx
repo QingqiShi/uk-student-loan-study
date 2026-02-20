@@ -100,9 +100,11 @@ export function RelatedGuides({
                 <HugeiconsIcon icon={Calculator01Icon} className="size-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-medium">Repayment Calculator</h3>
+                <h3 className="text-sm font-medium">
+                  Student Loan Repayment Calculator
+                </h3>
                 <p className="text-xs text-muted-foreground">
-                  Model your own repayment timeline
+                  See how much you will repay in total at your salary
                 </p>
               </div>
               <HugeiconsIcon

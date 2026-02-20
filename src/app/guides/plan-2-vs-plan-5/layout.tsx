@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
+const description =
+  "Plan 2 has higher interest but writes off after 30 years. Plan 5 charges less interest but repays over 40 years with a lower threshold. Compare the total cost at your salary.";
+
 export const metadata: Metadata = {
-  title: "Plan 2 vs Plan 5: Which Student Loan Is Better?",
-  description:
-    "Plan 5 has lower interest but a longer repayment window. Plan 2 can cost more — or get written off sooner. See which one hits your wallet harder at your salary.",
+  title: "Plan 2 vs Plan 5: Which Student Loan Costs More?",
+  description,
   keywords: [
     "Plan 2 vs Plan 5",
     "UK student loan comparison",
@@ -13,7 +15,14 @@ export const metadata: Metadata = {
     "Plan 5 student loan",
     "which student loan plan is better",
     "student loan write-off",
+    "plan 2 vs plan 5 threshold",
   ],
+  openGraph: {
+    title: "Plan 2 vs Plan 5: Which Student Loan Costs More?",
+    description,
+    url: "https://studentloanstudy.uk/guides/plan-2-vs-plan-5",
+    type: "article",
+  },
 };
 
 const breadcrumbSchema = {
@@ -63,7 +72,7 @@ const faqSchema = {
       name: "Which student loan plan costs more overall?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `It depends on your salary. Lower earners often repay less on Plan 2 because it writes off after ${String(plan2WriteOff)} years, while Plan 5's ${String(plan5WriteOff)}-year term means more payments despite the lower interest rate. Higher earners may repay more on Plan 2 due to the sliding-scale interest that can reach RPI + 3%.`,
+        text: `It depends on your salary. Lower earners often repay less on Plan 2 because it writes off after ${String(plan2WriteOff)} years, while Plan 5's ${String(plan5WriteOff)}-year term means more payments despite the lower interest rate. Middle earners may repay more on Plan 2 because they earn too much for write-off to help but not enough to pay off the balance quickly before interest (up to RPI + 3%) compounds significantly.`,
       },
     },
     {
@@ -74,7 +83,42 @@ const faqSchema = {
         text: `Yes. Plan 5 charges interest at RPI only, while Plan 2 uses a sliding scale from RPI up to RPI + 3% depending on your income. However, Plan 5's longer ${String(plan5WriteOff)}-year repayment window and lower threshold mean you may still pay more in total despite the lower rate.`,
       },
     },
+    {
+      "@type": "Question",
+      name: "Can I switch between Plan 2 and Plan 5?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. Your plan is permanently determined by your course start date. There is no mechanism to switch between Plan 2 and Plan 5. If you take out a second degree after August 2023, the new loan will be on Plan 5, but your original Plan 2 loan stays on Plan 2.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What if I started university right before Plan 5 was introduced?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The cutoff is August 2023. Students who started before this date are on Plan 2. Students starting from September 2023 onwards are on Plan 5. Also note Plan 5 is England-only — Welsh students who started after August 2023 remain on Plan 2.",
+      },
+    },
   ],
+};
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Plan 2 vs Plan 5: Which Student Loan Costs More?",
+  description,
+  url: "https://studentloanstudy.uk/guides/plan-2-vs-plan-5",
+  author: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  dateModified: "2026-02-20",
 };
 
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
@@ -93,6 +137,10 @@ export default function Plan2VsPlan5Layout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       {children}
     </>
