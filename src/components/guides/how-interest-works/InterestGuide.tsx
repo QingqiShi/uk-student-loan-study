@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { InterestRateChart } from "./InterestRateChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
@@ -162,7 +163,14 @@ export function InterestGuide() {
                 This is most common early in your career when salaries are lower
                 and balances are at their highest. Over time, salary growth
                 increases your repayments while the balance (hopefully) shrinks,
-                eventually tipping the scales.
+                eventually tipping the scales. Use the{" "}
+                <Link
+                  href="/"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  repayment calculator
+                </Link>{" "}
+                to see when this tipping point occurs at your salary.
               </p>
             </div>
           </section>

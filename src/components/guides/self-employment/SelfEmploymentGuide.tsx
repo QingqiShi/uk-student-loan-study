@@ -6,6 +6,7 @@ import {
   BulbIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
@@ -354,6 +355,16 @@ export function SelfEmploymentGuide() {
               <li>
                 Budget monthly by setting aside {undergradRate} of profit above
                 the threshold to avoid being caught out by large tax bills.
+              </li>
+              <li>
+                Estimate your annual repayments with the{" "}
+                <Link
+                  href="/"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  student loan calculator
+                </Link>
+                .
               </li>
             </ul>
           </section>
