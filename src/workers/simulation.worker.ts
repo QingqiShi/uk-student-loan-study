@@ -82,10 +82,9 @@ export type WorkerPayload =
   | OverpayAnalysisPayload
   | InsightPayload;
 
-export interface WorkerMessage {
-  id: number;
-  payload: WorkerPayload;
-}
+export type WorkerMessage =
+  | { id: number; payload: WorkerPayload }
+  | { id: number; cancel: true };
 
 export interface InsightSummary {
   totalPaid: number;
@@ -225,8 +224,24 @@ function handleInsight(payload: InsightPayload): {
 // Worker Entry Point
 // ============================================================================
 
+const cancelledIds = new Set<number>();
+
 self.onmessage = (event: MessageEvent<WorkerMessage>) => {
-  const { id, payload } = event.data;
+  const msg = event.data;
+
+  // Handle cancellation: mark ID and skip processing
+  if ("cancel" in msg) {
+    cancelledIds.add(msg.id);
+    return;
+  }
+
+  const { id, payload } = msg;
+
+  // Skip if this request was cancelled while queued
+  if (cancelledIds.has(id)) {
+    cancelledIds.delete(id);
+    return;
+  }
 
   let result: WorkerResultType;
 

@@ -5,7 +5,7 @@ import { useResultSummary } from "@/hooks/useResultSummary";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 export function LivePreview() {
-  const summary = useResultSummary();
+  const { summary } = useResultSummary();
   const showPresentValue = useShowPresentValue();
 
   if (!summary) return null;

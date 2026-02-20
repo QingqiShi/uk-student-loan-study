@@ -8,16 +8,22 @@ import {
   useBoeBaseRate,
   useActiveDiscountRate,
 } from "./useStoreSelectors";
+import type { Insight } from "@/utils/insights";
 import type {
   InsightSummary,
   InsightPayload,
 } from "@/workers/simulation.worker";
 
+interface ResultSummaryResult {
+  summary: InsightSummary | null;
+  insight: Insight | null;
+}
+
 /**
- * Hook that returns key result metrics (total repaid, monthly payment, years to payoff).
- * Runs the simulation in a Web Worker to keep the main thread responsive.
+ * Hook that returns key result metrics (total repaid, monthly payment, years to payoff)
+ * and the personalized insight. Runs a single INSIGHT simulation in a Web Worker.
  */
-export function useResultSummary(): InsightSummary | null {
+export function useResultSummary(): ResultSummaryResult {
   const config = useLoanConfig();
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
@@ -34,16 +40,17 @@ export function useResultSummary(): InsightSummary | null {
     thresholdGrowthRate,
     rpiRate,
     boeBaseRate,
-    ...(activeDiscountRate !== undefined
-      ? { discountRate: activeDiscountRate }
-      : {}),
+    discountRate: activeDiscountRate,
   };
 
   const result = useSimulationWorker(payload);
 
-  const summary = result?.summary ?? null;
+  let summary = result?.summary ?? null;
   if (summary?.pvTotalPaid !== undefined) {
-    return { ...summary, totalPaid: summary.pvTotalPaid };
+    summary = { ...summary, totalPaid: summary.pvTotalPaid };
   }
-  return summary;
+
+  const insight = result?.insight ?? null;
+
+  return { summary, insight };
 }

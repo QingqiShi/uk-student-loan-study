@@ -11,6 +11,7 @@
 
 import type {
   WorkerMessage,
+  WorkerPayload,
   WorkerResponse,
   WorkerResultType,
 } from "@/workers/simulation.worker";
@@ -47,7 +48,7 @@ function createWorker(): Worker {
  * for the response. Returns the request ID for cancellation.
  */
 export function postWorkerMessage(
-  payload: WorkerMessage["payload"],
+  payload: WorkerPayload,
   onResponse: Listener,
 ): number {
   const id = ++nextRequestId;
@@ -62,9 +63,12 @@ export function postWorkerMessage(
 }
 
 /**
- * Cancel a pending request by removing its listener. The worker will still
- * process the message, but the response will be silently discarded.
+ * Cancel a pending request. Removes the listener and notifies the worker
+ * so it can skip the computation if it hasn't started yet.
  */
 export function cancelWorkerMessage(id: number): void {
   listeners.delete(id);
+  if (worker) {
+    worker.postMessage({ id, cancel: true } satisfies WorkerMessage);
+  }
 }

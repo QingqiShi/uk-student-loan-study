@@ -38,7 +38,7 @@ describe("useResultSummary", () => {
       wrapper: createWrapper(),
     });
 
-    expect(result.current).toBeNull();
+    expect(result.current.summary).toBeNull();
   });
 
   it("returns summary with totalPaid, monthlyRepayment, and monthsToPayoff", async () => {
@@ -47,12 +47,12 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(result.current).not.toBeNull();
+      expect(result.current.summary).not.toBeNull();
     });
 
-    expect(result.current).toHaveProperty("totalPaid");
-    expect(result.current).toHaveProperty("monthlyRepayment");
-    expect(result.current).toHaveProperty("monthsToPayoff");
+    expect(result.current.summary).toHaveProperty("totalPaid");
+    expect(result.current.summary).toHaveProperty("monthlyRepayment");
+    expect(result.current.summary).toHaveProperty("monthsToPayoff");
   });
 
   it("returns positive totalPaid for active loans", async () => {
@@ -61,8 +61,8 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(result.current).not.toBeNull();
-      expect(result.current?.totalPaid).toBeGreaterThan(0);
+      expect(result.current.summary).not.toBeNull();
+      expect(result.current.summary?.totalPaid).toBeGreaterThan(0);
     });
   });
 
@@ -72,8 +72,8 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(result.current).not.toBeNull();
-      expect(result.current?.monthlyRepayment).toBeGreaterThan(0);
+      expect(result.current.summary).not.toBeNull();
+      expect(result.current.summary?.monthlyRepayment).toBeGreaterThan(0);
     });
   });
 
@@ -83,8 +83,8 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(result.current).not.toBeNull();
-      expect(result.current?.monthsToPayoff).toBeGreaterThan(0);
+      expect(result.current.summary).not.toBeNull();
+      expect(result.current.summary?.monthsToPayoff).toBeGreaterThan(0);
     });
   });
 
@@ -95,7 +95,7 @@ describe("useResultSummary", () => {
 
     await waitFor(() => {
       // Worker should respond, but summary should be null since no balances
-      expect(result.current).toBeNull();
+      expect(result.current.summary).toBeNull();
     });
   });
 
@@ -109,13 +109,16 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(lowSalaryResult.current).not.toBeNull();
-      expect(highSalaryResult.current).not.toBeNull();
+      expect(lowSalaryResult.current.summary).not.toBeNull();
+      expect(highSalaryResult.current.summary).not.toBeNull();
     });
 
-    if (highSalaryResult.current !== null && lowSalaryResult.current !== null) {
-      expect(highSalaryResult.current.monthlyRepayment).toBeGreaterThan(
-        lowSalaryResult.current.monthlyRepayment,
+    if (
+      highSalaryResult.current.summary !== null &&
+      lowSalaryResult.current.summary !== null
+    ) {
+      expect(highSalaryResult.current.summary.monthlyRepayment).toBeGreaterThan(
+        lowSalaryResult.current.summary.monthlyRepayment,
       );
     }
   });
@@ -126,8 +129,8 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(result.current).not.toBeNull();
-      expect(result.current?.monthlyRepayment).toBe(0);
+      expect(result.current.summary).not.toBeNull();
+      expect(result.current.summary?.monthlyRepayment).toBe(0);
     });
   });
 
@@ -150,14 +153,17 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(undergradOnly.current).not.toBeNull();
-      expect(withPostgrad.current).not.toBeNull();
+      expect(undergradOnly.current.summary).not.toBeNull();
+      expect(withPostgrad.current.summary).not.toBeNull();
     });
 
     // Adding a postgrad loan should increase total repayment
-    if (withPostgrad.current !== null && undergradOnly.current !== null) {
-      expect(withPostgrad.current.totalPaid).toBeGreaterThan(
-        undergradOnly.current.totalPaid,
+    if (
+      withPostgrad.current.summary !== null &&
+      undergradOnly.current.summary !== null
+    ) {
+      expect(withPostgrad.current.summary.totalPaid).toBeGreaterThan(
+        undergradOnly.current.summary.totalPaid,
       );
     }
   });
@@ -178,10 +184,10 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(nominalResult.current).not.toBeNull();
-      expect(pvResult.current).not.toBeNull();
-      expect(pvResult.current?.totalPaid).toBeLessThan(
-        nominalResult.current?.totalPaid ?? Infinity,
+      expect(nominalResult.current.summary).not.toBeNull();
+      expect(pvResult.current.summary).not.toBeNull();
+      expect(pvResult.current.summary?.totalPaid).toBeLessThan(
+        nominalResult.current.summary?.totalPaid ?? Infinity,
       );
     });
   });
@@ -202,13 +208,13 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(nominalResult.current).not.toBeNull();
-      expect(pvResult.current).not.toBeNull();
-      expect(pvResult.current?.monthlyRepayment).toBe(
-        nominalResult.current?.monthlyRepayment,
+      expect(nominalResult.current.summary).not.toBeNull();
+      expect(pvResult.current.summary).not.toBeNull();
+      expect(pvResult.current.summary?.monthlyRepayment).toBe(
+        nominalResult.current.summary?.monthlyRepayment,
       );
-      expect(pvResult.current?.monthsToPayoff).toBe(
-        nominalResult.current?.monthsToPayoff,
+      expect(pvResult.current.summary?.monthsToPayoff).toBe(
+        nominalResult.current.summary?.monthsToPayoff,
       );
     });
   });
@@ -229,17 +235,18 @@ describe("useResultSummary", () => {
     });
 
     await waitFor(() => {
-      expect(plan2Result.current).not.toBeNull();
-      expect(plan5Result.current).not.toBeNull();
+      expect(plan2Result.current.summary).not.toBeNull();
+      expect(plan5Result.current.summary).not.toBeNull();
     });
 
     // Plan 2 and Plan 5 have different thresholds/rates, so results should differ
     const resultsIdentical =
-      plan2Result.current?.totalPaid === plan5Result.current?.totalPaid &&
-      plan2Result.current?.monthlyRepayment ===
-        plan5Result.current?.monthlyRepayment &&
-      plan2Result.current?.monthsToPayoff ===
-        plan5Result.current?.monthsToPayoff;
+      plan2Result.current.summary?.totalPaid ===
+        plan5Result.current.summary?.totalPaid &&
+      plan2Result.current.summary?.monthlyRepayment ===
+        plan5Result.current.summary?.monthlyRepayment &&
+      plan2Result.current.summary?.monthsToPayoff ===
+        plan5Result.current.summary?.monthsToPayoff;
 
     expect(resultsIdentical).toBe(false);
   });
