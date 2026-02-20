@@ -18,9 +18,12 @@ vi.mock("@/components/charts/TotalRepaymentChart", () => ({
 
 vi.mock("@/hooks/useResultSummary", () => ({
   useResultSummary: () => ({
-    totalPaid: 60000,
-    monthlyRepayment: 200,
-    monthsToPayoff: 300,
+    summary: {
+      totalPaid: 60000,
+      monthlyRepayment: 200,
+      monthsToPayoff: 300,
+    },
+    insight: null,
   }),
 }));
 

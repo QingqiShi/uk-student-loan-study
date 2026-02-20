@@ -49,10 +49,9 @@ function useAnnotationData(
   return { annotationSalary: undefined, annotationValue: undefined };
 }
 
-/** Hook for total repayment chart data (runs in Web Worker) */
-export function useTotalRepaymentData() {
+/** Salary-independent: only recomputes when loan config/rates change */
+function useSalarySeriesData(): DataPoint[] {
   const config = useLoanConfig();
-  const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
   const rpiRate = useRpiRate();
@@ -66,15 +65,16 @@ export function useTotalRepaymentData() {
     thresholdGrowthRate,
     rpiRate,
     boeBaseRate,
-    ...(activeDiscountRate !== undefined
-      ? { discountRate: activeDiscountRate }
-      : {}),
+    discountRate: activeDiscountRate,
   };
 
-  const result = useSimulationWorker(payload);
+  return useSimulationWorker(payload)?.data ?? [];
+}
 
-  // Use empty array while waiting for worker result
-  const data = result?.data ?? [];
+/** Hook for total repayment chart data (runs in Web Worker) */
+export function useTotalRepaymentData() {
+  const data = useSalarySeriesData();
+  const salary = useCurrentSalary();
 
   const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
 
@@ -102,9 +102,7 @@ export function useBalanceOverTimeData(): {
     thresholdGrowthRate,
     rpiRate,
     boeBaseRate,
-    ...(activeDiscountRate !== undefined
-      ? { discountRate: activeDiscountRate }
-      : {}),
+    discountRate: activeDiscountRate,
   };
 
   const result = useSimulationWorker(payload);

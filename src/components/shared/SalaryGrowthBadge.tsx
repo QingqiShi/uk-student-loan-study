@@ -22,7 +22,7 @@ export function SalaryGrowthBadge() {
   const { salaryGrowthRate } = useLoanConfigState();
   const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const summary = useResultSummary();
+  const { summary } = useResultSummary();
 
   const growthLabel =
     SALARY_GROWTH_OPTIONS.find((o) => o.value === salaryGrowthRate)?.label ??
