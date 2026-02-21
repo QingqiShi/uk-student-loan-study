@@ -27,7 +27,6 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 
 - UK student loans support multiple plan types: Plan 1, Plan 2, Plan 4, Plan 5, and Postgraduate Loans
 - Repayment rate: 9% of income above threshold (6% for Postgraduate)
-- Monthly repayment thresholds: Plan 1 £2,172, Plan 2 £2,372, Plan 4 £2,728, Plan 5 £2,083, Postgraduate £1,750
 - Loans are written off after 25-40 years depending on plan type
 - Middle earners often pay the most in total repayments due to interest accumulation
 
@@ -35,37 +34,28 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 
 ### Plan 1
 - For students who started before September 2012 (England/Wales) or any time in Northern Ireland
-- Monthly threshold: £2,172 (£26,065/year)
-- Repayment rate: 9% of income above threshold
 - 25-year write-off period
-- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower (currently RPI 3.2%, base rate 3.75%)
+- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower
 
 ### Plan 2
 - For students who started between September 2012 and July 2023 (England/Wales)
-- Monthly threshold: £2,372 (£28,470/year)
-- Repayment rate: 9% of income above threshold
 - 30-year write-off period
-- Interest rate: RPI + 0-3% depending on income (income scale: £28,470 to £51,245)
+- Interest rate: RPI + 0-3% depending on income
 
 ### Plan 4
 - For Scottish students who started after September 1998
-- Monthly threshold: £2,728 (£32,745/year)
-- Repayment rate: 9% of income above threshold
 - 30-year write-off period
-- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower (currently RPI 3.2%, base rate 3.75%)
+- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower
 
 ### Plan 5
 - For students starting August 2023 or later (England)
-- Monthly threshold: £2,083 (£25,000/year)
-- Repayment rate: 9% of income above threshold
 - 40-year write-off period
-- Interest rate: RPI only (no additional percentage, currently 3.2%)
+- Interest rate: RPI only (no additional percentage)
 
 ### Postgraduate Loan
 - For Master's or Doctoral study from 2016 onwards
-- Monthly threshold: £1,750 (£21,000/year)
-- Repayment rate: 6% of income above threshold
 - 30-year write-off period
+- Repayment rate: 6% of income above threshold
 
 ## Contact
 
