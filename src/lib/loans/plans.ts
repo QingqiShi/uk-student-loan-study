@@ -4,6 +4,12 @@
 // =============================================================================
 
 /**
+ * ISO date of the last time figures were actually changed by the automation.
+ * Only updates when GOV.UK/BoE figures differ from what we have.
+ */
+export const LAST_UPDATED = "2026-02-21T01:53:41.000Z";
+
+/**
  * Plan configurations for all UK student loan types.
  * All monetary values are monthly thresholds in GBP.
  */

@@ -67,6 +67,11 @@ export function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
+                <Link href="/our-data" className={NAV_LINK_CLASS}>
+                  Our Data
+                </Link>
+              </li>
+              <li>
                 <Link href="/brand" className={NAV_LINK_CLASS}>
                   Brand Guidelines
                 </Link>

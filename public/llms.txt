@@ -12,6 +12,8 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Which Plan Quiz](https://studentloanstudy.uk/which-plan): Find your loan plan in 3 questions
 - [Overpay Calculator](https://studentloanstudy.uk/overpay): Should you overpay or invest?
 
+- [Our Data](https://studentloanstudy.uk/our-data): How we keep figures current — daily automation checks GOV.UK and the Bank of England
+
 ## Guides
 
 - [All Guides](https://studentloanstudy.uk/guides): Index page listing all student loan guides

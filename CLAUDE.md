@@ -29,7 +29,30 @@ UK student loan repayment calculator built with Next.js (App Router), React, and
 
 **Data flow**: React Context (`src/context/`) → loan simulation library (`src/lib/loans/`) → chart data hooks → chart components
 
-**Domain knowledge**: UK student loans have different plan types with varying thresholds, interest rates, and write-off periods. Plan configurations live in `src/lib/loans/plans.ts`. A daily GitHub Action (`check-govuk-figures.yml`) scrapes GOV.UK and auto-creates a PR when figures change, updating `plans.ts`, `plans.test.ts`, and `public/llms.txt`.
+**Domain knowledge**: UK student loans have different plan types with varying thresholds, interest rates, and write-off periods. Plan configurations live in `src/lib/loans/plans.ts`.
+
+### GOV.UK figure automation
+
+A daily GitHub Action (`.github/workflows/check-govuk-figures.yml`) scrapes GOV.UK and the Bank of England, compares figures against the codebase, and auto-creates a PR when anything changes. It can also be triggered manually via `workflow_dispatch`.
+
+The pipeline has two steps that can be run locally:
+
+```bash
+pnpm check:govuk                                    # Step 1: scrape GOV.UK (Playwright)
+pnpx tsx scripts/check-govuk-figures/update-files.ts # Step 2: compare & regenerate files
+```
+
+Step 1 (`pnpm check:govuk`) runs a Playwright scraper that saves results to `scripts/check-govuk-figures/results/scraped-data.json`. Step 2 reads that file, fetches the BoE base rate, compares everything against the current codebase, and overwrites the generated files if anything differs.
+
+**Auto-generated files — do not edit manually:**
+
+| File                          | Template function     |
+| ----------------------------- | --------------------- |
+| `src/lib/loans/plans.ts`      | `generatePlansTs`     |
+| `src/lib/loans/plans.test.ts` | `generatePlansTestTs` |
+| `public/llms.txt`             | `generateLlmsTxt`     |
+
+These files are fully overwritten by the automation. Any manual edits will be lost on the next run. To change their content, edit the corresponding template function in `scripts/check-govuk-figures/templates.ts` instead.
 
 **Icons**: Use `@hugeicons/react` with icons from `@hugeicons/core-free-icons`. Example:
 
@@ -100,8 +123,8 @@ function createWrapper(overrides?: Partial<LoanState>) {
 
 When making changes that affect site content or structure, update the following SEO assets:
 
-- **`public/llms.txt`** - Update if adding/removing pages or changing site purpose
+- **`public/llms.txt`** - Edit `generateLlmsTxt` in `scripts/check-govuk-figures/templates.ts` (do not edit the file directly — it is auto-generated)
 - **`src/app/sitemap.xml`** - Add new routes
 - **JSON-LD schemas** - Update FAQPage answers if plan details change (in layout.tsx files)
 - **Metadata** - Update page titles/descriptions if content focus changes
-- **`src/lib/loans/plans.ts`** - Thresholds, rates, and write-off periods are auto-updated by the GOV.UK freshness checker (`.github/workflows/check-govuk-figures.yml`). `llms.txt` is also auto-updated.
+- **`src/lib/loans/plans.ts`** - Edit `generatePlansTs` in `scripts/check-govuk-figures/templates.ts` (do not edit the file directly — it is auto-generated)
