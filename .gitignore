@@ -35,3 +35,6 @@ playwright-report/
 *.njsproj
 *.sln
 *.sw?
+
+# GOV.UK checker results
+scripts/check-govuk-figures/results/
