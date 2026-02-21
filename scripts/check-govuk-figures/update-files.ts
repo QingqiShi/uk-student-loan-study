@@ -9,11 +9,7 @@ import {
   LAST_UPDATED,
 } from "../../src/lib/loans/plans";
 
-import {
-  generateLlmsTxt,
-  generatePlansTestTs,
-  generatePlansTs,
-} from "./templates";
+import { generateLlmsTxt, generatePlansTs } from "./templates";
 import { findRepaymentRate, findRpi, findWriteOffYears } from "./types";
 import type { CheckResult, Mismatch, ScrapedGovUkData } from "./types";
 
@@ -181,11 +177,6 @@ async function main(): Promise<void> {
       path: path.join(projectRoot, "src/lib/loans/plans.ts"),
       label: "src/lib/loans/plans.ts",
       content: generatePlansTs(scraped, TUITION_FEE_CAP, lastUpdated),
-    },
-    {
-      path: path.join(projectRoot, "src/lib/loans/plans.test.ts"),
-      label: "src/lib/loans/plans.test.ts",
-      content: generatePlansTestTs(scraped),
     },
     {
       path: path.join(projectRoot, "public/llms.txt"),
