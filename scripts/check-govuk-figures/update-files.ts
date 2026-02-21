@@ -17,6 +17,36 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, "../..");
 const resultsDir = path.join(scriptDir, "results");
 
+async function fetchOnsCpi(): Promise<number> {
+  const url =
+    "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7g7/mm23/data";
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch ONS CPI: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const data = (await response.json()) as {
+    months: {
+      date: string;
+      value: string;
+      label: string;
+      year: string;
+      month: string;
+      updateDate: string;
+    }[];
+  };
+
+  const lastMonth = data.months[data.months.length - 1];
+  const rate = parseFloat(lastMonth.value);
+  if (isNaN(rate)) {
+    throw new Error(`Could not parse CPI value: ${lastMonth.value}`);
+  }
+  return rate;
+}
+
 async function fetchBoeBaseRate(): Promise<number> {
   const url =
     "https://www.bankofengland.co.uk/boeapps/database/fromshowcolumns.asp?csv.x=yes&SeriesCodes=IUDBEDR&UsingCodes=Y&CSVF=TN&Datefrom=01/Jan/2024&Dateto=01/Jan/2027";
@@ -137,6 +167,14 @@ function comparePlans(scraped: ScrapedGovUkData): Mismatch[] {
     });
   }
 
+  if (CURRENT_RATES.cpi !== scraped.cpi) {
+    mismatches.push({
+      field: "CURRENT_RATES.cpi",
+      current: CURRENT_RATES.cpi,
+      scraped: scraped.cpi,
+    });
+  }
+
   return mismatches;
 }
 
@@ -147,11 +185,16 @@ async function main(): Promise<void> {
     readFileSync(scrapedPath, "utf-8"),
   );
 
-  // 2. Fetch BoE base rate
+  // 2. Fetch BoE base rate and ONS CPI
   console.log("Fetching BoE base rate...");
   const boeBaseRate = await fetchBoeBaseRate();
   console.log(`BoE base rate: ${boeBaseRate}%`);
   scraped.boeBaseRate = boeBaseRate;
+
+  console.log("Fetching ONS CPI...");
+  const cpi = await fetchOnsCpi();
+  console.log(`ONS CPI: ${cpi}%`);
+  scraped.cpi = cpi;
 
   // Write updated scraped data back
   writeFileSync(scrapedPath, JSON.stringify(scraped, null, 2) + "\n");

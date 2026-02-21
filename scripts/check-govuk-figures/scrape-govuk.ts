@@ -294,6 +294,7 @@ export async function scrapeGovUk(page: Page): Promise<ScrapedGovUkData> {
     plan2InterestScale,
     writeOffs,
     boeBaseRate: 0, // Filled in later by the updater agent via fetch()
+    cpi: 0, // Filled in later by the updater agent via fetch()
     scrapedAt: new Date().toISOString(),
   };
 }

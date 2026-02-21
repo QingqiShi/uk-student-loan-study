@@ -32,8 +32,8 @@ describe("loanReducer", () => {
       expect(initialState.showPresentValue).toBe(false);
     });
 
-    it("should have discountRate 0.02", () => {
-      expect(initialState.discountRate).toBe(0.02);
+    it("should have discountRate derived from CURRENT_RATES.cpi", () => {
+      expect(initialState.discountRate).toBe(CURRENT_RATES.cpi / 100);
     });
   });
 
@@ -156,7 +156,7 @@ describe("loanReducer", () => {
 
       const resetState = loanReducer(state, resetAction());
       expect(resetState.showPresentValue).toBe(false);
-      expect(resetState.discountRate).toBe(0.02);
+      expect(resetState.discountRate).toBe(CURRENT_RATES.cpi / 100);
     });
 
     it("should restore rpiRate and boeBaseRate to initial values", () => {

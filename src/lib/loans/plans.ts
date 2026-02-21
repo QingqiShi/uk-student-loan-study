@@ -50,6 +50,7 @@ export const PLAN_CONFIGS = {
 export const CURRENT_RATES = {
   rpi: 3.2,
   boeBaseRate: 3.75,
+  cpi: 3,
 } as const;
 
 /**

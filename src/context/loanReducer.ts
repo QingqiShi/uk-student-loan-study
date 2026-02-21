@@ -16,7 +16,7 @@ export const initialState: LoanState = {
   lumpSumPayment: 10_000,
 
   showPresentValue: false,
-  discountRate: 0.02, // 2% - CPI target
+  discountRate: CURRENT_RATES.cpi / 100, // CPI annual rate
 
   pendingQuizPlanTypes: null,
 };
