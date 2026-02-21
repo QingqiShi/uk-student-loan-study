@@ -32,6 +32,7 @@ export interface ScrapedGovUkData {
   plan2InterestScale: ScrapedPlan2InterestScale;
   writeOffs: ScrapedWriteOff[];
   boeBaseRate: number;
+  cpi: number;
   scrapedAt: string;
 }
 

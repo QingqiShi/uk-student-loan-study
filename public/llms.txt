@@ -11,7 +11,6 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Repayment Calculator](https://studentloanstudy.uk): See total repayments across all UK student loan plan types (Plan 1, 2, 4, 5, Postgraduate)
 - [Which Plan Quiz](https://studentloanstudy.uk/which-plan): Find your loan plan in 3 questions
 - [Overpay Calculator](https://studentloanstudy.uk/overpay): Should you overpay or invest?
-
 - [Our Data](https://studentloanstudy.uk/our-data): How we keep figures current — daily automation checks GOV.UK and the Bank of England
 
 ## Guides
@@ -31,6 +30,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - Repayment rate: 9% of income above threshold (6% for Postgraduate)
 - Monthly repayment thresholds: Plan 1 £2,172, Plan 2 £2,372, Plan 4 £2,728, Plan 5 £2,083, Postgraduate £1,750
 - Loans are written off after 25-40 years depending on plan type
+- CPI (Consumer Prices Index) annual rate: 3% (used as default discount rate for present-value calculations)
 - Middle earners often pay the most in total repayments due to interest accumulation
 
 ## Plan Types Summary

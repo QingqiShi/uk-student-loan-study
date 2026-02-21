@@ -5,7 +5,7 @@ import { AppErrorBoundary } from "@/components/shared/ErrorBoundary";
 export const metadata: Metadata = {
   title: "Our Data",
   description:
-    "Every figure in our calculators comes from GOV.UK and the Bank of England, verified daily by automation. Cross-check them yourself.",
+    "Every figure in our calculators comes from GOV.UK, the Bank of England, and the ONS, verified daily by automation. Cross-check them yourself.",
   alternates: { canonical: "/our-data" },
 };
 

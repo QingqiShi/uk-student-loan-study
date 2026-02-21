@@ -50,6 +50,7 @@ export function generatePlansTs(
 
   const rpi = findRpi(scraped);
   const boeBaseRate = scraped.boeBaseRate;
+  const cpi = scraped.cpi;
 
   // Format as 9_250 style
   const tuitionCapLiteral =
@@ -109,6 +110,7 @@ export const PLAN_CONFIGS = {
 export const CURRENT_RATES = {
   rpi: ${rpi},
   boeBaseRate: ${boeBaseRate},
+  cpi: ${cpi},
 } as const;
 
 /**
@@ -239,6 +241,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - Repayment rate: ${fmtRate(plan1Rate)} of income above threshold (${fmtRate(postgradRate)} for Postgraduate)
 - Monthly repayment thresholds: Plan 1 \u00a3${formatNumber(plan1.monthlyThreshold)}, Plan 2 \u00a3${formatNumber(plan2.monthlyThreshold)}, Plan 4 \u00a3${formatNumber(plan4.monthlyThreshold)}, Plan 5 \u00a3${formatNumber(plan5.monthlyThreshold)}, Postgraduate \u00a3${formatNumber(postgrad.monthlyThreshold)}
 - Loans are written off after ${plan1WriteOff}-${plan5WriteOff} years depending on plan type
+- CPI (Consumer Prices Index) annual rate: ${scraped.cpi}% (used as default discount rate for present-value calculations)
 - Middle earners often pay the most in total repayments due to interest accumulation
 
 ## Plan Types Summary
