@@ -1,3 +1,5 @@
+> **Note:** This is a developer reference document. The source of truth for thresholds, repayment rates, and write-off periods is `src/lib/loans/plans.ts`, which is automatically updated by the GOV.UK freshness checker.
+
 # UK Student Loans: Quick Reference
 
 Quick reference for thresholds, rates, and key dates. All data from GOV.UK.

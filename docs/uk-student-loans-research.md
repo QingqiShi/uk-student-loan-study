@@ -1,3 +1,5 @@
+> **Note:** This research document may contain historical figures. The source of truth for current thresholds, repayment rates, and write-off periods is `src/lib/loans/plans.ts`, which is automatically updated by the GOV.UK freshness checker.
+
 # UK Student Loans: Comprehensive Research
 
 This document provides detailed research on all UK student loan plans, using only official GOV.UK sources.

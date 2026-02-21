@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["@vitest/web-worker", "./src/test/setup.ts"],
-    exclude: ["e2e/**", "node_modules/**"],
+    exclude: ["e2e/**", "scripts/**", "node_modules/**"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],

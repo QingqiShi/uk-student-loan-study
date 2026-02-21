@@ -10,6 +10,7 @@ pnpm typecheck    # Run TypeScript compiler (covers test files next build misses
 pnpm format        # Format with Prettier
 pnpm test          # Run tests
 pnpm test:e2e      # Run Playwright e2e tests
+pnpm check:govuk   # Scrape GOV.UK and check for figure changes
 ```
 
 ## Tech Stack
@@ -28,7 +29,7 @@ UK student loan repayment calculator built with Next.js (App Router), React, and
 
 **Data flow**: React Context (`src/context/`) → loan simulation library (`src/lib/loans/`) → chart data hooks → chart components
 
-**Domain knowledge**: UK student loans have different plan types with varying thresholds, interest rates, and write-off periods. Plan configurations in `src/lib/loans/plans.ts` should be updated annually when GOV.UK announces changes.
+**Domain knowledge**: UK student loans have different plan types with varying thresholds, interest rates, and write-off periods. Plan configurations live in `src/lib/loans/plans.ts`. A daily GitHub Action (`check-govuk-figures.yml`) scrapes GOV.UK and auto-creates a PR when figures change, updating `plans.ts`, `plans.test.ts`, and `public/llms.txt`.
 
 **Icons**: Use `@hugeicons/react` with icons from `@hugeicons/core-free-icons`. Example:
 
@@ -103,4 +104,4 @@ When making changes that affect site content or structure, update the following 
 - **`src/app/sitemap.xml`** - Add new routes
 - **JSON-LD schemas** - Update FAQPage answers if plan details change (in layout.tsx files)
 - **Metadata** - Update page titles/descriptions if content focus changes
-- **`src/lib/loans/plans.ts`** - When GOV.UK announces threshold/rate changes, also update llms.txt key facts and interest rates
+- **`src/lib/loans/plans.ts`** - Thresholds, rates, and write-off periods are auto-updated by the GOV.UK freshness checker (`.github/workflows/check-govuk-figures.yml`). `llms.txt` is also auto-updated.
