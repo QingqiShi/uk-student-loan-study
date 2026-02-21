@@ -246,8 +246,8 @@ export function OurDataPage() {
               How it stays current
             </h2>
             <p className="text-sm text-muted-foreground sm:text-base">
-              We run an automatic check every day so you never have to wonder
-              if our numbers are current.
+              We run an automatic check every day so you never have to wonder if
+              our numbers are current.
             </p>
             <div>
               {PIPELINE_STEPS.map((step, i) => (
@@ -316,7 +316,6 @@ export function OurDataPage() {
               ))}
             </div>
           </section>
-
         </article>
       </main>
       <Footer />
