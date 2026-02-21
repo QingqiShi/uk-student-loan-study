@@ -38,3 +38,6 @@ playwright-report/
 
 # GOV.UK checker results
 scripts/check-govuk-figures/results/
+
+# Claude Code worktrees
+.claude/worktrees/

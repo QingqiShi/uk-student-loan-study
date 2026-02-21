@@ -1,6 +1,12 @@
+import { createRequire } from "node:module";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
+
+// Resolve setup files to absolute paths so Vite doesn't misresolve bare
+// specifiers through the main repo's node_modules when running in a git
+// worktree (where .git is a file pointing back to the primary checkout).
+const require = createRequire(import.meta.url);
 
 export default defineConfig({
   plugins: [
@@ -9,7 +15,7 @@ export default defineConfig({
   ],
   test: {
     environment: "jsdom",
-    setupFiles: ["@vitest/web-worker", "./src/test/setup.ts"],
+    setupFiles: [require.resolve("@vitest/web-worker"), "./src/test/setup.ts"],
     exclude: ["e2e/**", "scripts/**", "node_modules/**"],
     coverage: {
       provider: "v8",
