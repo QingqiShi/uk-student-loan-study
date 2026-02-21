@@ -9,7 +9,7 @@
  */
 export const PLAN_CONFIGS = {
   PLAN_1: {
-    monthlyThreshold: 2172, // £26,065/12
+    monthlyThreshold: 9999, // TEMPORARY: testing govuk checker
     repaymentRate: 0.09, // 9%
     writeOffYears: 25,
   },
