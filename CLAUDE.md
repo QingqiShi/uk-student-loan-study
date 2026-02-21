@@ -33,7 +33,6 @@ Local steps:
 **Auto-generated files — do not edit manually** (edit templates in `scripts/check-govuk-figures/templates.ts` instead):
 
 - `src/lib/loans/plans.ts` → `generatePlansTs`
-- `src/lib/loans/plans.test.ts` → `generatePlansTestTs`
 - `public/llms.txt` → `generateLlmsTxt`
 
 ## UI & Styling

@@ -1,162 +1,150 @@
 import { describe, it, expect } from "vitest";
-import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
+import {
+  PLAN_CONFIGS,
+  CURRENT_RATES,
+  PLAN_DISPLAY_INFO,
+  POSTGRADUATE_DISPLAY_INFO,
+  TUITION_FEE_CAP,
+  LAST_UPDATED,
+} from "./plans";
+
+const PLAN_KEYS = Object.keys(PLAN_CONFIGS) as Array<keyof typeof PLAN_CONFIGS>;
+
+const UG_PLAN_KEYS = PLAN_KEYS.filter((k) => k !== "POSTGRADUATE");
 
 describe("PLAN_CONFIGS", () => {
   describe("required fields", () => {
-    const planTypes = Object.keys(PLAN_CONFIGS) as Array<
-      keyof typeof PLAN_CONFIGS
-    >;
-
-    it.each(planTypes)("%s has monthlyThreshold", (planType) => {
+    it.each(PLAN_KEYS)("%s has positive monthlyThreshold", (planType) => {
       expect(PLAN_CONFIGS[planType].monthlyThreshold).toBeGreaterThan(0);
     });
 
-    it.each(planTypes)("%s has repaymentRate", (planType) => {
+    it.each(PLAN_KEYS)("%s has repaymentRate between 0 and 1", (planType) => {
       const rate = PLAN_CONFIGS[planType].repaymentRate;
       expect(rate).toBeGreaterThan(0);
       expect(rate).toBeLessThanOrEqual(1);
     });
 
-    it.each(planTypes)("%s has writeOffYears", (planType) => {
+    it.each(PLAN_KEYS)("%s has positive writeOffYears", (planType) => {
       expect(PLAN_CONFIGS[planType].writeOffYears).toBeGreaterThan(0);
     });
   });
 
-  describe("PLAN_1", () => {
-    const plan = PLAN_CONFIGS.PLAN_1;
-
-    it("has correct monthly threshold (£26,065/12)", () => {
-      expect(plan.monthlyThreshold).toBe(2172);
-    });
-
-    it("has 9% repayment rate", () => {
-      expect(plan.repaymentRate).toBe(0.09);
-    });
-
-    it("has 25-year write-off", () => {
-      expect(plan.writeOffYears).toBe(25);
-    });
+  it("has all expected plan keys", () => {
+    expect(PLAN_KEYS).toEqual(
+      expect.arrayContaining([
+        "PLAN_1",
+        "PLAN_2",
+        "PLAN_4",
+        "PLAN_5",
+        "POSTGRADUATE",
+      ]),
+    );
   });
 
-  describe("PLAN_2", () => {
-    const plan = PLAN_CONFIGS.PLAN_2;
+  it("PLAN_2 has interest scale thresholds with upper > lower", () => {
+    const { interestLowerThreshold, interestUpperThreshold } =
+      PLAN_CONFIGS.PLAN_2;
+    expect(interestLowerThreshold).toBeGreaterThan(0);
+    expect(interestUpperThreshold).toBeGreaterThan(interestLowerThreshold);
+  });
 
-    it("has correct monthly threshold (£28,470/12)", () => {
-      expect(plan.monthlyThreshold).toBe(2372);
-    });
-
-    it("has 9% repayment rate", () => {
-      expect(plan.repaymentRate).toBe(0.09);
-    });
-
-    it("has 30-year write-off", () => {
-      expect(plan.writeOffYears).toBe(30);
-    });
-
-    it("has interest thresholds for sliding scale", () => {
-      expect(plan.interestLowerThreshold).toBe(28470);
-      expect(plan.interestUpperThreshold).toBe(51245);
-      expect(plan.interestUpperThreshold).toBeGreaterThan(
-        plan.interestLowerThreshold,
+  describe("ordering invariants", () => {
+    it("PLAN_4 has highest undergraduate threshold (Scotland)", () => {
+      const thresholds = UG_PLAN_KEYS.map(
+        (k) => PLAN_CONFIGS[k].monthlyThreshold,
       );
-    });
-  });
-
-  describe("PLAN_4", () => {
-    const plan = PLAN_CONFIGS.PLAN_4;
-
-    it("has correct monthly threshold (£32,745/12)", () => {
-      expect(plan.monthlyThreshold).toBe(2728);
-    });
-
-    it("has 9% repayment rate", () => {
-      expect(plan.repaymentRate).toBe(0.09);
-    });
-
-    it("has 30-year write-off", () => {
-      expect(plan.writeOffYears).toBe(30);
-    });
-  });
-
-  describe("PLAN_5", () => {
-    const plan = PLAN_CONFIGS.PLAN_5;
-
-    it("has correct monthly threshold (£25,000/12)", () => {
-      expect(plan.monthlyThreshold).toBe(2083);
-    });
-
-    it("has 9% repayment rate", () => {
-      expect(plan.repaymentRate).toBe(0.09);
-    });
-
-    it("has 40-year write-off", () => {
-      expect(plan.writeOffYears).toBe(40);
-    });
-  });
-
-  describe("POSTGRADUATE", () => {
-    const plan = PLAN_CONFIGS.POSTGRADUATE;
-
-    it("has correct monthly threshold (£21,000/12)", () => {
-      expect(plan.monthlyThreshold).toBe(1750);
-    });
-
-    it("has 6% repayment rate", () => {
-      expect(plan.repaymentRate).toBe(0.06);
-    });
-
-    it("has 30-year write-off", () => {
-      expect(plan.writeOffYears).toBe(30);
-    });
-  });
-
-  describe("all plans have correct ordering", () => {
-    it("PLAN_4 has highest threshold (Scotland)", () => {
-      const thresholds = [
-        PLAN_CONFIGS.PLAN_1.monthlyThreshold,
-        PLAN_CONFIGS.PLAN_2.monthlyThreshold,
-        PLAN_CONFIGS.PLAN_4.monthlyThreshold,
-        PLAN_CONFIGS.PLAN_5.monthlyThreshold,
-      ];
       expect(Math.max(...thresholds)).toBe(
         PLAN_CONFIGS.PLAN_4.monthlyThreshold,
       );
     });
 
-    it("POSTGRADUATE has lowest threshold", () => {
-      const thresholds = [
-        PLAN_CONFIGS.PLAN_1.monthlyThreshold,
-        PLAN_CONFIGS.PLAN_2.monthlyThreshold,
-        PLAN_CONFIGS.PLAN_4.monthlyThreshold,
-        PLAN_CONFIGS.PLAN_5.monthlyThreshold,
-        PLAN_CONFIGS.POSTGRADUATE.monthlyThreshold,
-      ];
+    it("POSTGRADUATE has lowest threshold overall", () => {
+      const thresholds = PLAN_KEYS.map((k) => PLAN_CONFIGS[k].monthlyThreshold);
       expect(Math.min(...thresholds)).toBe(
         PLAN_CONFIGS.POSTGRADUATE.monthlyThreshold,
       );
     });
 
     it("PLAN_5 has longest write-off period", () => {
-      const writeOffs = [
-        PLAN_CONFIGS.PLAN_1.writeOffYears,
-        PLAN_CONFIGS.PLAN_2.writeOffYears,
-        PLAN_CONFIGS.PLAN_4.writeOffYears,
-        PLAN_CONFIGS.PLAN_5.writeOffYears,
-        PLAN_CONFIGS.POSTGRADUATE.writeOffYears,
-      ];
+      const writeOffs = PLAN_KEYS.map((k) => PLAN_CONFIGS[k].writeOffYears);
       expect(Math.max(...writeOffs)).toBe(PLAN_CONFIGS.PLAN_5.writeOffYears);
     });
   });
 });
 
 describe("CURRENT_RATES", () => {
-  it("has RPI rate", () => {
+  it("has RPI within sane range", () => {
     expect(CURRENT_RATES.rpi).toBeGreaterThan(0);
-    expect(CURRENT_RATES.rpi).toBeLessThan(20); // Sanity check
+    expect(CURRENT_RATES.rpi).toBeLessThan(20);
   });
 
-  it("has BoE base rate", () => {
+  it("has BoE base rate within sane range", () => {
     expect(CURRENT_RATES.boeBaseRate).toBeGreaterThanOrEqual(0);
-    expect(CURRENT_RATES.boeBaseRate).toBeLessThan(20); // Sanity check
+    expect(CURRENT_RATES.boeBaseRate).toBeLessThan(20);
+  });
+});
+
+describe("PLAN_DISPLAY_INFO", () => {
+  const displayKeys = Object.keys(PLAN_DISPLAY_INFO) as Array<
+    keyof typeof PLAN_DISPLAY_INFO
+  >;
+
+  it("covers all undergraduate plans", () => {
+    expect(displayKeys).toEqual(
+      expect.arrayContaining(["PLAN_1", "PLAN_2", "PLAN_4", "PLAN_5"]),
+    );
+  });
+
+  it.each(displayKeys)(
+    "%s derives yearlyThreshold from monthlyThreshold * 12",
+    (key) => {
+      expect(PLAN_DISPLAY_INFO[key].yearlyThreshold).toBe(
+        PLAN_CONFIGS[key].monthlyThreshold * 12,
+      );
+    },
+  );
+
+  it.each(displayKeys)("%s derives writeOffYears from PLAN_CONFIGS", (key) => {
+    expect(PLAN_DISPLAY_INFO[key].writeOffYears).toBe(
+      PLAN_CONFIGS[key].writeOffYears,
+    );
+  });
+
+  it.each(displayKeys)("%s derives repaymentRate from PLAN_CONFIGS", (key) => {
+    expect(PLAN_DISPLAY_INFO[key].repaymentRate).toBe(
+      PLAN_CONFIGS[key].repaymentRate,
+    );
+  });
+});
+
+describe("POSTGRADUATE_DISPLAY_INFO", () => {
+  it("derives yearlyThreshold from monthlyThreshold * 12", () => {
+    expect(POSTGRADUATE_DISPLAY_INFO.yearlyThreshold).toBe(
+      PLAN_CONFIGS.POSTGRADUATE.monthlyThreshold * 12,
+    );
+  });
+
+  it("derives writeOffYears from PLAN_CONFIGS", () => {
+    expect(POSTGRADUATE_DISPLAY_INFO.writeOffYears).toBe(
+      PLAN_CONFIGS.POSTGRADUATE.writeOffYears,
+    );
+  });
+
+  it("derives repaymentRate from PLAN_CONFIGS", () => {
+    expect(POSTGRADUATE_DISPLAY_INFO.repaymentRate).toBe(
+      PLAN_CONFIGS.POSTGRADUATE.repaymentRate,
+    );
+  });
+});
+
+describe("TUITION_FEE_CAP", () => {
+  it("is a positive number", () => {
+    expect(TUITION_FEE_CAP).toBeGreaterThan(0);
+  });
+});
+
+describe("LAST_UPDATED", () => {
+  it("is a valid ISO date string", () => {
+    expect(new Date(LAST_UPDATED).toISOString()).toBe(LAST_UPDATED);
   });
 });
