@@ -162,8 +162,44 @@ async function main(): Promise<void> {
   // 3. Compare scraped vs current values
   const mismatches = comparePlans(scraped);
 
-  if (mismatches.length === 0) {
-    console.log("All figures match. No updates needed.");
+  if (mismatches.length > 0) {
+    console.log(`Found ${mismatches.length} figure mismatch(es):`);
+    for (const m of mismatches) {
+      console.log(`  ${m.field}: current=${m.current}, scraped=${m.scraped}`);
+    }
+  } else {
+    console.log("All figures match.");
+  }
+
+  // 4. Generate files and check for content drift (template changes, formatting, etc.)
+  const filesToUpdate: { path: string; label: string; content: string }[] = [
+    {
+      path: path.join(projectRoot, "src/lib/loans/plans.ts"),
+      label: "src/lib/loans/plans.ts",
+      content: generatePlansTs(scraped, TUITION_FEE_CAP),
+    },
+    {
+      path: path.join(projectRoot, "src/lib/loans/plans.test.ts"),
+      label: "src/lib/loans/plans.test.ts",
+      content: generatePlansTestTs(scraped),
+    },
+    {
+      path: path.join(projectRoot, "public/llms.txt"),
+      label: "public/llms.txt",
+      content: generateLlmsTxt(scraped),
+    },
+  ];
+
+  const driftedFiles: string[] = [];
+  for (const file of filesToUpdate) {
+    const current = readFileSync(file.path, "utf-8");
+    if (current !== file.content) {
+      driftedFiles.push(file.label);
+    }
+  }
+
+  if (mismatches.length === 0 && driftedFiles.length === 0) {
+    console.log("No updates needed.");
     const result: CheckResult = {
       status: "ok",
       checkedAt: new Date().toISOString(),
@@ -175,26 +211,18 @@ async function main(): Promise<void> {
     return;
   }
 
-  // 4. Mismatches found — regenerate files
-  console.log(`Found ${mismatches.length} mismatch(es):`);
-  for (const m of mismatches) {
-    console.log(`  ${m.field}: current=${m.current}, scraped=${m.scraped}`);
+  if (driftedFiles.length > 0) {
+    console.log(`Found ${driftedFiles.length} file(s) with content drift:`);
+    for (const f of driftedFiles) {
+      console.log(`  ${f}`);
+    }
   }
 
-  const plansTs = generatePlansTs(scraped, TUITION_FEE_CAP);
-  writeFileSync(path.join(projectRoot, "src/lib/loans/plans.ts"), plansTs);
-  console.log("Updated src/lib/loans/plans.ts");
-
-  const plansTestTs = generatePlansTestTs(scraped);
-  writeFileSync(
-    path.join(projectRoot, "src/lib/loans/plans.test.ts"),
-    plansTestTs,
-  );
-  console.log("Updated src/lib/loans/plans.test.ts");
-
-  const llmsTxt = generateLlmsTxt(scraped);
-  writeFileSync(path.join(projectRoot, "public/llms.txt"), llmsTxt);
-  console.log("Updated public/llms.txt");
+  // 5. Write updated files
+  for (const file of filesToUpdate) {
+    writeFileSync(file.path, file.content);
+    console.log(`Updated ${file.label}`);
+  }
 
   const result: CheckResult = {
     status: "mismatch",
