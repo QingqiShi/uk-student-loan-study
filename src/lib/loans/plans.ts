@@ -9,7 +9,7 @@
  */
 export const PLAN_CONFIGS = {
   PLAN_1: {
-    monthlyThreshold: 9999, // TEMPORARY: testing govuk checker
+    monthlyThreshold: 2172, // £26,065/12
     repaymentRate: 0.09, // 9%
     writeOffYears: 25,
   },
@@ -42,8 +42,8 @@ export const PLAN_CONFIGS = {
  * Update these when new rates are announced.
  */
 export const CURRENT_RATES = {
-  rpi: 3.2, // Sept 2025 - Aug 2026
-  boeBaseRate: 3.75, // Feb 2026 MPC decision
+  rpi: 3.2,
+  boeBaseRate: 3.75,
 } as const;
 
 /**
