@@ -103,14 +103,14 @@ export function BrandGuidelinesPage() {
             <div className="flex flex-col gap-4">
               <span className="text-xs text-muted-foreground">On Dark</span>
               <Card className="dark flex items-center justify-center p-8">
-                <BrandLogo variant="dark" />
+                <BrandLogo />
               </Card>
             </div>
             {/* Light background */}
             <div className="flex flex-col gap-4">
               <span className="text-xs text-muted-foreground">On Light</span>
               <Card className="light flex items-center justify-center p-8">
-                <BrandLogo variant="light" />
+                <BrandLogo />
               </Card>
             </div>
           </div>
