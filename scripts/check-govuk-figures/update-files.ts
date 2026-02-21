@@ -6,6 +6,7 @@ import {
   PLAN_CONFIGS,
   CURRENT_RATES,
   TUITION_FEE_CAP,
+  LAST_UPDATED,
 } from "../../src/lib/loans/plans";
 
 import {
@@ -172,11 +173,14 @@ async function main(): Promise<void> {
   }
 
   // 4. Generate files and check for content drift (template changes, formatting, etc.)
+  const lastUpdated =
+    mismatches.length > 0 ? new Date().toISOString() : LAST_UPDATED;
+
   const filesToUpdate: { path: string; label: string; content: string }[] = [
     {
       path: path.join(projectRoot, "src/lib/loans/plans.ts"),
       label: "src/lib/loans/plans.ts",
-      content: generatePlansTs(scraped, TUITION_FEE_CAP),
+      content: generatePlansTs(scraped, TUITION_FEE_CAP, lastUpdated),
     },
     {
       path: path.join(projectRoot, "src/lib/loans/plans.test.ts"),

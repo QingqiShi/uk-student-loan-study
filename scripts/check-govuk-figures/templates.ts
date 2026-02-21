@@ -26,6 +26,7 @@ function formatRate(rate: number): string {
 export function generatePlansTs(
   scraped: ScrapedGovUkData,
   existingTuitionCap: number,
+  lastUpdated: string,
 ): string {
   const plan1 = findThreshold(scraped, "PLAN_1");
   const plan1Rate = findRepaymentRate(scraped, "PLAN_1");
@@ -60,6 +61,12 @@ export function generatePlansTs(
 // ANNUAL UPDATE SECTION - Update these values when GOV.UK announces changes
 // Source: https://www.gov.uk/repaying-your-student-loan/what-you-pay
 // =============================================================================
+
+/**
+ * ISO date of the last time figures were actually changed by the automation.
+ * Only updates when GOV.UK/BoE figures differ from what we have.
+ */
+export const LAST_UPDATED = "${lastUpdated}";
 
 /**
  * Plan configurations for all UK student loan types.
@@ -399,6 +406,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Repayment Calculator](https://studentloanstudy.uk): See total repayments across all UK student loan plan types (Plan 1, 2, 4, 5, Postgraduate)
 - [Which Plan Quiz](https://studentloanstudy.uk/which-plan): Find your loan plan in 3 questions
 - [Overpay Calculator](https://studentloanstudy.uk/overpay): Should you overpay or invest?
+- [Our Data](https://studentloanstudy.uk/our-data): How we keep figures current — daily automation checks GOV.UK and the Bank of England
 
 ## Guides
 
