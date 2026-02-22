@@ -9,8 +9,7 @@ import { OverpayVerdict } from "./OverpayVerdict";
 import type { InputMode } from "@/components/home/InputPanel";
 import type { Preset } from "@/lib/presets";
 import { InputPanel } from "@/components/home/InputPanel";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { AssumptionsCallout } from "@/components/shared/AssumptionsCallout";
 import { PlanFromQuery } from "@/components/shared/PlanFromQuery";
 import { Heading } from "@/components/typography/Heading";
@@ -102,13 +101,9 @@ export function OverpayPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <>
       <PlanFromQuery onRepaymentYearChange={handleRepaymentYearChange} />
-      <Header repaymentYear={repaymentDate.getFullYear()} />
-      <main
-        id="main-content"
-        className="mx-auto w-full max-w-4xl flex-1 space-y-6 overflow-x-hidden px-3 pt-13 pb-6 md:pb-8"
-      >
+      <PageLayout repaymentYear={repaymentDate.getFullYear()}>
         <div className="space-y-4">
           <Breadcrumb>
             <BreadcrumbList>
@@ -165,8 +160,7 @@ export function OverpayPage() {
         />
 
         <AssumptionsCallout />
-      </main>
-      <Footer />
-    </div>
+      </PageLayout>
+    </>
   );
 }

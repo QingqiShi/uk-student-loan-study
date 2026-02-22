@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { BrandIcon, BRAND_HEX } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
@@ -86,199 +85,195 @@ const LOGO_ANATOMY = [
 
 export function BrandGuidelinesPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Header />
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 md:px-6 md:py-8">
-        <div className="mb-8">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Brand Guidelines</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+    <PageLayout>
+      <div className="mb-8">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Brand Guidelines</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+
+      {/* Header */}
+      <header className="mb-12">
+        <Heading as="h1" className="text-3xl">
+          Brand Guidelines
+        </Heading>
+        <p className="mt-2 font-display text-base text-muted-foreground">
+          studentloanstudy.uk
+        </p>
+      </header>
+
+      {/* Divider */}
+      <Separator className="mb-12" />
+
+      {/* Section: Primary Logo */}
+      <Section title="PRIMARY LOGO">
+        <div className="grid gap-8 md:grid-cols-2">
+          {/* Dark background */}
+          <div className="flex flex-col gap-4">
+            <span className="text-xs text-muted-foreground">On Dark</span>
+            <Card className="dark flex items-center justify-center p-8">
+              <BrandLogo />
+            </Card>
+          </div>
+          {/* Light background */}
+          <div className="flex flex-col gap-4">
+            <span className="text-xs text-muted-foreground">On Light</span>
+            <Card className="light flex items-center justify-center p-8">
+              <BrandLogo />
+            </Card>
+          </div>
         </div>
+      </Section>
 
-        {/* Header */}
-        <header className="mb-12">
-          <Heading as="h1" className="text-3xl">
-            Brand Guidelines
-          </Heading>
-          <p className="mt-2 font-display text-base text-muted-foreground">
-            studentloanstudy.uk
-          </p>
-        </header>
-
-        {/* Divider */}
-        <Separator className="mb-12" />
-
-        {/* Section: Primary Logo */}
-        <Section title="PRIMARY LOGO">
-          <div className="grid gap-8 md:grid-cols-2">
-            {/* Dark background */}
-            <div className="flex flex-col gap-4">
-              <span className="text-xs text-muted-foreground">On Dark</span>
-              <Card className="dark flex items-center justify-center p-8">
-                <BrandLogo />
-              </Card>
+      {/* Section: Icon / Favicon */}
+      <Section title="ICON / FAVICON">
+        <div className="flex flex-wrap items-end gap-6">
+          {ICON_SIZES.map((size) => (
+            <div key={size} className="flex flex-col items-center gap-2">
+              <BrandIcon size={size} />
+              <span className="text-xs text-muted-foreground">{size}px</span>
             </div>
-            {/* Light background */}
-            <div className="flex flex-col gap-4">
-              <span className="text-xs text-muted-foreground">On Light</span>
-              <Card className="light flex items-center justify-center p-8">
-                <BrandLogo />
-              </Card>
+          ))}
+        </div>
+      </Section>
+
+      {/* Section: Colors (consolidated) */}
+      <Section title="COLORS">
+        <div className="space-y-10">
+          {/* Brand */}
+          <div>
+            <SubgroupLabel>Brand</SubgroupLabel>
+            <div className="grid grid-cols-2 gap-4">
+              {BRAND_SWATCHES.map((swatch) => (
+                <ColorSwatch
+                  key={swatch.name}
+                  name={swatch.name}
+                  hex={swatch.hex}
+                />
+              ))}
             </div>
           </div>
-        </Section>
 
-        {/* Section: Icon / Favicon */}
-        <Section title="ICON / FAVICON">
-          <div className="flex flex-wrap items-end gap-6">
-            {ICON_SIZES.map((size) => (
-              <div key={size} className="flex flex-col items-center gap-2">
-                <BrandIcon size={size} />
-                <span className="text-xs text-muted-foreground">{size}px</span>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* Section: Colors (consolidated) */}
-        <Section title="COLORS">
-          <div className="space-y-10">
-            {/* Brand */}
-            <div>
-              <SubgroupLabel>Brand</SubgroupLabel>
-              <div className="grid grid-cols-2 gap-4">
-                {BRAND_SWATCHES.map((swatch) => (
-                  <ColorSwatch
-                    key={swatch.name}
-                    name={swatch.name}
-                    hex={swatch.hex}
+          {/* Core */}
+          <div>
+            <SubgroupLabel>Core</SubgroupLabel>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              {CORE_TOKENS.map((token) => (
+                <div key={token.var} className="flex flex-col gap-3">
+                  <div
+                    className="h-14 w-full rounded-lg ring-1 ring-border"
+                    style={{ backgroundColor: `var(${token.var})` }}
                   />
-                ))}
-              </div>
-            </div>
-
-            {/* Core */}
-            <div>
-              <SubgroupLabel>Core</SubgroupLabel>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-                {CORE_TOKENS.map((token) => (
-                  <div key={token.var} className="flex flex-col gap-3">
-                    <div
-                      className="h-14 w-full rounded-lg ring-1 ring-border"
-                      style={{ backgroundColor: `var(${token.var})` }}
-                    />
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-display text-sm font-semibold text-foreground">
-                        {token.name}
-                      </span>
-                      <span className="font-mono text-xs text-muted-foreground">
-                        {token.var}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Status */}
-            <div>
-              <SubgroupLabel>Status</SubgroupLabel>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {STATUS_GROUPS.map((group) => (
-                  <div key={group.name} className="space-y-3">
+                  <div className="flex flex-col gap-0.5">
                     <span className="font-display text-sm font-semibold text-foreground">
-                      {group.name}
+                      {token.name}
                     </span>
-                    <div className="grid grid-cols-3 gap-2">
-                      {group.tokens.map((token) => (
-                        <div key={token.label} className="flex flex-col gap-2">
-                          <div
-                            className="h-10 w-full rounded-md ring-1 ring-border"
-                            style={{ backgroundColor: `var(${token.var})` }}
-                          />
-                          <span className="text-xs text-muted-foreground">
-                            {token.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {token.var}
+                    </span>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Chart */}
-            <div>
-              <SubgroupLabel>Chart</SubgroupLabel>
-              <div className="grid grid-cols-5 gap-4">
-                {CHART_TOKENS.map((token) => (
-                  <div key={token.var} className="flex flex-col gap-3">
-                    <div
-                      className="h-14 w-full rounded-lg ring-1 ring-border"
-                      style={{ backgroundColor: `var(${token.var})` }}
-                    />
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-display text-sm font-semibold text-foreground">
-                        {token.name}
-                      </span>
-                      <span className="font-mono text-xs text-muted-foreground">
-                        {token.var}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
-        </Section>
 
-        {/* Section: Typography */}
-        <Section title="TYPOGRAPHY">
-          <div className="grid gap-8 md:grid-cols-2">
-            <FontShowcase
-              name="Space Grotesk"
-              usage="Logo, Headings"
-              weights="Weights: 400, 700"
-              fontFamily="var(--font-display), 'Space Grotesk', sans-serif"
-              sampleWeight={700}
-            />
-            <FontShowcase
-              name="Manrope"
-              usage="Body, UI Elements"
-              weights="Weights: 400, 500, 600, 700"
-              fontFamily="var(--font-sans), 'Manrope', sans-serif"
-              sampleWeight={600}
-            />
+          {/* Status */}
+          <div>
+            <SubgroupLabel>Status</SubgroupLabel>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {STATUS_GROUPS.map((group) => (
+                <div key={group.name} className="space-y-3">
+                  <span className="font-display text-sm font-semibold text-foreground">
+                    {group.name}
+                  </span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {group.tokens.map((token) => (
+                      <div key={token.label} className="flex flex-col gap-2">
+                        <div
+                          className="h-10 w-full rounded-md ring-1 ring-border"
+                          style={{ backgroundColor: `var(${token.var})` }}
+                        />
+                        <span className="text-xs text-muted-foreground">
+                          {token.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </Section>
 
-        {/* Section: Logo Anatomy */}
-        <Section title="LOGO ANATOMY">
-          <Card className="flex items-center gap-3.5 p-8">
-            <BrandLogo size="large" />
-          </Card>
-          <ul className="mt-6 space-y-3">
-            {LOGO_ANATOMY.map((point, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <span className="mt-1.5 size-1.5 shrink-0 rounded-sm bg-primary" />
-                <span className="text-sm/relaxed text-muted-foreground">
-                  {point}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      </main>
-      <Footer />
-    </div>
+          {/* Chart */}
+          <div>
+            <SubgroupLabel>Chart</SubgroupLabel>
+            <div className="grid grid-cols-5 gap-4">
+              {CHART_TOKENS.map((token) => (
+                <div key={token.var} className="flex flex-col gap-3">
+                  <div
+                    className="h-14 w-full rounded-lg ring-1 ring-border"
+                    style={{ backgroundColor: `var(${token.var})` }}
+                  />
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-display text-sm font-semibold text-foreground">
+                      {token.name}
+                    </span>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {token.var}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Section: Typography */}
+      <Section title="TYPOGRAPHY">
+        <div className="grid gap-8 md:grid-cols-2">
+          <FontShowcase
+            name="Space Grotesk"
+            usage="Logo, Headings"
+            weights="Weights: 400, 700"
+            fontFamily="var(--font-display), 'Space Grotesk', sans-serif"
+            sampleWeight={700}
+          />
+          <FontShowcase
+            name="Manrope"
+            usage="Body, UI Elements"
+            weights="Weights: 400, 500, 600, 700"
+            fontFamily="var(--font-sans), 'Manrope', sans-serif"
+            sampleWeight={600}
+          />
+        </div>
+      </Section>
+
+      {/* Section: Logo Anatomy */}
+      <Section title="LOGO ANATOMY">
+        <Card className="flex items-center gap-3.5 p-8">
+          <BrandLogo size="large" />
+        </Card>
+        <ul className="mt-6 space-y-3">
+          {LOGO_ANATOMY.map((point, index) => (
+            <li key={index} className="flex items-start gap-3">
+              <span className="mt-1.5 size-1.5 shrink-0 rounded-sm bg-primary" />
+              <span className="text-sm/relaxed text-muted-foreground">
+                {point}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </PageLayout>
   );
 }
 
