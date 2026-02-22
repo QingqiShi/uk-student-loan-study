@@ -10,7 +10,9 @@ test.describe("Overpay page", () => {
 
     // Heading should be visible
     await expect(
-      page.getByRole("heading", { name: "Should You Overpay?" }),
+      page.getByRole("heading", {
+        name: "Student Loan Overpayment Calculator",
+      }),
     ).toBeVisible();
   });
 
