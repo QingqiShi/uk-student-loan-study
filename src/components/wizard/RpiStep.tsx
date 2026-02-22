@@ -39,7 +39,7 @@ export function RpiStep({ direction, onNext, done }: RpiStepProps) {
     >
       <div className="space-y-6">
         <div className="space-y-3">
-          <div className="grid grid-cols-2 grid-rows-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 xs:grid-cols-2">
             {RPI_OPTIONS.map((option) => (
               <OptionCard
                 key={option.label}
@@ -63,7 +63,7 @@ export function RpiStep({ direction, onNext, done }: RpiStepProps) {
             <span className="text-sm font-medium text-muted-foreground">
               Custom
             </span>
-            <div className="relative w-24">
+            <div className="relative w-32">
               <NumericFormat
                 value={customDisplayValue}
                 onValueChange={(values) => {

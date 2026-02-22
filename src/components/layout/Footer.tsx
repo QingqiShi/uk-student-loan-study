@@ -9,7 +9,7 @@ export function Footer() {
       <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
         <nav
           aria-label="Footer navigation"
-          className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3"
+          className="grid grid-cols-1 gap-8 text-sm xs:grid-cols-2 sm:grid-cols-3"
         >
           <div className="space-y-3">
             <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
@@ -61,7 +61,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          <div className="col-span-2 space-y-3 sm:col-span-1">
+          <div className="space-y-3 xs:col-span-2 sm:col-span-1">
             <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
               About
             </h3>

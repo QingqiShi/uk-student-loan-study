@@ -26,6 +26,7 @@ export interface ChartAnnotationConfig {
   label: string;
   color?: string;
   labelAnchor?: "start" | "end";
+  labelOffsetY?: number;
   strokeDasharray?: string;
 }
 
@@ -321,7 +322,7 @@ export function ChartBase({
                     ? ({ viewBox }: { viewBox: { x: number; y: number } }) => (
                         <text
                           x={viewBox.x}
-                          y={viewBox.y - 20}
+                          y={viewBox.y + (annotation.labelOffsetY ?? 14)}
                           fill={annotation.color ?? "var(--muted-foreground)"}
                           fontSize={11}
                           fontWeight={500}
