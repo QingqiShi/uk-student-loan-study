@@ -1,3 +1,12 @@
+import { ScrollFadeWrapper } from "@/components/shared/ScrollFadeWrapper";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const plan2 = PLAN_DISPLAY_INFO.PLAN_2;
@@ -37,39 +46,25 @@ const rows = [
 
 export function ComparisonTable() {
   return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b bg-muted/50">
-            <th
-              scope="col"
-              className="px-4 py-3 text-left font-medium text-muted-foreground"
-            >
-              Feature
-            </th>
-            <th scope="col" className="px-4 py-3 text-left font-medium">
-              Plan 2
-            </th>
-            <th scope="col" className="px-4 py-3 text-left font-medium">
-              Plan 5
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+    <ScrollFadeWrapper className="rounded-lg border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead scope="col">Feature</TableHead>
+            <TableHead scope="col">Plan 2</TableHead>
+            <TableHead scope="col">Plan 5</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {rows.map((row) => (
-            <tr key={row.label} className="border-b last:border-b-0">
-              <th
-                scope="row"
-                className="px-4 py-3 text-left font-medium text-muted-foreground"
-              >
-                {row.label}
-              </th>
-              <td className="px-4 py-3">{row.plan2}</td>
-              <td className="px-4 py-3">{row.plan5}</td>
-            </tr>
+            <TableRow key={row.label}>
+              <TableHead scope="row">{row.label}</TableHead>
+              <TableCell>{row.plan2}</TableCell>
+              <TableCell>{row.plan5}</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </ScrollFadeWrapper>
   );
 }
