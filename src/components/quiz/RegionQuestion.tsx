@@ -49,7 +49,7 @@ export function RegionQuestion({
       direction={direction}
     >
       <div
-        className="grid grid-cols-2 gap-3"
+        className="grid grid-cols-1 gap-3 xs:grid-cols-2"
         role="radiogroup"
         aria-label="Select where you studied"
       >

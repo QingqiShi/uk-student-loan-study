@@ -78,7 +78,7 @@ export function ResultScreen({
             >
               <h2 className="mb-4 text-lg font-semibold">{info.name}</h2>
               <dl className="space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:justify-between">
                   <dt className="text-muted-foreground">Repayment threshold</dt>
                   <dd className="font-semibold">
                     {currencyFormatter.format(info.yearlyThreshold)}/year
@@ -87,7 +87,7 @@ export function ResultScreen({
 
                 <Separator />
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:justify-between">
                   <dt className="text-muted-foreground">Repayment rate</dt>
                   <dd className="font-semibold">
                     {String(info.repaymentRate * 100)}% of income above
@@ -97,7 +97,7 @@ export function ResultScreen({
 
                 <Separator />
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:justify-between">
                   <dt className="text-muted-foreground">Write-off period</dt>
                   <dd className="font-semibold">{info.writeOffYears} years</dd>
                 </div>

@@ -45,7 +45,7 @@ export function DiscountRateStep({
           <div
             role="radiogroup"
             aria-label="Discount rate presets"
-            className="grid grid-cols-2 grid-rows-2 gap-3"
+            className="grid grid-cols-1 gap-3 xs:grid-cols-2"
           >
             {DISCOUNT_RATE_OPTIONS.map((option) => (
               <OptionCard
@@ -64,7 +64,7 @@ export function DiscountRateStep({
             <span className="text-sm font-medium text-muted-foreground">
               Custom
             </span>
-            <div className="relative w-24">
+            <div className="relative w-32">
               <NumericFormat
                 value={customDisplayValue}
                 onValueChange={(values) => {
