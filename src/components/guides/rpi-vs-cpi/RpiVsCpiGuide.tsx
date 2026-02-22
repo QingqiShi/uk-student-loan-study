@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { InflationComparisonChart } from "./InflationComparisonChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 
@@ -23,10 +30,25 @@ export function RpiVsCpiGuide() {
       >
         <article className="space-y-8">
           <div className="space-y-4">
-            <Breadcrumb
-              parents={[{ label: "Guides", href: "/guides" }]}
-              currentTitle="RPI vs CPI"
-            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/" />}>
+                    Home
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/guides" />}>
+                    Guides
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>RPI vs CPI</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
 
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
               RPI vs CPI: Why Your Student Loan Interest Outpaces Inflation

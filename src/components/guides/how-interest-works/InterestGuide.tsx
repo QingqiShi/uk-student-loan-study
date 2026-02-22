@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { InterestRateChart } from "./InterestRateChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 
@@ -24,10 +31,25 @@ export function InterestGuide() {
       >
         <article className="space-y-8">
           <div className="space-y-4">
-            <Breadcrumb
-              parents={[{ label: "Guides", href: "/guides" }]}
-              currentTitle="How Interest Works"
-            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/" />}>
+                    Home
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/guides" />}>
+                    Guides
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>How Interest Works</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
 
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
               How Interest Works on UK Student Loans

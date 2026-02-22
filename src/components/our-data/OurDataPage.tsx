@@ -10,9 +10,16 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { formatGBP } from "@/lib/format";
 import { CURRENT_RATES, LAST_UPDATED, PLAN_CONFIGS } from "@/lib/loans/plans";
@@ -146,7 +153,19 @@ export function OurDataPage() {
         <article className="space-y-10">
           {/* Hero */}
           <div className="space-y-4">
-            <Breadcrumb currentTitle="Our Data" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/" />}>
+                    Home
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Our Data</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
             <div className="space-y-3">
               <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
                 Every figure comes straight from the source

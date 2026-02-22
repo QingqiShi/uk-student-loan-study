@@ -8,9 +8,16 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 
 const undergradRate = `${String(PLAN_CONFIGS.PLAN_2.repaymentRate * 100)}%`;
@@ -29,10 +36,25 @@ export function SelfEmploymentGuide() {
       >
         <article className="space-y-8">
           <div className="space-y-4">
-            <Breadcrumb
-              parents={[{ label: "Guides", href: "/guides" }]}
-              currentTitle="Self-Employment"
-            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/" />}>
+                    Home
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/guides" />}>
+                    Guides
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Self-Employment</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
 
             <div className="space-y-2">
               <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
