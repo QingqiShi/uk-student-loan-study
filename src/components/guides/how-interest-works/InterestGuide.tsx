@@ -181,7 +181,15 @@ export function InterestGuide() {
               >
                 repayment calculator
               </Link>{" "}
-              to see when this tipping point occurs at your salary.
+              to see when this tipping point occurs at your salary, or explore
+              whether{" "}
+              <Link
+                href="/overpay"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                overpaying your loan
+              </Link>{" "}
+              could reduce the total cost.
             </p>
           </div>
         </section>

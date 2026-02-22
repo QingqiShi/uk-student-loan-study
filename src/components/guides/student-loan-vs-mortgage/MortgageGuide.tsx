@@ -180,9 +180,15 @@ export function MortgageGuide() {
               never chased for unpaid amounts.
             </li>
             <li>
-              Overpaying your student loan to boost mortgage affordability
-              rarely makes sense &mdash; the reduction in borrowing power is
-              modest compared to deposit savings.
+              <Link
+                href="/overpay"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                Overpaying your student loan
+              </Link>{" "}
+              to boost mortgage affordability rarely makes sense &mdash; the
+              reduction in borrowing power is modest compared to deposit
+              savings.
             </li>
           </ul>
         </section>
