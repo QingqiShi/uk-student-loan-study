@@ -56,8 +56,8 @@ export function OverpayComparisonChart({
       yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel={
         showPresentValue
-          ? "Inflation-adjusted loan balance comparison chart showing with and without overpaying over time"
-          : "Loan balance comparison chart showing with and without overpaying over time"
+          ? "Student loan overpayment calculator chart comparing inflation-adjusted balance with and without overpaying over time"
+          : "Student loan overpayment calculator chart comparing balance with and without overpaying over time"
       }
       chartConfig={chartConfig}
       series={[{ dataKey: "baselineBalance" }, { dataKey: "overpayBalance" }]}

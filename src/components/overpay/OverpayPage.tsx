@@ -123,9 +123,9 @@ export function OverpayPage() {
           </Breadcrumb>
 
           <div className="space-y-2">
-            <Heading as="h1">Should You Overpay?</Heading>
+            <Heading as="h1">Student Loan Overpayment Calculator</Heading>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              See how much overpaying could save you.
+              Should you overpay or invest? See which leaves you better off.
             </p>
           </div>
         </div>

@@ -21,16 +21,21 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://studentloanstudy.uk"),
   title: {
-    default: "UK Student Loan Study — Are You Paying More Than You Should?",
+    default:
+      "UK Student Loan Repayment Calculator — Are You Paying More Than You Should?",
     template: "%s | UK Student Loan Study",
   },
   description:
-    "Middle earners pay the most on student loans — more than high earners, and far more than low earners who get written off. See where you fall and what your loan really costs.",
+    "Free UK student loan repayment calculator for Plan 1, 2, 4, 5 and Postgraduate loans. See how long to pay off your student loan, total repayments, and monthly costs. Middle earners pay the most — find out where you fall.",
   keywords: [
+    "student loan repayment calculator",
+    "UK student loan calculator",
+    "student loan calculator UK",
+    "how long to pay off student loan",
+    "student loan payoff calculator",
     "UK student loan",
-    "student loan calculator",
-    "Plan 2",
-    "Plan 5",
+    "Plan 2 student loan",
+    "Plan 5 student loan",
     "student loan repayment",
     "student finance",
     "loan write-off",
@@ -54,7 +59,7 @@ export const metadata: Metadata = {
 const webAppSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "UK Student Loan Study",
+  name: "UK Student Loan Repayment Calculator",
   description:
     "Calculate total UK student loan repayments based on salary, balance, and plan type. Compare outcomes across Plan 1, 2, 4, 5, and Postgraduate loans.",
   url: "https://studentloanstudy.uk",
