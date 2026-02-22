@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Separator } from "@/components/ui/separator";
 import { formatGBP } from "@/lib/format";
 import { CURRENT_RATES, LAST_UPDATED, PLAN_CONFIGS } from "@/lib/loans/plans";
 
@@ -257,7 +258,10 @@ export function OurDataPage() {
                       <HugeiconsIcon icon={step.icon} className="size-4" />
                     </div>
                     {i < PIPELINE_STEPS.length - 1 && (
-                      <div className="my-1.5 w-px flex-1 bg-border" />
+                      <Separator
+                        orientation="vertical"
+                        className="my-1.5 flex-1"
+                      />
                     )}
                   </div>
                   <div

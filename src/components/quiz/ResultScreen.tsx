@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import type { PlanType } from "@/lib/loans/types";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { currencyFormatter } from "@/constants";
 import { useLoanActions } from "@/context/LoanContext";
 import { trackQuizCompleted, trackQuizRestarted } from "@/lib/analytics";
@@ -83,7 +84,7 @@ export function ResultScreen({
                   </dd>
                 </div>
 
-                <div className="h-px bg-border" />
+                <Separator />
 
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground">Repayment rate</dt>
@@ -93,7 +94,7 @@ export function ResultScreen({
                   </dd>
                 </div>
 
-                <div className="h-px bg-border" />
+                <Separator />
 
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground">Write-off period</dt>

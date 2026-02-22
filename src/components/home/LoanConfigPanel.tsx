@@ -18,6 +18,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { trackLoanToggled, trackBalanceChanged } from "@/lib/analytics";
 import {
@@ -334,11 +335,11 @@ export function LoanConfigPanel({
 
           {/* Divider with centered "or" */}
           <div className="flex items-center gap-3">
-            <div className="h-px flex-1 bg-border" />
+            <Separator className="flex-1" />
             <span className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
               or
             </span>
-            <div className="h-px flex-1 bg-border" />
+            <Separator className="flex-1" />
           </div>
 
           {/* Quiz CTA button */}
