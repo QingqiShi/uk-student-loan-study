@@ -184,6 +184,9 @@ function handleInsight(payload: InsightPayload): {
     loans: payload.loans,
     salaryGrowthRate: payload.salaryGrowthRate,
     thresholdGrowthRate: payload.thresholdGrowthRate,
+    rpiRate: payload.rpiRate,
+    boeBaseRate: payload.boeBaseRate,
+    discountRate: payload.discountRate,
   });
 
   if (totalBalance <= 0) {
