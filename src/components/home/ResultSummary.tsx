@@ -76,7 +76,7 @@ export function ResultSummary() {
             <StatBlockSkeleton />
           </div>
         </div>
-        <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 xs:px-5 sm:min-h-21.5 lg:min-h-16.5">
+        <div className="relative flex min-h-37 items-center gap-2.5 border-t border-border px-4 py-3 xs:min-h-32 xs:px-5 sm:min-h-21.5 lg:min-h-16.5">
           <Skeleton className="h-4 w-full max-w-md" />
         </div>
       </div>
@@ -138,7 +138,7 @@ export function ResultSummary() {
       </div>
 
       {/* Personalized insight footer — fixed min-h to prevent layout shift */}
-      <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 xs:px-5 sm:min-h-21.5 lg:min-h-16.5">
+      <div className="relative flex min-h-37 items-center gap-2.5 border-t border-border px-4 py-3 xs:min-h-32 xs:px-5 sm:min-h-21.5 lg:min-h-16.5">
         {insight ? (
           <>
             <HugeiconsIcon

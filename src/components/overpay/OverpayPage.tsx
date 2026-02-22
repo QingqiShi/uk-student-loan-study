@@ -37,7 +37,7 @@ function OverpayPageSkeleton() {
   return (
     <>
       {/* Verdict skeleton */}
-      <Skeleton className="h-28 w-full rounded-lg" />
+      <Skeleton className="min-h-43 w-full rounded-lg xs:min-h-38 sm:min-h-29 md:min-h-0" />
 
       {/* Chart + cards grid skeleton */}
       <div className="grid gap-6 md:flex">
