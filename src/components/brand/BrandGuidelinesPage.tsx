@@ -3,6 +3,7 @@ import { BrandIcon, BRAND_HEX } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -104,9 +105,9 @@ export function BrandGuidelinesPage() {
 
         {/* Header */}
         <header className="mb-12">
-          <h1 className="font-display text-3xl font-bold text-foreground">
+          <Heading as="h1" className="text-3xl">
             Brand Guidelines
-          </h1>
+          </Heading>
           <p className="mt-2 font-display text-base text-muted-foreground">
             studentloanstudy.uk
           </p>

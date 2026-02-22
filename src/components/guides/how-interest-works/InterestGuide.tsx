@@ -3,6 +3,7 @@ import { InterestRateChart } from "./InterestRateChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -51,9 +52,7 @@ export function InterestGuide() {
               </BreadcrumbList>
             </Breadcrumb>
 
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              How Interest Works on UK Student Loans
-            </h1>
+            <Heading as="h1">How Interest Works on UK Student Loans</Heading>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
               Interest is one of the most confusing parts of student loans. Each
               plan type calculates it differently, which means the amount your
@@ -63,9 +62,9 @@ export function InterestGuide() {
           </div>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Plan 2: The Sliding Scale
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Plan 2 has the most complex interest calculation. It uses a
@@ -102,9 +101,9 @@ export function InterestGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Plan 5: RPI Only
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Plan 5, introduced for students starting from September 2023,
@@ -124,9 +123,9 @@ export function InterestGuide() {
           <InterestRateChart />
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Plan 1 and Plan 4
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Plan 1 (England, Wales &amp; Northern Ireland pre-2012) and Plan
@@ -147,9 +146,9 @@ export function InterestGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Postgraduate Loans
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Postgraduate (Master&apos;s and Doctoral) loans always charge
@@ -165,9 +164,9 @@ export function InterestGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Why Your Balance Grows
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Many graduates are surprised to see their loan balance increase

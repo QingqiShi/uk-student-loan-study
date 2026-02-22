@@ -10,6 +10,7 @@ import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -57,9 +58,7 @@ export function SelfEmploymentGuide() {
             </Breadcrumb>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                Student Loans and Self-Employment
-              </h1>
+              <Heading as="h1">Student Loans and Self-Employment</Heading>
               <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
                 If you&rsquo;re self-employed, your student loan repayments work
                 differently from PAYE. Instead of automatic monthly deductions
@@ -78,9 +77,9 @@ export function SelfEmploymentGuide() {
           </div>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               How Repayments Work Through Self Assessment
-            </h2>
+            </Heading>
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10">
@@ -164,9 +163,9 @@ export function SelfEmploymentGuide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               What Counts as Income?
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               HMRC looks at your total taxable income when calculating student
               loan repayments. For the self-employed, this includes:
@@ -219,9 +218,9 @@ export function SelfEmploymentGuide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Mixed Employment
-            </h2>
+            </Heading>
             <div className="space-y-3 text-sm text-muted-foreground sm:text-base">
               <p>
                 Many freelancers also have a part-time or full-time PAYE job. If
@@ -250,9 +249,9 @@ export function SelfEmploymentGuide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Common Mistakes to Avoid
-            </h2>
+            </Heading>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
                 {
@@ -298,9 +297,9 @@ export function SelfEmploymentGuide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Practical Tips for Freelancers
-            </h2>
+            </Heading>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
                 {
@@ -358,9 +357,9 @@ export function SelfEmploymentGuide() {
           </section>
 
           <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-            <h2 className="text-lg font-semibold tracking-tight">
+            <Heading as="h2" size="subsection">
               Key Takeaways
-            </h2>
+            </Heading>
             <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
               <li>
                 Self-employed borrowers repay through Self Assessment, not PAYE

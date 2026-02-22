@@ -3,6 +3,7 @@ import { RepaymentImpactChart } from "./RepaymentImpactChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -63,9 +64,9 @@ export function MortgageGuide() {
               </BreadcrumbList>
             </Breadcrumb>
 
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <Heading as="h1">
               Does Your Student Loan Affect Your Mortgage?
-            </h1>
+            </Heading>
 
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
               Your student loan won&rsquo;t stop you getting a mortgage, but the
@@ -75,9 +76,9 @@ export function MortgageGuide() {
           </div>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               How Lenders See Your Student Loan
-            </h2>
+            </Heading>
             <div className="space-y-3 text-muted-foreground">
               <p>
                 Unlike credit cards or car finance, a UK student loan is not
@@ -95,9 +96,9 @@ export function MortgageGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               The Repayment &ldquo;Tax&rdquo;
-            </h2>
+            </Heading>
             <div className="space-y-3 text-muted-foreground">
               <p>
                 Student loan repayments work like an extra income tax. You pay{" "}
@@ -115,9 +116,9 @@ export function MortgageGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Monthly Repayment by Salary
-            </h2>
+            </Heading>
             <div className="h-75 sm:h-90">
               <RepaymentImpactChart />
             </div>
@@ -129,9 +130,9 @@ export function MortgageGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               What This Means for Your Borrowing Capacity
-            </h2>
+            </Heading>
             <div className="space-y-3 text-muted-foreground">
               <p>
                 Most lenders offer roughly 4 to 4.5 times your annual income as
@@ -165,9 +166,9 @@ export function MortgageGuide() {
           </section>
 
           <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-            <h2 className="text-lg font-semibold tracking-tight">
+            <Heading as="h2" size="subsection">
               Key Takeaways
-            </h2>
+            </Heading>
             <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
               <li>
                 A student loan is <strong>not</strong> conventional debt &mdash;

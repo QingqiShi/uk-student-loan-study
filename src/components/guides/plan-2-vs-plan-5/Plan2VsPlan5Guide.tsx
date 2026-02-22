@@ -5,6 +5,7 @@ import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -59,9 +60,7 @@ export function Plan2VsPlan5Guide() {
             </Breadcrumb>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                Plan 2 vs Plan 5: Which Is Better?
-              </h1>
+              <Heading as="h1">Plan 2 vs Plan 5: Which Is Better?</Heading>
               <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
                 Plan 2 and Plan 5 are the two loan types most English university
                 students will encounter. Plan 2 covers those who started between
@@ -74,9 +73,9 @@ export function Plan2VsPlan5Guide() {
           </div>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Side-by-Side Comparison
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               The key terms of each plan at a glance. Plan 5 has a lower
               threshold and longer write-off, but simpler (and lower) interest.
@@ -85,9 +84,9 @@ export function Plan2VsPlan5Guide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Total Repayment by Salary
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               How much you repay in total depends heavily on your salary. This
               chart shows the total amount repaid over the life of each loan for
@@ -101,9 +100,9 @@ export function Plan2VsPlan5Guide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Balance Over Time
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               See how the outstanding balance changes month by month. Toggle
               between salary levels to see how income affects the repayment
@@ -115,9 +114,9 @@ export function Plan2VsPlan5Guide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Which Plan Do I Have?
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 You cannot choose between Plan 2 and Plan 5 &mdash; your plan is
@@ -147,9 +146,9 @@ export function Plan2VsPlan5Guide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               How the Threshold Difference Affects You
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Plan 5&rsquo;s lower repayment threshold means you start
@@ -170,9 +169,9 @@ export function Plan2VsPlan5Guide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Can You Switch Plans?
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 No. Your plan is permanently determined by your course start
@@ -187,9 +186,9 @@ export function Plan2VsPlan5Guide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Which Plan Should You Worry About?
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 For most borrowers, repayments are automatic through PAYE
@@ -232,9 +231,9 @@ export function Plan2VsPlan5Guide() {
           </section>
 
           <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-            <h2 className="text-lg font-semibold tracking-tight">
+            <Heading as="h2" size="subsection">
               Key Takeaways
-            </h2>
+            </Heading>
             <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
               <li>
                 Lower earners often pay <strong>more</strong> on Plan 5 because

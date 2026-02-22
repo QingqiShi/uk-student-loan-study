@@ -43,6 +43,7 @@ Local steps:
 - Standard Tailwind breakpoints only (`sm`/`md`/`lg`/`xl`/`2xl`). Exception: `min-[30rem]` for mobile-to-tablet
 - **Brand green:** `#2B7F55` — used in `--primary` (light), `BRAND_HEX.green`, `icon.svg`, `scripts/generate-social-images.mjs`. Update ALL locations when changing.
 - `dark` / `light` classes on containers scope CSS variables for that subtree
+- **Headings**: Use `<Heading>` from `@/components/typography/Heading` for content headings — do not use raw `<h1>`–`<h6>` with inline classes. Sizes: `page-hero` | `page` (default) | `section` | `subsection`. Polymorphic `as` prop sets the HTML element.
 
 ## Code Quality
 

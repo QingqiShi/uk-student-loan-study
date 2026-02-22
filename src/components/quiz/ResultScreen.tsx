@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import type { PlanType } from "@/lib/loans/types";
+import { Heading } from "@/components/typography/Heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { currencyFormatter } from "@/constants";
@@ -62,9 +63,9 @@ export function ResultScreen({
           {planTypes.length === 1 ? "Your plan type" : "Your plan types"}
         </p>
 
-        <h1 className="mb-2 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+        <Heading as="h1" size="page-hero" className="mb-2 text-4xl md:text-5xl">
           {planTypes.map((p) => getPlanDisplayInfo(p).name).join(" + ")}
-        </h1>
+        </Heading>
       </div>
 
       <div className="mt-8 space-y-4">

@@ -3,6 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -35,9 +36,7 @@ export default function GuidesPage() {
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Student Loan Guides
-            </h1>
+            <Heading as="h1">Student Loan Guides</Heading>
             <p className="text-muted-foreground">
               In-depth guides to help you understand UK student loan repayment,
               interest, and how it fits into your wider finances.
