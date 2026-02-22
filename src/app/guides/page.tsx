@@ -1,9 +1,16 @@
 import { ArrowRight01Icon, BookOpen01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { GUIDES } from "@/lib/guides";
 
 export default function GuidesPage() {
@@ -15,7 +22,17 @@ export default function GuidesPage() {
         className="mx-auto w-full max-w-4xl flex-1 space-y-8 overflow-x-hidden px-3 pt-13 pb-6 md:pb-8"
       >
         <div className="space-y-4">
-          <Breadcrumb currentTitle="Guides" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Guides</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
 
           <div className="space-y-2">
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">

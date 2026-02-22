@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { CostComparisonChart } from "./CostComparisonChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import {
   PLAN_CONFIGS,
@@ -27,10 +34,25 @@ export function PayUpfrontGuide() {
       >
         <article className="space-y-8">
           <div className="space-y-4">
-            <Breadcrumb
-              parents={[{ label: "Guides", href: "/guides" }]}
-              currentTitle="Pay Upfront or Take the Loan?"
-            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/" />}>
+                    Home
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/guides" />}>
+                    Guides
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Pay Upfront or Take the Loan?</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
 
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
               Should You Pay Tuition Upfront or Take the Loan?

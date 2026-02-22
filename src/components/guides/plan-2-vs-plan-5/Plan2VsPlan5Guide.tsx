@@ -3,9 +3,16 @@ import { BalanceComparisonChart } from "./BalanceComparisonChart";
 import { ComparisonTable } from "./ComparisonTable";
 import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
@@ -31,10 +38,25 @@ export function Plan2VsPlan5Guide() {
       >
         <article className="space-y-8">
           <div className="space-y-4">
-            <Breadcrumb
-              parents={[{ label: "Guides", href: "/guides" }]}
-              currentTitle="Plan 2 vs Plan 5"
-            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/" />}>
+                    Home
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/guides" />}>
+                    Guides
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Plan 2 vs Plan 5</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
 
             <div className="space-y-2">
               <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">

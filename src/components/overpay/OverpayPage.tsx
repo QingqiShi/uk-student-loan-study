@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
 import { OverpayPrimaryInputs } from "./OverpayPrimaryInputs";
@@ -8,11 +9,18 @@ import { OverpayVerdict } from "./OverpayVerdict";
 import type { InputMode } from "@/components/home/InputPanel";
 import type { Preset } from "@/lib/presets";
 import { InputPanel } from "@/components/home/InputPanel";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AssumptionsCallout } from "@/components/shared/AssumptionsCallout";
 import { PlanFromQuery } from "@/components/shared/PlanFromQuery";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
@@ -101,7 +109,17 @@ export function OverpayPage() {
         className="mx-auto w-full max-w-4xl flex-1 space-y-6 overflow-x-hidden px-3 pt-13 pb-6 md:pb-8"
       >
         <div className="space-y-4">
-          <Breadcrumb currentTitle="Overpay Calculator" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Overpay Calculator</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
 
           <div className="space-y-2">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
