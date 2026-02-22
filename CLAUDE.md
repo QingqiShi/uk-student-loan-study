@@ -40,7 +40,7 @@ Local steps:
 - Always support light and dark mode
 - Icons: `@hugeicons/react` with `@hugeicons/core-free-icons` — `<HugeiconsIcon icon={Quiz01Icon} />`
 - **No arbitrary Tailwind values** — use standard tokens only (`text-sm` not `text-[13px]`)
-- Standard Tailwind breakpoints only (`sm`/`md`/`lg`/`xl`/`2xl`). Exception: `min-[30rem]` for mobile-to-tablet
+- Standard Tailwind breakpoints only (`xs`/`sm`/`md`/`lg`/`xl`/`2xl`)
 - **Brand green:** `#2B7F55` — used in `--primary` (light), `BRAND_HEX.green`, `icon.svg`, `scripts/generate-social-images.mjs`. Update ALL locations when changing.
 - `dark` / `light` classes on containers scope CSS variables for that subtree
 

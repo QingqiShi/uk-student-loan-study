@@ -49,7 +49,7 @@ function StatBlockSkeleton() {
   return (
     <div>
       <Skeleton className="h-4 w-20" />
-      <Skeleton className="mt-0.5 h-7 w-24 min-[30rem]:h-8" />
+      <Skeleton className="mt-0.5 h-7 w-24 xs:h-8" />
     </div>
   );
 }
@@ -65,18 +65,18 @@ export function ResultSummary() {
         role="status"
         aria-label="Loading results"
       >
-        <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:items-center min-[30rem]:p-5">
-          <div className="col-span-2 pb-3 min-[30rem]:col-span-1 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:pr-5 min-[30rem]:pb-0">
+        <div className="relative grid grid-cols-2 gap-0 p-4 xs:grid-cols-3 xs:items-center xs:p-5">
+          <div className="col-span-2 pb-3 xs:col-span-1 xs:border-r xs:border-border xs:pr-5 xs:pb-0">
             <StatBlockSkeleton />
           </div>
-          <div className="border-t border-border py-3 pr-4 min-[30rem]:border-t-0 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:px-5 min-[30rem]:py-0">
+          <div className="border-t border-border py-3 pr-4 xs:border-t-0 xs:border-r xs:border-border xs:px-5 xs:py-0">
             <StatBlockSkeleton />
           </div>
-          <div className="border-t border-border py-3 pl-4 min-[30rem]:border-t-0 min-[30rem]:py-0 min-[30rem]:pl-5">
+          <div className="border-t border-border py-3 pl-4 xs:border-t-0 xs:py-0 xs:pl-5">
             <StatBlockSkeleton />
           </div>
         </div>
-        <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5 sm:min-h-21.5 lg:min-h-16.5">
+        <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 xs:px-5 sm:min-h-21.5 lg:min-h-16.5">
           <Skeleton className="h-4 w-full max-w-md" />
         </div>
       </div>
@@ -101,21 +101,21 @@ export function ResultSummary() {
       {/* Subtle gradient wash behind the hero stat */}
       <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/6 via-transparent to-transparent dark:from-primary/10" />
 
-      <div className="relative grid grid-cols-2 gap-0 p-4 min-[30rem]:grid-cols-3 min-[30rem]:items-center min-[30rem]:p-5">
-        <div className="col-span-2 pb-3 min-[30rem]:col-span-1 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:pr-5 min-[30rem]:pb-0">
+      <div className="relative grid grid-cols-2 gap-0 p-4 xs:grid-cols-3 xs:items-center xs:p-5">
+        <div className="col-span-2 pb-3 xs:col-span-1 xs:border-r xs:border-border xs:pr-5 xs:pb-0">
           <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
             {showPresentValue ? "Total repayment (real)" : "Total repayment"}
           </p>
-          <p className="mt-0.5 font-mono text-xl font-semibold tracking-tight text-primary tabular-nums min-[30rem]:text-2xl">
+          <p className="mt-0.5 font-mono text-xl font-semibold tracking-tight text-primary tabular-nums xs:text-2xl">
             {currencyFormatter.format(summary.totalPaid)}
           </p>
         </div>
 
-        <div className="border-t border-border py-3 pr-4 min-[30rem]:border-t-0 min-[30rem]:border-r min-[30rem]:border-border min-[30rem]:px-5 min-[30rem]:py-0">
+        <div className="border-t border-border py-3 pr-4 xs:border-t-0 xs:border-r xs:border-border xs:px-5 xs:py-0">
           <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
             Monthly
           </p>
-          <p className="mt-0.5 font-mono text-xl font-semibold tabular-nums min-[30rem]:text-2xl">
+          <p className="mt-0.5 font-mono text-xl font-semibold tabular-nums xs:text-2xl">
             {currencyFormatter.format(summary.monthlyRepayment)}
             <span className="text-sm font-normal text-muted-foreground">
               /mo
@@ -123,11 +123,11 @@ export function ResultSummary() {
           </p>
         </div>
 
-        <div className="border-t border-border py-3 pl-4 min-[30rem]:border-t-0 min-[30rem]:py-0 min-[30rem]:pl-5">
+        <div className="border-t border-border py-3 pl-4 xs:border-t-0 xs:py-0 xs:pl-5">
           <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
             Duration
           </p>
-          <p className="mt-0.5 font-mono text-xl font-semibold tabular-nums min-[30rem]:text-2xl">
+          <p className="mt-0.5 font-mono text-xl font-semibold tabular-nums xs:text-2xl">
             {yearsDisplay}
             <span className="text-sm font-normal text-muted-foreground">
               {" "}
@@ -138,7 +138,7 @@ export function ResultSummary() {
       </div>
 
       {/* Personalized insight footer — fixed min-h to prevent layout shift */}
-      <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 min-[30rem]:px-5 sm:min-h-21.5 lg:min-h-16.5">
+      <div className="relative flex min-h-26.5 items-center gap-2.5 border-t border-border px-4 py-3 xs:px-5 sm:min-h-21.5 lg:min-h-16.5">
         {insight ? (
           <>
             <HugeiconsIcon
