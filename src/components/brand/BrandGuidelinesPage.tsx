@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const BRAND_SWATCHES = [
   { name: "Primary Green", hex: BRAND_HEX.green },
@@ -94,7 +95,7 @@ export function BrandGuidelinesPage() {
         </header>
 
         {/* Divider */}
-        <hr className="mb-12 border-border" />
+        <Separator className="mb-12" />
 
         {/* Section: Primary Logo */}
         <Section title="PRIMARY LOGO">

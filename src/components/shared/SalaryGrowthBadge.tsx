@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 import { SALARY_GROWTH_OPTIONS, currencyFormatter } from "@/constants";
 import { useAssumptionsWizard } from "@/context/AssumptionsWizardContext";
 import {
@@ -69,7 +70,7 @@ export function SalaryGrowthBadge() {
           ) : null}
           .
         </p>
-        <div className="my-2 h-px bg-border" />
+        <Separator className="my-2" />
         <button
           type="button"
           onClick={() => {
