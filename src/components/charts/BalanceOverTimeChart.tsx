@@ -28,7 +28,7 @@ export function BalanceOverTimeChart() {
       <div
         className="flex h-full items-center justify-center"
         role="status"
-        aria-label="Loading chart"
+        aria-label="Loading student loan repayment chart showing how long to pay off your loan"
       >
         <Skeleton className="size-full" />
       </div>
@@ -46,8 +46,8 @@ export function BalanceOverTimeChart() {
       yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel={
         showPresentValue
-          ? "Chart showing your inflation-adjusted loan balance decreasing over time. The balance starts at your total loan amount and decreases as you make repayments."
-          : "Chart showing your loan balance decreasing over time. The balance starts at your total loan amount and decreases as you make repayments."
+          ? "Student loan repayment chart showing how long to pay off your loan. Inflation-adjusted balance decreases over time as you make repayments."
+          : "Student loan repayment chart showing how long to pay off your loan. Balance decreases over time as you make repayments."
       }
       chartConfig={chartConfig}
       series={[{ dataKey: "balance" }]}

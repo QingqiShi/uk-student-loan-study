@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Should I Overpay My Student Loan?",
+  title: "Student Loan Overpayment Calculator — Should You Overpay or Invest?",
   description:
-    "That spare cash could overpay your loan or grow in an index fund. See which one leaves you better off — the answer depends on your salary trajectory, not just the interest rate.",
+    "Free UK student loan overpayment calculator. Compare overpaying your loan vs investing in an index fund — see which strategy leaves you better off based on your salary, balance, and plan type.",
   keywords: [
-    "UK student loan overpayment",
+    "student loan overpayment calculator",
     "should I overpay student loan",
+    "overpay student loan calculator UK",
     "student loan overpay calculator",
+    "UK student loan overpayment",
     "Plan 2 overpayment",
     "Plan 5 overpayment",
     "student loan vs investing",

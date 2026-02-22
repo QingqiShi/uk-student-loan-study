@@ -30,7 +30,7 @@ export function TotalRepaymentChart() {
       <div
         className="flex h-full items-center justify-center"
         role="status"
-        aria-label="Loading chart"
+        aria-label="Loading UK student loan calculator results showing total repayment by salary"
       >
         <Skeleton className="size-full" />
       </div>
@@ -61,8 +61,8 @@ export function TotalRepaymentChart() {
       yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel={
         showPresentValue
-          ? "Chart showing inflation-adjusted total student loan repayment by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
-          : "Chart showing total student loan repayment amount by annual salary. Lower earners pay less due to loan write-off, while middle earners often pay the most."
+          ? "UK student loan calculator results showing inflation-adjusted total repayment by salary. Middle earners pay the most, while lower earners benefit from loan write-off."
+          : "UK student loan calculator results showing total repayment by salary. Middle earners pay the most, while lower earners benefit from loan write-off."
       }
       chartConfig={chartConfig}
       series={[{ dataKey: "value" }]}

@@ -72,9 +72,12 @@ export function HeroSection() {
     <section className="space-y-6">
       <div className="space-y-2">
         <Heading as="h1" size="page-hero">
-          Student Loans Hurt{" "}
-          <span className="text-primary">Middle Earners</span> Most
+          Student Loan{" "}
+          <span className="text-primary">Repayment Calculator</span>
         </Heading>
+        <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+          Middle earners pay the most on UK student loans. See where you fall.
+        </p>
         <ul className="max-w-2xl space-y-1 text-sm text-muted-foreground sm:text-base">
           <li className="flex items-baseline gap-2">
             <span
