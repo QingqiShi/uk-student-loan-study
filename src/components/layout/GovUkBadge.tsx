@@ -22,7 +22,7 @@ export function GovUkBadge({ className }: { className?: string }) {
         delay={200}
         closeDelay={150}
         render={
-          <Badge className={className}>
+          <Badge role="button" className={className}>
             <HugeiconsIcon icon={Tick02Icon} className="size-3" />
             GOV.UK {formattedDate}
           </Badge>
