@@ -61,12 +61,14 @@ const annotations: ChartAnnotationConfig[] = [
     label: `Plan 2 write-off (${String(PLAN_CONFIGS.PLAN_2.writeOffYears)}yr)`,
     color: "oklch(0.7 0.15 250)",
     labelAnchor: "end",
+    labelOffsetY: 5,
   },
   {
     x: PLAN_5_WRITEOFF_MONTHS - 1,
     label: `Plan 5 write-off (${String(PLAN_CONFIGS.PLAN_5.writeOffYears)}yr)`,
     color: "oklch(0.7 0.15 150)",
     labelAnchor: "end",
+    labelOffsetY: -10,
   },
 ];
 
