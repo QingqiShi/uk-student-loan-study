@@ -219,6 +219,30 @@ describe("useResultSummary", () => {
     });
   });
 
+  it("insight description changes when showPresentValue is true", async () => {
+    const { result: nominalResult } = renderHook(() => useResultSummary(), {
+      wrapper: createWrapper({
+        showPresentValue: false,
+        discountRate: 0.05,
+      }),
+    });
+
+    const { result: pvResult } = renderHook(() => useResultSummary(), {
+      wrapper: createWrapper({
+        showPresentValue: true,
+        discountRate: 0.05,
+      }),
+    });
+
+    await waitFor(() => {
+      expect(nominalResult.current.insight).not.toBeNull();
+      expect(pvResult.current.insight).not.toBeNull();
+      expect(pvResult.current.insight?.description).not.toBe(
+        nominalResult.current.insight?.description,
+      );
+    });
+  });
+
   it("returns different results for different plan types", async () => {
     const { result: plan2Result } = renderHook(() => useResultSummary(), {
       wrapper: createWrapper({

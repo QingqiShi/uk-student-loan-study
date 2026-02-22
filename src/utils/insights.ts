@@ -1,6 +1,7 @@
 import type { Loan, SimulationTimeSeries } from "@/lib/loans/types";
 import { simulate } from "@/lib/loans/engine";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import { pvTotal } from "@/utils/present-value";
 
 export type InsightType = "low-earner" | "middle-earner" | "high-earner";
 
@@ -23,6 +24,9 @@ interface InsightConfig {
   loans: Loan[];
   salaryGrowthRate?: number;
   thresholdGrowthRate?: number;
+  rpiRate?: number;
+  boeBaseRate?: number;
+  discountRate?: number;
 }
 
 /**
@@ -45,16 +49,6 @@ function willBeWrittenOff(result: SimulationTimeSeries): boolean {
 }
 
 /**
- * Calculates amount overpaid compared to original loan balance.
- */
-function calculateOverpayment(
-  result: SimulationTimeSeries,
-  principal: number,
-): number {
-  return result.summary.totalPaid - principal;
-}
-
-/**
  * Generates a personalized insight based on salary and loan configuration.
  *
  * Categorizes the user into one of three zones:
@@ -66,7 +60,14 @@ export function generateInsight(
   salary: number,
   config: InsightConfig,
 ): Insight | null {
-  const { loans, salaryGrowthRate = 0, thresholdGrowthRate = 0 } = config;
+  const {
+    loans,
+    salaryGrowthRate = 0,
+    thresholdGrowthRate = 0,
+    rpiRate,
+    boeBaseRate,
+    discountRate,
+  } = config;
 
   const principal = loans.reduce((s, l) => s + l.balance, 0);
 
@@ -82,23 +83,42 @@ export function generateInsight(
     monthsElapsed: 0,
     salaryGrowthRate,
     thresholdGrowthRate,
+    rpiRate,
+    boeBaseRate,
+  });
+
+  // Nominal values used for zone classification (thresholds calibrated to nominal)
+  const nominalTotalPaid = result.summary.totalPaid;
+
+  // Display values: PV-adjusted when discount rate is active, nominal otherwise
+  const displayTotalPaid =
+    discountRate && discountRate > 0
+      ? pvTotal(
+          result.snapshots.map((s) => ({
+            month: s.month,
+            amount: s.totalRepayment,
+          })),
+          discountRate,
+        )
+      : nominalTotalPaid;
+  const displayOverpayment = displayTotalPaid - principal;
+  const displayOverpaymentRatio =
+    principal > 0 ? displayOverpayment / principal : 0;
+
+  const gbp = new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
   });
 
   const writeOffYears = getWriteOffYears(loans);
-  const overpayment = calculateOverpayment(result, principal);
-  const overpaymentRatio = principal > 0 ? overpayment / principal : 0;
 
-  // Peak repayment zone: paying 70%+ more than what you borrowed
+  // Peak repayment zone: paying 70%+ more than what you borrowed (nominal classification)
   if (
     principal > 0 &&
-    result.summary.totalPaid > PEAK_ZONE_REPAYMENT_MULTIPLIER * principal
+    nominalTotalPaid > PEAK_ZONE_REPAYMENT_MULTIPLIER * principal
   ) {
-    const gbp = new Intl.NumberFormat("en-GB", {
-      style: "currency",
-      currency: "GBP",
-      maximumFractionDigits: 0,
-    });
-    const formattedTotalPaid = gbp.format(result.summary.totalPaid);
+    const formattedTotalPaid = gbp.format(displayTotalPaid);
     const formattedPrincipal = gbp.format(principal);
 
     return {
@@ -112,7 +132,7 @@ export function generateInsight(
     };
   }
 
-  // Low earner: loan will be written off with remaining balance
+  // Low earner: loan will be written off with remaining balance (nominal classification)
   if (willBeWrittenOff(result)) {
     const remaining = result.summary.perLoan.reduce(
       (sum, r) => sum + r.remainingBalance,
@@ -120,12 +140,12 @@ export function generateInsight(
     );
 
     if (remaining > 0) {
-      const paidPercent =
-        principal > 0 ? (result.summary.totalPaid / principal) * 100 : 0;
+      const displayPaidPercent =
+        principal > 0 ? (displayTotalPaid / principal) * 100 : 0;
       const description =
-        overpaymentRatio > 0
-          ? `You'll pay ${(overpaymentRatio * 100).toFixed(0)}% more than you borrowed, but it's written off after ${String(writeOffYears)} years — reasonable given inflation. Treat repayments as a graduate tax, not a debt.`
-          : `You'll only repay ${paidPercent.toFixed(0)}% of what you borrowed before the rest is written off after ${String(writeOffYears)} years. Treat repayments as a graduate tax, not a debt.`;
+        displayOverpaymentRatio > 0
+          ? `You'll pay ${(displayOverpaymentRatio * 100).toFixed(0)}% more than you borrowed, but it's written off after ${String(writeOffYears)} years — reasonable given inflation. Treat repayments as a graduate tax, not a debt.`
+          : `You'll only repay ${displayPaidPercent.toFixed(0)}% of what you borrowed before the rest is written off after ${String(writeOffYears)} years. Treat repayments as a graduate tax, not a debt.`;
 
       return {
         type: "low-earner",
@@ -135,14 +155,20 @@ export function generateInsight(
     }
   }
 
-  // High earner: pays off before write-off with reasonable interest
+  // High earner: pays off before write-off with reasonable interest (nominal classification)
   const yearsToPayoff = (result.summary.monthsToPayoff / 12).toFixed(1);
-  const interestPercent = (overpaymentRatio * 100).toFixed(0);
+
+  let interestDescription: string;
+  if (displayOverpaymentRatio < 0) {
+    interestDescription = `paying ${Math.abs(displayOverpaymentRatio * 100).toFixed(0)}% less in today's money`;
+  } else {
+    interestDescription = `paying ${(displayOverpaymentRatio * 100).toFixed(0)}% more than you borrowed`;
+  }
 
   return {
     type: "high-earner",
     title: "You'll pay off quickly",
-    description: `You'll clear your loan in about ${yearsToPayoff} years, paying ${interestPercent}% more than you borrowed.`,
+    description: `You'll clear your loan in about ${yearsToPayoff} years, ${interestDescription}.`,
     cta: {
       text: "See if overpaying saves you money",
       href: "/overpay",
