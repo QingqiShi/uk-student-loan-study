@@ -51,20 +51,26 @@ export function OverpayVerdict({
   const isIdle = recommendation === "idle";
 
   return (
-    <Alert className={config.className} role="status" aria-live="polite">
-      <HugeiconsIcon
-        icon={config.icon}
-        className="size-5 text-foreground/70"
-        strokeWidth={2}
-      />
-      <AlertTitle>{config.title}</AlertTitle>
-      <AlertDescription>{reason}</AlertDescription>
-      <p className="col-span-full mt-2 text-xs text-muted-foreground">
-        {isIdle
-          ? "Adjust the inputs below to explore different scenarios."
-          : "This is an estimate, not financial advice. Consider speaking to a financial adviser."}
-      </p>
-    </Alert>
+    <div className="-mb-4 min-h-43 xs:min-h-38 sm:min-h-29 md:mb-0 md:min-h-0">
+      <Alert
+        className={`${config.className} py-3`}
+        role="status"
+        aria-live="polite"
+      >
+        <HugeiconsIcon
+          icon={config.icon}
+          className="size-5 text-foreground/70"
+          strokeWidth={2}
+        />
+        <AlertTitle>{config.title}</AlertTitle>
+        <AlertDescription>{reason}</AlertDescription>
+        <p className="col-span-full mt-2 text-xs text-muted-foreground">
+          {isIdle
+            ? "Adjust the inputs below to explore different scenarios."
+            : "This is an estimate, not financial advice. Consider speaking to a financial adviser."}
+        </p>
+      </Alert>
+    </div>
   );
 }
 
