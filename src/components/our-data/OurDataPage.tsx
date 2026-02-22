@@ -12,6 +12,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -167,9 +168,9 @@ export function OurDataPage() {
               </BreadcrumbList>
             </Breadcrumb>
             <div className="space-y-3">
-              <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+              <Heading as="h1">
                 Every figure comes straight from the source
-              </h1>
+              </Heading>
               <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
                 Our calculators use official figures from GOV.UK, the Bank of
                 England, and the ONS. They&rsquo;re checked every day by an
@@ -193,9 +194,9 @@ export function OurDataPage() {
 
           {/* What we track */}
           <section className="space-y-5">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               What we track
-            </h2>
+            </Heading>
 
             {/* Rate cards */}
             <div className="grid gap-3 sm:grid-cols-3">
@@ -262,9 +263,9 @@ export function OurDataPage() {
 
           {/* How it stays current */}
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               How it stays current
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               We run an automatic check every day so you never have to wonder if
               our numbers are current.
@@ -300,9 +301,9 @@ export function OurDataPage() {
 
           {/* Cross-check yourself */}
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Cross-check yourself
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               You don&rsquo;t have to take our word for it. Here are the primary
               sources we pull from:

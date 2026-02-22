@@ -13,6 +13,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AssumptionsCallout } from "@/components/shared/AssumptionsCallout";
 import { PlanFromQuery } from "@/components/shared/PlanFromQuery";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -122,9 +123,7 @@ export function OverpayPage() {
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Should You Overpay?
-            </h2>
+            <Heading as="h1">Should You Overpay?</Heading>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
               See how much overpaying could save you.
             </p>

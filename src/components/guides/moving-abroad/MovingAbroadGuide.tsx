@@ -9,6 +9,7 @@ import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Breadcrumb,
@@ -60,9 +61,9 @@ export function MovingAbroadGuide() {
             </Breadcrumb>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              <Heading as="h1">
                 What Happens to Your Student Loan If You Move Abroad?
-              </h1>
+              </Heading>
               <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
                 Moving overseas doesn&rsquo;t make your student loan disappear.
                 The Student Loans Company (SLC) continues to collect repayments
@@ -73,9 +74,9 @@ export function MovingAbroadGuide() {
           </div>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               You Must Notify SLC
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               If you&rsquo;re planning to leave the UK for more than three
               months, you are legally required to inform SLC. This applies
@@ -105,9 +106,9 @@ export function MovingAbroadGuide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               How Repayments Work Abroad
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               When you live in the UK, repayments are automatically deducted
               from your salary through PAYE. Abroad, the system works
@@ -198,9 +199,9 @@ export function MovingAbroadGuide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Consequences of Non-Compliance
-            </h2>
+            </Heading>
             <div className="rounded-lg border-l-4 border-destructive bg-card p-4 ring-1 ring-foreground/10 sm:p-5">
               <p className="mb-3 text-sm text-muted-foreground sm:text-base">
                 Ignoring your student loan obligations while abroad can have
@@ -232,9 +233,9 @@ export function MovingAbroadGuide() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Practical Steps Before You Move
-            </h2>
+            </Heading>
             <p className="text-sm text-muted-foreground sm:text-base">
               If you&rsquo;re planning to move abroad, take these steps to stay
               on top of your loan.
@@ -288,9 +289,9 @@ export function MovingAbroadGuide() {
           </section>
 
           <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-            <h2 className="text-lg font-semibold tracking-tight">
+            <Heading as="h2" size="subsection">
               Key Takeaways
-            </h2>
+            </Heading>
             <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
               <li>
                 Moving abroad does <strong>not</strong> cancel or pause your

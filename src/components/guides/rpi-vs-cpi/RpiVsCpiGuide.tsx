@@ -3,6 +3,7 @@ import { InflationComparisonChart } from "./InflationComparisonChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -50,9 +51,9 @@ export function RpiVsCpiGuide() {
               </BreadcrumbList>
             </Breadcrumb>
 
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <Heading as="h1">
               RPI vs CPI: Why Your Student Loan Interest Outpaces Inflation
-            </h1>
+            </Heading>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
               Your student loan interest is tied to RPI, but when the calculator
               shows &ldquo;adjusted for inflation,&rdquo; it uses CPI. RPI
@@ -62,9 +63,9 @@ export function RpiVsCpiGuide() {
           </div>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               What Are RPI and CPI?
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <ul className="list-disc space-y-2 pl-6">
                 <li>
@@ -99,9 +100,9 @@ export function RpiVsCpiGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Why Student Loans Use RPI
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Plan 2 was introduced in 2012 when RPI was still widely used
@@ -139,9 +140,9 @@ export function RpiVsCpiGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               The Gap Between RPI and CPI
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 RPI historically exceeds CPI by roughly 0.5&ndash;1 percentage
@@ -164,9 +165,9 @@ export function RpiVsCpiGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Inflation Comparison
-            </h2>
+            </Heading>
             <div className="h-85 sm:h-105">
               <InflationComparisonChart />
             </div>
@@ -177,10 +178,10 @@ export function RpiVsCpiGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               Nominal, CPI-Adjusted, and RPI-Adjusted: Three Ways to See Your
               Loan
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <ul className="list-disc space-y-2 pl-6">
                 <li>
@@ -208,9 +209,9 @@ export function RpiVsCpiGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               What This Means for Your Plan
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <ul className="list-disc space-y-2 pl-6">
                 <li>
@@ -239,9 +240,9 @@ export function RpiVsCpiGuide() {
 
           <section className="space-y-3">
             <div className="rounded-xl border bg-muted/50 p-5">
-              <h2 className="mb-3 text-lg font-semibold tracking-tight">
+              <Heading as="h2" size="subsection" className="mb-3">
                 Key Takeaways
-              </h2>
+              </Heading>
               <ul className="list-disc space-y-2 pl-6 text-muted-foreground">
                 <li>
                   RPI typically runs 0.5&ndash;1% higher than CPI &mdash; your

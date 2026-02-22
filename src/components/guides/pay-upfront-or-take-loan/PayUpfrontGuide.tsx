@@ -3,6 +3,7 @@ import { CostComparisonChart } from "./CostComparisonChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -54,9 +55,9 @@ export function PayUpfrontGuide() {
               </BreadcrumbList>
             </Breadcrumb>
 
-            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <Heading as="h1">
               Should You Pay Tuition Upfront or Take the Loan?
-            </h1>
+            </Heading>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
               The answer depends on how much the graduate will earn over their
               career &mdash; and starting salary alone doesn&rsquo;t tell the
@@ -65,9 +66,9 @@ export function PayUpfrontGuide() {
           </div>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               The Cost of Paying Upfront
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 At the current maximum tuition fee of {feeCapFormatted} per
@@ -86,9 +87,9 @@ export function PayUpfrontGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               What Happens If You Take the Loan Instead
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Under Plan 5, tuition fee loans are written off{" "}
@@ -131,9 +132,9 @@ export function PayUpfrontGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               The Salary Growth Trap
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 A graduate starting on &pound;30,000 might think &ldquo;at this
@@ -160,9 +161,9 @@ export function PayUpfrontGuide() {
           <CostComparisonChart />
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               When Paying Upfront Makes Sense
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 Paying upfront can save money for graduates who will land in the
@@ -187,9 +188,9 @@ export function PayUpfrontGuide() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <Heading as="h2" size="section">
               When Taking the Loan Makes Sense
-            </h2>
+            </Heading>
             <div className="space-y-2 text-muted-foreground">
               <p>
                 The loan works best at the extremes of the earning spectrum, and
@@ -218,9 +219,9 @@ export function PayUpfrontGuide() {
           </section>
 
           <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-            <h2 className="text-lg font-semibold tracking-tight">
+            <Heading as="h2" size="subsection">
               Key Takeaways
-            </h2>
+            </Heading>
             <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
               <li>
                 The loan is not universally cheaper than paying upfront &mdash;

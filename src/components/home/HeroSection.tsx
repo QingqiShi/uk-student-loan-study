@@ -6,6 +6,7 @@ import { ResultSummary } from "./ResultSummary";
 import { SalaryExplorer } from "./SalaryExplorer";
 import type { InputMode } from "./InputPanel";
 import type { Preset } from "@/lib/presets";
+import { Heading } from "@/components/typography/Heading";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import {
   trackPresetApplied,
@@ -70,10 +71,10 @@ export function HeroSection() {
   return (
     <section className="space-y-6">
       <div className="space-y-2">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+        <Heading as="h1" size="page-hero">
           Student Loans Hurt{" "}
           <span className="text-primary">Middle Earners</span> Most
-        </h1>
+        </Heading>
         <ul className="max-w-2xl space-y-1 text-sm text-muted-foreground sm:text-base">
           <li className="flex items-baseline gap-2">
             <span
