@@ -12,6 +12,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { ScrollFadeWrapper } from "@/components/shared/ScrollFadeWrapper";
 import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
@@ -21,6 +22,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { formatGBP } from "@/lib/format";
 import { CURRENT_RATES, LAST_UPDATED, PLAN_CONFIGS } from "@/lib/loans/plans";
 
@@ -219,45 +228,32 @@ export function OurDataPage() {
             </div>
 
             {/* Plan table */}
-            <div className="overflow-x-auto rounded-xl ring-1 ring-foreground/10">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b bg-muted/50 text-left">
-                    <th className="px-4 py-3 text-xs font-medium tracking-widest text-muted-foreground uppercase">
-                      Plan
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium tracking-widest text-muted-foreground uppercase">
-                      Annual threshold
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium tracking-widest text-muted-foreground uppercase">
-                      Rate
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium tracking-widest text-muted-foreground uppercase">
-                      Write-off
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
+            <ScrollFadeWrapper className="rounded-xl ring-1 ring-foreground/10">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Plan</TableHead>
+                    <TableHead>Annual threshold</TableHead>
+                    <TableHead>Rate</TableHead>
+                    <TableHead>Write-off</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {plans.map((p) => (
-                    <tr
-                      key={p.label}
-                      className="transition-colors hover:bg-muted/30"
-                    >
-                      <td className="px-4 py-3 font-medium">{p.label}</td>
-                      <td className="px-4 py-3 font-mono text-muted-foreground tabular-nums">
+                    <TableRow key={p.label}>
+                      <TableCell className="font-medium">{p.label}</TableCell>
+                      <TableCell className="font-mono tabular-nums">
                         {formatGBP(p.threshold)}
-                      </td>
-                      <td className="px-4 py-3 font-mono text-muted-foreground tabular-nums">
+                      </TableCell>
+                      <TableCell className="font-mono tabular-nums">
                         {Math.round(p.rate * 100)}%
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        {p.writeOff} years
-                      </td>
-                    </tr>
+                      </TableCell>
+                      <TableCell>{p.writeOff} years</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
-            </div>
+                </TableBody>
+              </Table>
+            </ScrollFadeWrapper>
           </section>
 
           {/* How it stays current */}

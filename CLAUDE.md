@@ -55,8 +55,7 @@ Local steps:
 - Barrel files — import from source modules directly
 - Default exports (exception: `page.tsx` / `layout.tsx`)
 - `Context.Provider` / `useContext` — use `<Context value={...}>` and `use(Context)` (React 19)
-
-**Lint errors:** Run `pnpm lint --fix` before manual fixes.
+- Manually fix lint error that could have been fixed with `--fix`.
 
 ## Testing
 
