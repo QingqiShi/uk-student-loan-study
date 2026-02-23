@@ -2,6 +2,7 @@
 
 import { ArrowLeft01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import type { IconSvgElement } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
 
 interface QuizProgressProps {
@@ -9,6 +10,8 @@ interface QuizProgressProps {
   totalSteps: number;
   onBack?: () => void;
   onClose?: () => void;
+  closeIcon?: IconSvgElement;
+  closeLabel?: string;
 }
 
 export function QuizProgress({
@@ -16,6 +19,8 @@ export function QuizProgress({
   totalSteps,
   onBack,
   onClose,
+  closeIcon = Cancel01Icon,
+  closeLabel = "Exit quiz",
 }: QuizProgressProps) {
   return (
     <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
@@ -57,9 +62,9 @@ export function QuizProgress({
               variant="ghost"
               size="icon-sm"
               onClick={onClose}
-              aria-label="Exit quiz"
+              aria-label={closeLabel}
             >
-              <HugeiconsIcon icon={Cancel01Icon} className="size-5" />
+              <HugeiconsIcon icon={closeIcon} className="size-5" />
             </Button>
           )}
         </div>

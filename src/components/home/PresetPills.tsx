@@ -2,6 +2,7 @@
 
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { startTransition, useOptimistic } from "react";
 import { PresentValueToggle } from "./PresentValueToggle";
 import type { Preset } from "@/lib/presets";
 import { useLoanConfigState } from "@/context/LoanContext";
@@ -33,8 +34,12 @@ export function PresetPills({
       ),
   );
 
+  const [optimisticActiveId, setOptimisticActiveId] = useOptimistic(
+    activePreset?.id ?? null,
+  );
+
   // Show "Edit configuration" active state only when personalized with custom (non-preset) config
-  const isCustomConfig = hasPersonalized && !activePreset;
+  const isCustomConfig = hasPersonalized && !optimisticActiveId;
 
   return (
     <div className="space-y-2">
@@ -56,13 +61,16 @@ export function PresetPills({
           aria-label="Preset profiles"
         >
           {PRESETS.map((preset) => {
-            const isActive = activePreset?.id === preset.id;
+            const isActive = optimisticActiveId === preset.id;
             return (
               <button
                 key={preset.id}
                 type="button"
                 onClick={() => {
-                  onPresetApplied(preset);
+                  startTransition(() => {
+                    setOptimisticActiveId(preset.id);
+                    onPresetApplied(preset);
+                  });
                 }}
                 aria-pressed={isActive}
                 className={cn(

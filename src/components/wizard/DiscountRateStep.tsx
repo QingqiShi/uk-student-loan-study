@@ -1,5 +1,6 @@
 "use client";
 
+import { startTransition, useOptimistic } from "react";
 import { NumericFormat } from "react-number-format";
 import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
@@ -30,9 +31,11 @@ export function DiscountRateStep({
 }: DiscountRateStepProps) {
   const { updateField } = useLoanActions();
   const { discountRate } = useLoanConfigState();
+  const [optimisticDiscountRate, setOptimisticDiscountRate] =
+    useOptimistic(discountRate);
 
-  const isPreset = presetValues.has(discountRate);
-  const customDisplayValue = isPreset ? "" : discountRate * 100;
+  const isPreset = presetValues.has(optimisticDiscountRate);
+  const customDisplayValue = isPreset ? "" : optimisticDiscountRate * 100;
 
   return (
     <QuestionStep
@@ -52,9 +55,12 @@ export function DiscountRateStep({
                 key={option.label}
                 label={option.label}
                 sublabel={option.description}
-                isSelected={discountRate === option.value}
+                isSelected={optimisticDiscountRate === option.value}
                 onClick={() => {
-                  updateField("discountRate", option.value);
+                  startTransition(() => {
+                    setOptimisticDiscountRate(option.value);
+                    updateField("discountRate", option.value);
+                  });
                 }}
               />
             ))}
@@ -68,8 +74,12 @@ export function DiscountRateStep({
               <NumericFormat
                 value={customDisplayValue}
                 onValueChange={(values) => {
-                  if (typeof values.floatValue === "number") {
-                    updateField("discountRate", values.floatValue / 100);
+                  const v = values.floatValue;
+                  if (typeof v === "number") {
+                    startTransition(() => {
+                      setOptimisticDiscountRate(v / 100);
+                      updateField("discountRate", v / 100);
+                    });
                   }
                 }}
                 customInput={CustomInput}
