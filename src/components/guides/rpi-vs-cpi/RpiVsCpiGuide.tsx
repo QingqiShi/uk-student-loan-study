@@ -225,6 +225,17 @@ export function RpiVsCpiGuide() {
                 3% means the largest gap above CPI of any plan.
               </li>
             </ul>
+            <p>
+              If your loan is growing faster than general prices, explore
+              whether{" "}
+              <Link
+                href="/overpay"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                overpaying
+              </Link>{" "}
+              could reduce the above-inflation cost.
+            </p>
           </div>
         </section>
 
