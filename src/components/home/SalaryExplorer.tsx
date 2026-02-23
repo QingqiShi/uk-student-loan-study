@@ -1,5 +1,6 @@
 "use client";
 
+import { startTransition, useOptimistic } from "react";
 import { TotalRepaymentChart } from "@/components/charts/TotalRepaymentChart";
 import { SalaryGrowthBadge } from "@/components/shared/SalaryGrowthBadge";
 import { Slider } from "@/components/ui/slider";
@@ -17,6 +18,7 @@ export function SalaryExplorer() {
   const { salary } = useLoanFrequentState();
   const { updateField } = useLoanActions();
   const showPresentValue = useShowPresentValue();
+  const [optimisticSalary, setOptimisticSalary] = useOptimistic(salary);
 
   return (
     <div>
@@ -29,7 +31,7 @@ export function SalaryExplorer() {
         <div className="flex items-center gap-1 text-sm text-muted-foreground">
           Your salary:{" "}
           <span className="font-mono font-semibold text-foreground tabular-nums">
-            {currencyFormatter.format(salary)}
+            {currencyFormatter.format(optimisticSalary)}
           </span>
           <SalaryGrowthBadge />
         </div>
@@ -42,13 +44,16 @@ export function SalaryExplorer() {
       {/* Padding aligns slider track with chart plot area (25px margin + ~60px YAxis) */}
       <div className="-mt-1 pr-6 pl-21">
         <Slider
-          value={salary}
+          value={optimisticSalary}
           min={MIN_SALARY}
           max={MAX_SALARY}
           step={SALARY_STEP}
           onValueChange={(value) => {
             const v = typeof value === "number" ? value : value[0];
-            updateField("salary", v);
+            startTransition(() => {
+              setOptimisticSalary(v);
+              updateField("salary", v);
+            });
           }}
           onValueCommitted={(value) => {
             const v = typeof value === "number" ? value : value[0];
