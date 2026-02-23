@@ -7,7 +7,7 @@
  * ISO date of the last time figures were actually changed by the automation.
  * Only updates when GOV.UK/BoE figures differ from what we have.
  */
-export const LAST_UPDATED = "2026-02-21T01:53:41.000Z";
+export const LAST_UPDATED = "2026-02-23T21:02:46.737Z";
 
 /**
  * Plan configurations for all UK student loan types.
@@ -15,7 +15,7 @@ export const LAST_UPDATED = "2026-02-21T01:53:41.000Z";
  */
 export const PLAN_CONFIGS = {
   PLAN_1: {
-    monthlyThreshold: 2173, // £26,066/12
+    monthlyThreshold: 2172, // £26,065/12
     repaymentRate: 0.09, // 9%
     writeOffYears: 25,
   },
