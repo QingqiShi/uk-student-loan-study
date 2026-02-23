@@ -44,6 +44,10 @@ updates:
           - "@vitest*"
           - "@vitejs/plugin-react"
           - "vite-plugin-babel"
+      tailwindcss:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/postcss"
       postcss:
         patterns:
           - "postcss-*"
