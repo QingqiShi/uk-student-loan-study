@@ -1,5 +1,6 @@
 "use client";
 
+import { startTransition, useOptimistic } from "react";
 import { NumericFormat } from "react-number-format";
 import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
@@ -31,9 +32,11 @@ export function BoeBaseRateStep({
 }: BoeBaseRateStepProps) {
   const { updateField } = useLoanActions();
   const { boeBaseRate } = useLoanConfigState();
+  const [optimisticBoeBaseRate, setOptimisticBoeBaseRate] =
+    useOptimistic(boeBaseRate);
 
-  const isPreset = presetValues.has(boeBaseRate);
-  const customDisplayValue = isPreset ? "" : boeBaseRate;
+  const isPreset = presetValues.has(optimisticBoeBaseRate);
+  const customDisplayValue = isPreset ? "" : optimisticBoeBaseRate;
 
   return (
     <QuestionStep
@@ -49,10 +52,13 @@ export function BoeBaseRateStep({
                 key={option.label}
                 label={option.label}
                 sublabel={option.description}
-                isSelected={boeBaseRate === option.value}
+                isSelected={optimisticBoeBaseRate === option.value}
                 onClick={() => {
                   trackBoeBaseRateSelected(option.value);
-                  updateField("boeBaseRate", option.value);
+                  startTransition(() => {
+                    setOptimisticBoeBaseRate(option.value);
+                    updateField("boeBaseRate", option.value);
+                  });
                 }}
               />
             ))}
@@ -66,8 +72,12 @@ export function BoeBaseRateStep({
               <NumericFormat
                 value={customDisplayValue}
                 onValueChange={(values) => {
-                  if (typeof values.floatValue === "number") {
-                    updateField("boeBaseRate", values.floatValue);
+                  const v = values.floatValue;
+                  if (typeof v === "number") {
+                    startTransition(() => {
+                      setOptimisticBoeBaseRate(v);
+                      updateField("boeBaseRate", v);
+                    });
                   }
                 }}
                 customInput={CustomInput}

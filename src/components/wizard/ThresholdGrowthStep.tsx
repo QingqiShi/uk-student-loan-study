@@ -1,5 +1,6 @@
 "use client";
 
+import { startTransition, useOptimistic } from "react";
 import { NumericFormat } from "react-number-format";
 import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
@@ -29,9 +30,13 @@ export function ThresholdGrowthStep({
 }: ThresholdGrowthStepProps) {
   const { updateField } = useLoanActions();
   const { thresholdGrowthRate } = useLoanConfigState();
+  const [optimisticThresholdGrowthRate, setOptimisticThresholdGrowthRate] =
+    useOptimistic(thresholdGrowthRate);
 
-  const isPreset = presetValues.has(thresholdGrowthRate);
-  const customDisplayValue = isPreset ? "" : thresholdGrowthRate * 100;
+  const isPreset = presetValues.has(optimisticThresholdGrowthRate);
+  const customDisplayValue = isPreset
+    ? ""
+    : optimisticThresholdGrowthRate * 100;
 
   return (
     <QuestionStep
@@ -47,10 +52,13 @@ export function ThresholdGrowthStep({
                 key={option.label}
                 label={option.label}
                 sublabel={option.description}
-                isSelected={thresholdGrowthRate === option.value}
+                isSelected={optimisticThresholdGrowthRate === option.value}
                 onClick={() => {
                   trackThresholdGrowthSelected(option.value);
-                  updateField("thresholdGrowthRate", option.value);
+                  startTransition(() => {
+                    setOptimisticThresholdGrowthRate(option.value);
+                    updateField("thresholdGrowthRate", option.value);
+                  });
                 }}
               />
             ))}
@@ -64,10 +72,12 @@ export function ThresholdGrowthStep({
               <NumericFormat
                 value={customDisplayValue}
                 onValueChange={(values) => {
-                  if (typeof values.floatValue === "number") {
-                    updateField("thresholdGrowthRate", values.floatValue / 100);
-                  } else if (values.value === "" || values.value === "-") {
-                    // Keep current value while user is clearing/typing
+                  const v = values.floatValue;
+                  if (typeof v === "number") {
+                    startTransition(() => {
+                      setOptimisticThresholdGrowthRate(v / 100);
+                      updateField("thresholdGrowthRate", v / 100);
+                    });
                   }
                 }}
                 customInput={CustomInput}

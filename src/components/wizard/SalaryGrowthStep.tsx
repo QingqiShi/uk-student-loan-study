@@ -1,5 +1,6 @@
 "use client";
 
+import { startTransition, useOptimistic } from "react";
 import { NumericFormat } from "react-number-format";
 import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
@@ -26,9 +27,11 @@ function CustomInput({
 export function SalaryGrowthStep({ direction, onNext }: SalaryGrowthStepProps) {
   const { updateField } = useLoanActions();
   const { salaryGrowthRate } = useLoanConfigState();
+  const [optimisticSalaryGrowthRate, setOptimisticSalaryGrowthRate] =
+    useOptimistic(salaryGrowthRate);
 
-  const isPreset = presetValues.has(salaryGrowthRate);
-  const customDisplayValue = isPreset ? "" : salaryGrowthRate * 100;
+  const isPreset = presetValues.has(optimisticSalaryGrowthRate);
+  const customDisplayValue = isPreset ? "" : optimisticSalaryGrowthRate * 100;
 
   return (
     <QuestionStep
@@ -44,10 +47,13 @@ export function SalaryGrowthStep({ direction, onNext }: SalaryGrowthStepProps) {
                 key={option.label}
                 label={option.label}
                 sublabel={option.description}
-                isSelected={salaryGrowthRate === option.value}
+                isSelected={optimisticSalaryGrowthRate === option.value}
                 onClick={() => {
                   trackSalaryGrowthSelected(option.value);
-                  updateField("salaryGrowthRate", option.value);
+                  startTransition(() => {
+                    setOptimisticSalaryGrowthRate(option.value);
+                    updateField("salaryGrowthRate", option.value);
+                  });
                 }}
               />
             ))}
@@ -61,10 +67,12 @@ export function SalaryGrowthStep({ direction, onNext }: SalaryGrowthStepProps) {
               <NumericFormat
                 value={customDisplayValue}
                 onValueChange={(values) => {
-                  if (typeof values.floatValue === "number") {
-                    updateField("salaryGrowthRate", values.floatValue / 100);
-                  } else if (values.value === "" || values.value === "-") {
-                    // Keep current value while user is clearing/typing
+                  const v = values.floatValue;
+                  if (typeof v === "number") {
+                    startTransition(() => {
+                      setOptimisticSalaryGrowthRate(v / 100);
+                      updateField("salaryGrowthRate", v / 100);
+                    });
                   }
                 }}
                 customInput={CustomInput}

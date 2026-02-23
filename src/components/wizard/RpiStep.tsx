@@ -1,5 +1,6 @@
 "use client";
 
+import { startTransition, useOptimistic } from "react";
 import { NumericFormat } from "react-number-format";
 import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
@@ -27,9 +28,10 @@ function CustomInput({
 export function RpiStep({ direction, onNext, done }: RpiStepProps) {
   const { updateField } = useLoanActions();
   const { rpiRate } = useLoanConfigState();
+  const [optimisticRpiRate, setOptimisticRpiRate] = useOptimistic(rpiRate);
 
-  const isPreset = presetValues.has(rpiRate);
-  const customDisplayValue = isPreset ? "" : rpiRate;
+  const isPreset = presetValues.has(optimisticRpiRate);
+  const customDisplayValue = isPreset ? "" : optimisticRpiRate;
 
   return (
     <QuestionStep
@@ -45,10 +47,13 @@ export function RpiStep({ direction, onNext, done }: RpiStepProps) {
                 key={option.label}
                 label={option.label}
                 sublabel={option.description}
-                isSelected={rpiRate === option.value}
+                isSelected={optimisticRpiRate === option.value}
                 onClick={() => {
                   trackRpiRateSelected(option.value);
-                  updateField("rpiRate", option.value);
+                  startTransition(() => {
+                    setOptimisticRpiRate(option.value);
+                    updateField("rpiRate", option.value);
+                  });
                 }}
               />
             ))}
@@ -67,8 +72,12 @@ export function RpiStep({ direction, onNext, done }: RpiStepProps) {
               <NumericFormat
                 value={customDisplayValue}
                 onValueChange={(values) => {
-                  if (typeof values.floatValue === "number") {
-                    updateField("rpiRate", values.floatValue);
+                  const v = values.floatValue;
+                  if (typeof v === "number") {
+                    startTransition(() => {
+                      setOptimisticRpiRate(v);
+                      updateField("rpiRate", v);
+                    });
                   }
                 }}
                 customInput={CustomInput}

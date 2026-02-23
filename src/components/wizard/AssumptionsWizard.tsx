@@ -1,5 +1,6 @@
 "use client";
 
+import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { useReducer } from "react";
 import { BoeBaseRateStep } from "./BoeBaseRateStep";
 import { DiscountRateStep } from "./DiscountRateStep";
@@ -113,6 +114,8 @@ export function AssumptionsWizard({
         totalSteps={stepOrder.length}
         onBack={canGoBack ? goBack : undefined}
         onClose={onClose}
+        closeIcon={Tick02Icon}
+        closeLabel="Done"
       />
 
       <main className="flex flex-1 flex-col items-center justify-center px-4 py-8">

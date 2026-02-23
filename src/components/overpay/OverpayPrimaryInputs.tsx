@@ -39,6 +39,8 @@ export function OverpayPrimaryInputs({
   const [optimisticSalary, setOptimisticSalary] = useOptimistic(salary);
   const [optimisticOverpayment, setOptimisticOverpayment] =
     useOptimistic(monthlyOverpayment);
+  const [optimisticLumpSum, setOptimisticLumpSum] =
+    useOptimistic(lumpSumPayment);
 
   const handleSalaryChange = (value: number | readonly number[]) => {
     const newValue = typeof value === "number" ? value : value[0];
@@ -60,7 +62,10 @@ export function OverpayPrimaryInputs({
     const value = e.target.value.replace(/[^0-9]/g, "");
     const numValue = value === "" ? 0 : parseInt(value, 10);
     const clampedValue = Math.min(Math.max(0, numValue), totalBalance);
-    updateField("lumpSumPayment", clampedValue);
+    startTransition(() => {
+      setOptimisticLumpSum(clampedValue);
+      updateField("lumpSumPayment", clampedValue);
+    });
   };
 
   return (
@@ -79,9 +84,9 @@ export function OverpayPrimaryInputs({
                   type="text"
                   inputMode="numeric"
                   value={
-                    lumpSumPayment === 0
+                    optimisticLumpSum === 0
                       ? ""
-                      : lumpSumPayment.toLocaleString("en-GB")
+                      : optimisticLumpSum.toLocaleString("en-GB")
                   }
                   onChange={handleLumpSumChange}
                   onBlur={() => {
