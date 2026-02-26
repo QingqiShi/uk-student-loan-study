@@ -1,11 +1,25 @@
 "use client";
 
-import { ChartBase } from "./ChartBase";
+import dynamic from "next/dynamic";
 import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useBalanceOverTimeData } from "@/hooks/useChartData";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
+
+const ChartBase = dynamic(
+  () => import("./ChartBase").then((m) => m.ChartBase),
+  {
+    ssr: false,
+    loading: () => (
+      <Skeleton
+        className="size-full"
+        role="status"
+        aria-label="Loading chart"
+      />
+    ),
+  },
+);
 
 const chartConfig = {
   balance: {
@@ -25,13 +39,11 @@ export function BalanceOverTimeChart() {
 
   if (data.length === 0) {
     return (
-      <div
-        className="flex h-full items-center justify-center"
+      <Skeleton
+        className="size-full"
         role="status"
         aria-label="Loading student loan repayment chart showing how long to pay off your loan"
-      >
-        <Skeleton className="size-full" />
-      </div>
+      />
     );
   }
 
