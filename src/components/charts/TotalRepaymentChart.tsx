@@ -1,12 +1,26 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useDeferredValue } from "react";
-import { ChartBase } from "./ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter, MIN_SALARY, MAX_SALARY } from "@/constants";
 import { useTotalRepaymentData } from "@/hooks/useChartData";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
+
+const ChartBase = dynamic(
+  () => import("./ChartBase").then((m) => m.ChartBase),
+  {
+    ssr: false,
+    loading: () => (
+      <Skeleton
+        className="size-full"
+        role="status"
+        aria-label="Loading chart"
+      />
+    ),
+  },
+);
 
 const chartConfig = {
   value: {
@@ -27,13 +41,11 @@ export function TotalRepaymentChart() {
 
   if (data.length === 0) {
     return (
-      <div
-        className="flex h-full items-center justify-center"
+      <Skeleton
+        className="size-full"
         role="status"
         aria-label="Loading UK student loan calculator results showing total repayment by salary"
-      >
-        <Skeleton className="size-full" />
-      </div>
+      />
     );
   }
 

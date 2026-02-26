@@ -1,11 +1,26 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import type { ChartConfig } from "@/components/ui/chart";
-import { ChartBase } from "@/components/charts/ChartBase";
+import { Skeleton } from "@/components/ui/skeleton";
 import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { toPresent } from "@/utils/present-value";
+
+const ChartBase = dynamic(
+  () => import("@/components/charts/ChartBase").then((m) => m.ChartBase),
+  {
+    ssr: false,
+    loading: () => (
+      <Skeleton
+        className="size-full"
+        role="status"
+        aria-label="Loading chart"
+      />
+    ),
+  },
+);
 
 const SALARY_OPTIONS = [30000, 50000, 70000] as const;
 type SalaryOption = (typeof SALARY_OPTIONS)[number];

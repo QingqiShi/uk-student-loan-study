@@ -1,9 +1,24 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import type { ChartConfig } from "@/components/ui/chart";
-import { ChartBase } from "@/components/charts/ChartBase";
+import { Skeleton } from "@/components/ui/skeleton";
 import { simulate } from "@/lib/loans/engine";
 import { TUITION_FEE_CAP } from "@/lib/loans/plans";
+
+const ChartBase = dynamic(
+  () => import("@/components/charts/ChartBase").then((m) => m.ChartBase),
+  {
+    ssr: false,
+    loading: () => (
+      <Skeleton
+        className="size-full"
+        role="status"
+        aria-label="Loading chart"
+      />
+    ),
+  },
+);
 
 const TUITION_COST = TUITION_FEE_CAP * 3;
 
