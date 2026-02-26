@@ -29,7 +29,7 @@
     "immer": "^11.1.4",
     "next": "^16.1.6",
     "react": "^19.2.4",
-    "react-day-picker": "^9.13.2",
+    "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.4",
     "react-error-boundary": "^6.1.1",
     "react-number-format": "^5.4",
