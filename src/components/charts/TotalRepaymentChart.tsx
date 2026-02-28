@@ -24,7 +24,7 @@ const ChartBase = dynamic(
 
 const chartConfig = {
   value: {
-    label: "Total Repayment",
+    label: "Total Repayment by Salary",
     color: "var(--chart-3)",
   },
 } satisfies ChartConfig;
@@ -56,6 +56,7 @@ export function TotalRepaymentChart() {
             x: deferredSalary,
             y: deferredValue,
             label: currencyFormatter.format(deferredValue),
+            bottomLabel: currencyFormatter.format(deferredSalary),
             color: "var(--chart-3)",
           },
         ]

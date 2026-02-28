@@ -25,8 +25,8 @@ export function SalaryExplorer() {
       <div className="mb-2 flex items-baseline justify-between gap-4">
         <h2 className="text-sm font-medium text-muted-foreground">
           {showPresentValue
-            ? "Total repayment (inflation-adjusted)"
-            : "Total repayment"}
+            ? "Total repayment by salary (inflation-adjusted)"
+            : "Total repayment by salary"}
         </h2>
         <div className="flex items-center gap-1 text-sm text-muted-foreground">
           Your salary:{" "}

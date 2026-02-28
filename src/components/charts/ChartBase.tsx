@@ -24,6 +24,8 @@ export interface ChartAnnotationConfig {
   x: number;
   y?: number;
   label: string;
+  /** Label shown at the bottom of the reference line (e.g. x-axis value) */
+  bottomLabel?: string;
   color?: string;
   labelAnchor?: "start" | "end";
   labelOffsetY?: number;
@@ -352,6 +354,59 @@ export function ChartBase({
                   y={annotation.y}
                   r={4}
                   fill={annotation.color ?? "var(--muted-foreground)"}
+                />
+              ))}
+          {!showCrosshair &&
+            annotations
+              .filter(
+                (a): a is ChartAnnotationConfig & { bottomLabel: string } =>
+                  a.bottomLabel !== undefined,
+              )
+              .map((annotation) => (
+                <ReferenceLine
+                  key={`btm-${String(annotation.x)}-${annotation.bottomLabel}`}
+                  x={annotation.x}
+                  stroke="none"
+                  label={({
+                    viewBox,
+                  }: {
+                    viewBox: { x: number; y: number; height: number };
+                  }) => {
+                    const text = annotation.bottomLabel;
+                    const tagX = viewBox.x;
+                    const tagY = viewBox.y + viewBox.height - 10;
+                    const charWidth = 6.6;
+                    const px = 6;
+                    const py = 3;
+                    const rectW = text.length * charWidth + px * 2;
+                    const rectH = 16 + py * 2;
+                    return (
+                      <g>
+                        <rect
+                          x={tagX - rectW / 2}
+                          y={tagY - rectH / 2}
+                          width={rectW}
+                          height={rectH}
+                          rx={4}
+                          fill="var(--background)"
+                          stroke={annotation.color ?? "var(--muted-foreground)"}
+                          strokeWidth={1}
+                          opacity={0.9}
+                        />
+                        <text
+                          x={tagX}
+                          y={tagY}
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          fill={annotation.color ?? "var(--muted-foreground)"}
+                          fontSize={11}
+                          fontWeight={500}
+                        >
+                          {text}
+                        </text>
+                      </g>
+                    );
+                  }}
                 />
               ))}
         </ChartComponent>

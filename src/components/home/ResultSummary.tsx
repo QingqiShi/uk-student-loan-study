@@ -11,7 +11,7 @@ import Link from "next/link";
 import type { InsightType } from "@/utils/insights";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
-import { useResultSummary } from "@/hooks/useResultSummary";
+import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 const insightConfig: Record<
@@ -55,7 +55,7 @@ function StatBlockSkeleton() {
 }
 
 export function ResultSummary() {
-  const { summary, insight } = useResultSummary();
+  const { summary, insight } = usePersonalizedResults();
   const showPresentValue = useShowPresentValue();
 
   if (!summary) {

@@ -15,7 +15,7 @@ import {
   useLoanFrequentState,
   useLoanConfigState,
 } from "@/context/LoanContext";
-import { useResultSummary } from "@/hooks/useResultSummary";
+import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
 
 export function SalaryGrowthBadge() {
   const { openAssumptions } = useAssumptionsWizard();
@@ -23,7 +23,7 @@ export function SalaryGrowthBadge() {
   const { salaryGrowthRate } = useLoanConfigState();
   const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const { summary } = useResultSummary();
+  const { summary } = usePersonalizedResults();
 
   const growthLabel =
     SALARY_GROWTH_OPTIONS.find((o) => o.value === salaryGrowthRate)?.label ??

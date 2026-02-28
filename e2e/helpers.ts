@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 /**
  * Waits for the result summary to show computed values (not skeleton/loading).
@@ -31,6 +31,24 @@ export async function getResultValues(page: Page) {
     .textContent();
 
   return { totalText, monthlyText, durationText };
+}
+
+/**
+ * Waits for the result summary total to differ from a known previous value.
+ * Uses Playwright's auto-retrying assertion to poll until the value changes.
+ */
+export async function waitForResultChange(
+  page: Page,
+  previousTotal: string | null,
+) {
+  const totalParent = page
+    .locator("[role='status'][aria-live='polite']")
+    .getByText("Total repayment")
+    .locator("..");
+
+  await expect(totalParent).not.toHaveText(previousTotal ?? "", {
+    timeout: 15_000,
+  });
 }
 
 /**
