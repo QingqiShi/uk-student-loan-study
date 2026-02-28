@@ -1,25 +1,10 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import type { ChartConfig } from "@/components/ui/chart";
 import type { OverpayAnalysisResult } from "@/lib/loans/overpay-types";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import { currencyFormatter } from "@/constants";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
-
-const ChartBase = dynamic(
-  () => import("../charts/ChartBase").then((m) => m.ChartBase),
-  {
-    ssr: false,
-    loading: () => (
-      <Skeleton
-        className="size-full"
-        role="status"
-        aria-label="Loading chart"
-      />
-    ),
-  },
-);
 
 const chartConfig = {
   baselineBalance: {

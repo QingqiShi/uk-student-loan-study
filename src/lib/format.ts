@@ -13,3 +13,11 @@ export function formatGBP(value: number): string {
 export function formatPercent(value: number): string {
   return `${String(value)}%`;
 }
+
+/**
+ * Format a month number as a year label for chart axes.
+ * @example formatYearFromMonth(24) → "Year 2"
+ */
+export function formatYearFromMonth(month: number): string {
+  return `Year ${String(Math.round(month / 12))}`;
+}

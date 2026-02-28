@@ -6,6 +6,7 @@ import {
   SparklineCard,
 } from "./InsightCard";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
+import { DETAIL_PAGES } from "@/lib/detail-pages";
 
 export function InsightCards() {
   const { cards: data } = usePersonalizedResults();
@@ -17,27 +18,27 @@ export function InsightCards() {
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <SparklineCard
-          title="Repaid Over Time"
-          href="#"
-          color="var(--chart-1)"
+          title={DETAIL_PAGES[0].label}
+          href={DETAIL_PAGES[0].href}
+          color={DETAIL_PAGES[0].color}
           cardData={data?.cumulative ?? null}
         />
         <SparklineCard
-          title="Balance Over Time"
-          href="#"
-          color="var(--chart-2)"
+          title={DETAIL_PAGES[1].label}
+          href={DETAIL_PAGES[1].href}
+          color={DETAIL_PAGES[1].color}
           cardData={data?.balance ?? null}
         />
         <ProportionCard
-          title="Interest Paid"
-          href="#"
-          color="var(--chart-3)"
+          title={DETAIL_PAGES[2].label}
+          href={DETAIL_PAGES[2].href}
+          color={DETAIL_PAGES[2].color}
           cardData={data?.interest ?? null}
         />
         <RateComparisonCard
-          title="Effective Rate"
-          href="#"
-          color="var(--chart-4)"
+          title={DETAIL_PAGES[3].label}
+          href={DETAIL_PAGES[3].href}
+          color={DETAIL_PAGES[3].color}
           cardData={data?.effectiveRate ?? null}
         />
       </div>
