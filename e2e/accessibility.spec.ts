@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { type Page, test, expect } from "@playwright/test";
+import { waitForResults } from "./helpers";
 
 function axeScan(page: Page) {
   return new AxeBuilder({ page }).withTags([
@@ -14,11 +15,7 @@ test.describe("Accessibility", () => {
   test("home page has no WCAG 2.1 AA violations", async ({ page }) => {
     await page.goto("/");
     // Wait for results to load so we test the full rendered page
-    await page
-      .locator("[role='status'][aria-live='polite']")
-      .getByText(/£[\d,]+/)
-      .first()
-      .waitFor({ state: "visible", timeout: 15_000 });
+    await waitForResults(page);
 
     const results = await axeScan(page).analyze();
     expect(results.violations).toEqual([]);
@@ -46,11 +43,7 @@ test.describe("Accessibility", () => {
     page,
   }) => {
     await page.goto("/");
-    await page
-      .locator("[role='status'][aria-live='polite']")
-      .getByText(/£[\d,]+/)
-      .first()
-      .waitFor({ state: "visible", timeout: 15_000 });
+    await waitForResults(page);
 
     // Open the wizard
     await page.getByRole("button", { name: "Tailor to you" }).click();
@@ -64,11 +57,7 @@ test.describe("Accessibility", () => {
 
   test("skip-to-content link is keyboard accessible", async ({ page }) => {
     await page.goto("/");
-    await page
-      .locator("[role='status'][aria-live='polite']")
-      .getByText(/£[\d,]+/)
-      .first()
-      .waitFor({ state: "visible", timeout: 15_000 });
+    await waitForResults(page);
 
     // Tab to reveal the skip link
     await page.keyboard.press("Tab");

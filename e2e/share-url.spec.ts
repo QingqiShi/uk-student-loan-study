@@ -6,19 +6,23 @@ test.describe("Share URL round-trip", () => {
     await page.goto("/?loans=PLAN_2:45000&sal=50000");
     await waitForResults(page);
 
-    const results = page.locator("[role='status'][aria-live='polite']");
-    await expect(results.getByText(/£[\d,]+/).first()).toBeVisible();
-    await expect(results.getByText("Total repayment")).toBeVisible();
-    await expect(results.getByText("Monthly")).toBeVisible();
-    await expect(results.getByText("Duration")).toBeVisible();
+    const section = page
+      .locator("section")
+      .filter({ hasText: "Your Loan Breakdown" });
+    await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
+    await expect(section.getByText("Repaid Over Time")).toBeVisible();
+    await expect(section.getByText("Balance Over Time")).toBeVisible();
+    await expect(section.getByText("Interest Paid")).toBeVisible();
   });
 
   test("loads results from legacy plan/ug/sal params", async ({ page }) => {
     await page.goto("/?plan=PLAN_2&ug=45000&sal=65000");
     await waitForResults(page);
 
-    const results = page.locator("[role='status'][aria-live='polite']");
-    await expect(results.getByText(/£[\d,]+/).first()).toBeVisible();
+    const section = page
+      .locator("section")
+      .filter({ hasText: "Your Loan Breakdown" });
+    await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 
   test("loads combined plans from comma-separated loans param", async ({
@@ -27,8 +31,10 @@ test.describe("Share URL round-trip", () => {
     await page.goto("/?loans=PLAN_2:45000,POSTGRADUATE:12000&sal=50000");
     await waitForResults(page);
 
-    const results = page.locator("[role='status'][aria-live='polite']");
-    await expect(results.getByText(/£[\d,]+/).first()).toBeVisible();
+    const section = page
+      .locator("section")
+      .filter({ hasText: "Your Loan Breakdown" });
+    await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 
   test("loads overpay page with overpay params", async ({ page }) => {
@@ -44,7 +50,9 @@ test.describe("Share URL round-trip", () => {
 
     // Should not crash — default preset loads instead
     await waitForResults(page);
-    const results = page.locator("[role='status'][aria-live='polite']");
-    await expect(results.getByText(/£[\d,]+/).first()).toBeVisible();
+    const section = page
+      .locator("section")
+      .filter({ hasText: "Your Loan Breakdown" });
+    await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 });

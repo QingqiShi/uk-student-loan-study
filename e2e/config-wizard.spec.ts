@@ -115,7 +115,9 @@ test.describe("Config wizard dialog", () => {
 
     // Results should load with combined plan values
     await waitForResults(page);
-    const results = page.locator("[role='status'][aria-live='polite']");
-    await expect(results.getByText(/£[\d,]+/).first()).toBeVisible();
+    const section = page
+      .locator("section")
+      .filter({ hasText: "Your Loan Breakdown" });
+    await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 });
