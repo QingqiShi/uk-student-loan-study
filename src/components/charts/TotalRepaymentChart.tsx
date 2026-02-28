@@ -1,26 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useDeferredValue } from "react";
 import type { ChartConfig } from "@/components/ui/chart";
+import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter, MIN_SALARY, MAX_SALARY } from "@/constants";
 import { useTotalRepaymentData } from "@/hooks/useChartData";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
-
-const ChartBase = dynamic(
-  () => import("./ChartBase").then((m) => m.ChartBase),
-  {
-    ssr: false,
-    loading: () => (
-      <Skeleton
-        className="size-full"
-        role="status"
-        aria-label="Loading chart"
-      />
-    ),
-  },
-);
 
 const chartConfig = {
   value: {

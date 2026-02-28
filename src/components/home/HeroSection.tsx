@@ -1,72 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { InputPanel } from "./InputPanel";
 import { ResultSummary } from "./ResultSummary";
 import { SalaryExplorer } from "./SalaryExplorer";
 import type { InputMode } from "./InputPanel";
-import type { Preset } from "@/lib/presets";
 import { Heading } from "@/components/typography/Heading";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
-import {
-  trackPresetApplied,
-  trackWizardCompleted,
-  trackWizardRestarted,
-  trackWizardStarted,
-} from "@/lib/analytics";
-import { isPresetConfig } from "@/lib/presets";
+import { useInputPanelMode } from "@/hooks/useInputPanelMode";
 
 export function HeroSection() {
-  const { applyPreset, updateField } = useLoanActions();
+  const { updateField } = useLoanActions();
   const config = useLoanConfigState();
   const { pendingQuizPlanTypes } = config;
 
-  const [mode, setMode] = useState<InputMode>(() => {
-    if (pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0) {
-      return { view: "loan-config", initialPlanTypes: pendingQuizPlanTypes };
-    }
-    return { view: "summary" };
-  });
-  const hasPersonalized = !isPresetConfig(config.loans);
+  const initialMode: InputMode | undefined =
+    pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0
+      ? { view: "loan-config", initialPlanTypes: pendingQuizPlanTypes }
+      : undefined;
+
+  const {
+    mode,
+    hasPersonalized,
+    handlePersonalise,
+    handlePresetApplied,
+    handleWizardComplete,
+    handleWizardClose,
+  } = useInputPanelMode({ initialMode });
 
   useEffect(() => {
     if (pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0) {
       updateField("pendingQuizPlanTypes", null);
     }
   }, [pendingQuizPlanTypes, updateField]);
-
-  useEffect(() => {
-    if (mode.view !== "summary") {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
-  }, [mode.view]);
-
-  function handlePersonalise() {
-    if (hasPersonalized) {
-      trackWizardRestarted("loan");
-    } else {
-      trackWizardStarted("loan");
-    }
-    setMode({ view: "loan-config" });
-  }
-
-  function handleWizardComplete() {
-    trackWizardCompleted("loan");
-    setMode({ view: "summary" });
-  }
-
-  function handlePresetApplied(preset: Preset) {
-    trackPresetApplied(preset.id);
-    applyPreset(preset);
-    setMode({ view: "summary" });
-  }
-
-  function handleWizardClose() {
-    setMode({ view: "summary" });
-  }
 
   return (
     <section className="space-y-6">

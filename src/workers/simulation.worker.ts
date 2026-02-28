@@ -2,11 +2,13 @@
  * Web Worker for loan simulation calculations.
  *
  * Moves expensive computations off the main thread to improve INP.
- * Handles four types of simulations:
+ * Handles six types of simulations:
  * - SALARY_SERIES: 126 simulations across salary range
  * - BALANCE_SERIES: 1 simulation for balance over time
  * - OVERPAY_ANALYSIS: 2 simulations for overpay comparison
  * - INSIGHT: 1 simulation for personalized insight text
+ * - DETAIL_SERIES: 1 simulation extracting all time-series for detail pages
+ * - EFFECTIVE_RATE_SALARY: 126 simulations computing effective rate by salary
  */
 
 import type {
@@ -16,6 +18,7 @@ import type {
 import type { Loan } from "@/lib/loans/types";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import type { InsightCardsResult } from "@/types/insight-cards";
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
 import { simulate } from "@/lib/loans/engine";
 import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
 import { generateInsight, type Insight } from "@/utils/insights";
@@ -35,7 +38,9 @@ export type WorkerMessageType =
   | "SALARY_SERIES"
   | "BALANCE_SERIES"
   | "OVERPAY_ANALYSIS"
-  | "INSIGHT";
+  | "INSIGHT"
+  | "DETAIL_SERIES"
+  | "EFFECTIVE_RATE_SALARY";
 
 export interface SalarySeriesPayload {
   type: "SALARY_SERIES";
@@ -77,11 +82,33 @@ export interface InsightPayload {
   discountRate?: number;
 }
 
+export interface DetailSeriesPayload {
+  type: "DETAIL_SERIES";
+  loans: Loan[];
+  annualSalary: number;
+  salaryGrowthRate: number;
+  thresholdGrowthRate: number;
+  rpiRate: number;
+  boeBaseRate: number;
+  discountRate?: number;
+}
+
+export interface EffectiveRateSalaryPayload {
+  type: "EFFECTIVE_RATE_SALARY";
+  loans: Loan[];
+  salaryGrowthRate: number;
+  thresholdGrowthRate: number;
+  rpiRate: number;
+  boeBaseRate: number;
+}
+
 export type WorkerPayload =
   | SalarySeriesPayload
   | BalanceSeriesPayload
   | OverpayAnalysisPayload
-  | InsightPayload;
+  | InsightPayload
+  | DetailSeriesPayload
+  | EffectiveRateSalaryPayload;
 
 export type WorkerMessage =
   | { id: number; payload: WorkerPayload }
@@ -92,6 +119,37 @@ export interface InsightSummary {
   monthlyRepayment: number;
   monthsToPayoff: number;
   pvTotalPaid?: number;
+}
+
+export interface DetailSeriesResult {
+  type: "DETAIL_SERIES";
+  cumulativeRepaid: Array<{ month: number; cumulative: number }>;
+  balanceSeries: Array<{ month: number; balance: number }>;
+  interestBreakdown: Array<{
+    month: number;
+    cumulativeInterest: number;
+    cumulativePrincipal: number;
+  }>;
+  stats: {
+    totalPaid: number;
+    totalInterest: number;
+    initialBalance: number;
+    monthsToPayoff: number;
+    writtenOff: boolean;
+    writeOffMonth: number | null;
+    effectiveRate: number;
+    boeRate: number;
+    interestRatio: number;
+    monthlyRepayment: number;
+    peakBalance: number;
+    peakBalanceMonth: number;
+  };
+}
+
+export interface EffectiveRateSalaryResult {
+  type: "EFFECTIVE_RATE_SALARY";
+  data: Array<{ salary: number; effectiveRate: number }>;
+  boeRate: number;
 }
 
 export type WorkerResultType =
@@ -107,7 +165,9 @@ export type WorkerResultType =
       insight: Insight | null;
       summary: InsightSummary | null;
       cards: InsightCardsResult;
-    };
+    }
+  | DetailSeriesResult
+  | EffectiveRateSalaryResult;
 
 export interface WorkerResponse {
   id: number;
@@ -328,6 +388,167 @@ function formatCompactCurrency(value: number): string {
   return `£${String(Math.round(value))}`;
 }
 
+function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
+  const totalBalance = payload.loans.reduce((s, l) => s + l.balance, 0);
+
+  if (totalBalance <= 0) {
+    return {
+      type: "DETAIL_SERIES",
+      cumulativeRepaid: [],
+      balanceSeries: [],
+      interestBreakdown: [],
+      stats: {
+        totalPaid: 0,
+        totalInterest: 0,
+        initialBalance: 0,
+        monthsToPayoff: 0,
+        writtenOff: false,
+        writeOffMonth: null,
+        effectiveRate: 0,
+        boeRate: payload.boeBaseRate / 100,
+        interestRatio: 0,
+        monthlyRepayment: 0,
+        peakBalance: 0,
+        peakBalanceMonth: 0,
+      },
+    };
+  }
+
+  const result = simulate({
+    loans: payload.loans,
+    annualSalary: payload.annualSalary,
+    monthsElapsed: 0,
+    salaryGrowthRate: payload.salaryGrowthRate,
+    thresholdGrowthRate: payload.thresholdGrowthRate,
+    rpiRate: payload.rpiRate,
+    boeBaseRate: payload.boeBaseRate,
+  });
+
+  const { snapshots, summary } = result;
+  const hasPV = payload.discountRate !== undefined && payload.discountRate > 0;
+  const dr = payload.discountRate ?? 0;
+
+  const cumulativeRepaid: DetailSeriesResult["cumulativeRepaid"] = [];
+  const balanceSeries: DetailSeriesResult["balanceSeries"] = [];
+  const interestBreakdown: DetailSeriesResult["interestBreakdown"] = [];
+
+  let cumPaid = 0;
+  let pvCumPaid = 0;
+  let cumInterestPortion = 0;
+  let pvCumInterestPortion = 0;
+  let peakBalance = totalBalance;
+  let peakBalanceMonth = 0;
+
+  // Add initial point
+  const initBal = hasPV ? toPresent(totalBalance, dr, 0) : totalBalance;
+  balanceSeries.push({ month: 0, balance: initBal });
+  cumulativeRepaid.push({ month: 0, cumulative: 0 });
+  interestBreakdown.push({
+    month: 0,
+    cumulativeInterest: 0,
+    cumulativePrincipal: 0,
+  });
+
+  for (const snap of snapshots) {
+    const monthBalance = snap.loans.reduce((s, l) => s + l.closingBalance, 0);
+    const monthInterest = snap.loans.reduce((s, l) => s + l.interestApplied, 0);
+    const interestPortion = Math.min(snap.totalRepayment, monthInterest);
+
+    cumPaid += snap.totalRepayment;
+    cumInterestPortion += interestPortion;
+
+    if (hasPV) {
+      pvCumPaid += toPresent(snap.totalRepayment, dr, snap.month);
+      pvCumInterestPortion += toPresent(interestPortion, dr, snap.month);
+    }
+
+    if (monthBalance > peakBalance) {
+      peakBalance = monthBalance;
+      peakBalanceMonth = snap.month;
+    }
+
+    // Sample every 3 months + last snapshot
+    if (snap.month % 3 === 0 || snap.month === snapshots.length - 1) {
+      const bal = hasPV
+        ? toPresent(monthBalance, dr, snap.month)
+        : monthBalance;
+      const paid = hasPV ? pvCumPaid : cumPaid;
+      const interest = hasPV ? pvCumInterestPortion : cumInterestPortion;
+
+      balanceSeries.push({ month: snap.month, balance: bal });
+      cumulativeRepaid.push({ month: snap.month, cumulative: paid });
+      interestBreakdown.push({
+        month: snap.month,
+        cumulativeInterest: interest,
+        cumulativePrincipal: paid - interest,
+      });
+    }
+  }
+
+  const writtenOff = summary.perLoan.some((l) => l.writtenOff);
+  const totalPaid = hasPV
+    ? pvTotal(
+        snapshots.map((s) => ({ month: s.month, amount: s.totalRepayment })),
+        dr,
+      )
+    : summary.totalPaid;
+  const costOfBorrowing = Math.max(0, totalPaid - totalBalance);
+  const interestRatio = totalPaid > 0 ? costOfBorrowing / totalPaid : 0;
+  const effectiveRate = computeEffectiveAnnualRate(totalBalance, snapshots);
+  const peakBal = hasPV
+    ? toPresent(peakBalance, dr, peakBalanceMonth)
+    : peakBalance;
+
+  return {
+    type: "DETAIL_SERIES",
+    cumulativeRepaid,
+    balanceSeries,
+    interestBreakdown,
+    stats: {
+      totalPaid,
+      totalInterest: costOfBorrowing,
+      initialBalance: totalBalance,
+      monthsToPayoff: summary.monthsToPayoff,
+      writtenOff,
+      writeOffMonth: writtenOff ? summary.monthsToPayoff : null,
+      effectiveRate,
+      boeRate: payload.boeBaseRate / 100,
+      interestRatio,
+      monthlyRepayment: snapshots.length > 0 ? snapshots[0].totalRepayment : 0,
+      peakBalance: peakBal,
+      peakBalanceMonth,
+    },
+  };
+}
+
+function handleEffectiveRateSalary(
+  payload: EffectiveRateSalaryPayload,
+): EffectiveRateSalaryResult {
+  const data: EffectiveRateSalaryResult["data"] = [];
+  const totalBalance = payload.loans.reduce((s, l) => s + l.balance, 0);
+
+  for (let salary = MIN_SALARY; salary <= MAX_SALARY; salary += SALARY_STEP) {
+    const timeSeries = simulate({
+      loans: payload.loans,
+      annualSalary: salary,
+      monthsElapsed: 0,
+      rpiRate: payload.rpiRate,
+      salaryGrowthRate: payload.salaryGrowthRate,
+      thresholdGrowthRate: payload.thresholdGrowthRate,
+      boeBaseRate: payload.boeBaseRate,
+    });
+
+    const rate = computeEffectiveAnnualRate(totalBalance, timeSeries.snapshots);
+    data.push({ salary, effectiveRate: rate });
+  }
+
+  return {
+    type: "EFFECTIVE_RATE_SALARY",
+    data,
+    boeRate: payload.boeBaseRate / 100,
+  };
+}
+
 /**
  * Compute the effective annual interest rate (IRR) of the loan.
  * Finds the rate r where PV(all payments, r) = original balance.
@@ -412,6 +633,14 @@ self.onmessage = (event: MessageEvent<WorkerMessage>) => {
     case "INSIGHT": {
       const { insight, summary, cards } = handleInsight(payload);
       result = { type: "INSIGHT", insight, summary, cards };
+      break;
+    }
+    case "DETAIL_SERIES": {
+      result = handleDetailSeries(payload);
+      break;
+    }
+    case "EFFECTIVE_RATE_SALARY": {
+      result = handleEffectiveRateSalary(payload);
       break;
     }
   }

@@ -222,6 +222,10 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Repayment Calculator](https://studentloanstudy.uk): See total repayments across all UK student loan plan types (Plan 1, 2, 4, 5, Postgraduate)
 - [Which Plan Quiz](https://studentloanstudy.uk/which-plan): Find your loan plan in 3 questions
 - [Overpay Calculator](https://studentloanstudy.uk/overpay): Should you overpay or invest?
+- [Repaid Over Time](https://studentloanstudy.uk/repaid): Track cumulative student loan repayments over time
+- [Balance Over Time](https://studentloanstudy.uk/balance): See how your loan balance changes as interest accrues and repayments are made
+- [Interest Breakdown](https://studentloanstudy.uk/interest): Understand how much of your repayments go to interest vs principal
+- [Effective Rate](https://studentloanstudy.uk/effective-rate): Compare your loan's true effective annual rate to the Bank of England base rate
 - [Our Data](https://studentloanstudy.uk/our-data): How we keep figures current — daily automation checks GOV.UK and the Bank of England
 
 ## Guides

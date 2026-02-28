@@ -18,6 +18,7 @@ import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 
 export interface ChartSeriesConfig {
   dataKey: string;
+  stackId?: string;
 }
 
 export interface ChartAnnotationConfig {
@@ -29,6 +30,13 @@ export interface ChartAnnotationConfig {
   color?: string;
   labelAnchor?: "start" | "end";
   labelOffsetY?: number;
+  strokeDasharray?: string;
+}
+
+export interface HorizontalAnnotationConfig {
+  y: number;
+  label: string;
+  color?: string;
   strokeDasharray?: string;
 }
 
@@ -49,6 +57,7 @@ export interface ChartBaseProps {
   chartConfig: ChartConfig;
   series: ChartSeriesConfig[];
   annotations?: ChartAnnotationConfig[];
+  horizontalAnnotations?: HorizontalAnnotationConfig[];
   showLegend?: boolean;
   interactionMode?: "crosshair" | "none";
   xDomain?: [number, number];
@@ -67,6 +76,7 @@ export function ChartBase({
   chartConfig,
   series,
   annotations = [],
+  horizontalAnnotations = [],
   showLegend = false,
   interactionMode = "crosshair",
   xDomain,
@@ -240,6 +250,7 @@ export function ChartBase({
                 activeDot={false}
                 isAnimationActive={false}
                 style={isCrosshair ? { touchAction: "none" } : undefined}
+                {...(s.stackId ? { stackId: s.stackId } : {})}
               />
             ))}
           {type === "line" &&
@@ -265,36 +276,59 @@ export function ChartBase({
               label={({ viewBox }: { viewBox: { x: number; y: number } }) => {
                 const isMulti = crosshairPoint.values.length > 1;
                 const xText = xFormatter(crosshairPoint.x);
+                const lines = crosshairPoint.values.map((v) => {
+                  const yText = yFormatter(v.y);
+                  const configLabel = chartConfig[v.dataKey].label;
+                  const seriesName =
+                    typeof configLabel === "string"
+                      ? configLabel.toLowerCase()
+                      : v.dataKey;
+                  return isMulti
+                    ? `${yText} at ${xText} ${seriesName}`
+                    : `${yText} at ${xText}`;
+                });
+                const charWidth = 6.6;
+                const px = 8;
+                const py = 4;
+                const lineHeight = 14;
+                const maxLen = Math.max(...lines.map((l) => l.length));
+                const rectW = maxLen * charWidth + px * 2;
+                const rectH = lines.length * lineHeight + py * 2;
+                const baseY = viewBox.y - 10 - (isMulti ? 14 : 0) - py;
                 return (
-                  <text
-                    x={viewBox.x}
-                    y={viewBox.y}
-                    textAnchor="middle"
-                    fontSize={11}
-                    fontWeight={500}
-                  >
-                    {crosshairPoint.values.map((v, i) => {
-                      const yText = yFormatter(v.y);
-                      const configLabel = chartConfig[v.dataKey].label;
-                      const seriesName =
-                        typeof configLabel === "string"
-                          ? configLabel.toLowerCase()
-                          : v.dataKey;
-                      const text = isMulti
-                        ? `${yText} at ${xText} ${seriesName}`
-                        : `${yText} at ${xText}`;
-                      return (
-                        <tspan
-                          key={v.dataKey}
-                          x={viewBox.x}
-                          dy={i === 0 ? -10 - (isMulti ? 14 : 0) : 14}
-                          fill={`var(--color-${v.dataKey})`}
-                        >
-                          {text}
-                        </tspan>
-                      );
-                    })}
-                  </text>
+                  <g>
+                    <rect
+                      x={viewBox.x - rectW / 2}
+                      y={baseY - lineHeight / 2}
+                      width={rectW}
+                      height={rectH}
+                      rx={4}
+                      fill="var(--background)"
+                      stroke="var(--border)"
+                      strokeWidth={1}
+                      opacity={0.95}
+                    />
+                    <text
+                      x={viewBox.x}
+                      y={viewBox.y}
+                      textAnchor="middle"
+                      fontSize={11}
+                      fontWeight={500}
+                    >
+                      {crosshairPoint.values.map((v, i) => {
+                        return (
+                          <tspan
+                            key={v.dataKey}
+                            x={viewBox.x}
+                            dy={i === 0 ? -10 - (isMulti ? 14 : 0) : 14}
+                            fill={`var(--color-${v.dataKey})`}
+                          >
+                            {lines[i]}
+                          </tspan>
+                        );
+                      })}
+                    </text>
+                  </g>
                 );
               }}
             />
@@ -409,6 +443,22 @@ export function ChartBase({
                   }}
                 />
               ))}
+          {horizontalAnnotations.map((ha) => (
+            <ReferenceLine
+              key={`hline-${String(ha.y)}-${ha.label}`}
+              y={ha.y}
+              stroke={ha.color ?? "var(--muted-foreground)"}
+              strokeWidth={1.5}
+              strokeDasharray={ha.strokeDasharray ?? "6 4"}
+              label={{
+                value: ha.label,
+                position: "right" as const,
+                fill: ha.color ?? "var(--muted-foreground)",
+                fontSize: 11,
+                fontWeight: 500,
+              }}
+            />
+          ))}
         </ChartComponent>
       </ChartContainer>
     </div>

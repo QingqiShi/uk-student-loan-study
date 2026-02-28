@@ -1,25 +1,10 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import type { ChartSeriesConfig } from "@/components/charts/ChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import { getAnnualInterestRate } from "@/lib/loans/interest";
 import { CURRENT_RATES } from "@/lib/loans/plans";
-
-const ChartBase = dynamic(
-  () => import("@/components/charts/ChartBase").then((m) => m.ChartBase),
-  {
-    ssr: false,
-    loading: () => (
-      <Skeleton
-        className="size-full"
-        role="status"
-        aria-label="Loading chart"
-      />
-    ),
-  },
-);
 
 const SALARY_MIN = 20_000;
 const SALARY_MAX = 80_000;

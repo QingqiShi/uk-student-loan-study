@@ -1,23 +1,8 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import type { ChartConfig } from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import { simulate } from "@/lib/loans/engine";
-
-const ChartBase = dynamic(
-  () => import("@/components/charts/ChartBase").then((m) => m.ChartBase),
-  {
-    ssr: false,
-    loading: () => (
-      <Skeleton
-        className="size-full"
-        role="status"
-        aria-label="Loading chart"
-      />
-    ),
-  },
-);
 
 const EXAMPLE_BALANCE = 45_000;
 
