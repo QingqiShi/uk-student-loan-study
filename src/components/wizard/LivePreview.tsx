@@ -1,11 +1,11 @@
 "use client";
 
 import { currencyFormatter } from "@/constants";
-import { useResultSummary } from "@/hooks/useResultSummary";
+import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 
 export function LivePreview() {
-  const { summary } = useResultSummary();
+  const { summary } = usePersonalizedResults();
   const showPresentValue = useShowPresentValue();
 
   if (!summary) return null;

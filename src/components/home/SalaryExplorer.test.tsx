@@ -16,14 +16,15 @@ vi.mock("@/components/charts/TotalRepaymentChart", () => ({
   TotalRepaymentChart: () => <div data-testid="chart" />,
 }));
 
-vi.mock("@/hooks/useResultSummary", () => ({
-  useResultSummary: () => ({
+vi.mock("@/context/PersonalizedResultsContext", () => ({
+  usePersonalizedResults: () => ({
     summary: {
       totalPaid: 60000,
       monthlyRepayment: 200,
       monthsToPayoff: 300,
     },
     insight: null,
+    cards: null,
   }),
 }));
 
