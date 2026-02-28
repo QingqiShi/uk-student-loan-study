@@ -1,36 +1,20 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
 import { OverpayPrimaryInputs } from "./OverpayPrimaryInputs";
 import { OverpaySummaryCards } from "./OverpaySummaryCards";
 import { OverpayVerdict } from "./OverpayVerdict";
-import type { InputMode } from "@/components/home/InputPanel";
-import type { Preset } from "@/lib/presets";
-import { InputPanel } from "@/components/home/InputPanel";
+import { RelatedContent } from "@/components/detail/RelatedContent";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { AssumptionsCallout } from "@/components/shared/AssumptionsCallout";
+import { ControlBar } from "@/components/shared/ControlBar";
+import { InsightCards } from "@/components/shared/InsightCards";
 import { PlanFromQuery } from "@/components/shared/PlanFromQuery";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
-import {
-  trackPresetApplied,
-  trackWizardCompleted,
-  trackWizardRestarted,
-  trackWizardStarted,
-} from "@/lib/analytics";
-import { isPresetConfig, REPAYMENT_START_MONTH } from "@/lib/presets";
+import { REPAYMENT_START_MONTH } from "@/lib/presets";
 
 function OverpayPageSkeleton() {
   return (
@@ -58,81 +42,21 @@ export function OverpayPage() {
     () => new Date(new Date().getFullYear(), REPAYMENT_START_MONTH, 1),
   );
   const analysis = useOverpayAnalysis(repaymentDate);
-  const [mode, setMode] = useState<InputMode>({ view: "summary" });
-  const { applyPreset } = useLoanActions();
-  const config = useLoanConfigState();
-  const hasPersonalized = !isPresetConfig(config.loans);
-
-  useEffect(() => {
-    if (mode.view !== "summary") {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
-  }, [mode.view]);
 
   const handleRepaymentYearChange = (year: number) => {
     setRepaymentDate(new Date(year, REPAYMENT_START_MONTH, 1));
   };
 
-  function handlePersonalise() {
-    if (hasPersonalized) {
-      trackWizardRestarted("loan");
-    } else {
-      trackWizardStarted("loan");
-    }
-    setMode({ view: "loan-config" });
-  }
-
-  function handleWizardComplete() {
-    trackWizardCompleted("loan");
-    setMode({ view: "summary" });
-  }
-
-  function handlePresetApplied(preset: Preset) {
-    trackPresetApplied(preset.id);
-    applyPreset(preset);
-    setMode({ view: "summary" });
-  }
-
-  function handleWizardClose() {
-    setMode({ view: "summary" });
-  }
-
   return (
     <>
       <PlanFromQuery onRepaymentYearChange={handleRepaymentYearChange} />
       <PageLayout repaymentYear={repaymentDate.getFullYear()}>
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Overpay Calculator</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <div className="space-y-2">
-            <Heading as="h1">Student Loan Overpayment Calculator</Heading>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Should you overpay or invest? See which leaves you better off.
-            </p>
-          </div>
+        <div className="space-y-2">
+          <Heading as="h1">Student Loan Overpayment Calculator</Heading>
+          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+            Should you overpay or invest? See which leaves you better off.
+          </p>
         </div>
-
-        <InputPanel
-          hasPersonalized={hasPersonalized}
-          mode={mode}
-          onPersonalise={handlePersonalise}
-          onPresetApplied={handlePresetApplied}
-          onWizardComplete={handleWizardComplete}
-          onWizardClose={handleWizardClose}
-        />
 
         {analysis ? (
           <>
@@ -159,7 +83,13 @@ export function OverpayPage() {
           onRepaymentDateChange={setRepaymentDate}
         />
 
+        <ControlBar />
+
+        <InsightCards excludeHref="/overpay" />
+
         <AssumptionsCallout />
+
+        <RelatedContent />
       </PageLayout>
     </>
   );

@@ -44,7 +44,6 @@ export function InterestDetailPage() {
 
   return (
     <DetailPageShell
-      pageTitle="Interest Paid"
       heading="Interest Breakdown"
       description="Understand how much of your repayments go towards interest vs reducing your loan balance."
     >

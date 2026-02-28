@@ -50,7 +50,6 @@ export function BalanceDetailPage() {
 
   return (
     <DetailPageShell
-      pageTitle="Balance Over Time"
       heading="Balance Trajectory"
       description="See how your loan balance changes over time as interest accrues and repayments are made."
     >

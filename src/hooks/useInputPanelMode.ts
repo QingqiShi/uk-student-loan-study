@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { InputMode } from "@/components/home/InputPanel";
+import type { PlanType } from "@/lib/loans/types";
 import type { Preset } from "@/lib/presets";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import {
@@ -9,6 +9,10 @@ import {
   trackWizardStarted,
 } from "@/lib/analytics";
 import { isPresetConfig } from "@/lib/presets";
+
+export type InputMode =
+  | { view: "summary" }
+  | { view: "loan-config"; initialPlanTypes?: PlanType[] };
 
 interface UseInputPanelModeOptions {
   initialMode?: InputMode;

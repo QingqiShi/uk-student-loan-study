@@ -5,6 +5,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
+import { PersonalizedResultsProvider } from "@/context/PersonalizedResultsContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 
@@ -118,7 +119,11 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <LoanProvider>
-            <AssumptionsWizardProvider>{children}</AssumptionsWizardProvider>
+            <AssumptionsWizardProvider>
+              <PersonalizedResultsProvider>
+                {children}
+              </PersonalizedResultsProvider>
+            </AssumptionsWizardProvider>
           </LoanProvider>
         </ThemeProvider>
         <Analytics />

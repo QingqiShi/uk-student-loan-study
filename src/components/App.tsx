@@ -1,26 +1,52 @@
+"use client";
+
+import { useEffect } from "react";
 import { HeroSection } from "./home/HeroSection";
-import { InsightCards } from "./home/InsightCards";
+import { InsightBadge, InsightCallout } from "./home/InsightCallout";
+import { SalaryExplorer } from "./home/SalaryExplorer";
 import { ToolLinks } from "./home/ToolLinks";
 import { PageLayout } from "./layout/PageLayout";
 import { AssumptionsCallout } from "./shared/AssumptionsCallout";
+import { ControlBar } from "./shared/ControlBar";
+import { InsightCards } from "./shared/InsightCards";
 import { PlanFromQuery } from "./shared/PlanFromQuery";
-import { PersonalizedResultsProvider } from "@/context/PersonalizedResultsContext";
+import type { InputMode } from "@/hooks/useInputPanelMode";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 
 function App() {
+  const { updateField } = useLoanActions();
+  const config = useLoanConfigState();
+  const { pendingQuizPlanTypes } = config;
+
+  const initialMode: InputMode | undefined =
+    pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0
+      ? { view: "loan-config", initialPlanTypes: pendingQuizPlanTypes }
+      : undefined;
+
+  useEffect(() => {
+    if (pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0) {
+      updateField("pendingQuizPlanTypes", null);
+    }
+  }, [pendingQuizPlanTypes, updateField]);
+
   return (
     <>
       <PlanFromQuery />
-      <PersonalizedResultsProvider>
-        <PageLayout>
+      <PageLayout>
+        <div className="space-y-3">
           <HeroSection />
+          <InsightCallout />
+          <SalaryExplorer badge={<InsightBadge />} />
+        </div>
 
-          <InsightCards />
+        <ControlBar initialMode={initialMode} />
 
-          <AssumptionsCallout />
+        <InsightCards />
 
-          <ToolLinks />
-        </PageLayout>
-      </PersonalizedResultsProvider>
+        <AssumptionsCallout />
+
+        <ToolLinks />
+      </PageLayout>
     </>
   );
 }
