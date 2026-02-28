@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { waitForResults, getResultValues, clickPreset } from "./helpers";
+import {
+  waitForResults,
+  waitForResultChange,
+  getResultValues,
+  clickPreset,
+} from "./helpers";
 
 test.describe("Home page preset selection", () => {
   test.beforeEach(async ({ page }) => {
@@ -19,7 +24,7 @@ test.describe("Home page preset selection", () => {
     const before = await getResultValues(page);
 
     await clickPreset(page, "2023+ Grad");
-    await waitForResults(page);
+    await waitForResultChange(page, before.totalText);
 
     const after = await getResultValues(page);
     expect(after.totalText).not.toBe(before.totalText);
@@ -29,7 +34,7 @@ test.describe("Home page preset selection", () => {
     const before = await getResultValues(page);
 
     await clickPreset(page, "Pre-2012");
-    await waitForResults(page);
+    await waitForResultChange(page, before.totalText);
 
     const after = await getResultValues(page);
     expect(after.totalText).not.toBe(before.totalText);
@@ -41,7 +46,7 @@ test.describe("Home page preset selection", () => {
     const before = await getResultValues(page);
 
     await clickPreset(page, "UG + Masters");
-    await waitForResults(page);
+    await waitForResultChange(page, before.totalText);
 
     const after = await getResultValues(page);
     expect(after.totalText).not.toBe(before.totalText);
@@ -53,7 +58,7 @@ test.describe("Home page preset selection", () => {
     const before = await getResultValues(page);
 
     await page.getByRole("switch", { name: "Adjust for inflation" }).click();
-    await waitForResults(page);
+    await waitForResultChange(page, before.totalText);
 
     const after = await getResultValues(page);
     expect(after.totalText).not.toBe(before.totalText);
