@@ -239,6 +239,25 @@ body {
   }
 }
 
+@keyframes timeline-enter {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@utility animate-timeline-enter {
+  animation: timeline-enter 300ms ease-out both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
 @utility scrollbar-none {
   scrollbar-width: none;
 }
