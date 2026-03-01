@@ -396,7 +396,7 @@ function handleInsight(payload: InsightPayload): {
     },
     totalRepayment: {
       data: salarySeriesData,
-      stat: formatCompactCurrency(totalPaid),
+      stat: `${formatCompactCurrency(totalPaid)} total`,
       label: "Total Repayment by Salary",
     },
   };

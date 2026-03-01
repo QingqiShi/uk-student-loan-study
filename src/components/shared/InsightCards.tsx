@@ -8,6 +8,7 @@ import {
   SparklineCard,
 } from "./InsightCard";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
+import { useCurrentSalary } from "@/hooks/useStoreSelectors";
 import { DETAIL_PAGES } from "@/lib/detailPages";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,8 @@ interface InsightCardsProps {
 }
 
 export function InsightCards({ excludeHref }: InsightCardsProps) {
-  const { cards: data, insight } = usePersonalizedResults();
+  const { cards: data } = usePersonalizedResults();
+  const salary = useCurrentSalary();
 
   // Fixed 4-card positions: [Repaid, Balance, Interest, Eff. Rate]
   const detailCards = [
@@ -74,8 +76,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
     <CalculatorCard
       key="/"
       cardData={data?.totalRepayment ?? null}
-      insightTitle={insight?.title ?? null}
-      insightType={insight?.type ?? null}
+      currentSalary={salary}
     />
   );
 
