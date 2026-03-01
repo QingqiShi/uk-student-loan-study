@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, ViewTransition } from "react";
 import { HeroSection } from "./home/HeroSection";
 import { InsightBadge, InsightCallout } from "./home/InsightCallout";
 import { SalaryExplorer } from "./home/SalaryExplorer";
@@ -33,11 +33,13 @@ function App() {
     <>
       <PlanFromQuery />
       <PageLayout>
-        <div className="space-y-3">
-          <HeroSection />
-          <InsightCallout />
-          <SalaryExplorer badge={<InsightBadge />} />
-        </div>
+        <ViewTransition enter="slide-in" exit="slide-out">
+          <div className="space-y-3">
+            <HeroSection />
+            <InsightCallout />
+            <SalaryExplorer badge={<InsightBadge />} />
+          </div>
+        </ViewTransition>
 
         <ControlBar initialMode={initialMode} />
 
