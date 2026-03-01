@@ -126,7 +126,7 @@ export function generateInsight(
       title: "You're in the peak repayment zone",
       description: `You'll repay ${formattedTotalPaid} in total on a ${formattedPrincipal} loan. At this salary, interest builds faster than your repayments reduce the balance.`,
       cta: {
-        text: "See if overpaying could help",
+        text: "Calculate your overpayment savings",
         href: "/overpay",
       },
     };
@@ -151,6 +151,10 @@ export function generateInsight(
         type: "low-earner",
         title: "Your loan will be written off",
         description,
+        cta: {
+          text: "See why overpaying could leave you worse off",
+          href: "/overpay",
+        },
       };
     }
   }
@@ -170,7 +174,7 @@ export function generateInsight(
     title: "You'll pay off quickly",
     description: `You'll clear your loan in about ${yearsToPayoff} years, ${interestDescription}.`,
     cta: {
-      text: "See if overpaying saves you money",
+      text: "See how overpaying saves you time",
       href: "/overpay",
     },
   };
