@@ -7,12 +7,19 @@ interface SparklineProps {
   data: SparklinePoint[];
   color: string;
   ariaLabel: string;
+  /** Raw data x-value (e.g. salary) to draw a dashed vertical annotation line */
+  annotationX?: number;
 }
 
 const W = 100;
 const H = 48;
 
-export function Sparkline({ data, color, ariaLabel }: SparklineProps) {
+export function Sparkline({
+  data,
+  color,
+  ariaLabel,
+  annotationX,
+}: SparklineProps) {
   const gradientId = useId();
 
   if (data.length < 2) {
@@ -64,6 +71,18 @@ export function Sparkline({ data, color, ariaLabel }: SparklineProps) {
           strokeWidth={1.5}
           vectorEffect="non-scaling-stroke"
         />
+        {annotationX != null && annotationX >= xMin && annotationX <= xMax && (
+          <line
+            x1={((annotationX - xMin) / xRange) * W}
+            y1={0}
+            x2={((annotationX - xMin) / xRange) * W}
+            y2={H}
+            stroke={color}
+            strokeWidth={1.5}
+            strokeDasharray="6 4"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
       </svg>
     </div>
   );

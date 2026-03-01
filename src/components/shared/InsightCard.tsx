@@ -1,9 +1,4 @@
-import {
-  ArrowRight01Icon,
-  InformationCircleIcon,
-  Alert02Icon,
-  Tick02Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import type {
@@ -11,7 +6,6 @@ import type {
   InsightCardData,
   InterestCardData,
 } from "@/types/insightCards";
-import type { InsightType } from "@/utils/insights";
 import { Sparkline } from "@/components/charts/Sparkline";
 
 // ---------------------------------------------------------------------------
@@ -252,62 +246,28 @@ export function RateComparisonCard({
 // Calculator card (insight text + sparkline)
 // ---------------------------------------------------------------------------
 
-const INSIGHT_ICON_CONFIG: Record<
-  InsightType,
-  { icon: typeof InformationCircleIcon; className: string }
-> = {
-  "low-earner": {
-    icon: InformationCircleIcon,
-    className: "text-status-info-foreground",
-  },
-  "middle-earner": {
-    icon: Alert02Icon,
-    className: "text-status-danger-foreground",
-  },
-  "high-earner": {
-    icon: Tick02Icon,
-    className: "text-status-success-foreground",
-  },
-};
-
 interface CalculatorCardProps {
   cardData: InsightCardData | null;
-  insightTitle: string | null;
-  insightType: InsightType | null;
+  currentSalary: number | undefined;
 }
 
 export function CalculatorCard({
   cardData,
-  insightTitle,
-  insightType,
+  currentSalary,
 }: CalculatorCardProps) {
-  const iconConfig = insightType ? INSIGHT_ICON_CONFIG[insightType] : null;
-
   return (
     <CardShell title="Repayment Calculator" href="/">
       {cardData ? (
         <div className="flex flex-1 flex-col">
-          <div className="px-5 pt-2">
-            {insightTitle && iconConfig ? (
-              <span className="flex items-center gap-1.5 text-sm font-medium">
-                <HugeiconsIcon
-                  icon={iconConfig.icon}
-                  className={`size-4 shrink-0 ${iconConfig.className}`}
-                  strokeWidth={2}
-                />
-                {insightTitle}
-              </span>
-            ) : (
-              <span className="font-mono text-xl font-semibold tabular-nums">
-                {cardData.stat}
-              </span>
-            )}
-          </div>
+          <span className="px-5 pt-2 font-mono text-xl font-semibold tabular-nums">
+            {cardData.stat}
+          </span>
           <div className="mt-auto">
             <Sparkline
               data={cardData.data}
               color="var(--primary)"
               ariaLabel={cardData.label}
+              annotationX={currentSalary}
             />
           </div>
         </div>
