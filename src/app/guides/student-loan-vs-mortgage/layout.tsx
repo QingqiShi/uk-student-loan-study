@@ -78,6 +78,22 @@ const faqSchema = {
         text: "No, UK student loans do not appear on your credit report and have no direct impact on your credit score. The Student Loans Company does not report to credit reference agencies.",
       },
     },
+    {
+      "@type": "Question",
+      name: "Can I get a mortgage with a student loan in the UK?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, having a student loan does not prevent you from getting a mortgage. Lenders do not treat it as conventional debt. However, your monthly student loan repayment reduces the income figure lenders use for affordability checks, which may lower the maximum amount you can borrow.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Do mortgage lenders take student loans into account?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, but not as a debt. Mortgage lenders deduct your monthly student loan repayment from your gross income before applying their affordability multiplier. This means the higher your salary (and therefore your repayment), the bigger the reduction in borrowing power — even though the loan itself doesn't appear on your credit file.",
+      },
+    },
   ],
 };
 
