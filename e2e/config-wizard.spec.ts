@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
-import { waitForResults, getResultValues } from "./helpers";
+import {
+  waitForResults,
+  getResultValues,
+  waitForResultChange,
+} from "./helpers";
 
 test.describe("Config wizard dialog", () => {
   test.beforeEach(async ({ page }) => {
@@ -53,10 +57,8 @@ test.describe("Config wizard dialog", () => {
     // Dialog should close
     await expect(dialog).toBeHidden();
 
-    // Results should change
-    await waitForResults(page);
-    const after = await getResultValues(page);
-    expect(after.totalText).not.toBe(before.totalText);
+    // Wait for results to actually change (auto-retries until value differs)
+    await waitForResultChange(page, before.totalText);
   });
 
   test("clicking Close closes dialog without changing results", async ({
