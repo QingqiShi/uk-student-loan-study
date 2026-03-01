@@ -1,5 +1,6 @@
 "use client";
 
+import { ViewTransition } from "react";
 import { SALARY_GROWTH_OPTIONS } from "@/constants";
 import { useAssumptionsWizard } from "@/context/AssumptionsWizardContext";
 import { useLoanConfigState } from "@/context/LoanContext";
@@ -32,32 +33,35 @@ export function AssumptionsCallout() {
   const bold = "font-medium text-foreground";
 
   return (
-    <p className="text-center text-xs text-muted-foreground">
-      Based on <span className={bold}>{salaryLabel}</span> salary growth,{" "}
-      <span className={bold}>{thresholdLabel}</span> thresholds,
-      {hasTrailingItem ? " " : " and "}
-      <span className={bold}>{rpiLabel}</span> RPI
-      {showBoe && (
-        <>
-          ,{config.showPresentValue ? " " : " and "}
-          <span className={bold}>{boeLabel}</span> base rate
-        </>
-      )}
-      {config.showPresentValue && (
-        <>
-          , adjusted for <span className={bold}>{discountLabel}</span> inflation
-        </>
-      )}
-      .{" "}
-      <button
-        type="button"
-        className="cursor-pointer text-primary underline underline-offset-2 hover:text-primary/80"
-        onClick={() => {
-          openAssumptions();
-        }}
-      >
-        Change assumptions
-      </button>
-    </p>
+    <ViewTransition name="assumptions">
+      <p className="text-center text-xs text-muted-foreground">
+        Based on <span className={bold}>{salaryLabel}</span> salary growth,{" "}
+        <span className={bold}>{thresholdLabel}</span> thresholds,
+        {hasTrailingItem ? " " : " and "}
+        <span className={bold}>{rpiLabel}</span> RPI
+        {showBoe && (
+          <>
+            ,{config.showPresentValue ? " " : " and "}
+            <span className={bold}>{boeLabel}</span> base rate
+          </>
+        )}
+        {config.showPresentValue && (
+          <>
+            , adjusted for <span className={bold}>{discountLabel}</span>{" "}
+            inflation
+          </>
+        )}
+        .{" "}
+        <button
+          type="button"
+          className="cursor-pointer text-primary underline underline-offset-2 hover:text-primary/80"
+          onClick={() => {
+            openAssumptions();
+          }}
+        >
+          Change assumptions
+        </button>
+      </p>
+    </ViewTransition>
   );
 }
