@@ -17,8 +17,8 @@ export function RepaidDetailPage() {
 
   return (
     <DetailPageShell
-      heading="Cumulative Repayments"
-      description="Track how your total repayments grow over the life of your loan."
+      heading="Payoff Timeline"
+      description="See how long to pay off your student loan and track total repayments over time."
     >
       {result ? (
         <>
