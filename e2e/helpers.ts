@@ -1,52 +1,48 @@
 import { expect, type Page } from "@playwright/test";
 
 /**
- * Waits for the result summary to show computed values (not skeleton/loading).
- * Looks for a currency value (e.g. "£45,000") inside the live results region.
+ * Locates the "Your Loan Breakdown" insight cards section.
+ */
+function insightCardsSection(page: Page) {
+  return page.locator("section").filter({ hasText: "Your Loan Breakdown" });
+}
+
+/**
+ * Waits for the insight cards to show computed values (not skeleton/loading).
+ * Looks for a currency value (e.g. "£45,000") inside the cards section.
  */
 export async function waitForResults(page: Page) {
-  await page
-    .locator("[role='status'][aria-live='polite']")
+  await insightCardsSection(page)
     .getByText(/£[\d,]+/)
     .first()
     .waitFor({ state: "visible", timeout: 15_000 });
 }
 
 /**
- * Extracts the three headline result values from the ResultSummary component.
+ * Extracts the first insight card stat value (used to detect changes).
  */
 export async function getResultValues(page: Page) {
-  const results = page.locator("[role='status'][aria-live='polite']");
-  const totalText = await results
-    .getByText("Total repayment")
-    .locator("..")
-    .textContent();
-  const monthlyText = await results
-    .getByText("Monthly")
-    .locator("..")
-    .textContent();
-  const durationText = await results
-    .getByText("Duration")
-    .locator("..")
-    .textContent();
+  const firstStat = insightCardsSection(page)
+    .locator(".font-mono.text-xl")
+    .first();
+  const totalText = await firstStat.textContent();
 
-  return { totalText, monthlyText, durationText };
+  return { totalText };
 }
 
 /**
- * Waits for the result summary total to differ from a known previous value.
+ * Waits for the first insight card stat to differ from a known previous value.
  * Uses Playwright's auto-retrying assertion to poll until the value changes.
  */
 export async function waitForResultChange(
   page: Page,
   previousTotal: string | null,
 ) {
-  const totalParent = page
-    .locator("[role='status'][aria-live='polite']")
-    .getByText("Total repayment")
-    .locator("..");
+  const firstStat = insightCardsSection(page)
+    .locator(".font-mono.text-xl")
+    .first();
 
-  await expect(totalParent).not.toHaveText(previousTotal ?? "", {
+  await expect(firstStat).not.toHaveText(previousTotal ?? "", {
     timeout: 15_000,
   });
 }

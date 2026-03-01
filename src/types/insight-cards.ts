@@ -30,4 +30,6 @@ export interface InsightCardsResult {
   interest: InterestCardData;
   effectiveRate: EffectiveRateCardData;
   cumulative: InsightCardData;
+  /** Downsampled total-repayment-by-salary sparkline for the calculator card */
+  totalRepayment: InsightCardData;
 }

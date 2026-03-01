@@ -1,15 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { SalaryExplorer } from "./SalaryExplorer";
 import type { LoanState } from "@/types/store";
 import type { ReactNode } from "react";
-import type { Mock } from "vitest";
 import { LoanProvider } from "@/context/LoanContext";
 
-const mockOpenAssumptions: Mock = vi.fn();
 vi.mock("@/context/AssumptionsWizardContext", () => ({
-  useAssumptionsWizard: () => ({ openAssumptions: mockOpenAssumptions }),
+  useAssumptionsWizard: () => ({ openAssumptions: vi.fn() }),
 }));
 
 vi.mock("@/components/charts/TotalRepaymentChart", () => ({
@@ -18,11 +15,7 @@ vi.mock("@/components/charts/TotalRepaymentChart", () => ({
 
 vi.mock("@/context/PersonalizedResultsContext", () => ({
   usePersonalizedResults: () => ({
-    summary: {
-      totalPaid: 60000,
-      monthlyRepayment: 200,
-      monthsToPayoff: 300,
-    },
+    summary: null,
     insight: null,
     cards: null,
   }),
@@ -45,28 +38,15 @@ function createWrapper(overrides?: Partial<LoanState>) {
 }
 
 describe("SalaryExplorer", () => {
-  beforeEach(() => {
-    mockOpenAssumptions.mockReset();
-  });
-
-  it("renders the salary amount", () => {
+  it("renders the chart title", () => {
     render(<SalaryExplorer />, { wrapper: createWrapper() });
 
-    expect(screen.getByText("£45,000")).not.toBeNull();
+    expect(screen.getByText("Total repayment by salary")).not.toBeNull();
   });
 
-  it("calls openAssumptions when 'Update growth assumption' is clicked", async () => {
-    const user = userEvent.setup();
+  it("renders the chart", () => {
     render(<SalaryExplorer />, { wrapper: createWrapper() });
 
-    const triggers = screen.getAllByLabelText("Salary growth info");
-    await user.click(triggers[0]);
-
-    const updateButton = await screen.findByRole("button", {
-      name: /Update growth assumption/,
-    });
-    await user.click(updateButton);
-
-    expect(mockOpenAssumptions).toHaveBeenCalledOnce();
+    expect(screen.getByTestId("chart")).not.toBeNull();
   });
 });

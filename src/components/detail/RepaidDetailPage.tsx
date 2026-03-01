@@ -17,7 +17,6 @@ export function RepaidDetailPage() {
 
   return (
     <DetailPageShell
-      pageTitle="Repaid Over Time"
       heading="Cumulative Repayments"
       description="Track how your total repayments grow over the life of your loan."
     >

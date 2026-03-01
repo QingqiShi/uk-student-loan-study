@@ -33,7 +33,6 @@ export function EffectiveRateDetailPage() {
 
   return (
     <DetailPageShell
-      pageTitle="Effective Rate"
       heading="True Cost of Your Loan"
       description="Compare your loan's effective annual rate to the Bank of England base rate across different salaries."
     >

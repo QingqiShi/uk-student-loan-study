@@ -13,11 +13,13 @@ test.describe("Home page preset selection", () => {
   });
 
   test("default preset loads results with £ values", async ({ page }) => {
-    const results = page.locator("[role='status'][aria-live='polite']");
-    await expect(results.getByText("Total repayment")).toBeVisible();
-    await expect(results.getByText("Monthly")).toBeVisible();
-    await expect(results.getByText("Duration")).toBeVisible();
-    await expect(results.getByText(/£[\d,]+/).first()).toBeVisible();
+    const section = page
+      .locator("section")
+      .filter({ hasText: "Your Loan Breakdown" });
+    await expect(section.getByText("Repaid Over Time")).toBeVisible();
+    await expect(section.getByText("Balance Over Time")).toBeVisible();
+    await expect(section.getByText("Interest Paid")).toBeVisible();
+    await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 
   test("clicking 2023+ Grad preset changes result values", async ({ page }) => {
@@ -64,10 +66,16 @@ test.describe("Home page preset selection", () => {
     expect(after.totalText).not.toBe(before.totalText);
   });
 
-  test("insight text appears below results", async ({ page }) => {
-    const results = page.locator("[role='status'][aria-live='polite']");
-    // Insight footer has a title (bold text) and description
-    await expect(results.locator(".font-medium").first()).toBeVisible({
+  test("insight text appears on page", async ({ page }) => {
+    // Desktop: InsightBadge (last match) is visible next to the chart heading
+    // (the first match is the mobile-only InsightCallout, hidden at desktop viewport)
+    await expect(
+      page
+        .getByText(
+          /peak repayment zone|loan will be written off|pay off quickly/,
+        )
+        .last(),
+    ).toBeVisible({
       timeout: 15_000,
     });
   });
