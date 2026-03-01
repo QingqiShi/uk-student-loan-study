@@ -42,7 +42,7 @@ export interface HorizontalAnnotationConfig {
 
 interface CrosshairPoint {
   x: number;
-  values: Array<{ dataKey: string; y: number }>;
+  values: Array<{ dataKey: string; y: number; stackedY: number }>;
 }
 
 export interface ChartBaseProps {
@@ -104,9 +104,17 @@ export function ChartBase({
     }
     const payload = state.activePayload;
     const xValue = Number(payload[0].payload[xDataKey]);
+    const stackAccumulator: Record<string, number> = {};
     const values = series.map((s) => {
       const match = payload.find((p) => p.dataKey === s.dataKey);
-      return { dataKey: s.dataKey, y: match ? match.value : 0 };
+      const y = match ? match.value : 0;
+      if (s.stackId) {
+        const acc = stackAccumulator[s.stackId] ?? 0;
+        const stackedY = acc + y;
+        stackAccumulator[s.stackId] = stackedY;
+        return { dataKey: s.dataKey, y, stackedY };
+      }
+      return { dataKey: s.dataKey, y, stackedY: y };
     });
     setCrosshairPoint({ x: xValue, values });
   }
@@ -321,7 +329,7 @@ export function ChartBase({
               <ReferenceDot
                 key={`crosshair-dot-${v.dataKey}`}
                 x={crosshairPoint.x}
-                y={v.y}
+                y={v.stackedY}
                 r={4}
                 fill={`var(--color-${v.dataKey})`}
                 stroke="var(--background)"
