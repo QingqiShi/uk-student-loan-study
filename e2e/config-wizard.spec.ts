@@ -1,9 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {
-  waitForResults,
-  getResultValues,
-  waitForResultChange,
-} from "./helpers";
+import { waitForResults, getResultValues } from "./helpers";
 
 test.describe("Config wizard dialog", () => {
   test.beforeEach(async ({ page }) => {
@@ -47,9 +43,9 @@ test.describe("Config wizard dialog", () => {
     await page.getByRole("button", { name: "Tailor to you" }).click();
     const dialog = page.getByRole("dialog", { name: "Configure your loans" });
 
-    // Select Plan 5 with £40k — different enough to produce a distinct total
+    // Select Plan 5 with a unique quick pick balance (£60k is only in Plan 5)
     await dialog.getByRole("checkbox", { name: /Plan 5/ }).click();
-    await dialog.getByRole("button", { name: "£40k" }).click();
+    await dialog.getByRole("button", { name: "£60k" }).click();
 
     // Click Done
     await dialog.getByRole("button", { name: "Done" }).click();
@@ -57,8 +53,10 @@ test.describe("Config wizard dialog", () => {
     // Dialog should close
     await expect(dialog).toBeHidden();
 
-    // Results should change (auto-retries until value differs)
-    await waitForResultChange(page, before.totalText);
+    // Results should change
+    await waitForResults(page);
+    const after = await getResultValues(page);
+    expect(after.totalText).not.toBe(before.totalText);
   });
 
   test("clicking Close closes dialog without changing results", async ({

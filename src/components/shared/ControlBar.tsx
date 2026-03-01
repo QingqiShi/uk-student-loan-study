@@ -2,7 +2,7 @@
 
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { startTransition, useOptimistic, ViewTransition } from "react";
+import { startTransition, useOptimistic } from "react";
 import type { InputMode } from "@/hooks/useInputPanelMode";
 import type { Preset } from "@/lib/presets";
 import { LoanConfigPanel } from "@/components/home/LoanConfigPanel";
@@ -277,21 +277,19 @@ export function ControlBar({ initialMode }: ControlBarProps) {
   } = useInputPanelMode({ initialMode });
 
   return (
-    <ViewTransition name="control-bar">
-      <div className="space-y-3 rounded-xl bg-card p-3 ring-1 ring-foreground/10 sm:p-4">
-        <SalarySlider />
-        <ExpandedPresets
-          onPresetApplied={handlePresetApplied}
-          onPersonalise={handlePersonalise}
-          hasPersonalized={hasPersonalized}
-        />
-        <ConfigOverlay
-          mode={mode}
-          hasPersonalized={hasPersonalized}
-          onComplete={handleWizardComplete}
-          onClose={handleWizardClose}
-        />
-      </div>
-    </ViewTransition>
+    <div className="space-y-3 rounded-xl bg-card p-3 ring-1 ring-foreground/10 sm:p-4">
+      <SalarySlider />
+      <ExpandedPresets
+        onPresetApplied={handlePresetApplied}
+        onPersonalise={handlePersonalise}
+        hasPersonalized={hasPersonalized}
+      />
+      <ConfigOverlay
+        mode={mode}
+        hasPersonalized={hasPersonalized}
+        onComplete={handleWizardComplete}
+        onClose={handleWizardClose}
+      />
+    </div>
   );
 }
