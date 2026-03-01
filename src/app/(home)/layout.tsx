@@ -25,7 +25,7 @@ const faqSchema = {
       name: "How long does it take to pay off a UK student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "It depends on your salary and plan type. High earners on Plan 2 might pay off in 10-15 years, while most graduates repay for the full 25-40 year term before write-off. Use our repayment calculator to see exactly how long your loan will take to pay off based on your salary and balance.",
+        text: "It depends on your salary and plan type. High earners on Plan 2 might pay off in 10-15 years, while most graduates repay for the full 25-40 year term before write-off. Use our payoff timeline calculator to see exactly how many years your loan will take to pay off based on your salary, balance, and plan type.",
       },
     },
     {

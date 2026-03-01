@@ -55,7 +55,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/repaid" className={NAV_LINK_CLASS}>
-                  Repaid Over Time
+                  Payoff Timeline
                 </Link>
               </li>
             </ul>
