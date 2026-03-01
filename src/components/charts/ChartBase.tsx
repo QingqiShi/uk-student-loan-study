@@ -287,48 +287,31 @@ export function ChartBase({
                     ? `${yText} at ${xText} ${seriesName}`
                     : `${yText} at ${xText}`;
                 });
-                const charWidth = 6.6;
-                const px = 8;
-                const py = 4;
-                const lineHeight = 14;
-                const maxLen = Math.max(...lines.map((l) => l.length));
-                const rectW = maxLen * charWidth + px * 2;
-                const rectH = lines.length * lineHeight + py * 2;
-                const baseY = viewBox.y - 10 - (isMulti ? 14 : 0) - py;
                 return (
-                  <g>
-                    <rect
-                      x={viewBox.x - rectW / 2}
-                      y={baseY - lineHeight / 2}
-                      width={rectW}
-                      height={rectH}
-                      rx={4}
-                      fill="var(--background)"
-                      stroke="var(--border)"
-                      strokeWidth={1}
-                      opacity={0.95}
-                    />
-                    <text
-                      x={viewBox.x}
-                      y={viewBox.y}
-                      textAnchor="middle"
-                      fontSize={11}
-                      fontWeight={500}
-                    >
-                      {crosshairPoint.values.map((v, i) => {
-                        return (
-                          <tspan
-                            key={v.dataKey}
-                            x={viewBox.x}
-                            dy={i === 0 ? -10 - (isMulti ? 14 : 0) : 14}
-                            fill={`var(--color-${v.dataKey})`}
-                          >
-                            {lines[i]}
-                          </tspan>
-                        );
-                      })}
-                    </text>
-                  </g>
+                  <text
+                    x={viewBox.x}
+                    y={viewBox.y}
+                    textAnchor="middle"
+                    fontSize={11}
+                    fontWeight={500}
+                    stroke="var(--background)"
+                    strokeWidth={4}
+                    strokeLinejoin="round"
+                    paintOrder="stroke"
+                  >
+                    {crosshairPoint.values.map((v, i) => {
+                      return (
+                        <tspan
+                          key={v.dataKey}
+                          x={viewBox.x}
+                          dy={i === 0 ? -10 - (isMulti ? 14 : 0) : 14}
+                          fill={`var(--color-${v.dataKey})`}
+                        >
+                          {lines[i]}
+                        </tspan>
+                      );
+                    })}
+                  </text>
                 );
               }}
             />
@@ -409,36 +392,22 @@ export function ChartBase({
                     const text = annotation.bottomLabel;
                     const tagX = viewBox.x;
                     const tagY = viewBox.y + viewBox.height - 10;
-                    const charWidth = 6.6;
-                    const px = 6;
-                    const py = 3;
-                    const rectW = text.length * charWidth + px * 2;
-                    const rectH = 16 + py * 2;
                     return (
-                      <g>
-                        <rect
-                          x={tagX - rectW / 2}
-                          y={tagY - rectH / 2}
-                          width={rectW}
-                          height={rectH}
-                          rx={4}
-                          fill="var(--background)"
-                          stroke={annotation.color ?? "var(--muted-foreground)"}
-                          strokeWidth={1}
-                          opacity={0.9}
-                        />
-                        <text
-                          x={tagX}
-                          y={tagY}
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                          fill={annotation.color ?? "var(--muted-foreground)"}
-                          fontSize={11}
-                          fontWeight={500}
-                        >
-                          {text}
-                        </text>
-                      </g>
+                      <text
+                        x={tagX}
+                        y={tagY}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fill={annotation.color ?? "var(--muted-foreground)"}
+                        fontSize={11}
+                        fontWeight={500}
+                        stroke="var(--background)"
+                        strokeWidth={4}
+                        strokeLinejoin="round"
+                        paintOrder="stroke"
+                      >
+                        {text}
+                      </text>
                     );
                   }}
                 />
