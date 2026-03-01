@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Balance Over Time — Student Loan Balance Trajectory",
+  title: "How Long to Pay Off Your Student Loan — Payoff Timeline Calculator",
   description:
-    "See how your UK student loan balance changes over time. Track peak balance, interest growth, and when your loan will be paid off or written off.",
+    "Find out how long it takes to pay off your UK student loan. See your payoff timeline, balance trajectory, and whether your loan will be paid off or written off — based on your salary and plan type.",
   keywords: [
+    "how long to pay off student loan",
+    "student loan payoff calculator",
+    "student loan payoff timeline",
+    "how long to repay student loan UK",
     "student loan balance over time",
-    "student loan balance trajectory",
-    "UK student loan balance tracker",
-    "student loan peak balance",
+    "UK student loan payoff date",
   ],
 };
 
@@ -25,7 +27,7 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: "Balance Over Time",
+      name: "Payoff Timeline",
       item: "https://studentloanstudy.uk/balance",
     },
   ],
@@ -37,18 +39,26 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Why is my student loan balance going up?",
+      name: "When will I finish paying off my student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Your balance grows when interest added each month exceeds your repayments. This is common in the early years when your salary is lower and repayments are small. For Plan 2 borrowers, interest can be as high as RPI + 3%, meaning the balance may rise for several years before repayments start to outpace interest.",
+        text: "It depends on your salary, loan balance, and plan type. High earners on Plan 2 might pay off in 10–15 years, while most graduates repay for the full term before the loan is written off — 25 years for Plan 1, 30 years for Plans 2 and 4, 40 years for Plan 5, and 30 years for Postgraduate loans. Use our payoff timeline calculator to see a year-by-year projection for your situation.",
       },
     },
     {
       "@type": "Question",
-      name: "How do I track my student loan balance over time?",
+      name: "Will my student loan be paid off or written off?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Use our balance trajectory calculator to see a year-by-year projection of your loan balance. Enter your salary, balance, and plan type to visualise when your balance peaks, when repayments overtake interest, and whether your loan will be paid off or written off.",
+        text: "Most graduates will have their loan written off before paying it in full. Only high earners typically repay in full. Whether your loan is paid off or written off depends on your salary trajectory, starting balance, and plan type.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Why is my student loan balance going up?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Your balance grows when interest added each month exceeds your repayments. This is common in the early years when your salary is lower and repayments are small. For Plan 2 borrowers, interest can be as high as RPI + 3%, meaning the balance may rise for several years before repayments start to outpace interest.",
       },
     },
   ],

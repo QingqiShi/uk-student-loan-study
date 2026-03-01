@@ -50,8 +50,8 @@ export function BalanceDetailPage() {
 
   return (
     <DetailPageShell
-      heading="Balance Trajectory"
-      description="See how your loan balance changes over time as interest accrues and repayments are made."
+      heading="Payoff Timeline"
+      description="See when you'll pay off your student loan and how your balance changes over time."
     >
       {result ? (
         <>

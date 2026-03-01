@@ -16,8 +16,8 @@ test.describe("Home page preset selection", () => {
     const section = page
       .locator("section")
       .filter({ hasText: "Your Loan Breakdown" });
+    await expect(section.getByText("Total Repayments")).toBeVisible();
     await expect(section.getByText("Payoff Timeline")).toBeVisible();
-    await expect(section.getByText("Balance Over Time")).toBeVisible();
     await expect(section.getByText("Interest Paid")).toBeVisible();
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });

@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How Long to Pay Off Your Student Loan — Payoff Timeline Calculator",
+  title: "Total Repayments — Student Loan Total Cost Calculator",
   description:
-    "Find out how long it takes to pay off your UK student loan. See your payoff timeline, total repayments over time, monthly costs, and whether your loan will be paid off or written off — based on your salary and plan type.",
+    "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed — based on your salary and plan type.",
   keywords: [
-    "how long to pay off student loan",
-    "student loan payoff calculator",
-    "student loan payoff timeline",
-    "how long to repay student loan UK",
-    "student loan repayments over time",
+    "student loan total repayments",
+    "how much will I repay student loan",
+    "student loan total cost calculator",
     "UK student loan repayment calculator",
+    "student loan repayments over time",
+    "student loan cumulative repayments",
   ],
 };
 
@@ -27,7 +27,7 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: "Payoff Timeline",
+      name: "Total Repayments",
       item: "https://studentloanstudy.uk/repaid",
     },
   ],
@@ -39,26 +39,26 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "When will I finish paying off my student loan?",
+      name: "How much will I repay on my student loan in total?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "It depends on your salary, loan balance, and plan type. High earners on Plan 2 might pay off in 10–15 years, while most graduates repay for the full term before the loan is written off — 25 years for Plan 1, 30 years for Plans 2 and 4, 40 years for Plan 5, and 30 years for Postgraduate loans. Use our payoff timeline calculator to see a year-by-year projection for your situation.",
+        text: "It depends on your salary, loan balance, and plan type. High earners on Plan 2 may repay significantly more than they borrowed due to interest, while lower earners may have the remaining balance written off after 25–40 years. Use our total repayments calculator to see a year-by-year breakdown of how much you'll pay.",
       },
     },
     {
       "@type": "Question",
-      name: "Will my student loan be paid off or written off?",
+      name: "Will I repay more than I borrowed?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Most graduates will have their loan written off before paying it in full. Only high earners typically repay in full. Whether your loan is paid off or written off depends on your salary trajectory, starting balance, and plan type.",
+        text: "Many graduates do repay more than they borrowed because interest accrues from day one. For Plan 2 borrowers, interest can be as high as RPI + 3%, meaning total repayments can exceed the original loan. However, if your salary stays low, you may repay less before the loan is written off.",
       },
     },
     {
       "@type": "Question",
-      name: "How is the student loan payoff date calculated?",
+      name: "How are total student loan repayments calculated?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The calculator projects your loan balance forward month by month, applying your plan's interest rate and deducting 9% of income above the repayment threshold (6% for Postgraduate loans). It factors in salary growth and compares total repayments against the write-off date to show whether you'll repay in full or have the remaining balance cancelled.",
+        text: "The calculator projects your repayments month by month, deducting 9% of income above the repayment threshold (6% for Postgraduate loans). It accumulates these payments over the full loan term to show your total cost, factoring in salary growth and comparing against the write-off date.",
       },
     },
   ],
