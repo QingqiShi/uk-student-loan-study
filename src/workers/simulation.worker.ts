@@ -14,21 +14,21 @@
 import type {
   OverpayInput,
   OverpayAnalysisResult,
-} from "@/lib/loans/overpay-types";
+} from "@/lib/loans/overpayTypes";
 import type { Loan } from "@/lib/loans/types";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
-import type { InsightCardsResult } from "@/types/insight-cards";
+import type { InsightCardsResult } from "@/types/insightCards";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
 import { simulate } from "@/lib/loans/engine";
-import { simulateOverpayScenarios } from "@/lib/loans/overpay-simulate";
+import { simulateOverpayScenarios } from "@/lib/loans/overpaySimulate";
 import { generateInsight, type Insight } from "@/utils/insights";
 import {
   generateSalaryDataSeries,
   generateSalaryDataSeriesPV,
   generateBalanceTimeSeries,
   type BalanceTimeSeriesResult,
-} from "@/utils/loan-calculations";
-import { toPresent, pvTotal } from "@/utils/present-value";
+} from "@/utils/loanCalculations";
+import { toPresent, pvTotal } from "@/utils/presentValue";
 
 // ============================================================================
 // Message Types

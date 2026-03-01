@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { simulateOverpayScenarios } from "./overpay-simulate";
+import { simulateOverpayScenarios } from "./overpaySimulate";
 import { CURRENT_RATES } from "./plans";
-import type { OverpayInput } from "./overpay-types";
+import type { OverpayInput } from "./overpayTypes";
 
 beforeEach(() => {
   vi.useFakeTimers();

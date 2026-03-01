@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MIN_SALARY, MAX_SALARY, percentageFormatter } from "@/constants";
 import { useEffectiveRateBySalaryData } from "@/hooks/useDetailData";
 import { useCurrentSalary } from "@/hooks/useStoreSelectors";
-import { DETAIL_PAGE_COLOR } from "@/lib/detail-pages";
+import { DETAIL_PAGE_COLOR } from "@/lib/detailPages";
 
 const ACCENT = DETAIL_PAGE_COLOR["/effective-rate"];
 

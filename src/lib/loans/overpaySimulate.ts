@@ -6,10 +6,10 @@ import type {
   ScenarioResult,
   BalanceDataPoint,
   RecommendationType,
-} from "./overpay-types";
+} from "./overpayTypes";
 import type { Loan, SimulationTimeSeries } from "./types";
-import { monthsElapsedSince } from "@/lib/date-utils";
-import { toPresent } from "@/utils/present-value";
+import { monthsElapsedSince } from "@/lib/dateUtils";
+import { toPresent } from "@/utils/presentValue";
 
 /**
  * Applies a lump sum payment by reducing initial loan balances proportionally.

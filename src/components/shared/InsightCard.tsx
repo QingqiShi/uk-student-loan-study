@@ -10,7 +10,7 @@ import type {
   EffectiveRateCardData,
   InsightCardData,
   InterestCardData,
-} from "@/types/insight-cards";
+} from "@/types/insightCards";
 import type { InsightType } from "@/utils/insights";
 import { Sparkline } from "@/components/charts/Sparkline";
 

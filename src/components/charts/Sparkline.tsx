@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import type { SparklinePoint } from "@/types/insight-cards";
+import type { SparklinePoint } from "@/types/insightCards";
 
 interface SparklineProps {
   data: SparklinePoint[];

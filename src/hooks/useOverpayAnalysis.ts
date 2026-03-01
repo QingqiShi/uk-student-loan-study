@@ -5,7 +5,7 @@ import {
   useOverpayConfig,
   useActiveDiscountRate,
 } from "./useStoreSelectors";
-import type { OverpayAnalysisResult } from "@/lib/loans/overpay-types";
+import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 import type { OverpayAnalysisPayload } from "@/workers/simulation.worker";
 
 /**

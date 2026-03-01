@@ -3,7 +3,7 @@ import {
   generateSalaryDataSeries,
   generateSalaryDataSeriesPV,
   generateBalanceTimeSeries,
-} from "./loan-calculations";
+} from "./loanCalculations";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import type { Loan } from "@/lib/loans/types";
 
