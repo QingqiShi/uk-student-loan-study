@@ -40,7 +40,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link href="/balance" className={NAV_LINK_CLASS}>
-                  Balance Over Time
+                  Payoff Timeline
                 </Link>
               </li>
               <li>
@@ -55,7 +55,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/repaid" className={NAV_LINK_CLASS}>
-                  Payoff Timeline
+                  Total Repayments
                 </Link>
               </li>
             </ul>

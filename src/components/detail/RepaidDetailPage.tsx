@@ -17,8 +17,8 @@ export function RepaidDetailPage() {
 
   return (
     <DetailPageShell
-      heading="Payoff Timeline"
-      description="See how long to pay off your student loan and track total repayments over time."
+      heading="Total Repayments"
+      description="Track how much you'll repay on your student loan over time."
     >
       {result ? (
         <>

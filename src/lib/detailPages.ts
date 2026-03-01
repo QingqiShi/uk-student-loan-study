@@ -8,14 +8,14 @@ export interface DetailPageConfig {
 export const DETAIL_PAGES: DetailPageConfig[] = [
   {
     href: "/repaid",
-    label: "Payoff Timeline",
-    shortLabel: "Payoff",
+    label: "Total Repayments",
+    shortLabel: "Repayments",
     color: "var(--chart-1)",
   },
   {
     href: "/balance",
-    label: "Balance Over Time",
-    shortLabel: "Balance",
+    label: "Payoff Timeline",
+    shortLabel: "Payoff",
     color: "var(--chart-2)",
   },
   {
