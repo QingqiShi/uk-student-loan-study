@@ -1,7 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Manrope, Space_Grotesk, JetBrains_Mono } from "next/font/google";
-import { ViewTransition } from "react";
 import "./globals.css";
 import type { Metadata } from "next";
 import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
@@ -122,7 +121,7 @@ export default function RootLayout({
           <LoanProvider>
             <AssumptionsWizardProvider>
               <PersonalizedResultsProvider>
-                <ViewTransition>{children}</ViewTransition>
+                {children}
               </PersonalizedResultsProvider>
             </AssumptionsWizardProvider>
           </LoanProvider>

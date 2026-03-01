@@ -1,6 +1,5 @@
 "use client";
 
-import { ViewTransition } from "react";
 import {
   CalculatorCard,
   ProportionCard,
@@ -109,11 +108,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
           cards.length >= 5 ? "lg:grid-cols-5" : "lg:grid-cols-4",
         )}
       >
-        {cards.map((card, i) => (
-          <ViewTransition key={i} name={`insight-slot-${String(i)}`}>
-            {card}
-          </ViewTransition>
-        ))}
+        {cards}
       </div>
     </section>
   );
