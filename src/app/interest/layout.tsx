@@ -51,6 +51,14 @@ const faqSchema = {
         text: "Student loan interest accrues from the day your loan is paid out, including while you study. For Plan 2 borrowers, interest can be RPI + up to 3%, meaning your balance can grow faster than your repayments reduce it — especially in the early years when your salary is lower.",
       },
     },
+    {
+      "@type": "Question",
+      name: "How much interest am I paying on my student loan?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The amount of interest you pay depends on your plan type, loan balance, and how long you hold the loan. Use our interest breakdown calculator to see a year-by-year split of how much of each repayment goes towards interest versus reducing your balance.",
+      },
+    },
   ],
 };
 

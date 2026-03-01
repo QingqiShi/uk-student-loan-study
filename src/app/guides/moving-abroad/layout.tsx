@@ -67,6 +67,22 @@ const faqSchema = {
         text: "SLC sets country-specific repayment thresholds based on the cost of living in your country of residence. You still repay 9% of income above the threshold (6% for Postgraduate loans), but the threshold itself varies by country rather than using the standard UK figure.",
       },
     },
+    {
+      "@type": "Question",
+      name: "What happens to my student loan if I emigrate from the UK?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Your loan remains active regardless of where you live. When you emigrate, you must contact the Student Loans Company within three months, complete an overseas income assessment, and switch to country-specific repayment thresholds. The write-off date stays the same — emigrating does not reset or extend it.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I avoid paying my student loan by moving abroad?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. The Student Loans Company actively tracks overseas borrowers and has legal powers to pursue repayment internationally. If you do not respond to income assessments, SLC will impose fixed repayment amounts that are often much higher than income-based repayments. They may also refer your account to debt collection agencies or take court action.",
+      },
+    },
   ],
 };
 

@@ -39,10 +39,10 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "How long does it take to pay off a UK student loan?",
+      name: "When will I finish paying off my student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "It depends on your salary, loan balance, and plan type. High earners on Plan 2 might pay off in 10-15 years, while most graduates repay for the full 25-40 year term before the loan is written off. Plan 1 loans write off after 25 years, Plan 2 after 30 years, Plan 4 after 30 years, Plan 5 after 40 years, and Postgraduate loans after 30 years.",
+        text: "It depends on your salary, loan balance, and plan type. High earners on Plan 2 might pay off in 10–15 years, while most graduates repay for the full term before the loan is written off — 25 years for Plan 1, 30 years for Plans 2 and 4, 40 years for Plan 5, and 30 years for Postgraduate loans. Use our payoff timeline calculator to see a year-by-year projection for your situation.",
       },
     },
     {
@@ -51,6 +51,14 @@ const faqSchema = {
       acceptedAnswer: {
         "@type": "Answer",
         text: "Most graduates will have their loan written off before paying it in full. Only high earners typically repay in full. Whether your loan is paid off or written off depends on your salary trajectory, starting balance, and plan type.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How is the student loan payoff date calculated?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The calculator projects your loan balance forward month by month, applying your plan's interest rate and deducting 9% of income above the repayment threshold (6% for Postgraduate loans). It factors in salary growth and compares total repayments against the write-off date to show whether you'll repay in full or have the remaining balance cancelled.",
       },
     },
   ],

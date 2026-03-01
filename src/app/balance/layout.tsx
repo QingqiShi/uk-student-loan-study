@@ -31,6 +31,29 @@ const breadcrumbSchema = {
   ],
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Why is my student loan balance going up?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Your balance grows when interest added each month exceeds your repayments. This is common in the early years when your salary is lower and repayments are small. For Plan 2 borrowers, interest can be as high as RPI + 3%, meaning the balance may rise for several years before repayments start to outpace interest.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I track my student loan balance over time?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Use our balance trajectory calculator to see a year-by-year projection of your loan balance. Enter your salary, balance, and plan type to visualise when your balance peaks, when repayments overtake interest, and whether your loan will be paid off or written off.",
+      },
+    },
+  ],
+};
+
 export default function BalanceLayout({
   children,
 }: {
@@ -41,6 +64,10 @@ export default function BalanceLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       {children}
     </>
