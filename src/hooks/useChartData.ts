@@ -14,6 +14,7 @@ import type {
   BalanceSeriesPayload,
 } from "@/workers/simulation.worker";
 import { MIN_SALARY, MAX_SALARY } from "@/constants";
+import { findClosestBySalary } from "@/lib/utils";
 
 interface AnnotationData {
   annotationSalary: number | undefined;
@@ -33,13 +34,7 @@ function useAnnotationData(
     salary >= MIN_SALARY &&
     salary <= MAX_SALARY - maxSalaryOffset
   ) {
-    // Find the data point closest to the annotation salary
-    const closestPoint = data.reduce((closest, point) => {
-      if (Math.abs(point.salary - salary) < Math.abs(closest.salary - salary)) {
-        return point;
-      }
-      return closest;
-    }, data[0]);
+    const closestPoint = findClosestBySalary(data, salary);
 
     return {
       annotationSalary: salary,

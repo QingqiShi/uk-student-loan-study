@@ -8,6 +8,7 @@ import { MIN_SALARY, MAX_SALARY, percentageFormatter } from "@/constants";
 import { useEffectiveRateBySalaryData } from "@/hooks/useDetailData";
 import { useCurrentSalary } from "@/hooks/useStoreSelectors";
 import { DETAIL_PAGE_COLOR } from "@/lib/detailPages";
+import { findClosestBySalary } from "@/lib/utils";
 
 const ACCENT = DETAIL_PAGE_COLOR["/effective-rate"];
 
@@ -18,11 +19,9 @@ export function EffectiveRateDetailPage() {
   const boeRate = salaryResult?.boeRate ?? 0;
 
   const closestPoint =
-    salaryResult?.data.reduce((closest, point) =>
-      Math.abs(point.salary - salary) < Math.abs(closest.salary - salary)
-        ? point
-        : closest,
-    ) ?? null;
+    salaryResult && salaryResult.data.length > 0
+      ? findClosestBySalary(salaryResult.data, salary)
+      : null;
 
   const effectiveRate = closestPoint?.effectiveRate ?? 0;
   const diff = effectiveRate - boeRate;
