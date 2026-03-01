@@ -9,7 +9,7 @@ export function Footer() {
       <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
         <nav
           aria-label="Footer navigation"
-          className="grid grid-cols-1 gap-8 text-sm xs:grid-cols-2 sm:grid-cols-3"
+          className="grid grid-cols-1 gap-8 text-sm xs:grid-cols-2 md:grid-cols-4"
         >
           <div className="space-y-3">
             <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
@@ -35,14 +35,36 @@ export function Footer() {
           </div>
           <div className="space-y-3">
             <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              Learn
+              Charts
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/guides" className={NAV_LINK_CLASS}>
-                  All Guides
+                <Link href="/balance" className={NAV_LINK_CLASS}>
+                  Balance Over Time
                 </Link>
               </li>
+              <li>
+                <Link href="/interest" className={NAV_LINK_CLASS}>
+                  Interest Paid
+                </Link>
+              </li>
+              <li>
+                <Link href="/effective-rate" className={NAV_LINK_CLASS}>
+                  Effective Rate
+                </Link>
+              </li>
+              <li>
+                <Link href="/repaid" className={NAV_LINK_CLASS}>
+                  Repaid Over Time
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              Guides
+            </h3>
+            <ul className="space-y-2">
               <li>
                 <Link
                   href="/guides/plan-2-vs-plan-5"
@@ -59,9 +81,40 @@ export function Footer() {
                   How Interest Works
                 </Link>
               </li>
+              <li>
+                <Link href="/guides/rpi-vs-cpi" className={NAV_LINK_CLASS}>
+                  RPI vs CPI
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/guides/student-loan-vs-mortgage"
+                  className={NAV_LINK_CLASS}
+                >
+                  Student Loans & Mortgages
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/guides/pay-upfront-or-take-loan"
+                  className={NAV_LINK_CLASS}
+                >
+                  Pay Upfront or Take the Loan?
+                </Link>
+              </li>
+              <li>
+                <Link href="/guides/moving-abroad" className={NAV_LINK_CLASS}>
+                  Moving Abroad
+                </Link>
+              </li>
+              <li>
+                <Link href="/guides/self-employment" className={NAV_LINK_CLASS}>
+                  Self-Employment
+                </Link>
+              </li>
             </ul>
           </div>
-          <div className="space-y-3 xs:col-span-2 sm:col-span-1">
+          <div className="space-y-3">
             <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
               About
             </h3>
