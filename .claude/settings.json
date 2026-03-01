@@ -9,6 +9,15 @@
             "command": "bash -c 'CMD=$(jq -r .tool_input.command) && if echo \"$CMD\" | grep -qE \"\\bnpm\\b|\\bnpx\\b\"; then echo \"Use pnpm/pnpx instead of npm/npx. This project uses pnpm.\" >&2; exit 2; fi'"
           }
         ]
+      },
+      {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.claude/hooks/worktree-guard.sh\""
+          }
+        ]
       }
     ],
     "WorktreeCreate": [
