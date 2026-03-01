@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, use, type ReactNode } from "react";
-import type { InsightCardsResult } from "@/types/insight-cards";
+import type { InsightCardsResult } from "@/types/insightCards";
 import type { Insight } from "@/utils/insights";
 import type {
   InsightSummary,

@@ -1,7 +1,7 @@
 import type { Loan, SimulationTimeSeries } from "@/lib/loans/types";
 import { simulate } from "@/lib/loans/engine";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
-import { pvTotal } from "@/utils/present-value";
+import { pvTotal } from "@/utils/presentValue";
 
 export type InsightType = "low-earner" | "middle-earner" | "high-earner";
 

@@ -7,7 +7,7 @@ import {
   SparklineCard,
 } from "./InsightCard";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
-import { DETAIL_PAGES } from "@/lib/detail-pages";
+import { DETAIL_PAGES } from "@/lib/detailPages";
 import { cn } from "@/lib/utils";
 
 interface InsightCardsProps {

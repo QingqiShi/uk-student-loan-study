@@ -5,7 +5,7 @@ import type { ChartConfig } from "@/components/ui/chart";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
-import { toPresent } from "@/utils/present-value";
+import { toPresent } from "@/utils/presentValue";
 
 const SALARY_OPTIONS = [30000, 50000, 70000] as const;
 type SalaryOption = (typeof SALARY_OPTIONS)[number];

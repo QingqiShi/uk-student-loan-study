@@ -6,7 +6,7 @@ import { StatCard, StatCardSkeleton } from "./StatCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
-import { DETAIL_PAGE_COLOR } from "@/lib/detail-pages";
+import { DETAIL_PAGE_COLOR } from "@/lib/detailPages";
 
 const ACCENT = DETAIL_PAGE_COLOR["/interest"];
 

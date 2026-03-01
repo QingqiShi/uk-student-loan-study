@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toPresent, pvTotal } from "./present-value";
+import { toPresent, pvTotal } from "./presentValue";
 
 describe("toPresent", () => {
   it("returns nominal value when discount rate is 0", () => {

@@ -7,7 +7,7 @@ import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
 import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
-import { pvTotal } from "@/utils/present-value";
+import { pvTotal } from "@/utils/presentValue";
 
 /**
  * Generates a data series for salary-based charts.
