@@ -11,6 +11,7 @@ import {
   MIN_SALARY,
   MAX_SALARY,
 } from "@/constants";
+import { findClosestBySalary } from "@/lib/utils";
 
 const chartConfig = {
   effectiveRate: {
@@ -44,12 +45,7 @@ export function EffectiveRateBySalaryChart({
 
   const closestPoint =
     deferredSalary !== undefined
-      ? data.reduce((closest, point) =>
-          Math.abs(point.salary - deferredSalary) <
-          Math.abs(closest.salary - deferredSalary)
-            ? point
-            : closest,
-        )
+      ? findClosestBySalary(data, deferredSalary)
       : undefined;
 
   const annotations =
