@@ -15,26 +15,51 @@ import { Sparkline } from "@/components/charts/Sparkline";
 function CardShell({
   title,
   href,
+  active,
+  color,
   children,
 }: {
   title: string;
   href: string;
+  active?: boolean;
+  color?: string;
   children: React.ReactNode;
 }) {
-  return (
-    <Link href={href} className="group block h-full">
-      <div className="flex h-full flex-col overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10 transition-all duration-200 hover:bg-accent hover:ring-primary/30">
-        <div className="flex items-center justify-between px-5 pt-5">
-          <span className="text-sm font-medium text-muted-foreground">
-            {title}
-          </span>
+  const inner = (
+    <div
+      className={
+        active
+          ? "flex h-full flex-col overflow-hidden rounded-xl bg-card ring-2"
+          : "flex h-full flex-col overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10 transition-all duration-200 hover:bg-accent hover:ring-primary/30"
+      }
+      style={
+        active && color
+          ? ({ "--tw-ring-color": color } as React.CSSProperties)
+          : undefined
+      }
+    >
+      <div className="flex items-center justify-between px-5 pt-5">
+        <span className="text-sm font-medium text-muted-foreground">
+          {title}
+        </span>
+        {!active && (
           <HugeiconsIcon
             icon={ArrowRight01Icon}
             className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5"
           />
-        </div>
-        {children}
+        )}
       </div>
+      {children}
+    </div>
+  );
+
+  if (active) {
+    return <div className="block h-full">{inner}</div>;
+  }
+
+  return (
+    <Link href={href} className="group block h-full">
+      {inner}
     </Link>
   );
 }
@@ -58,6 +83,7 @@ interface SparklineCardProps {
   title: string;
   href: string;
   color: string;
+  active?: boolean;
   cardData: InsightCardData | null;
 }
 
@@ -65,10 +91,11 @@ export function SparklineCard({
   title,
   href,
   color,
+  active,
   cardData,
 }: SparklineCardProps) {
   return (
-    <CardShell title={title} href={href}>
+    <CardShell title={title} href={href} active={active} color={color}>
       {cardData ? (
         <div className="flex flex-1 flex-col">
           <span className="px-5 pt-2 font-mono text-xl font-semibold tabular-nums">
@@ -97,6 +124,7 @@ interface ProportionCardProps {
   title: string;
   href: string;
   color: string;
+  active?: boolean;
   cardData: InterestCardData | null;
 }
 
@@ -104,10 +132,11 @@ export function ProportionCard({
   title,
   href,
   color,
+  active,
   cardData,
 }: ProportionCardProps) {
   return (
-    <CardShell title={title} href={href}>
+    <CardShell title={title} href={href} active={active} color={color}>
       {cardData ? (
         <div className="flex flex-1 flex-col justify-between px-5 pt-2 pb-5">
           <span className="font-mono text-xl font-semibold tabular-nums">
@@ -161,6 +190,7 @@ interface RateComparisonCardProps {
   title: string;
   href: string;
   color: string;
+  active?: boolean;
   cardData: EffectiveRateCardData | null;
 }
 
@@ -168,6 +198,7 @@ export function RateComparisonCard({
   title,
   href,
   color,
+  active,
   cardData,
 }: RateComparisonCardProps) {
   const maxRate = Math.max(
@@ -185,7 +216,7 @@ export function RateComparisonCard({
       : 0;
 
   return (
-    <CardShell title={title} href={href}>
+    <CardShell title={title} href={href} active={active} color={color}>
       {cardData ? (
         <div className="flex flex-1 flex-col justify-between px-5 pt-2 pb-5">
           <span className="font-mono text-xl font-semibold tabular-nums">
@@ -237,42 +268,6 @@ export function RateComparisonCard({
             <div className="h-2 animate-pulse rounded-full bg-muted" />
           </div>
         </div>
-      )}
-    </CardShell>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Calculator card (insight text + sparkline)
-// ---------------------------------------------------------------------------
-
-interface CalculatorCardProps {
-  cardData: InsightCardData | null;
-  currentSalary: number | undefined;
-}
-
-export function CalculatorCard({
-  cardData,
-  currentSalary,
-}: CalculatorCardProps) {
-  return (
-    <CardShell title="Repayment Calculator" href="/">
-      {cardData ? (
-        <div className="flex flex-1 flex-col">
-          <span className="px-5 pt-2 font-mono text-xl font-semibold tabular-nums">
-            {cardData.stat}
-          </span>
-          <div className="mt-auto">
-            <Sparkline
-              data={cardData.data}
-              color="var(--primary)"
-              ariaLabel={cardData.label}
-              annotationX={currentSalary}
-            />
-          </div>
-        </div>
-      ) : (
-        <StatSkeleton />
       )}
     </CardShell>
   );
