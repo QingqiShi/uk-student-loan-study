@@ -2,18 +2,27 @@
 
 import { CumulativeRepaidChart } from "./CumulativeRepaidChart";
 import { DetailPageShell } from "./DetailPageShell";
-import { StatCard, StatCardSkeleton } from "./StatCard";
+import { RepaidHeroStats, RepaidHeroStatsSkeleton } from "./RepaidHeroStats";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
-import { DETAIL_PAGE_COLOR } from "@/lib/detailPages";
-
-const ACCENT = DETAIL_PAGE_COLOR["/repaid"];
 
 export function RepaidDetailPage() {
   const result = useDetailSeriesData();
 
-  const years = result ? Math.round(result.stats.monthsToPayoff / 12) : 0;
+  const payoffYears = result ? Math.round(result.stats.monthsToPayoff / 12) : 0;
+
+  function getInsightText() {
+    if (!result) return null;
+    const { monthlyRepayment, writtenOff } = result.stats;
+    const monthly = currencyFormatter.format(monthlyRepayment);
+
+    if (writtenOff) {
+      return `Your repayments start at ${monthly}/month at your current salary. After ${String(payoffYears)} years, the remaining balance is written off.`;
+    }
+
+    return `Your repayments start at ${monthly}/month at your current salary, growing over ${String(payoffYears)} years as your income rises.`;
+  }
 
   return (
     <DetailPageShell
@@ -21,52 +30,28 @@ export function RepaidDetailPage() {
       description="Track how much you'll repay on your student loan over time."
     >
       {result ? (
-        <>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-            <StatCard
-              label="Total Repaid"
-              value={currencyFormatter.format(result.stats.totalPaid)}
-              subtext={`over ${String(years)} years`}
-              accentColor={ACCENT}
-            />
-            <StatCard
-              label="Monthly Repayment"
-              value={currencyFormatter.format(result.stats.monthlyRepayment)}
-              subtext="at current salary"
-              accentColor={ACCENT}
-            />
-            <div className="col-span-2 sm:col-span-1">
-              <StatCard
-                label="Outcome"
-                value={result.stats.writtenOff ? "Written off" : "Paid in full"}
-                subtext={
-                  result.stats.writtenOff
-                    ? `${currencyFormatter.format(result.balanceSeries[result.balanceSeries.length - 1]?.balance ?? 0)} forgiven`
-                    : undefined
-                }
-                accentColor={ACCENT}
-              />
-            </div>
-          </div>
-
+        <div className="space-y-2">
+          <RepaidHeroStats
+            totalRepaid={currencyFormatter.format(result.stats.totalPaid)}
+            writtenOff={result.stats.writtenOff}
+            payoffYears={payoffYears}
+            aheadOfSchedule={payoffYears <= 15 && !result.stats.writtenOff}
+          />
           <div className="h-65 sm:h-75 md:h-85">
             <CumulativeRepaidChart
               data={result.cumulativeRepaid}
               writeOffMonth={result.stats.writeOffMonth}
             />
           </div>
-        </>
+          <p className="mx-auto max-w-2xl text-center text-sm text-muted-foreground">
+            {getInsightText()}
+          </p>
+        </div>
       ) : (
-        <>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-            <StatCardSkeleton />
-            <StatCardSkeleton />
-            <div className="col-span-2 sm:col-span-1">
-              <StatCardSkeleton />
-            </div>
-          </div>
+        <div className="space-y-3">
+          <RepaidHeroStatsSkeleton />
           <Skeleton className="h-65 sm:h-75 md:h-85" />
-        </>
+        </div>
       )}
     </DetailPageShell>
   );
