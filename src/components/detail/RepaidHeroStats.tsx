@@ -17,9 +17,19 @@ export function RepaidHeroStats({
   return (
     <div className="flex animate-timeline-enter flex-wrap items-center justify-end gap-x-3 gap-y-1">
       <OutcomeBadge
-        writtenOff={writtenOff}
-        writtenOffLabel={`after ${String(payoffYears)} years`}
-        aheadOfSchedule={aheadOfSchedule}
+        conditions={[
+          {
+            when: writtenOff,
+            label: `Written off after ${String(payoffYears)} years`,
+            variant: "warning",
+          },
+          {
+            when: aheadOfSchedule,
+            label: "Paid in full — ahead of schedule",
+            variant: "success",
+          },
+          { when: true, label: "Paid in full", variant: "success" },
+        ]}
       />
       <p
         className="font-mono text-2xl font-bold tabular-nums"
