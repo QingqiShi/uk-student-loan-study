@@ -1,3 +1,4 @@
+import { OutcomeBadge } from "./OutcomeBadge";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface PayoffHeroStatsProps {
@@ -5,38 +6,6 @@ interface PayoffHeroStatsProps {
   writtenOff: boolean;
   totalPaidAmount?: string;
   aheadOfSchedule: boolean;
-}
-
-function OutcomeBadge({
-  writtenOff,
-  totalPaidAmount,
-  aheadOfSchedule,
-}: {
-  writtenOff: boolean;
-  totalPaidAmount?: string;
-  aheadOfSchedule: boolean;
-}) {
-  if (writtenOff) {
-    return (
-      <span className="inline-flex rounded-md border border-status-warning-border bg-status-warning px-2 py-0.5 text-xs font-medium text-status-warning-foreground">
-        Written off after paying a total of {totalPaidAmount}
-      </span>
-    );
-  }
-
-  if (aheadOfSchedule) {
-    return (
-      <span className="inline-flex rounded-md border border-status-success-border bg-status-success px-2 py-0.5 text-xs font-medium text-status-success-foreground">
-        Paid in full — ahead of schedule
-      </span>
-    );
-  }
-
-  return (
-    <span className="inline-flex rounded-md border border-status-success-border bg-status-success px-2 py-0.5 text-xs font-medium text-status-success-foreground">
-      Paid in full
-    </span>
-  );
 }
 
 export function PayoffHeroStats({
@@ -49,7 +18,7 @@ export function PayoffHeroStats({
     <div className="flex animate-timeline-enter flex-wrap items-center justify-end gap-x-3 gap-y-1">
       <OutcomeBadge
         writtenOff={writtenOff}
-        totalPaidAmount={totalPaidAmount}
+        writtenOffLabel={`after paying a total of ${totalPaidAmount ?? ""}`}
         aheadOfSchedule={aheadOfSchedule}
       />
       <p
