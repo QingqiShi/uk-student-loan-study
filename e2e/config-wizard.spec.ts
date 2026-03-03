@@ -118,7 +118,7 @@ test.describe("Config wizard dialog", () => {
     // Results should load with combined plan values
     await waitForResults(page);
     const section = page
-      .locator("section")
+      .locator("nav")
       .filter({ hasText: "Your Loan Breakdown" });
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });

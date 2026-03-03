@@ -14,7 +14,7 @@ test.describe("Home page preset selection", () => {
 
   test("default preset loads results with £ values", async ({ page }) => {
     const section = page
-      .locator("section")
+      .locator("nav")
       .filter({ hasText: "Your Loan Breakdown" });
     await expect(section.getByText("Total Repayments")).toBeVisible();
     await expect(section.getByText("Payoff Timeline")).toBeVisible();
