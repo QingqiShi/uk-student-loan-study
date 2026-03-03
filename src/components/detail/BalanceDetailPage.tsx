@@ -60,7 +60,7 @@ export function BalanceDetailPage() {
               writeOffMonth={result.stats.writeOffMonth}
             />
           </div>
-          <p className="mx-auto max-w-2xl text-center text-sm text-muted-foreground">
+          <p className="text-center text-xs text-muted-foreground">
             {getInsightText()}
           </p>
         </div>
