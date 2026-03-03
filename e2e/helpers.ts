@@ -1,10 +1,10 @@
 import { expect, type Page } from "@playwright/test";
 
 /**
- * Locates the "Your Loan Breakdown" insight cards section.
+ * Locates the "Your Loan Breakdown" insight cards nav.
  */
 function insightCardsSection(page: Page) {
-  return page.locator("section").filter({ hasText: "Your Loan Breakdown" });
+  return page.locator("nav").filter({ hasText: "Your Loan Breakdown" });
 }
 
 /**

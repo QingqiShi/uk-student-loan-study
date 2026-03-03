@@ -52,17 +52,19 @@ export function BalanceDetailPage() {
             }
             aheadOfSchedule={payoffYears <= 15 && !result.stats.writtenOff}
           />
-          <div className="h-65 sm:h-75 md:h-85">
-            <BalanceDetailChart
-              data={result.balanceSeries}
-              peakBalanceMonth={result.stats.peakBalanceMonth}
-              peakBalance={result.stats.peakBalance}
-              writeOffMonth={result.stats.writeOffMonth}
-            />
-          </div>
-          <p className="text-center text-xs text-muted-foreground">
-            {getInsightText()}
-          </p>
+          <figure className="space-y-2">
+            <div className="h-65 sm:h-75 md:h-85">
+              <BalanceDetailChart
+                data={result.balanceSeries}
+                peakBalanceMonth={result.stats.peakBalanceMonth}
+                peakBalance={result.stats.peakBalance}
+                writeOffMonth={result.stats.writeOffMonth}
+              />
+            </div>
+            <figcaption className="text-center text-xs text-muted-foreground">
+              {getInsightText()}
+            </figcaption>
+          </figure>
         </div>
       ) : (
         <div className="space-y-3">

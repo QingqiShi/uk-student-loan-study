@@ -277,7 +277,10 @@ export function ControlBar({ initialMode }: ControlBarProps) {
   } = useInputPanelMode({ initialMode });
 
   return (
-    <div className="space-y-3 rounded-xl bg-card p-3 ring-1 ring-foreground/10 sm:p-4">
+    <section
+      aria-label="Calculator settings"
+      className="space-y-3 rounded-xl bg-card p-3 ring-1 ring-foreground/10 sm:p-4"
+    >
       <SalarySlider />
       <ExpandedPresets
         onPresetApplied={handlePresetApplied}
@@ -290,6 +293,6 @@ export function ControlBar({ initialMode }: ControlBarProps) {
         onComplete={handleWizardComplete}
         onClose={handleWizardClose}
       />
-    </div>
+    </section>
   );
 }

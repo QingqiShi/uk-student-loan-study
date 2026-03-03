@@ -7,7 +7,7 @@ test.describe("Share URL round-trip", () => {
     await waitForResults(page);
 
     const section = page
-      .locator("section")
+      .locator("nav")
       .filter({ hasText: "Your Loan Breakdown" });
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
     await expect(section.getByText("Total Repayments")).toBeVisible();
@@ -20,7 +20,7 @@ test.describe("Share URL round-trip", () => {
     await waitForResults(page);
 
     const section = page
-      .locator("section")
+      .locator("nav")
       .filter({ hasText: "Your Loan Breakdown" });
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
@@ -32,7 +32,7 @@ test.describe("Share URL round-trip", () => {
     await waitForResults(page);
 
     const section = page
-      .locator("section")
+      .locator("nav")
       .filter({ hasText: "Your Loan Breakdown" });
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
@@ -51,7 +51,7 @@ test.describe("Share URL round-trip", () => {
     // Should not crash — default preset loads instead
     await waitForResults(page);
     const section = page
-      .locator("section")
+      .locator("nav")
       .filter({ hasText: "Your Loan Breakdown" });
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });

@@ -114,7 +114,7 @@ export function ToolLinks() {
   return (
     <section className="space-y-6">
       <div className="space-y-4">
-        <h3 className="text-base font-semibold">More Tools</h3>
+        <h2 className="text-base font-semibold">More Tools</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {TOOLS.map((tool) => (
             <ToolCard key={tool.href} {...tool} />
@@ -122,7 +122,7 @@ export function ToolLinks() {
         </div>
       </div>
       <div className="space-y-4">
-        <h3 className="text-base font-semibold">Guides</h3>
+        <h2 className="text-base font-semibold">Guides</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {GUIDES.map((guide) => (
             <ToolCard key={guide.href} {...guide} />

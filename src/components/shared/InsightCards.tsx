@@ -19,7 +19,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
   const { cards: data } = usePersonalizedResults();
 
   return (
-    <section className="space-y-4">
+    <nav aria-label="Loan breakdown" className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-muted-foreground">
           Your Loan Breakdown
@@ -68,6 +68,6 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
           cardData={data?.effectiveRate ?? null}
         />
       </div>
-    </section>
+    </nav>
   );
 }

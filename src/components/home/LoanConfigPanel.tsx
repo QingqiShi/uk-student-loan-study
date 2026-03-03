@@ -262,6 +262,7 @@ export function LoanConfigPanel({
                   <button
                     key={amount}
                     type="button"
+                    aria-pressed={loan?.balance === amount}
                     onClick={() => {
                       handleQuickPick(planType, amount);
                     }}
