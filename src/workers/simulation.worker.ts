@@ -143,6 +143,7 @@ export interface DetailSeriesResult {
     monthlyRepayment: number;
     peakBalance: number;
     peakBalanceMonth: number;
+    totalWrittenOff: number;
   };
 }
 
@@ -443,6 +444,7 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
         monthlyRepayment: 0,
         peakBalance: 0,
         peakBalanceMonth: 0,
+        totalWrittenOff: 0,
       },
     };
   }
@@ -532,6 +534,10 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
     ? toPresent(peakBalance, dr, peakBalanceMonth)
     : peakBalance;
 
+  const totalWrittenOff = hasPV
+    ? toPresent(summary.totalWrittenOff, dr, summary.monthsToPayoff)
+    : summary.totalWrittenOff;
+
   return {
     type: "DETAIL_SERIES",
     cumulativeRepaid,
@@ -550,6 +556,7 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
       monthlyRepayment: snapshots.length > 0 ? snapshots[0].totalRepayment : 0,
       peakBalance: peakBal,
       peakBalanceMonth,
+      totalWrittenOff,
     },
   };
 }
