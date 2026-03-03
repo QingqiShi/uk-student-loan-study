@@ -60,14 +60,14 @@ export function InterestDetailPage() {
             )}
             accentColor={ACCENT}
           />
-          <div className="space-y-2">
+          <figure className="space-y-2">
             <div className="h-65 sm:h-75 md:h-85">
               <AnnualInterestChart data={result.annualBreakdown} />
             </div>
-            <p className="text-center text-xs text-muted-foreground">
+            <figcaption className="text-center text-xs text-muted-foreground">
               {getChartCaption(result.annualBreakdown, result.stats.writtenOff)}
-            </p>
-          </div>
+            </figcaption>
+          </figure>
         </div>
       ) : (
         <div className="space-y-3">

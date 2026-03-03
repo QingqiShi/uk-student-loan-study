@@ -54,7 +54,11 @@ function CardShell({
   );
 
   if (active) {
-    return <div className="block h-full">{inner}</div>;
+    return (
+      <div className="block h-full" aria-current="page">
+        {inner}
+      </div>
+    );
   }
 
   return (
@@ -105,7 +109,7 @@ export function SparklineCard({
             <Sparkline
               data={cardData.data}
               color={color}
-              ariaLabel={cardData.label}
+              ariaLabel={`${title}: ${cardData.stat}`}
             />
           </div>
         </div>

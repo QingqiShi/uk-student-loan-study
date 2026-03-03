@@ -52,7 +52,7 @@ export function EffectiveRateDetailPage() {
             />
           </div>
 
-          <div className="space-y-2">
+          <figure className="space-y-2">
             <div className="h-65 sm:h-75 md:h-85">
               <EffectiveRateBySalaryChart
                 data={salaryResult.data}
@@ -60,11 +60,11 @@ export function EffectiveRateDetailPage() {
                 annotationSalary={annotationSalary}
               />
             </div>
-            <p className="text-center text-xs text-muted-foreground">
+            <figcaption className="text-center text-xs text-muted-foreground">
               The effective rate accounts for write-offs — lower earners pay
               less because more of their debt is forgiven.
-            </p>
-          </div>
+            </figcaption>
+          </figure>
         </>
       ) : (
         <>
