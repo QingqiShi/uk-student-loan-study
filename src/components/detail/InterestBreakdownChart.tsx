@@ -2,27 +2,30 @@
 
 import type { ChartConfig } from "@/components/ui/chart";
 import type { DetailSeriesResult } from "@/workers/simulation.worker";
-import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import { LazyChartBase } from "@/components/charts/LazyChartBase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
-import { formatYearFromMonth } from "@/lib/format";
 
 const chartConfig = {
-  cumulativeInterest: {
-    label: "Interest",
+  interestPaid: {
+    label: "Interest paid",
     color: "var(--chart-3)",
   },
-  cumulativePrincipal: {
+  interestUnpaid: {
+    label: "Interest unpaid",
+    color: "var(--destructive)",
+  },
+  principalPortion: {
     label: "Principal",
-    color: "var(--chart-5)",
+    color: "oklch(0.55 0 0)",
   },
 } satisfies ChartConfig;
 
-interface InterestBreakdownChartProps {
-  data: DetailSeriesResult["interestBreakdown"];
+interface AnnualInterestChartProps {
+  data: DetailSeriesResult["annualBreakdown"];
 }
 
-export function InterestBreakdownChart({ data }: InterestBreakdownChartProps) {
+export function AnnualInterestChart({ data }: AnnualInterestChartProps) {
   if (data.length === 0) {
     return (
       <Skeleton
@@ -34,19 +37,18 @@ export function InterestBreakdownChart({ data }: InterestBreakdownChartProps) {
   }
 
   return (
-    <ChartBase
-      type="area"
+    <LazyChartBase
+      type="bar"
       data={data}
-      xDataKey="month"
-      xLabel="Time"
-      xFormatter={formatYearFromMonth}
-      yLabel="Cumulative payments"
+      xDataKey="year"
+      xFormatter={(v) => `Year ${String(v)}`}
       yFormatter={(v) => currencyFormatter.format(v)}
-      ariaLabel="Stacked area chart showing cumulative interest and principal portions of student loan repayments"
+      ariaLabel="Stacked bar chart showing annual interest accrual and principal payments"
       chartConfig={chartConfig}
       series={[
-        { dataKey: "cumulativeInterest", stackId: "breakdown" },
-        { dataKey: "cumulativePrincipal", stackId: "breakdown" },
+        { dataKey: "interestPaid", stackId: "annual" },
+        { dataKey: "interestUnpaid", stackId: "annual" },
+        { dataKey: "principalPortion", stackId: "annual" },
       ]}
       showLegend
     />

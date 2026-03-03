@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Interest Paid — Student Loan Interest Breakdown",
   description:
-    "Understand how much of your UK student loan repayments go towards interest vs reducing your balance. See the true cost of borrowing with a stacked breakdown chart.",
+    "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the true cost.",
   keywords: [
     "student loan interest breakdown",
     "student loan interest vs principal",

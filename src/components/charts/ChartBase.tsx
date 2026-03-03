@@ -4,6 +4,8 @@ import { useId, useState } from "react";
 import {
   Area,
   AreaChart,
+  Bar,
+  BarChart,
   Line,
   LineChart,
   CartesianGrid,
@@ -14,7 +16,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  type ChartConfig,
+} from "@/components/ui/chart";
 
 export interface ChartSeriesConfig {
   dataKey: string;
@@ -46,7 +52,7 @@ interface CrosshairPoint {
 }
 
 export interface ChartBaseProps {
-  type: "area" | "line";
+  type: "area" | "line" | "bar";
   data: object[];
   xDataKey: string;
   xLabel?: string;
@@ -89,7 +95,102 @@ export function ChartBase({
   );
 
   const ChartComponent = type === "area" ? AreaChart : LineChart;
-  const isCrosshair = interactionMode === "crosshair";
+  const isCrosshair = interactionMode === "crosshair" && type !== "bar";
+
+  // --- Bar chart: simple dedicated render path ---
+  if (type === "bar") {
+    const margin = marginProp ?? { top: 25, right: 25, bottom: 25, left: 25 };
+    return (
+      <div
+        role="img"
+        aria-label={ariaLabel}
+        className="size-full overflow-hidden select-none"
+      >
+        <ChartContainer config={chartConfig} className="size-full">
+          <BarChart data={data} accessibilityLayer margin={margin}>
+            <CartesianGrid vertical={false} className="stroke-border/50" />
+            <XAxis
+              dataKey={xDataKey}
+              tickFormatter={xFormatter}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
+            <YAxis
+              tickFormatter={yFormatter}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
+            <ChartTooltip
+              content={({ active, payload }) => {
+                if (!active || !payload?.length) return null;
+                const rawPayload = payload[0].payload as Record<
+                  string,
+                  unknown
+                >;
+                const year = Number(rawPayload[xDataKey]);
+                const nonZero = payload.filter(
+                  (item) => Number(item.value) !== 0,
+                );
+                return (
+                  <div className="grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
+                    <p className="font-medium">{xFormatter(year)}</p>
+                    <div className="grid gap-1.5">
+                      {nonZero.map((item) => (
+                        <div
+                          key={String(item.dataKey)}
+                          className="flex items-center gap-2"
+                        >
+                          <div
+                            className="size-2.5 shrink-0 rounded-[2px]"
+                            style={{ backgroundColor: item.color }}
+                          />
+                          <span className="text-muted-foreground">
+                            {(chartConfig[String(item.dataKey)].label as
+                              | string
+                              | undefined) ?? String(item.dataKey ?? "")}
+                          </span>
+                          <span className="ml-auto pl-4 font-mono font-medium tabular-nums">
+                            {yFormatter(Number(item.value))}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }}
+            />
+            {showLegend && (
+              <Legend
+                verticalAlign="top"
+                height={36}
+                formatter={(value: string) => chartConfig[value].label ?? value}
+              />
+            )}
+            {series.map((s) => {
+              // Top segment in a stack gets rounded top corners
+              const isTopInStack =
+                s.stackId !== undefined
+                  ? series.filter((x) => x.stackId === s.stackId).at(-1)
+                      ?.dataKey === s.dataKey
+                  : true;
+              return (
+                <Bar
+                  key={s.dataKey}
+                  dataKey={s.dataKey}
+                  stackId={s.stackId}
+                  fill={`var(--color-${s.dataKey})`}
+                  radius={isTopInStack ? [3, 3, 0, 0] : [0, 0, 0, 0]}
+                  isAnimationActive={false}
+                />
+              );
+            })}
+          </BarChart>
+        </ChartContainer>
+      </div>
+    );
+  }
 
   function handleChartMouseMove(state: {
     activePayload?: Array<{

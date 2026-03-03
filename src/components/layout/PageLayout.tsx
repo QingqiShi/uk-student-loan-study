@@ -19,7 +19,7 @@ export function PageLayout({
       <main
         id="main-content"
         className={cn(
-          "mx-auto w-full max-w-4xl flex-1 space-y-8 px-3 pt-8 pb-6 sm:pt-18 md:pb-8",
+          "mx-auto w-full max-w-4xl flex-1 space-y-6 px-3 pt-8 pb-6 sm:pt-18 md:pb-8",
           mainClassName,
         )}
       >
