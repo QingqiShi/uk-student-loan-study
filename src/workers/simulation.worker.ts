@@ -125,14 +125,18 @@ export interface DetailSeriesResult {
   type: "DETAIL_SERIES";
   cumulativeRepaid: Array<{ month: number; cumulative: number }>;
   balanceSeries: Array<{ month: number; balance: number }>;
-  interestBreakdown: Array<{
-    month: number;
-    cumulativeInterest: number;
-    cumulativePrincipal: number;
+  annualBreakdown: Array<{
+    year: number;
+    interestPaid: number;
+    interestUnpaid: number;
+    principalPortion: number;
   }>;
   stats: {
     totalPaid: number;
-    totalInterest: number;
+    totalInterestPaid: number;
+    attributedInterestPaid: number;
+    totalPrincipalPaid: number;
+    writtenOffBalance: number;
     initialBalance: number;
     monthsToPayoff: number;
     writtenOff: boolean;
@@ -254,7 +258,13 @@ function handleInsight(payload: InsightPayload): {
 
   const emptyCards: InsightCardsResult = {
     balance: { data: [], stat: "\u2014", label: "Duration" },
-    interest: { stat: "\u2014", label: "Total Interest", interestRatio: 0 },
+    interest: {
+      stat: "\u2014",
+      label: "Interest Paid",
+      interestRatio: 0,
+      principalRatio: 0,
+      writtenOffRatio: 0,
+    },
     effectiveRate: {
       stat: "\u2014",
       label: "Effective Rate",
@@ -306,10 +316,18 @@ function handleInsight(payload: InsightPayload): {
   const cumulativeData: { month: number; value: number }[] = [];
   let cumulativePaid = 0;
   let pvCumulativePaid = 0;
+  let insightCumInterest = 0;
+  let insightLastBalance = 0;
 
   for (const snap of snapshots) {
     const monthBalance = snap.loans.reduce((s, l) => s + l.closingBalance, 0);
+    const monthInterest = snap.loans.reduce((s, l) => s + l.interestApplied, 0);
+    const interestPortion = Math.min(snap.totalRepayment, monthInterest);
     cumulativePaid += snap.totalRepayment;
+    insightCumInterest += hasPV
+      ? toPresent(interestPortion, dr, snap.month)
+      : interestPortion;
+    insightLastBalance = monthBalance;
     if (hasPV) {
       pvCumulativePaid += toPresent(snap.totalRepayment, dr, snap.month);
     }
@@ -340,8 +358,12 @@ function handleInsight(payload: InsightPayload): {
         dr,
       )
     : simSummary.totalPaid;
-  const costOfBorrowing = Math.max(0, totalPaid - totalBalance);
-  const interestRatio = totalPaid > 0 ? costOfBorrowing / totalPaid : 0;
+
+  const insightWrittenOff = simSummary.perLoan.some((l) => l.writtenOff);
+  const insightTotalInterest = insightCumInterest;
+  const insightTotalPrincipal = totalPaid - insightTotalInterest;
+  const insightWrittenOffBalance = insightWrittenOff ? insightLastBalance : 0;
+  const insightTotalSettled = totalPaid + insightWrittenOffBalance;
 
   const annualRate = computeEffectiveAnnualRate(totalBalance, snapshots);
   const ratePct = annualRate * 100;
@@ -379,9 +401,20 @@ function handleInsight(payload: InsightPayload): {
   const cards: InsightCardsResult = {
     balance: { data: balanceData, stat: balanceStat, label: "Duration" },
     interest: {
-      stat: formatCompactCurrency(costOfBorrowing),
-      label: "Total Interest",
-      interestRatio,
+      stat: formatCompactCurrency(Math.max(0, totalPaid - totalBalance)),
+      label: insightWrittenOff ? "Interest Paid (adj.)" : "Interest Paid",
+      interestRatio:
+        insightTotalSettled > 0
+          ? insightTotalInterest / insightTotalSettled
+          : 0,
+      principalRatio:
+        insightTotalSettled > 0
+          ? insightTotalPrincipal / insightTotalSettled
+          : 0,
+      writtenOffRatio:
+        insightTotalSettled > 0
+          ? insightWrittenOffBalance / insightTotalSettled
+          : 0,
     },
     effectiveRate: {
       stat: rateStat,
@@ -429,10 +462,13 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
       type: "DETAIL_SERIES",
       cumulativeRepaid: [],
       balanceSeries: [],
-      interestBreakdown: [],
+      annualBreakdown: [],
       stats: {
         totalPaid: 0,
-        totalInterest: 0,
+        totalInterestPaid: 0,
+        attributedInterestPaid: 0,
+        totalPrincipalPaid: 0,
+        writtenOffBalance: 0,
         initialBalance: 0,
         monthsToPayoff: 0,
         writtenOff: false,
@@ -463,12 +499,15 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
 
   const cumulativeRepaid: DetailSeriesResult["cumulativeRepaid"] = [];
   const balanceSeries: DetailSeriesResult["balanceSeries"] = [];
-  const interestBreakdown: DetailSeriesResult["interestBreakdown"] = [];
+  const annualBreakdown: DetailSeriesResult["annualBreakdown"] = [];
 
   let cumPaid = 0;
   let pvCumPaid = 0;
-  let cumInterestPortion = 0;
-  let pvCumInterestPortion = 0;
+  let totalInterestPaid = 0;
+  let yearInterestPaid = 0;
+  let yearInterestUnpaid = 0;
+  let yearPrincipalPortion = 0;
+  let lastMonthBalance = 0;
   let peakBalance = totalBalance;
   let peakBalanceMonth = 0;
 
@@ -476,28 +515,51 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
   const initBal = hasPV ? toPresent(totalBalance, dr, 0) : totalBalance;
   balanceSeries.push({ month: 0, balance: initBal });
   cumulativeRepaid.push({ month: 0, cumulative: 0 });
-  interestBreakdown.push({
-    month: 0,
-    cumulativeInterest: 0,
-    cumulativePrincipal: 0,
-  });
 
   for (const snap of snapshots) {
     const monthBalance = snap.loans.reduce((s, l) => s + l.closingBalance, 0);
     const monthInterest = snap.loans.reduce((s, l) => s + l.interestApplied, 0);
-    const interestPortion = Math.min(snap.totalRepayment, monthInterest);
+    const rawInterestPaid = Math.min(snap.totalRepayment, monthInterest);
+    const rawInterestUnpaid = Math.max(0, monthInterest - snap.totalRepayment);
+    const rawPrincipal = Math.max(0, snap.totalRepayment - monthInterest);
+    const mInterestPaid = hasPV
+      ? toPresent(rawInterestPaid, dr, snap.month)
+      : rawInterestPaid;
+    const mInterestUnpaid = hasPV
+      ? toPresent(rawInterestUnpaid, dr, snap.month)
+      : rawInterestUnpaid;
+    const mPrincipal = hasPV
+      ? toPresent(rawPrincipal, dr, snap.month)
+      : rawPrincipal;
 
     cumPaid += snap.totalRepayment;
-    cumInterestPortion += interestPortion;
+    totalInterestPaid += mInterestPaid;
+    yearInterestPaid += mInterestPaid;
+    yearInterestUnpaid += mInterestUnpaid;
+    yearPrincipalPortion += mPrincipal;
+    lastMonthBalance = monthBalance;
 
     if (hasPV) {
       pvCumPaid += toPresent(snap.totalRepayment, dr, snap.month);
-      pvCumInterestPortion += toPresent(interestPortion, dr, snap.month);
     }
 
     if (monthBalance > peakBalance) {
       peakBalance = monthBalance;
       peakBalanceMonth = snap.month;
+    }
+
+    // Flush annual breakdown at year boundary or last snapshot
+    const isLastSnap = snap === snapshots[snapshots.length - 1];
+    if (snap.month % 12 === 11 || isLastSnap) {
+      annualBreakdown.push({
+        year: Math.floor(snap.month / 12) + 1,
+        interestPaid: yearInterestPaid,
+        interestUnpaid: yearInterestUnpaid,
+        principalPortion: yearPrincipalPortion,
+      });
+      yearInterestPaid = 0;
+      yearInterestUnpaid = 0;
+      yearPrincipalPortion = 0;
     }
 
     // Sample every 3 months + last snapshot
@@ -506,15 +568,9 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
         ? toPresent(monthBalance, dr, snap.month)
         : monthBalance;
       const paid = hasPV ? pvCumPaid : cumPaid;
-      const interest = hasPV ? pvCumInterestPortion : cumInterestPortion;
 
       balanceSeries.push({ month: snap.month, balance: bal });
       cumulativeRepaid.push({ month: snap.month, cumulative: paid });
-      interestBreakdown.push({
-        month: snap.month,
-        cumulativeInterest: interest,
-        cumulativePrincipal: paid - interest,
-      });
     }
   }
 
@@ -525,8 +581,14 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
         dr,
       )
     : summary.totalPaid;
-  const costOfBorrowing = Math.max(0, totalPaid - totalBalance);
-  const interestRatio = totalPaid > 0 ? costOfBorrowing / totalPaid : 0;
+  const writtenOffBalance = writtenOff ? lastMonthBalance : 0;
+  // Adjusted interest: assume every repayment covered principal first.
+  // The write-off clears whatever principal remained, so interest = excess
+  // paid over initial balance. For write-off cases where totalPaid < initialBalance
+  // this correctly returns 0 — all repayments went to principal.
+  const adjustedInterestPaid = Math.max(0, totalPaid - totalBalance);
+  const totalPrincipalPaid = totalPaid - totalInterestPaid;
+  const interestRatio = totalPaid > 0 ? adjustedInterestPaid / totalPaid : 0;
   const effectiveRate = computeEffectiveAnnualRate(totalBalance, snapshots);
   const peakBal = hasPV
     ? toPresent(peakBalance, dr, peakBalanceMonth)
@@ -536,10 +598,13 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
     type: "DETAIL_SERIES",
     cumulativeRepaid,
     balanceSeries,
-    interestBreakdown,
+    annualBreakdown,
     stats: {
       totalPaid,
-      totalInterest: costOfBorrowing,
+      totalInterestPaid: adjustedInterestPaid,
+      attributedInterestPaid: totalInterestPaid,
+      totalPrincipalPaid,
+      writtenOffBalance,
       initialBalance: totalBalance,
       monthsToPayoff: summary.monthsToPayoff,
       writtenOff,

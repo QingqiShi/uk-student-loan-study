@@ -11,9 +11,14 @@ export interface InsightCardData {
 
 export interface InterestCardData {
   stat: string;
+  /** "Interest Paid (adj.)" for write-off scenarios, "Interest Paid" otherwise */
   label: string;
-  /** Cost of borrowing (interest portion) as a fraction of total paid (0–1) */
+  /** totalInterestPaid / totalSettled (0–1) */
   interestRatio: number;
+  /** totalPrincipalPaid / totalSettled (0–1) */
+  principalRatio: number;
+  /** writtenOffBalance / totalSettled (0 for paid-in-full) */
+  writtenOffRatio: number;
 }
 
 export interface EffectiveRateCardData {

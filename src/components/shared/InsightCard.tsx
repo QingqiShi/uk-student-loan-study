@@ -135,6 +135,12 @@ export function ProportionCard({
   active,
   cardData,
 }: ProportionCardProps) {
+  const interestPct = cardData ? Math.round(cardData.interestRatio * 100) : 0;
+  const principalPct = cardData ? Math.round(cardData.principalRatio * 100) : 0;
+  const writtenOffPct = cardData
+    ? Math.round(cardData.writtenOffRatio * 100)
+    : 0;
+
   return (
     <CardShell title={title} href={href} active={active} color={color}>
       {cardData ? (
@@ -146,25 +152,36 @@ export function ProportionCard({
             <div
               className="flex h-2.5 overflow-hidden rounded-full"
               role="img"
-              aria-label={`Interest is ${String(Math.round(cardData.interestRatio * 100))}% of total repayments`}
+              aria-label={`Interest is ${String(interestPct)}% of total repayments`}
             >
               <div
-                className="rounded-l-full transition-all duration-500"
+                className="transition-all duration-500"
                 style={{
-                  width: `${String(Math.max(cardData.interestRatio * 100, 2))}%`,
+                  width: `${String(Math.max(interestPct, 2))}%`,
                   backgroundColor: color,
                 }}
               />
+              {principalPct > 0 && (
+                <div
+                  className="bg-(--chart-1) transition-all duration-500"
+                  style={{ width: `${String(principalPct)}%` }}
+                />
+              )}
+              {writtenOffPct > 0 && (
+                <div
+                  className="bg-muted-foreground/30 transition-all duration-500"
+                  style={{ width: `${String(writtenOffPct)}%` }}
+                />
+              )}
               <div className="flex-1 bg-muted" />
             </div>
             <div className="mt-1.5 flex justify-between text-xs text-muted-foreground">
-              <span>
-                {String(Math.round(cardData.interestRatio * 100))}% interest
-              </span>
-              <span>
-                {String(Math.round((1 - cardData.interestRatio) * 100))}%
-                principal
-              </span>
+              <span>{String(interestPct)}% interest</span>
+              {writtenOffPct > 0 ? (
+                <span>{String(writtenOffPct)}% written off</span>
+              ) : (
+                <span>{String(principalPct)}% principal</span>
+              )}
             </div>
           </div>
         </div>

@@ -53,7 +53,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
         />
         <ProportionCard
           key={DETAIL_PAGES[2].href}
-          title={DETAIL_PAGES[2].label}
+          title={data?.interest.label ?? DETAIL_PAGES[2].label}
           href={DETAIL_PAGES[2].href}
           color={DETAIL_PAGES[2].color}
           active={excludeHref === DETAIL_PAGES[2].href}

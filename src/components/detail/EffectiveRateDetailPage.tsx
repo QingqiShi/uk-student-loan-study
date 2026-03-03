@@ -37,25 +37,19 @@ export function EffectiveRateDetailPage() {
     >
       {salaryResult ? (
         <>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4">
             <StatCard
-              label="Your Effective Rate"
+              label="Effective Rate"
               value={percentageFormatter(effectiveRate)}
+              subtext="at your salary"
               accentColor={ACCENT}
             />
             <StatCard
-              label="BoE Base Rate"
-              value={percentageFormatter(boeRate)}
-              accentColor={ACCENT}
+              label="vs BoE"
+              value={`${diff >= 0 ? "+" : ""}${percentageFormatter(diff)}`}
+              subtext={`BoE ${percentageFormatter(boeRate)} · ${isBelow ? "below" : "above"} base rate`}
+              accentColor={isBelow ? "var(--chart-5)" : "var(--chart-3)"}
             />
-            <div className="col-span-2 sm:col-span-1">
-              <StatCard
-                label="Difference"
-                value={`${diff >= 0 ? "+" : ""}${percentageFormatter(diff)}`}
-                subtext={isBelow ? "Below base rate" : "Above base rate"}
-                accentColor={isBelow ? "var(--chart-5)" : "var(--chart-3)"}
-              />
-            </div>
           </div>
 
           <div className="space-y-2">
@@ -74,12 +68,9 @@ export function EffectiveRateDetailPage() {
         </>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4">
             <StatCardSkeleton />
             <StatCardSkeleton />
-            <div className="col-span-2 sm:col-span-1">
-              <StatCardSkeleton />
-            </div>
           </div>
           <Skeleton className="h-65 sm:h-75 md:h-85" />
         </>
