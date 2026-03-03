@@ -4,14 +4,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface PayoffHeroStatsProps {
   payoffYears: number;
   writtenOff: boolean;
-  totalPaidAmount?: string;
+  totalWrittenOffAmount?: string;
   aheadOfSchedule: boolean;
 }
 
 export function PayoffHeroStats({
   payoffYears,
   writtenOff,
-  totalPaidAmount,
+  totalWrittenOffAmount,
   aheadOfSchedule,
 }: PayoffHeroStatsProps) {
   return (
@@ -20,7 +20,7 @@ export function PayoffHeroStats({
         conditions={[
           {
             when: writtenOff,
-            label: `Written off after paying a total of ${totalPaidAmount ?? ""}`,
+            label: `Written off — ${totalWrittenOffAmount ?? ""} forgiven`,
             variant: "warning",
           },
           {

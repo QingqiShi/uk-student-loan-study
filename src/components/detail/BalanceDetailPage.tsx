@@ -45,9 +45,9 @@ export function BalanceDetailPage() {
           <PayoffHeroStats
             payoffYears={payoffYears}
             writtenOff={result.stats.writtenOff}
-            totalPaidAmount={
+            totalWrittenOffAmount={
               result.stats.writtenOff
-                ? currencyFormatter.format(result.stats.totalPaid)
+                ? currencyFormatter.format(result.stats.totalWrittenOff)
                 : undefined
             }
             aheadOfSchedule={payoffYears <= 15 && !result.stats.writtenOff}
