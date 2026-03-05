@@ -7,6 +7,7 @@ import type {
   InterestCardData,
 } from "@/types/insightCards";
 import { Sparkline } from "@/components/charts/Sparkline";
+import { percentageFormatter } from "@/constants";
 
 // ---------------------------------------------------------------------------
 // Shared card shell
@@ -139,11 +140,9 @@ export function ProportionCard({
   active,
   cardData,
 }: ProportionCardProps) {
-  const interestPct = cardData ? Math.round(cardData.interestRatio * 100) : 0;
-  const principalPct = cardData ? Math.round(cardData.principalRatio * 100) : 0;
-  const writtenOffPct = cardData
-    ? Math.round(cardData.writtenOffRatio * 100)
-    : 0;
+  const interestPct = Math.round((cardData?.interestRatio ?? 0) * 100);
+  const principalPct = Math.round((cardData?.principalRatio ?? 0) * 100);
+  const writtenOffPct = Math.round((cardData?.writtenOffRatio ?? 0) * 100);
 
   return (
     <CardShell title={title} href={href} active={active} color={color}>
@@ -246,7 +245,7 @@ export function RateComparisonCard({
           <div
             className="space-y-1.5"
             role="img"
-            aria-label={`Effective rate ${(cardData.effectiveRate * 100).toFixed(1)}% vs base rate ${(cardData.boeRate * 100).toFixed(1)}%`}
+            aria-label={`Effective rate ${percentageFormatter(cardData.effectiveRate)} vs base rate ${percentageFormatter(cardData.boeRate)}`}
           >
             <div className="flex items-center gap-2">
               <span className="w-14 shrink-0 text-xs text-muted-foreground">
@@ -262,7 +261,7 @@ export function RateComparisonCard({
                 />
               </div>
               <span className="w-10 shrink-0 text-right font-mono text-xs tabular-nums">
-                {(cardData.effectiveRate * 100).toFixed(1)}%
+                {percentageFormatter(cardData.effectiveRate)}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -276,7 +275,7 @@ export function RateComparisonCard({
                 />
               </div>
               <span className="w-10 shrink-0 text-right font-mono text-xs text-muted-foreground tabular-nums">
-                {(cardData.boeRate * 100).toFixed(1)}%
+                {percentageFormatter(cardData.boeRate)}
               </span>
             </div>
           </div>
