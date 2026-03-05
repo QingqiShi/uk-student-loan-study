@@ -353,16 +353,10 @@ function handleInsight(payload: InsightPayload): {
   const years = Math.round(months / 12);
   const balanceStat = months < 12 ? "<1 year" : `${String(years)} years`;
 
-  const totalPaid = hasPV
-    ? pvTotal(
-        snapshots.map((s) => ({ month: s.month, amount: s.totalRepayment })),
-        dr,
-      )
-    : simSummary.totalPaid;
+  const totalPaid = hasPV ? pvCumulativePaid : simSummary.totalPaid;
 
   const insightWrittenOff = simSummary.perLoan.some((l) => l.writtenOff);
-  const insightTotalInterest = insightCumInterest;
-  const insightTotalPrincipal = totalPaid - insightTotalInterest;
+  const insightTotalPrincipal = totalPaid - insightCumInterest;
   const insightWrittenOffBalance = insightWrittenOff ? insightLastBalance : 0;
   const insightTotalSettled = totalPaid + insightWrittenOffBalance;
 
@@ -405,9 +399,7 @@ function handleInsight(payload: InsightPayload): {
       stat: formatCompactCurrency(Math.max(0, totalPaid - totalBalance)),
       label: insightWrittenOff ? "Interest Paid (adj.)" : "Interest Paid",
       interestRatio:
-        insightTotalSettled > 0
-          ? insightTotalInterest / insightTotalSettled
-          : 0,
+        insightTotalSettled > 0 ? insightCumInterest / insightTotalSettled : 0,
       principalRatio:
         insightTotalSettled > 0
           ? insightTotalPrincipal / insightTotalSettled
@@ -577,12 +569,7 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
   }
 
   const writtenOff = summary.perLoan.some((l) => l.writtenOff);
-  const totalPaid = hasPV
-    ? pvTotal(
-        snapshots.map((s) => ({ month: s.month, amount: s.totalRepayment })),
-        dr,
-      )
-    : summary.totalPaid;
+  const totalPaid = hasPV ? pvCumPaid : summary.totalPaid;
   const writtenOffBalance = writtenOff ? lastMonthBalance : 0;
   // Adjusted interest: assume every repayment covered principal first.
   // The write-off clears whatever principal remained, so interest = excess

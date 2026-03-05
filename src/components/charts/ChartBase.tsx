@@ -171,10 +171,8 @@ export function ChartBase({
             {series.map((s) => {
               // Top segment in a stack gets rounded top corners
               const isTopInStack =
-                s.stackId !== undefined
-                  ? series.filter((x) => x.stackId === s.stackId).at(-1)
-                      ?.dataKey === s.dataKey
-                  : true;
+                s.stackId === undefined ||
+                series.findLast((x) => x.stackId === s.stackId) === s;
               return (
                 <Bar
                   key={s.dataKey}
