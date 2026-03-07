@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { InterestRateChart } from "./InterestRateChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
+import { InterestRateChart } from "./InterestRateChart";
 
 const EXAMPLE_BALANCE = 45_000;
 const rpi = CURRENT_RATES.rpi;

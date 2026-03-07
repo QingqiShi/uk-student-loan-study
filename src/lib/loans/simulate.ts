@@ -1,6 +1,6 @@
+import { monthsElapsedSince } from "@/lib/dateUtils";
 import { simulate } from "./engine";
 import type { SimulationInput, SimulationResult } from "./types";
-import { monthsElapsedSince } from "@/lib/dateUtils";
 
 /**
  * Simulates repayment of multiple loans over time.

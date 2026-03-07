@@ -1,6 +1,6 @@
-import type { Loan } from "@/lib/loans/types";
 import { currencyFormatter, DEFAULT_SALARY } from "@/constants";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import type { Loan } from "@/lib/loans/types";
 import { DEFAULT_PRESET } from "@/lib/presets";
 import { decodeParamsToState } from "@/lib/shareUrl";
 

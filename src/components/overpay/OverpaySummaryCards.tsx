@@ -1,7 +1,7 @@
-import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { currencyFormatter } from "@/constants";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
+import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 
 interface OverpaySummaryCardsProps {
   analysis: OverpayAnalysisResult;

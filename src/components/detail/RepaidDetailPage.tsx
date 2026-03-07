@@ -1,11 +1,11 @@
 "use client";
 
-import { CumulativeRepaidChart } from "./CumulativeRepaidChart";
-import { DetailPageShell } from "./DetailPageShell";
-import { RepaidHeroStats, RepaidHeroStatsSkeleton } from "./RepaidHeroStats";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
+import { CumulativeRepaidChart } from "./CumulativeRepaidChart";
+import { DetailPageShell } from "./DetailPageShell";
+import { RepaidHeroStats, RepaidHeroStatsSkeleton } from "./RepaidHeroStats";
 
 export function RepaidDetailPage() {
   const result = useDetailSeriesData();

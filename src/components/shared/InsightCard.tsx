@@ -1,13 +1,13 @@
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { Sparkline } from "@/components/charts/Sparkline";
+import { percentageFormatter } from "@/constants";
 import type {
   EffectiveRateCardData,
   InsightCardData,
   InterestCardData,
 } from "@/types/insightCards";
-import { Sparkline } from "@/components/charts/Sparkline";
-import { percentageFormatter } from "@/constants";
 
 // ---------------------------------------------------------------------------
 // Shared card shell

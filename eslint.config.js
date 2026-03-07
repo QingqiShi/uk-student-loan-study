@@ -1,41 +1,39 @@
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import react from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import eslintReact from "@eslint-react/eslint-plugin";
+import eslintJs from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
-import importPlugin from "eslint-plugin-import";
+import { defineConfig } from "eslint/config";
 import tailwindcss from "eslint-plugin-better-tailwindcss";
+import reactHooks from "eslint-plugin-react-hooks";
+import tseslint from "typescript-eslint";
+import importOrderPlugin from "./eslint-rules/import-order.js";
 
-export default tseslint.config(
-  js.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
+export default defineConfig(
   reactHooks.configs.flat["recommended-latest"],
   tailwindcss.configs.recommended,
   {
     files: ["**/*.{ts,tsx}"],
+    extends: [
+      eslintJs.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      eslintReact.configs["recommended-typescript"],
+    ],
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
-      react,
-      "jsx-a11y": jsxA11y,
       "@next/next": nextPlugin,
-      import: importPlugin,
+      custom: importOrderPlugin,
     },
     settings: {
-      react: { version: "detect" },
       "better-tailwindcss": {
         entryPoint: "src/app/globals.css",
       },
     },
     rules: {
-      ...react.configs.recommended.rules,
-      ...react.configs["jsx-runtime"].rules,
-      ...jsxA11y.configs.recommended.rules,
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
       "@typescript-eslint/no-unused-vars": [
@@ -46,35 +44,19 @@ export default tseslint.config(
         "error",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
-      "react/prop-types": "off",
-      // Label component receives htmlFor via props spread - valid pattern
-      "jsx-a11y/label-has-associated-control": [
-        "error",
-        { assert: "either", depth: 3 },
-      ],
-      // Import ordering
-      "import/order": [
-        "error",
-        {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling"],
-            "index",
-            "type",
-          ],
-          "newlines-between": "never",
-          alphabetize: { order: "asc", caseInsensitive: true },
-        },
-      ],
-      // Disable line wrapping - causes React hydration mismatches with SSR
+      "custom/import-order": "error",
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",
-      // Allow theme-scoping class names used in brand demos
       "better-tailwindcss/no-unknown-classes": [
         "error",
         { ignore: ["dark", "light"] },
       ],
+    },
+  },
+  {
+    // shadcn calendar uses inline component definitions for react-day-picker's components prop
+    files: ["src/components/ui/calendar.tsx"],
+    rules: {
+      "@eslint-react/no-nested-component-definitions": "off",
     },
   },
   {

@@ -3,13 +3,13 @@
 import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
+import { DETAIL_PAGES } from "@/lib/detailPages";
 import {
   ProportionCard,
   RateComparisonCard,
   SparklineCard,
 } from "./InsightCard";
-import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
-import { DETAIL_PAGES } from "@/lib/detailPages";
 
 interface InsightCardsProps {
   excludeHref?: string;

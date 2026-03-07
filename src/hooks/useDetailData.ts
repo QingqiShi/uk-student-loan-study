@@ -1,3 +1,9 @@
+import type {
+  DetailSeriesPayload,
+  DetailSeriesResult,
+  EffectiveRateSalaryPayload,
+  EffectiveRateSalaryResult,
+} from "@/workers/simulation.worker";
 import { useSimulationWorker } from "./useSimulationWorker";
 import {
   useLoanConfig,
@@ -8,12 +14,6 @@ import {
   useBoeBaseRate,
   useActiveDiscountRate,
 } from "./useStoreSelectors";
-import type {
-  DetailSeriesPayload,
-  DetailSeriesResult,
-  EffectiveRateSalaryPayload,
-  EffectiveRateSalaryResult,
-} from "@/workers/simulation.worker";
 
 /** Hook for detail page time-series data (runs in Web Worker) */
 export function useDetailSeriesData(): DetailSeriesResult | null {

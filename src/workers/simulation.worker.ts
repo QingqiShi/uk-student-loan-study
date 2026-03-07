@@ -11,6 +11,9 @@
  * - EFFECTIVE_RATE_SALARY: 126 simulations computing effective rate by salary
  */
 
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
+import { simulate } from "@/lib/loans/engine";
+import { simulateOverpayScenarios } from "@/lib/loans/overpaySimulate";
 import type {
   OverpayInput,
   OverpayAnalysisResult,
@@ -18,9 +21,6 @@ import type {
 import type { Loan } from "@/lib/loans/types";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import type { InsightCardsResult } from "@/types/insightCards";
-import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
-import { simulate } from "@/lib/loans/engine";
-import { simulateOverpayScenarios } from "@/lib/loans/overpaySimulate";
 import { generateInsight, type Insight } from "@/utils/insights";
 import {
   generateSalaryDataSeries,

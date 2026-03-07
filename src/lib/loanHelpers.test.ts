@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
+import type { Loan } from "@/lib/loans/types";
 import {
   toggleLoanPlan,
   setLoanBalance,
   getSelectedPlanTypes,
 } from "./loanHelpers";
-import type { Loan } from "@/lib/loans/types";
 
 describe("toggleLoanPlan", () => {
   it("adds a plan with 0 balance when absent", () => {

@@ -1,7 +1,7 @@
 "use client";
 
-import type { ChartConfig } from "@/components/ui/chart";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useBalanceOverTimeData } from "@/hooks/useChartData";

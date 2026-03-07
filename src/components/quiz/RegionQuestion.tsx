@@ -1,8 +1,8 @@
 "use client";
 
+import type { Region } from "@/lib/quiz/determinePlan";
 import { OptionCard } from "./OptionCard";
 import { QuestionStep } from "./QuestionStep";
-import type { Region } from "@/lib/quiz/determinePlan";
 
 interface RegionQuestionProps {
   onSelect: (region: Region) => void;

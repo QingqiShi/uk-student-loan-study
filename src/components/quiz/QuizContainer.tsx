@@ -1,12 +1,12 @@
 "use client";
 
 import { useReducer, useRef } from "react";
-import { AdditionalCourseQuestion } from "./AdditionalCourseQuestion";
-import { PostgradQuestion } from "./PostgradQuestion";
-import { QuizProgress } from "./QuizProgress";
-import { RegionQuestion } from "./RegionQuestion";
-import { ResultScreen } from "./ResultScreen";
-import { StartYearQuestion } from "./StartYearQuestion";
+import {
+  trackQuizStarted,
+  trackQuizRegionSelected,
+  trackQuizYearSelected,
+  trackQuizBackClicked,
+} from "@/lib/analytics";
 import type { PlanType } from "@/lib/loans/types";
 import type {
   QuizState,
@@ -15,16 +15,16 @@ import type {
   Region,
 } from "@/lib/quiz/determinePlan";
 import {
-  trackQuizStarted,
-  trackQuizRegionSelected,
-  trackQuizYearSelected,
-  trackQuizBackClicked,
-} from "@/lib/analytics";
-import {
   canSkipStartYear,
   determineAllLoans,
   shouldAskAboutAdditionalCourse,
 } from "@/lib/quiz/determinePlan";
+import { AdditionalCourseQuestion } from "./AdditionalCourseQuestion";
+import { PostgradQuestion } from "./PostgradQuestion";
+import { QuizProgress } from "./QuizProgress";
+import { RegionQuestion } from "./RegionQuestion";
+import { ResultScreen } from "./ResultScreen";
+import { StartYearQuestion } from "./StartYearQuestion";
 
 type QuizAction =
   | { type: "SET_REGION"; payload: Region }

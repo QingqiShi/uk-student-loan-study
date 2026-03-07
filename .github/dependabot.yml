@@ -24,7 +24,10 @@ updates:
         patterns:
           - "eslint"
           - "@eslint*"
+          - "@eslint-react*"
           - "typescript-eslint"
+          - "eslint-plugin-react-hooks"
+          - "eslint-plugin-better-tailwindcss"
       react:
         patterns:
           - "react"

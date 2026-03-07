@@ -1,8 +1,8 @@
 "use client";
 
 import type { ChartSeriesConfig } from "@/components/charts/ChartBase";
-import type { ChartConfig } from "@/components/ui/chart";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import type { ChartConfig } from "@/components/ui/chart";
 import { getAnnualInterestRate } from "@/lib/loans/interest";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 

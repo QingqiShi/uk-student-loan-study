@@ -1,4 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
+import { MIN_SALARY, MAX_SALARY } from "@/constants";
+import type { LoanState } from "@/types/store";
 import {
   encodeStateToParams,
   decodeParamsToState,
@@ -6,8 +8,6 @@ import {
   generateShareText,
   ASSUMPTION_PARAMS,
 } from "./shareUrl";
-import type { LoanState } from "@/types/store";
-import { MIN_SALARY, MAX_SALARY } from "@/constants";
 
 const mockState: LoanState = {
   loans: [

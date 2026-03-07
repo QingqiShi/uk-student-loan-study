@@ -3,8 +3,6 @@
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { startTransition, useOptimistic } from "react";
-import type { InputMode } from "@/hooks/useInputPanelMode";
-import type { Preset } from "@/lib/presets";
 import { LoanConfigPanel } from "@/components/home/LoanConfigPanel";
 import { PresentValueToggle } from "@/components/home/PresentValueToggle";
 import { Slider } from "@/components/ui/slider";
@@ -20,8 +18,10 @@ import {
   useLoanConfigState,
   useLoanFrequentState,
 } from "@/context/LoanContext";
+import type { InputMode } from "@/hooks/useInputPanelMode";
 import { useInputPanelMode } from "@/hooks/useInputPanelMode";
 import { trackSalaryChanged } from "@/lib/analytics";
+import type { Preset } from "@/lib/presets";
 import { PRESETS } from "@/lib/presets";
 import { cn } from "@/lib/utils";
 

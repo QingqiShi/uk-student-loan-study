@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { ChartConfig } from "@/components/ui/chart";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import type { ChartConfig } from "@/components/ui/chart";
 import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { toPresent } from "@/utils/presentValue";

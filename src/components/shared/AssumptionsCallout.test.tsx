@@ -1,9 +1,9 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { AssumptionsCallout } from "./AssumptionsCallout";
 import type { ReactNode } from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { LoanProvider } from "@/context/LoanContext";
+import { AssumptionsCallout } from "./AssumptionsCallout";
 
 const mockOpenAssumptions = vi.fn();
 vi.mock("@/context/AssumptionsWizardContext", () => ({

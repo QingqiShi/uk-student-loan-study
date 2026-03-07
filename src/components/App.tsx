@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
+import type { InputMode } from "@/hooks/useInputPanelMode";
 import { HeroSection } from "./home/HeroSection";
 import { InsightBadge, InsightCallout } from "./home/InsightCallout";
 import { SalaryExplorer } from "./home/SalaryExplorer";
@@ -10,8 +12,6 @@ import { AssumptionsCallout } from "./shared/AssumptionsCallout";
 import { ControlBar } from "./shared/ControlBar";
 import { InsightCards } from "./shared/InsightCards";
 import { PlanFromQuery } from "./shared/PlanFromQuery";
-import type { InputMode } from "@/hooks/useInputPanelMode";
-import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 
 function App() {
   const { updateField } = useLoanActions();

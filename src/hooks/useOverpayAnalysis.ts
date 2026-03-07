@@ -1,3 +1,5 @@
+import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
+import type { OverpayAnalysisPayload } from "@/workers/simulation.worker";
 import { useSimulationWorker } from "./useSimulationWorker";
 import {
   useLoanConfig,
@@ -5,8 +7,6 @@ import {
   useOverpayConfig,
   useActiveDiscountRate,
 } from "./useStoreSelectors";
-import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
-import type { OverpayAnalysisPayload } from "@/workers/simulation.worker";
 
 /**
  * Hook that performs overpay analysis calculations (runs in Web Worker).

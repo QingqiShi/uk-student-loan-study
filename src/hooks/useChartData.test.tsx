@@ -1,10 +1,10 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { type ReactNode } from "react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { useTotalRepaymentData, useBalanceOverTimeData } from "./useChartData";
+import type { LoanState } from "@/types/store";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import { LoanProvider } from "../context/LoanContext";
-import type { LoanState } from "@/types/store";
+import { useTotalRepaymentData, useBalanceOverTimeData } from "./useChartData";
 
 // Default test configuration
 const defaultTestConfig: Partial<LoanState> = {

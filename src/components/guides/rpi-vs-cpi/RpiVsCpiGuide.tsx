@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { InflationComparisonChart } from "./InflationComparisonChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
+import { InflationComparisonChart } from "./InflationComparisonChart";
 
 const rpi = CURRENT_RATES.rpi;
 const cpiTarget = 2;

@@ -1,8 +1,8 @@
-import type { Loan } from "@/lib/loans/types";
 import {
   useLoanConfigState,
   useLoanFrequentState,
 } from "@/context/LoanContext";
+import type { Loan } from "@/lib/loans/types";
 
 interface LoanConfig {
   loans: Loan[];

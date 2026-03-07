@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { BrandIcon, BRAND_HEX } from "./BrandIcon";
-import { BrandLogo } from "./BrandLogo";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import {
@@ -13,6 +11,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { BrandIcon, BRAND_HEX } from "./BrandIcon";
+import { BrandLogo } from "./BrandLogo";
 
 const BRAND_SWATCHES = [
   { name: "Primary Green", hex: BRAND_HEX.green },

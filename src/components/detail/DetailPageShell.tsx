@@ -1,13 +1,13 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { RelatedContent } from "./RelatedContent";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { AssumptionsCallout } from "@/components/shared/AssumptionsCallout";
 import { ControlBar } from "@/components/shared/ControlBar";
 import { InsightCards } from "@/components/shared/InsightCards";
 import { PlanFromQuery } from "@/components/shared/PlanFromQuery";
 import { Heading } from "@/components/typography/Heading";
+import { RelatedContent } from "./RelatedContent";
 
 interface DetailPageShellProps {
   heading: string;

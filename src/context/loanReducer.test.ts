@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { CURRENT_RATES } from "@/lib/loans/plans";
+import { PRESETS } from "@/lib/presets";
 import {
   loanReducer,
   initialState,
@@ -6,8 +8,6 @@ import {
   resetAction,
   applyPresetAction,
 } from "./loanReducer";
-import { CURRENT_RATES } from "@/lib/loans/plans";
-import { PRESETS } from "@/lib/presets";
 
 describe("loanReducer", () => {
   describe("initial state", () => {

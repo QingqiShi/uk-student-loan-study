@@ -1,5 +1,5 @@
-import { BrandIcon } from "./BrandIcon";
 import { cn } from "@/lib/utils";
+import { BrandIcon } from "./BrandIcon";
 
 interface BrandLogoProps {
   size?: "small" | "default" | "large";

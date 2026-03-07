@@ -1,9 +1,8 @@
 "use client";
 
 import { useDeferredValue } from "react";
-import type { ChartConfig } from "@/components/ui/chart";
-import type { EffectiveRateSalaryResult } from "@/workers/simulation.worker";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   currencyFormatter,
@@ -12,6 +11,7 @@ import {
   MAX_SALARY,
 } from "@/constants";
 import { findClosestBySalary } from "@/lib/utils";
+import type { EffectiveRateSalaryResult } from "@/workers/simulation.worker";
 
 const chartConfig = {
   effectiveRate: {

@@ -1,10 +1,10 @@
 "use client";
 
-import type { ChartConfig } from "@/components/ui/chart";
-import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import type { ChartConfig } from "@/components/ui/chart";
 import { currencyFormatter } from "@/constants";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
+import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 
 const chartConfig = {
   baselineBalance: {

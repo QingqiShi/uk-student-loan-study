@@ -1,8 +1,8 @@
 import { render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { RpiStep } from "./RpiStep";
 import { trackRpiRateSelected } from "@/lib/analytics";
+import { RpiStep } from "./RpiStep";
 
 vi.mock("@/lib/analytics", () => ({
   trackRpiRateSelected: vi.fn(),

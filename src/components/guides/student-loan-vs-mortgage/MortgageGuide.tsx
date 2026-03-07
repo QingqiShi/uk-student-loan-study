@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { RepaymentImpactChart } from "./RepaymentImpactChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import { RepaymentImpactChart } from "./RepaymentImpactChart";
 
 const plan2Threshold = PLAN_DISPLAY_INFO.PLAN_2.yearlyThreshold;
 const plan5Threshold = PLAN_DISPLAY_INFO.PLAN_5.yearlyThreshold;

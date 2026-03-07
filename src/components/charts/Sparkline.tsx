@@ -38,7 +38,6 @@ export function Sparkline({
   const yRange = yMax - yMin || 1;
 
   let lineD = "";
-  let areaD = "";
   for (let i = 0; i < data.length; i++) {
     const px = ((data[i].month - xMin) / xRange) * W;
     const py = (1 - (data[i].value - yMin) / yRange) * H;
@@ -48,7 +47,7 @@ export function Sparkline({
 
   const lastX = ((data[data.length - 1].month - xMin) / xRange) * W;
   const firstX = ((data[0].month - xMin) / xRange) * W;
-  areaD = `${lineD}L${lastX.toFixed(1)},${String(H)}L${firstX.toFixed(1)},${String(H)}Z`;
+  const areaD = `${lineD}L${lastX.toFixed(1)},${String(H)}L${firstX.toFixed(1)},${String(H)}Z`;
 
   return (
     <div className="h-12" role="img" aria-label={ariaLabel}>
