@@ -263,8 +263,8 @@ export function BrandGuidelinesPage() {
           <BrandLogo size="large" />
         </Card>
         <ul className="mt-6 space-y-3">
-          {LOGO_ANATOMY.map((point, index) => (
-            <li key={index} className="flex items-start gap-3">
+          {LOGO_ANATOMY.map((point) => (
+            <li key={point} className="flex items-start gap-3">
               <span className="mt-1.5 size-1.5 shrink-0 rounded-sm bg-primary" />
               <span className="text-sm/relaxed text-muted-foreground">
                 {point}

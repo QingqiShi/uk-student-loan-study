@@ -47,14 +47,14 @@ export function ThemeToggle() {
     getServerSnapshot,
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const didLongPress = useRef(false);
+  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const didLongPressRef = useRef(false);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     // If this click was from a long press, don't toggle
-    if (didLongPress.current) {
-      didLongPress.current = false;
+    if (didLongPressRef.current) {
+      didLongPressRef.current = false;
       return;
     }
     const newTheme = resolvedTheme === "dark" ? "light" : "dark";
@@ -77,25 +77,25 @@ export function ThemeToggle() {
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (e.pointerType === "touch") {
-      didLongPress.current = false;
-      longPressTimer.current = setTimeout(() => {
-        didLongPress.current = true;
+      didLongPressRef.current = false;
+      longPressTimerRef.current = setTimeout(() => {
+        didLongPressRef.current = true;
         setIsMenuOpen(true);
       }, LONG_PRESS_DURATION);
     }
   };
 
   const handlePointerUp = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
     }
   };
 
   const handlePointerLeave = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
     }
   };
 

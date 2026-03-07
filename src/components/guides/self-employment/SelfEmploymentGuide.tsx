@@ -265,9 +265,9 @@ export function SelfEmploymentGuide() {
                 description:
                   "Every pound of allowable business expense you miss increases your net profit \u2014 and therefore your student loan repayment. Common overlooked expenses include home office costs, professional subscriptions, and travel.",
               },
-            ].map((mistake, i) => (
+            ].map((mistake) => (
               <div
-                key={i}
+                key={mistake.title}
                 className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10"
               >
                 <div className="mb-2 flex items-center gap-2.5">
@@ -322,9 +322,9 @@ export function SelfEmploymentGuide() {
                 description:
                   "An accountant familiar with student loans can help you optimise your expenses, avoid mistakes, and ensure your repayments are calculated correctly.",
               },
-            ].map((tip, i) => (
+            ].map((tip) => (
               <div
-                key={i}
+                key={tip.title}
                 className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10"
               >
                 <div className="mb-2 flex items-center gap-2.5">

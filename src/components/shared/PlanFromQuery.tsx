@@ -24,13 +24,13 @@ interface PlanFromQueryProps {
 function PlanFromQueryInner({ onRepaymentYearChange }: PlanFromQueryProps) {
   const searchParams = useSearchParams();
   const { updateField } = useLoanActions();
-  const lastAppliedParams = useRef<string>("");
+  const lastAppliedParamsRef = useRef<string>("");
 
   useEffect(() => {
     // Skip if we've already applied these exact params
     const paramsString = searchParams.toString();
-    if (paramsString === lastAppliedParams.current) return;
-    lastAppliedParams.current = paramsString;
+    if (paramsString === lastAppliedParamsRef.current) return;
+    lastAppliedParamsRef.current = paramsString;
 
     const decoded = decodeParamsToState(searchParams);
 

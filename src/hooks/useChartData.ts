@@ -24,7 +24,7 @@ interface AnnotationData {
 /**
  * Returns the annotation salary and corresponding value if within the valid range.
  */
-function useAnnotationData(
+function getAnnotationData(
   salary: number,
   data: DataPoint[],
   maxSalaryOffset = 0,
@@ -71,7 +71,7 @@ export function useTotalRepaymentData() {
   const data = useSalarySeriesData();
   const salary = useCurrentSalary();
 
-  const { annotationSalary, annotationValue } = useAnnotationData(salary, data);
+  const { annotationSalary, annotationValue } = getAnnotationData(salary, data);
 
   return { data, annotationSalary, annotationValue };
 }
