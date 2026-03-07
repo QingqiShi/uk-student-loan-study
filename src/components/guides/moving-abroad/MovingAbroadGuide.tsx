@@ -262,7 +262,7 @@ export function MovingAbroadGuide() {
                   "Resubmit income evidence before the deadline each year.",
               },
             ].map((step, i) => (
-              <div key={i} className="flex gap-4 p-4">
+              <div key={step.title} className="flex gap-4 p-4">
                 <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                   {i + 1}
                 </span>

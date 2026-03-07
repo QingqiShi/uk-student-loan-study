@@ -44,6 +44,7 @@ export default defineConfig(
         "error",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
+      "@eslint-react/hooks-extra/no-direct-set-state-in-use-effect": "off",
       "custom/import-order": "error",
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",
       "better-tailwindcss/no-unknown-classes": [
@@ -57,6 +58,13 @@ export default defineConfig(
     files: ["src/components/ui/calendar.tsx"],
     rules: {
       "@eslint-react/no-nested-component-definitions": "off",
+    },
+  },
+  {
+    // JSON-LD structured data in layouts and shadcn chart styles require dangerouslySetInnerHTML
+    files: ["src/app/**/layout.tsx", "src/components/ui/chart.tsx"],
+    rules: {
+      "@eslint-react/dom/no-dangerously-set-innerhtml": "off",
     },
   },
   {
