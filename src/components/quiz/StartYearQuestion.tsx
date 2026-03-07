@@ -1,8 +1,8 @@
 "use client";
 
+import type { StartYearGroup } from "@/lib/quiz/determinePlan";
 import { OptionCard } from "./OptionCard";
 import { QuestionStep } from "./QuestionStep";
-import type { StartYearGroup } from "@/lib/quiz/determinePlan";
 
 interface StartYearQuestionProps {
   onSelect: (yearGroup: StartYearGroup) => void;

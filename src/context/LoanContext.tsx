@@ -1,15 +1,15 @@
 "use client";
 
 import { createContext, use, useReducer, type ReactNode } from "react";
+import type { Loan, PlanType } from "@/lib/loans/types";
+import type { Preset } from "@/lib/presets";
+import type { LoanState } from "@/types/store";
 import {
   loanReducer,
   initialState,
   updateFieldAction,
   applyPresetAction,
 } from "./loanReducer";
-import type { Loan, PlanType } from "@/lib/loans/types";
-import type { Preset } from "@/lib/presets";
-import type { LoanState } from "@/types/store";
 
 // --- Context types ---
 

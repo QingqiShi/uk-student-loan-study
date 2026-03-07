@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CostComparisonChart } from "./CostComparisonChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
@@ -17,6 +16,7 @@ import {
   PLAN_DISPLAY_INFO,
   TUITION_FEE_CAP,
 } from "@/lib/loans/plans";
+import { CostComparisonChart } from "./CostComparisonChart";
 
 const tuitionTotal = TUITION_FEE_CAP * 3;
 const writeOffYears = PLAN_CONFIGS.PLAN_5.writeOffYears;

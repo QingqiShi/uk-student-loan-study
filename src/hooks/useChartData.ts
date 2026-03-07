@@ -1,3 +1,10 @@
+import { MIN_SALARY, MAX_SALARY } from "@/constants";
+import { findClosestBySalary } from "@/lib/utils";
+import type { DataPoint, BalanceDataPoint } from "@/types/chart";
+import type {
+  SalarySeriesPayload,
+  BalanceSeriesPayload,
+} from "@/workers/simulation.worker";
 import { useSimulationWorker } from "./useSimulationWorker";
 import {
   useLoanConfig,
@@ -8,13 +15,6 @@ import {
   useBoeBaseRate,
   useActiveDiscountRate,
 } from "./useStoreSelectors";
-import type { DataPoint, BalanceDataPoint } from "@/types/chart";
-import type {
-  SalarySeriesPayload,
-  BalanceSeriesPayload,
-} from "@/workers/simulation.worker";
-import { MIN_SALARY, MAX_SALARY } from "@/constants";
-import { findClosestBySalary } from "@/lib/utils";
 
 interface AnnotationData {
   annotationSalary: number | undefined;

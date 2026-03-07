@@ -1,11 +1,11 @@
-import type { Loan, PlanType } from "@/lib/loans/types";
-import type { LoanState } from "@/types/store";
 import {
   MIN_SALARY,
   MAX_SALARY,
   MIN_MONTHLY_OVERPAYMENT,
   MAX_MONTHLY_OVERPAYMENT,
 } from "@/constants";
+import type { Loan, PlanType } from "@/lib/loans/types";
+import type { LoanState } from "@/types/store";
 
 // URL param keys — new format
 const PARAM_LOANS = "loans";

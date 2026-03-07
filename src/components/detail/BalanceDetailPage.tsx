@@ -1,11 +1,11 @@
 "use client";
 
-import { BalanceDetailChart } from "./BalanceDetailChart";
-import { DetailPageShell } from "./DetailPageShell";
-import { PayoffHeroStats, PayoffHeroStatsSkeleton } from "./PayoffHeroStats";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
+import { BalanceDetailChart } from "./BalanceDetailChart";
+import { DetailPageShell } from "./DetailPageShell";
+import { PayoffHeroStats, PayoffHeroStatsSkeleton } from "./PayoffHeroStats";
 
 export function BalanceDetailPage() {
   const result = useDetailSeriesData();

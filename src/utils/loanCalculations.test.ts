@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
+import type { Loan } from "@/lib/loans/types";
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import {
   generateSalaryDataSeries,
   generateSalaryDataSeriesPV,
   generateBalanceTimeSeries,
 } from "./loanCalculations";
-import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
-import type { Loan } from "@/lib/loans/types";
 
 describe("generateSalaryDataSeries", () => {
   let loans: Loan[];

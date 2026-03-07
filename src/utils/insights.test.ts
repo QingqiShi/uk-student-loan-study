@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { generateInsight } from "./insights";
 import type { Loan } from "@/lib/loans/types";
+import { generateInsight } from "./insights";
 
 const plan2Loan: Loan = { planType: "PLAN_2", balance: 50_000 };
 

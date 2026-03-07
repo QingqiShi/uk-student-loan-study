@@ -2,6 +2,9 @@
 
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { useReducer } from "react";
+import { QuizProgress } from "@/components/quiz/QuizProgress";
+import { useLoanConfigState } from "@/context/LoanContext";
+import { trackWizardStepViewed, trackWizardBackClicked } from "@/lib/analytics";
 import { BoeBaseRateStep } from "./BoeBaseRateStep";
 import { DiscountRateStep } from "./DiscountRateStep";
 import { LivePreview } from "./LivePreview";
@@ -16,9 +19,6 @@ import {
   initialAssumptionsWizardState,
 } from "./wizardReducer";
 import type { AssumptionsWizardStep } from "./wizardReducer";
-import { QuizProgress } from "@/components/quiz/QuizProgress";
-import { useLoanConfigState } from "@/context/LoanContext";
-import { trackWizardStepViewed, trackWizardBackClicked } from "@/lib/analytics";
 
 /** BOE base rate only affects Plan 1 & Plan 4 interest */
 const BOE_RELEVANT_PLANS = new Set(["PLAN_1", "PLAN_4"]);

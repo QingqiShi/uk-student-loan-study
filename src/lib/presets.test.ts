@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { isPresetConfig, PRESETS } from "./presets";
 import type { Loan } from "@/lib/loans/types";
+import { isPresetConfig, PRESETS } from "./presets";
 
 describe("isPresetConfig", () => {
   it("returns true for each preset's loan config", () => {

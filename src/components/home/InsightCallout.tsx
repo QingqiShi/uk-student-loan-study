@@ -8,8 +8,8 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
-import type { InsightType } from "@/utils/insights";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
+import type { InsightType } from "@/utils/insights";
 
 const insightConfig: Record<
   InsightType,

@@ -5,8 +5,8 @@ import {
   InformationCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import type { RecommendationType } from "@/lib/loans/overpayTypes";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import type { RecommendationType } from "@/lib/loans/overpayTypes";
 
 const verdictConfig: Record<
   RecommendationType,

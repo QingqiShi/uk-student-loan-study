@@ -1,5 +1,5 @@
-import { OutcomeBadge } from "./OutcomeBadge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OutcomeBadge } from "./OutcomeBadge";
 
 interface PayoffHeroStatsProps {
   payoffYears: number;

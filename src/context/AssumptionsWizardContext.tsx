@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, use, useEffect, useState, type ReactNode } from "react";
-import type { AssumptionsWizardStep } from "@/components/wizard/wizardReducer";
 import { AssumptionsWizard } from "@/components/wizard/AssumptionsWizard";
+import type { AssumptionsWizardStep } from "@/components/wizard/wizardReducer";
 import { trackWizardCompleted, trackWizardStarted } from "@/lib/analytics";
 
 // --- Context type ---

@@ -1,10 +1,10 @@
 "use client";
 
-import type { ChartConfig } from "@/components/ui/chart";
-import type { DetailSeriesResult } from "@/workers/simulation.worker";
 import { LazyChartBase } from "@/components/charts/LazyChartBase";
+import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
+import type { DetailSeriesResult } from "@/workers/simulation.worker";
 
 const chartConfig = {
   interestPaid: {

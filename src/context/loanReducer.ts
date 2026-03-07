@@ -1,7 +1,7 @@
-import type { LoanState } from "@/types/store";
 import { DEFAULT_SALARY } from "@/constants";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { DEFAULT_PRESET, type Preset } from "@/lib/presets";
+import type { LoanState } from "@/types/store";
 
 export const initialState: LoanState = {
   loans: DEFAULT_PRESET.loans,

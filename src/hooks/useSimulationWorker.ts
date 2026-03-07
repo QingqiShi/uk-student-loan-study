@@ -1,12 +1,12 @@
 import { useState, useEffect, useTransition } from "react";
-import {
-  postWorkerMessage,
-  cancelWorkerMessage,
-} from "./simulationWorkerSingleton";
 import type {
   WorkerPayload,
   WorkerResultType,
 } from "@/workers/simulation.worker";
+import {
+  postWorkerMessage,
+  cancelWorkerMessage,
+} from "./simulationWorkerSingleton";
 
 /**
  * Maps a payload type to its corresponding result type via the shared

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import type { PlanType } from "@/lib/loans/types";
 import { Heading } from "@/components/typography/Heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +12,7 @@ import {
   PLAN_DISPLAY_INFO,
   POSTGRADUATE_DISPLAY_INFO,
 } from "@/lib/loans/plans";
+import type { PlanType } from "@/lib/loans/types";
 
 function getPlanDisplayInfo(planType: PlanType) {
   if (planType === "POSTGRADUATE") {

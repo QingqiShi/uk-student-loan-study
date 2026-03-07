@@ -1,14 +1,14 @@
 "use client";
 
-import { DetailPageShell } from "./DetailPageShell";
-import { EffectiveRateBySalaryChart } from "./EffectiveRateBySalaryChart";
-import { StatCard, StatCardSkeleton } from "./StatCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MIN_SALARY, MAX_SALARY, percentageFormatter } from "@/constants";
 import { useEffectiveRateBySalaryData } from "@/hooks/useDetailData";
 import { useCurrentSalary } from "@/hooks/useStoreSelectors";
 import { DETAIL_PAGE_COLOR } from "@/lib/detailPages";
 import { findClosestBySalary } from "@/lib/utils";
+import { DetailPageShell } from "./DetailPageShell";
+import { EffectiveRateBySalaryChart } from "./EffectiveRateBySalaryChart";
+import { StatCard, StatCardSkeleton } from "./StatCard";
 
 const ACCENT = DETAIL_PAGE_COLOR["/effective-rate"];
 

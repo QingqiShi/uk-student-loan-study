@@ -1,12 +1,6 @@
 "use client";
 
 import { createContext, use, type ReactNode } from "react";
-import type { InsightCardsResult } from "@/types/insightCards";
-import type { Insight } from "@/utils/insights";
-import type {
-  InsightSummary,
-  InsightPayload,
-} from "@/workers/simulation.worker";
 import { useSimulationWorker } from "@/hooks/useSimulationWorker";
 import {
   useLoanConfig,
@@ -17,6 +11,12 @@ import {
   useBoeBaseRate,
   useActiveDiscountRate,
 } from "@/hooks/useStoreSelectors";
+import type { InsightCardsResult } from "@/types/insightCards";
+import type { Insight } from "@/utils/insights";
+import type {
+  InsightSummary,
+  InsightPayload,
+} from "@/workers/simulation.worker";
 
 interface PersonalizedResults {
   summary: InsightSummary | null;

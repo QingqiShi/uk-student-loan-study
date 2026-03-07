@@ -1,7 +1,6 @@
 "use client";
 
 import { startTransition, useOptimistic } from "react";
-import { YearSelector } from "./YearSelector";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -17,6 +16,7 @@ import {
   trackOverpayMonthlyChanged,
   trackOverpayLumpsumChanged,
 } from "@/lib/analytics";
+import { YearSelector } from "./YearSelector";
 
 interface OverpayPrimaryInputsProps {
   repaymentDate: Date;

@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { SalaryExplorer } from "./SalaryExplorer";
-import type { LoanState } from "@/types/store";
 import type { ReactNode } from "react";
+import { describe, it, expect, vi } from "vitest";
 import { LoanProvider } from "@/context/LoanContext";
+import type { LoanState } from "@/types/store";
+import { SalaryExplorer } from "./SalaryExplorer";
 
 vi.mock("@/context/AssumptionsWizardContext", () => ({
   useAssumptionsWizard: () => ({ openAssumptions: vi.fn() }),

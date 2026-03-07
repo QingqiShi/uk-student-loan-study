@@ -2,11 +2,11 @@ import { render, renderHook, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { LoanProvider } from "@/context/LoanContext";
 import {
   AssumptionsWizardProvider,
   useAssumptionsWizard,
 } from "./AssumptionsWizardContext";
-import { LoanProvider } from "@/context/LoanContext";
 
 // --- Mocks ---
 

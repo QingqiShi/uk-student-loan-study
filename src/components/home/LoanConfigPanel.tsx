@@ -7,8 +7,6 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
-import { CurrencyInput } from "./CurrencyInput";
-import type { PlanType } from "@/lib/loans/types";
 import { QuizContainer } from "@/components/quiz/QuizContainer";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +28,9 @@ import {
   PLAN_DISPLAY_INFO,
   POSTGRADUATE_DISPLAY_INFO,
 } from "@/lib/loans/plans";
+import type { PlanType } from "@/lib/loans/types";
 import { cn } from "@/lib/utils";
+import { CurrencyInput } from "./CurrencyInput";
 
 const LEFT_COLUMN: PlanType[] = ["PLAN_1", "PLAN_2", "PLAN_4"];
 const RIGHT_COLUMN: PlanType[] = ["PLAN_5", "POSTGRADUATE"];

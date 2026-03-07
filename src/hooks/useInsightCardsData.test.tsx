@@ -1,10 +1,10 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { type ReactNode } from "react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { LoanProvider } from "../context/LoanContext";
-import type { LoanState } from "@/types/store";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
 import { PersonalizedResultsProvider } from "@/context/PersonalizedResultsContext";
+import type { LoanState } from "@/types/store";
+import { LoanProvider } from "../context/LoanContext";
 
 const defaultTestConfig: Partial<LoanState> = {
   loans: [{ planType: "PLAN_2", balance: 50_000 }],

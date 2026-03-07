@@ -1,12 +1,12 @@
+import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
+import { simulate } from "@/lib/loans/engine";
+import { CURRENT_RATES } from "@/lib/loans/plans";
 import type {
   SimulationResult,
   Loan,
   SimulationMapper,
 } from "@/lib/loans/types";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
-import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
-import { simulate } from "@/lib/loans/engine";
-import { CURRENT_RATES } from "@/lib/loans/plans";
 import { pvTotal } from "@/utils/presentValue";
 
 /**

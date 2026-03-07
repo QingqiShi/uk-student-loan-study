@@ -1,13 +1,13 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Manrope, Space_Grotesk, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
 import type { Metadata } from "next";
+import { Manrope, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
 import { PersonalizedResultsProvider } from "@/context/PersonalizedResultsContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
+import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 const spaceGrotesk = Space_Grotesk({

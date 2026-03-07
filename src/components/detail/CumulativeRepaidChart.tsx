@@ -1,11 +1,11 @@
 "use client";
 
-import type { ChartConfig } from "@/components/ui/chart";
-import type { DetailSeriesResult } from "@/workers/simulation.worker";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import type { ChartConfig } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { formatYearFromMonth } from "@/lib/format";
+import type { DetailSeriesResult } from "@/workers/simulation.worker";
 
 const chartConfig = {
   cumulative: {

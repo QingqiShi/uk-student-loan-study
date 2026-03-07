@@ -4,8 +4,8 @@ import { ArrowRight01Icon, BookOpen01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { GuideEntry, GuideSlug } from "@/lib/guides";
 import { Heading } from "@/components/typography/Heading";
+import type { GuideEntry, GuideSlug } from "@/lib/guides";
 import { GUIDES } from "@/lib/guides";
 
 const RELATED_GUIDES: Partial<Record<string, GuideSlug[]>> = {

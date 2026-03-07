@@ -1,7 +1,4 @@
 import Link from "next/link";
-import { BalanceComparisonChart } from "./BalanceComparisonChart";
-import { ComparisonTable } from "./ComparisonTable";
-import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
@@ -15,6 +12,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import { BalanceComparisonChart } from "./BalanceComparisonChart";
+import { ComparisonTable } from "./ComparisonTable";
+import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
 
 const EXAMPLE_BALANCE = 45_000;
 const EXAMPLE_SALARY = 30_000;

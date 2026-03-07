@@ -1,5 +1,6 @@
+import { monthsElapsedSince } from "@/lib/dateUtils";
+import { toPresent } from "@/utils/presentValue";
 import { simulate } from "./engine";
-import { CURRENT_RATES } from "./plans";
 import type {
   OverpayInput,
   OverpayAnalysisResult,
@@ -7,9 +8,8 @@ import type {
   BalanceDataPoint,
   RecommendationType,
 } from "./overpayTypes";
+import { CURRENT_RATES } from "./plans";
 import type { Loan, SimulationTimeSeries } from "./types";
-import { monthsElapsedSince } from "@/lib/dateUtils";
-import { toPresent } from "@/utils/presentValue";
 
 /**
  * Applies a lump sum payment by reducing initial loan balances proportionally.

@@ -1,15 +1,15 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
+import { currencyFormatter } from "@/constants";
+import { useDetailSeriesData } from "@/hooks/useDetailData";
+import { DETAIL_PAGE_COLOR } from "@/lib/detailPages";
 import { DetailPageShell } from "./DetailPageShell";
 import { AnnualInterestChart } from "./InterestBreakdownChart";
 import {
   InterestHeroStats,
   InterestHeroStatsSkeleton,
 } from "./InterestHeroStats";
-import { Skeleton } from "@/components/ui/skeleton";
-import { currencyFormatter } from "@/constants";
-import { useDetailSeriesData } from "@/hooks/useDetailData";
-import { DETAIL_PAGE_COLOR } from "@/lib/detailPages";
 
 const ACCENT = DETAIL_PAGE_COLOR["/interest"];
 
