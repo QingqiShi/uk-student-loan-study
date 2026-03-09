@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     "RPI student loan",
     "student loan balance growing",
   ],
+  alternates: {
+    canonical: "/guides/how-interest-works",
+  },
   openGraph: {
     title: "Why Your Student Loan Balance Keeps Growing",
     description:
