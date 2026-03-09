@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     "Plan 2 mortgage impact",
     "Plan 5 mortgage impact",
   ],
+  openGraph: {
+    title: "Does Your Student Loan Affect Your Mortgage?",
+    description:
+      "Yes — and it's not about the balance. Lenders care about your monthly repayment, which quietly shrinks how much you can borrow. See the exact impact at your salary.",
+    url: "https://studentloanstudy.uk/guides/student-loan-vs-mortgage",
+    type: "article",
+  },
 };
 
 const breadcrumbSchema = {
