@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GUIDES } from "@/lib/guides";
 
 export const metadata: Metadata = {
   title: "Student Loan Guides — The Stuff They Don't Tell You",
@@ -14,6 +15,21 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/guides",
   },
+};
+
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "UK Student Loan Guides",
+  description:
+    "In-depth guides to help you understand UK student loan repayment, interest, and how it fits into your wider finances.",
+  numberOfItems: GUIDES.length,
+  itemListElement: GUIDES.map((guide, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: guide.title,
+    url: `https://studentloanstudy.uk/guides/${guide.slug}`,
+  })),
 };
 
 const breadcrumbSchema = {
@@ -42,6 +58,10 @@ export default function GuidesLayout({
 }) {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
