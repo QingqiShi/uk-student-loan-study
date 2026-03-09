@@ -77,6 +77,26 @@ const faqSchema = {
   ],
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Pay Tuition Upfront or Take the Loan? It's Not Obvious",
+  description:
+    "The loan feels free until you realise middle earners can repay more than the original tuition. See where the break-even point is for your expected career path.",
+  url: "https://studentloanstudy.uk/guides/pay-upfront-or-take-loan",
+  author: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  dateModified: "2026-03-09",
+};
+
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
 // Google reads JSON-LD from anywhere in the document, so this is functionally equivalent.
 export default function PayUpfrontOrTakeLoanLayout({
@@ -93,6 +113,10 @@ export default function PayUpfrontOrTakeLoanLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       {children}
     </>

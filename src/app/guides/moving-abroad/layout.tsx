@@ -86,6 +86,26 @@ const faqSchema = {
   ],
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "What Happens to Your Student Loan If You Move Abroad?",
+  description:
+    "Moving overseas doesn't make your student loan disappear — the SLC will find you. Here's what they expect, what the penalties look like, and how repayment thresholds change by country.",
+  url: "https://studentloanstudy.uk/guides/moving-abroad",
+  author: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  dateModified: "2026-03-09",
+};
+
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
 // Google reads JSON-LD from anywhere in the document, so this is functionally equivalent.
 export default function MovingAbroadLayout({
@@ -102,6 +122,10 @@ export default function MovingAbroadLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       {children}
     </>

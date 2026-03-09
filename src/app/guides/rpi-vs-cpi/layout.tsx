@@ -69,6 +69,26 @@ const faqSchema = {
   ],
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "RPI vs CPI: Why Your Student Loan Interest Outpaces Inflation",
+  description:
+    "Your student loan interest uses RPI, but 'real' inflation is measured by CPI. That gap means your balance grows faster than the cost of living.",
+  url: "https://studentloanstudy.uk/guides/rpi-vs-cpi",
+  author: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  dateModified: "2026-03-09",
+};
+
 export default function RpiVsCpiLayout({
   children,
 }: {
@@ -83,6 +103,10 @@ export default function RpiVsCpiLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       {children}
     </>
