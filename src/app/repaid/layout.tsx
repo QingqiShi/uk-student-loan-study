@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     "student loan repayments over time",
     "student loan cumulative repayments",
   ],
+  openGraph: {
+    title: "Total Repayments — Student Loan Total Cost Calculator",
+    description:
+      "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed — based on your salary and plan type.",
+    url: "https://studentloanstudy.uk/repaid",
+    type: "website",
+  },
 };
 
 const breadcrumbSchema = {

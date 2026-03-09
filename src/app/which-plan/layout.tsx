@@ -7,6 +7,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/which-plan",
   },
+  openGraph: {
+    title: "What Student Loan Plan Am I On?",
+    description:
+      "Not sure which plan you're on? Answer 3 quick questions and we'll tell you — plus what it means for your repayments, interest rate, and write-off date.",
+    url: "https://studentloanstudy.uk/which-plan",
+    type: "website",
+  },
 };
 
 const faqSchema = {

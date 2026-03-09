@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     "Plan 5 overpayment",
     "student loan vs investing",
   ],
+  openGraph: {
+    title:
+      "Student Loan Overpayment Calculator — Should You Overpay or Invest?",
+    description:
+      "Free UK student loan overpayment calculator. Compare overpaying your loan vs investing in an index fund — see which strategy leaves you better off based on your salary, balance, and plan type.",
+    url: "https://studentloanstudy.uk/overpay",
+    type: "website",
+  },
 };
 
 const breadcrumbSchema = {

@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     "student loan balance over time",
     "UK student loan payoff date",
   ],
+  openGraph: {
+    title: "How Long to Pay Off Your Student Loan — Payoff Timeline Calculator",
+    description:
+      "Find out how long it takes to pay off your UK student loan. See your payoff timeline, balance trajectory, and whether your loan will be paid off or written off — based on your salary and plan type.",
+    url: "https://studentloanstudy.uk/balance",
+    type: "website",
+  },
 };
 
 const breadcrumbSchema = {

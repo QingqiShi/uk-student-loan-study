@@ -10,6 +10,13 @@ export const metadata: Metadata = {
     "UK student loan interest rate comparison",
     "student loan vs base rate",
   ],
+  openGraph: {
+    title: "Effective Rate — True Cost of Your Student Loan",
+    description:
+      "Discover the true effective annual rate of your UK student loan and compare it to the Bank of England base rate. See how your rate changes with different salaries.",
+    url: "https://studentloanstudy.uk/effective-rate",
+    type: "website",
+  },
 };
 
 const breadcrumbSchema = {
