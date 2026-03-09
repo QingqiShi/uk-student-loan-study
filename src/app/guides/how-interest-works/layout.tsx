@@ -72,6 +72,26 @@ const faqSchema = {
   ],
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Why Your Student Loan Balance Keeps Growing",
+  description:
+    "You're making repayments but your balance goes up? That's not a bug — it's how the interest works. See exactly how much interest you're being charged and why it matters less than you think.",
+  url: "https://studentloanstudy.uk/guides/how-interest-works",
+  author: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  dateModified: "2026-03-09",
+};
+
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
 // Google reads JSON-LD from anywhere in the document, so this is functionally equivalent.
 export default function HowInterestWorksLayout({
@@ -88,6 +108,10 @@ export default function HowInterestWorksLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       {children}
     </>

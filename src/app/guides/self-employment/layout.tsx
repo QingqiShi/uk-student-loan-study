@@ -71,6 +71,26 @@ const faqSchema = {
   ],
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Self-Employed? Your Student Loan Repayments Work Differently",
+  description:
+    "No employer deducting it from your payslip means you handle repayments through Self Assessment. Get the timing, thresholds, and mixed-income rules straight before your next tax return.",
+  url: "https://studentloanstudy.uk/guides/self-employment",
+  author: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  dateModified: "2026-03-09",
+};
+
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
 // Google reads JSON-LD from anywhere in the document, so this is functionally equivalent.
 export default function SelfEmploymentLayout({
@@ -87,6 +107,10 @@ export default function SelfEmploymentLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       {children}
     </>

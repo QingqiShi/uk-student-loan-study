@@ -97,6 +97,26 @@ const faqSchema = {
   ],
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Does Your Student Loan Affect Your Mortgage?",
+  description:
+    "Yes — and it's not about the balance. Lenders care about your monthly repayment, which quietly shrinks how much you can borrow. See the exact impact at your salary.",
+  url: "https://studentloanstudy.uk/guides/student-loan-vs-mortgage",
+  author: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "UK Student Loan Study",
+    url: "https://studentloanstudy.uk",
+  },
+  dateModified: "2026-03-09",
+};
+
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
 // Google reads JSON-LD from anywhere in the document, so this is functionally equivalent.
 export default function StudentLoanVsMortgageLayout({
@@ -113,6 +133,10 @@ export default function StudentLoanVsMortgageLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       {children}
     </>
