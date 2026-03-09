@@ -11,6 +11,13 @@ export const metadata: Metadata = {
     "student loan inflation",
     "inflation adjusted student loan",
   ],
+  openGraph: {
+    title: "RPI vs CPI: Why Your Student Loan Interest Outpaces Inflation",
+    description:
+      "Your student loan interest uses RPI, but 'real' inflation is measured by CPI. That gap means your balance grows faster than the cost of living.",
+    url: "https://studentloanstudy.uk/guides/rpi-vs-cpi",
+    type: "article",
+  },
 };
 
 const breadcrumbSchema = {

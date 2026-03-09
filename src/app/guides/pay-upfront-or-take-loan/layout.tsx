@@ -15,6 +15,13 @@ export const metadata: Metadata = {
     "university fees UK",
     "salary growth student loan",
   ],
+  openGraph: {
+    title: "Pay Tuition Upfront or Take the Loan? It's Not Obvious",
+    description:
+      "The loan feels free until you realise middle earners can repay more than the original tuition. See where the break-even point is for your expected career path.",
+    url: "https://studentloanstudy.uk/guides/pay-upfront-or-take-loan",
+    type: "article",
+  },
 };
 
 const breadcrumbSchema = {

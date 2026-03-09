@@ -13,6 +13,13 @@ export const metadata: Metadata = {
     "student loan sole trader",
     "student loan tax return",
   ],
+  openGraph: {
+    title: "Self-Employed? Your Student Loan Repayments Work Differently",
+    description:
+      "No employer deducting it from your payslip means you handle repayments through Self Assessment. Get the timing, thresholds, and mixed-income rules straight before your next tax return.",
+    url: "https://studentloanstudy.uk/guides/self-employment",
+    type: "article",
+  },
 };
 
 const breadcrumbSchema = {

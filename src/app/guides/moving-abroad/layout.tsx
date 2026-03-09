@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     "student loan living abroad",
     "SLC overseas income assessment",
   ],
+  openGraph: {
+    title: "What Happens to Your Student Loan If You Move Abroad?",
+    description:
+      "Moving overseas doesn't make your student loan disappear — the SLC will find you. Here's what they expect, what the penalties look like, and how repayment thresholds change by country.",
+    url: "https://studentloanstudy.uk/guides/moving-abroad",
+    type: "article",
+  },
 };
 
 const breadcrumbSchema = {

@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     "RPI student loan",
     "student loan balance growing",
   ],
+  openGraph: {
+    title: "Why Your Student Loan Balance Keeps Growing",
+    description:
+      "You're making repayments but your balance goes up? That's not a bug — it's how the interest works. See exactly how much interest you're being charged and why it matters less than you think.",
+    url: "https://studentloanstudy.uk/guides/how-interest-works",
+    type: "article",
+  },
 };
 
 const breadcrumbSchema = {
