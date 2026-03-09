@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     "UK student loan interest cost",
     "student loan cost of borrowing",
   ],
+  alternates: {
+    canonical: "/interest",
+  },
   openGraph: {
     title: "Interest Paid — Student Loan Interest Breakdown",
     description:

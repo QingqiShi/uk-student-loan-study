@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     "student loan balance over time",
     "UK student loan payoff date",
   ],
+  alternates: {
+    canonical: "/balance",
+  },
   openGraph: {
     title: "How Long to Pay Off Your Student Loan — Payoff Timeline Calculator",
     description:
