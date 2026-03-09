@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     "student loan living abroad",
     "SLC overseas income assessment",
   ],
+  alternates: {
+    canonical: "/guides/moving-abroad",
+  },
   openGraph: {
     title: "What Happens to Your Student Loan If You Move Abroad?",
     description:

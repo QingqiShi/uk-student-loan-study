@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     "Plan 2 mortgage impact",
     "Plan 5 mortgage impact",
   ],
+  alternates: {
+    canonical: "/guides/student-loan-vs-mortgage",
+  },
   openGraph: {
     title: "Does Your Student Loan Affect Your Mortgage?",
     description:

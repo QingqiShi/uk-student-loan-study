@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     "student loan inflation",
     "inflation adjusted student loan",
   ],
+  alternates: {
+    canonical: "/guides/rpi-vs-cpi",
+  },
   openGraph: {
     title: "RPI vs CPI: Why Your Student Loan Interest Outpaces Inflation",
     description:

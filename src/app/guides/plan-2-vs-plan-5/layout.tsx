@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     "student loan write-off",
     "plan 2 vs plan 5 threshold",
   ],
+  alternates: {
+    canonical: "/guides/plan-2-vs-plan-5",
+  },
   openGraph: {
     title: "Plan 2 vs Plan 5: Which Student Loan Costs More?",
     description,

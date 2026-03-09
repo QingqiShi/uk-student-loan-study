@@ -13,6 +13,9 @@ export const metadata: Metadata = {
     "student loan sole trader",
     "student loan tax return",
   ],
+  alternates: {
+    canonical: "/guides/self-employment",
+  },
   openGraph: {
     title: "Self-Employed? Your Student Loan Repayments Work Differently",
     description:
