@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     "Plan 5 overpayment",
     "student loan vs investing",
   ],
+  alternates: {
+    canonical: "/overpay",
+  },
   openGraph: {
     title:
       "Student Loan Overpayment Calculator — Should You Overpay or Invest?",

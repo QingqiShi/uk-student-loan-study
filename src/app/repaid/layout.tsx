@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     "student loan repayments over time",
     "student loan cumulative repayments",
   ],
+  alternates: {
+    canonical: "/repaid",
+  },
   openGraph: {
     title: "Total Repayments — Student Loan Total Cost Calculator",
     description:

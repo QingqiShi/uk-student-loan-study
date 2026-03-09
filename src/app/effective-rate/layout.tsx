@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     "UK student loan interest rate comparison",
     "student loan vs base rate",
   ],
+  alternates: {
+    canonical: "/effective-rate",
+  },
   openGraph: {
     title: "Effective Rate — True Cost of Your Student Loan",
     description:
