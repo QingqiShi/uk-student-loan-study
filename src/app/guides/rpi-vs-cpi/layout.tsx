@@ -96,6 +96,7 @@ const articleSchema = {
     name: "UK Student Loan Study",
     url: "https://studentloanstudy.uk",
   },
+  datePublished: "2026-02-18",
   dateModified: "2026-03-09",
 };
 
