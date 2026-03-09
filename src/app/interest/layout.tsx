@@ -10,6 +10,13 @@ export const metadata: Metadata = {
     "UK student loan interest cost",
     "student loan cost of borrowing",
   ],
+  openGraph: {
+    title: "Interest Paid — Student Loan Interest Breakdown",
+    description:
+      "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the true cost.",
+    url: "https://studentloanstudy.uk/interest",
+    type: "website",
+  },
 };
 
 const breadcrumbSchema = {
