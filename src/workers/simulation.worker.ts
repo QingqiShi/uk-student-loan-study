@@ -136,13 +136,10 @@ export interface DetailSeriesResult {
     totalInterestPaid: number;
     attributedInterestPaid: number;
     totalPrincipalPaid: number;
-    writtenOffBalance: number;
     initialBalance: number;
     monthsToPayoff: number;
     writtenOff: boolean;
     writeOffMonth: number | null;
-    effectiveRate: number;
-    boeRate: number;
     interestRatio: number;
     monthlyRepayment: number;
     peakBalance: number;
@@ -428,13 +425,10 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
         totalInterestPaid: 0,
         attributedInterestPaid: 0,
         totalPrincipalPaid: 0,
-        writtenOffBalance: 0,
         initialBalance: 0,
         monthsToPayoff: 0,
         writtenOff: false,
         writeOffMonth: null,
-        effectiveRate: 0,
-        boeRate: payload.boeBaseRate / 100,
         interestRatio: 0,
         monthlyRepayment: 0,
         peakBalance: 0,
@@ -468,7 +462,6 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
   let yearInterestPaid = 0;
   let yearInterestUnpaid = 0;
   let yearPrincipalPortion = 0;
-  let lastMonthBalance = 0;
   let peakBalance = totalBalance;
   let peakBalanceMonth = 0;
 
@@ -498,7 +491,6 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
     yearInterestPaid += mInterestPaid;
     yearInterestUnpaid += mInterestUnpaid;
     yearPrincipalPortion += mPrincipal;
-    lastMonthBalance = monthBalance;
 
     if (hasPV) {
       pvCumPaid += toPresent(snap.totalRepayment, dr, snap.month);
@@ -537,7 +529,6 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
 
   const writtenOff = summary.perLoan.some((l) => l.writtenOff);
   const totalPaid = hasPV ? pvCumPaid : summary.totalPaid;
-  const writtenOffBalance = writtenOff ? lastMonthBalance : 0;
   // Adjusted interest: assume every repayment covered principal first.
   // The write-off clears whatever principal remained, so interest = excess
   // paid over initial balance. For write-off cases where totalPaid < initialBalance
@@ -545,7 +536,6 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
   const adjustedInterestPaid = Math.max(0, totalPaid - totalBalance);
   const totalPrincipalPaid = totalPaid - totalInterestPaid;
   const interestRatio = totalPaid > 0 ? adjustedInterestPaid / totalPaid : 0;
-  const effectiveRate = computeEffectiveAnnualRate(totalBalance, snapshots);
   const peakBal = hasPV
     ? toPresent(peakBalance, dr, peakBalanceMonth)
     : peakBalance;
@@ -564,13 +554,10 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
       totalInterestPaid: adjustedInterestPaid,
       attributedInterestPaid: totalInterestPaid,
       totalPrincipalPaid,
-      writtenOffBalance,
       initialBalance: totalBalance,
       monthsToPayoff: summary.monthsToPayoff,
       writtenOff,
       writeOffMonth: writtenOff ? summary.monthsToPayoff : null,
-      effectiveRate,
-      boeRate: payload.boeBaseRate / 100,
       interestRatio,
       monthlyRepayment: snapshots.length > 0 ? snapshots[0].totalRepayment : 0,
       peakBalance: peakBal,
