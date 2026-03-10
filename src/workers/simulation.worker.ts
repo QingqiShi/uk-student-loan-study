@@ -273,7 +273,6 @@ function handleInsight(payload: InsightPayload): {
       boeRate: payload.boeBaseRate / 100,
     },
     cumulative: { data: [], stat: "\u2014", label: "Total Cost" },
-    totalRepayment: { data: [], stat: "\u2014", label: "Total Repayment" },
   };
 
   if (totalBalance <= 0) {
@@ -366,33 +365,6 @@ function handleInsight(payload: InsightPayload): {
 
   const cumulativeStat = `${formatCompactCurrency(totalPaid)} total`;
 
-  // --- Salary series sparkline (downsampled every 5k) ---
-  const SPARKLINE_STEP = 5_000;
-  const salarySeriesData: { month: number; value: number }[] = [];
-  for (let sal = MIN_SALARY; sal <= MAX_SALARY; sal += SPARKLINE_STEP) {
-    const salResult = simulate({
-      loans: payload.loans,
-      annualSalary: sal,
-      monthsElapsed: 0,
-      salaryGrowthRate: payload.salaryGrowthRate,
-      thresholdGrowthRate: payload.thresholdGrowthRate,
-      rpiRate: payload.rpiRate,
-      boeBaseRate: payload.boeBaseRate,
-    });
-    let salTotalPaid = salResult.summary.totalPaid;
-    if (hasPV) {
-      salTotalPaid = pvTotal(
-        salResult.snapshots.map((s) => ({
-          month: s.month,
-          amount: s.totalRepayment,
-        })),
-        dr,
-      );
-    }
-    // Use salary as the "month" axis for the sparkline
-    salarySeriesData.push({ month: sal, value: salTotalPaid });
-  }
-
   const cards: InsightCardsResult = {
     balance: { data: balanceData, stat: balanceStat, label: "Duration" },
     interest: {
@@ -419,11 +391,6 @@ function handleInsight(payload: InsightPayload): {
       data: cumulativeData,
       stat: cumulativeStat,
       label: "Total Cost",
-    },
-    totalRepayment: {
-      data: salarySeriesData,
-      stat: `${formatCompactCurrency(totalPaid)} total`,
-      label: "Total Repayment by Salary",
     },
   };
 
