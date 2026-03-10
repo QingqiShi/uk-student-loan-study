@@ -40,7 +40,7 @@ describe("usePersonalizedResults (cards)", () => {
     expect(result.current.cards).toBeNull();
   });
 
-  it("returns all 5 card datasets with stat and label", async () => {
+  it("returns all 4 card datasets with stat and label", async () => {
     const { result } = renderHook(() => usePersonalizedResults(), {
       wrapper: createWrapper(),
     });
@@ -68,10 +68,6 @@ describe("usePersonalizedResults (cards)", () => {
     expect(cards.effectiveRate.stat).not.toBe("\u2014");
     expect(cards.effectiveRate.effectiveRate).toBeGreaterThan(0);
     expect(cards.effectiveRate.boeRate).toBeGreaterThan(0);
-
-    // Total repayment by salary sparkline
-    expect(cards.totalRepayment.data.length).toBeGreaterThan(0);
-    expect(cards.totalRepayment.stat).not.toBe("\u2014");
   });
 
   it("balance sparkline starts at initial balance and decreases", async () => {
@@ -156,7 +152,5 @@ describe("usePersonalizedResults (cards)", () => {
     expect(cards.interest.interestRatio).toBe(0);
     expect(cards.effectiveRate.stat).toBe("\u2014");
     expect(cards.effectiveRate.effectiveRate).toBe(0);
-    expect(cards.totalRepayment.data).toHaveLength(0);
-    expect(cards.totalRepayment.stat).toBe("\u2014");
   });
 });
