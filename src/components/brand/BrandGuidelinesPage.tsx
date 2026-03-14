@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { BrandIcon, BRAND_HEX } from "./BrandIcon";
+import { BrandIcon, BRAND_HEX, type BrandIconSize } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
 
 const BRAND_SWATCHES = [
@@ -19,7 +19,7 @@ const BRAND_SWATCHES = [
   { name: "Primary Emerald", hex: BRAND_HEX.emerald },
 ];
 
-const ICON_SIZES = [64, 48, 32, 16];
+const ICON_SIZES: BrandIconSize[] = ["2xl", "lg", "md", "xs"];
 
 const CORE_TOKENS = [
   { name: "Primary", var: "--primary" },
@@ -139,7 +139,7 @@ export function BrandGuidelinesPage() {
           {ICON_SIZES.map((size) => (
             <div key={size} className="flex flex-col items-center gap-2">
               <BrandIcon size={size} />
-              <span className="text-xs text-muted-foreground">{size}px</span>
+              <span className="text-xs text-muted-foreground">{size}</span>
             </div>
           ))}
         </div>
@@ -260,7 +260,7 @@ export function BrandGuidelinesPage() {
       {/* Section: Logo Anatomy */}
       <Section title="LOGO ANATOMY">
         <Card className="flex items-center gap-3.5 p-8">
-          <BrandLogo size="large" />
+          <BrandLogo size="xl" />
         </Card>
         <ul className="mt-6 space-y-3">
           {LOGO_ANATOMY.map((point) => (
