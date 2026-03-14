@@ -1,24 +1,23 @@
 import { cn } from "@/lib/utils";
-import { BrandIcon } from "./BrandIcon";
+import { BrandIcon, type BrandIconSize } from "./BrandIcon";
 
 interface BrandLogoProps {
-  size?: "small" | "default" | "large";
+  size?: Extract<BrandIconSize, "sm" | "default" | "xl">;
   className?: string;
 }
 
 const SIZE_CONFIG = {
-  small: { icon: 24, fontSize: 16, shadow: { x: 1, y: 3 }, gap: 8 },
-  default: { icon: 44, fontSize: 19, shadow: { x: 2, y: 4 }, gap: 12 },
-  large: { icon: 56, fontSize: 24, shadow: { x: 2, y: 5 }, gap: 14 },
+  sm: { fontSize: 16, shadow: { x: 1, y: 3 }, gap: 8 },
+  default: { fontSize: 19, shadow: { x: 2, y: 4 }, gap: 12 },
+  xl: { fontSize: 24, shadow: { x: 2, y: 5 }, gap: 14 },
 } as const;
 
 export function BrandLogo({ size = "default", className }: BrandLogoProps) {
-  const config = SIZE_CONFIG[size];
-  const { icon: iconSize, fontSize, shadow: shadowOffset, gap } = config;
+  const { fontSize, shadow: shadowOffset, gap } = SIZE_CONFIG[size];
 
   return (
     <div className={cn("flex items-center", className)} style={{ gap }}>
-      <BrandIcon size={iconSize} />
+      <BrandIcon size={size} />
       <div className="relative">
         {/* Shadow layer */}
         <span

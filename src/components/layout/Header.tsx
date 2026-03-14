@@ -21,7 +21,7 @@ export function Header({ repaymentYear }: HeaderProps) {
         <header className="relative rounded-xl border bg-muted/50 px-3 pt-2 pb-4 shadow-lg backdrop-blur-sm sm:pb-2">
           <div className="flex items-center justify-between gap-3">
             <Link href="/" aria-label="Go to home page">
-              <BrandLogo size="small" />
+              <BrandLogo size="sm" />
             </Link>
             <div className="flex shrink-0 items-center gap-2">
               <div className="hidden sm:block">
