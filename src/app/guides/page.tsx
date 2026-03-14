@@ -50,7 +50,14 @@ export default function GuidesPage() {
                 <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
                   <HugeiconsIcon icon={BookOpen01Icon} className="size-5" />
                 </div>
-                <h2 className="font-medium">{guide.title}</h2>
+                <h2 className="font-medium">
+                  {guide.title}
+                  {guide.isNew && (
+                    <span className="ml-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 align-middle text-xs font-medium text-primary">
+                      New
+                    </span>
+                  )}
+                </h2>
               </div>
               <p className="mb-4 flex-1 text-sm text-muted-foreground">
                 {guide.description}

@@ -27,7 +27,7 @@ export const SALARY_GROWTH_OPTIONS: {
 
 /** Threshold growth rate options for toggle buttons.
  * Thresholds are typically RPI-linked (2-3% historically).
- * Note: Government has announced threshold freeze through 2027.
+ * Note: Thresholds are changing — see threshold freeze guide.
  */
 export const THRESHOLD_GROWTH_OPTIONS: {
   value: number;

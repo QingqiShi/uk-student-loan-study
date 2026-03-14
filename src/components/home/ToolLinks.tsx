@@ -13,9 +13,17 @@ interface ToolCardProps {
   title: string;
   description: string;
   cta: string;
+  isNew?: boolean;
 }
 
-function ToolCard({ href, icon, title, description, cta }: ToolCardProps) {
+function ToolCard({
+  href,
+  icon,
+  title,
+  description,
+  cta,
+  isNew,
+}: ToolCardProps) {
   return (
     <Link href={href} className="group block h-full">
       <div className="flex h-full flex-col rounded-xl bg-card p-5 ring-1 ring-foreground/10 transition-all duration-200 hover:bg-accent hover:ring-primary/30">
@@ -23,7 +31,14 @@ function ToolCard({ href, icon, title, description, cta }: ToolCardProps) {
           <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
             <HugeiconsIcon icon={icon} className="size-5" />
           </div>
-          <h4 className="font-medium">{title}</h4>
+          <h4 className="font-medium">
+            {title}
+            {isNew && (
+              <span className="ml-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 align-middle text-xs font-medium text-primary">
+                New
+              </span>
+            )}
+          </h4>
         </div>
         <p className="mb-4 flex-1 text-sm text-muted-foreground">
           {description}
@@ -85,12 +100,13 @@ const GUIDES: ToolCardProps[] = [
     cta: "Read Guide",
   },
   {
-    href: "/guides/rpi-vs-cpi",
+    href: "/guides/threshold-freeze",
     icon: BookOpen01Icon,
-    title: "RPI vs CPI",
+    title: "Threshold Freeze Explained",
     description:
-      "Why your loan interest outpaces inflation and what \u2018adjusted for inflation\u2019 really means.",
+      "How the Plan 2 threshold freeze from 2027 affects your monthly repayments.",
     cta: "Read Guide",
+    isNew: true,
   },
   {
     href: "/guides/moving-abroad",

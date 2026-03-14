@@ -238,6 +238,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Pay Upfront or Take Loan?](https://studentloanstudy.uk/guides/pay-upfront-or-take-loan): Should parents pay tuition upfront or let their child take the loan?
 - [Moving Abroad](https://studentloanstudy.uk/guides/moving-abroad): What happens to your student loan if you leave the UK
 - [Self-Employment](https://studentloanstudy.uk/guides/self-employment): How repayments work through Self Assessment for freelancers
+- [Threshold Freeze Explained](https://studentloanstudy.uk/guides/threshold-freeze): How the Plan 2 threshold freeze from 2027-2030 increases monthly repayments and what the parliamentary inquiry means
 
 ## Key Facts
 

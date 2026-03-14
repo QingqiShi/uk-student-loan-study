@@ -94,7 +94,13 @@ export function ThresholdGrowthStep({
           </div>
 
           <p className="text-xs text-status-warning-foreground">
-            Note: Government has frozen thresholds through 2027.
+            Note: Thresholds are about to change.{" "}
+            <a
+              href="/guides/threshold-freeze"
+              className="underline underline-offset-2 hover:text-status-warning-foreground/80"
+            >
+              Learn more
+            </a>
           </p>
         </div>
 
