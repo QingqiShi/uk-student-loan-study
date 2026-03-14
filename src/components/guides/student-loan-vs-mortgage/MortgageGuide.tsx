@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import { BorrowingReductionChart } from "./BorrowingReductionChart";
 import { RepaymentImpactChart } from "./RepaymentImpactChart";
 
 const plan2Threshold = PLAN_DISPLAY_INFO.PLAN_2.yearlyThreshold;
@@ -144,15 +145,156 @@ export function MortgageGuide() {
               repayment is roughly {formatGBP(example60kMonthly)}, trimming
               potential borrowing by about{" "}
               {formatGBP(example60kMortgageReduction)} on the same multiplier.
-              Use the{" "}
+              The chart below shows the full picture across the salary range.
+            </p>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Estimated Mortgage Reduction by Salary
+          </Heading>
+          <div className="h-75 sm:h-90">
+            <BorrowingReductionChart />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Estimated reduction based on a 4.5&times; income multiplier applied
+            to the annualised student loan repayment. Actual lending criteria
+            vary by provider.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Does a Student Loan Count as Debt for a Mortgage?
+          </Heading>
+          <div className="space-y-3 text-muted-foreground">
+            <p>
+              No. A UK student loan is <strong>not</strong> treated as
+              conventional debt by mortgage lenders. Unlike a personal loan or
+              credit card balance, your student loan does not appear on your
+              credit report and is not included in debt-to-income ratios.
+            </p>
+            <p>
+              What lenders do care about is the monthly repayment. Because
+              repayments are deducted from your salary before you receive it
+              (like tax), lenders treat it as a committed outgoing that reduces
+              your disposable income. The loan balance itself &mdash; whether
+              it&rsquo;s &pound;20,000 or &pound;60,000 &mdash; is irrelevant to
+              the mortgage application.
+            </p>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Does a Student Loan Affect Your Credit Score?
+          </Heading>
+          <div className="space-y-3 text-muted-foreground">
+            <p>
+              No. The Student Loans Company (SLC) does not report to credit
+              reference agencies like Experian, Equifax, or TransUnion. Your
+              student loan balance and repayment history are completely
+              invisible on your credit file.
+            </p>
+            <p>
+              This means a student loan cannot lower your credit score, trigger
+              a hard search, or show up as an outstanding liability. Lenders
+              learn about your repayment only through payslips and bank
+              statements during the affordability assessment, not from your
+              credit report.
+            </p>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Should You Pay Off Your Student Loan Before Buying a House?
+          </Heading>
+          <div className="space-y-3 text-muted-foreground">
+            <p>
+              Almost certainly not. The money you would use to clear (or reduce)
+              your student loan balance would likely be better spent on a larger
+              deposit. Here&rsquo;s why:
+            </p>
+            <ul className="list-inside list-disc space-y-2">
+              <li>
+                A larger deposit unlocks lower mortgage interest rates (lower
+                LTV bands), saving you far more over the mortgage term than the
+                student loan repayment costs.
+              </li>
+              <li>
+                Paying off &pound;10,000 of student loan debt would only reduce
+                your monthly repayment if it brings the balance to zero. If you
+                still owe money afterwards, your monthly repayment stays exactly
+                the same because it&rsquo;s based on salary, not balance.
+              </li>
+              <li>
+                Any remaining student loan balance is written off after{" "}
+                {PLAN_CONFIGS.PLAN_2.writeOffYears} years (Plan 2) or{" "}
+                {PLAN_CONFIGS.PLAN_5.writeOffYears} years (Plan 5). Many
+                graduates never repay the full amount, so overpaying can mean
+                giving away money you would never have had to pay.
+              </li>
+            </ul>
+            <p>
+              The only scenario where clearing the loan first might help is if
+              you are very close to paying it off anyway and eliminating the
+              monthly repayment would meaningfully boost your affordability. Use
+              the{" "}
               <Link
                 href="/"
                 className="text-primary underline underline-offset-4 hover:text-primary/80"
               >
                 student loan repayment calculator
               </Link>{" "}
-              to see your exact monthly repayment at your salary.
+              to check how close you are.
             </p>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Tips for Mortgage Applicants with Student Loans
+          </Heading>
+          <div className="space-y-3 text-muted-foreground">
+            <ol className="list-inside list-decimal space-y-2">
+              <li>
+                <strong>Know your monthly repayment.</strong> Lenders will ask
+                for it. Check a recent payslip or use the{" "}
+                <Link
+                  href="/"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  calculator
+                </Link>{" "}
+                to confirm the exact amount.
+              </li>
+              <li>
+                <strong>Prioritise your deposit over loan repayment.</strong>{" "}
+                Every extra pound in your deposit does more for your mortgage
+                rate than paying down a student loan that may eventually be
+                written off.
+              </li>
+              <li>
+                <strong>Factor in salary growth.</strong> If you expect a pay
+                rise, your student loan repayment will increase too. Some
+                lenders stress-test affordability at a higher salary, so be
+                prepared for questions about future income.
+              </li>
+              <li>
+                <strong>Compare lenders.</strong> Different lenders treat
+                student loan repayments differently in their affordability
+                models. A mortgage broker can help identify lenders whose
+                criteria are more favourable for borrowers with student loans.
+              </li>
+              <li>
+                <strong>Keep other debts low.</strong> Since your student loan
+                repayment already reduces disposable income, minimising credit
+                card balances, car finance, and other committed spending will
+                maximise the amount you can borrow.
+              </li>
+            </ol>
           </div>
         </section>
 
@@ -163,15 +305,16 @@ export function MortgageGuide() {
           <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
             <li>
               A student loan is <strong>not</strong> conventional debt &mdash;
-              it won&rsquo;t appear on your credit report.
+              it won&rsquo;t appear on your credit report or affect your credit
+              score.
             </li>
             <li>
               Lenders deduct your monthly repayment when calculating how much
               you can borrow, reducing your affordability.
             </li>
             <li>
-              Your credit score is <strong>not</strong> affected by having a
-              student loan.
+              The loan balance is irrelevant &mdash; only the monthly repayment
+              matters to lenders.
             </li>
             <li>
               Any remaining balance is written off after{" "}
@@ -180,15 +323,18 @@ export function MortgageGuide() {
               never chased for unpaid amounts.
             </li>
             <li>
+              Prioritise a bigger deposit over paying off your student loan
+              &mdash; it unlocks better mortgage rates and saves more long-term.
+            </li>
+            <li>
               <Link
                 href="/overpay"
                 className="text-primary underline underline-offset-4 hover:text-primary/80"
               >
                 Overpaying your student loan
               </Link>{" "}
-              to boost mortgage affordability rarely makes sense &mdash; the
-              reduction in borrowing power is modest compared to deposit
-              savings.
+              to boost mortgage affordability rarely makes sense unless
+              you&rsquo;re very close to clearing the balance entirely.
             </li>
           </ul>
         </section>

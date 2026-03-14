@@ -7,10 +7,14 @@ export const metadata: Metadata = {
   description:
     "Yes — and it's not about the balance. Lenders care about your monthly repayment, which quietly shrinks how much you can borrow. See the exact impact at your salary.",
   keywords: [
+    "student loan mortgage uk",
+    "does student loan affect mortgage uk",
     "student loan mortgage",
     "mortgage affordability student loan",
     "student loan affect mortgage",
     "student loan borrowing power",
+    "student loan credit score mortgage",
+    "pay off student loan before mortgage",
     "Plan 2 mortgage impact",
     "Plan 5 mortgage impact",
   ],
@@ -104,6 +108,14 @@ const faqSchema = {
         text: "Yes, but not as a debt. Mortgage lenders deduct your monthly student loan repayment from your gross income before applying their affordability multiplier. This means the higher your salary (and therefore your repayment), the bigger the reduction in borrowing power — even though the loan itself doesn't appear on your credit file.",
       },
     },
+    {
+      "@type": "Question",
+      name: "Should I pay off my student loan before buying a house?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Almost certainly not. The money is usually better spent on a larger deposit, which unlocks lower mortgage interest rates and saves more over the mortgage term. Paying down your student loan only reduces your monthly repayment if it brings the balance to zero — otherwise the repayment stays the same because it's based on salary, not balance. Any remaining balance is eventually written off.",
+      },
+    },
   ],
 };
 
@@ -125,7 +137,7 @@ const articleSchema = {
     url: "https://studentloanstudy.uk",
   },
   datePublished: "2026-02-14",
-  dateModified: "2026-03-09",
+  dateModified: "2026-03-14",
 };
 
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
