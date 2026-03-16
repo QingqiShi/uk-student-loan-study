@@ -1,7 +1,10 @@
+import { InformationCircleIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -64,6 +67,15 @@ export function ThresholdFreezeGuide() {
             and Parliament is finally asking whether it&apos;s fair.
           </p>
         </div>
+
+        <Alert>
+          <HugeiconsIcon icon={InformationCircleIcon} className="size-4" />
+          <AlertTitle>Figures update automatically</AlertTitle>
+          <AlertDescription>
+            Our calculator checks GOV.UK daily for new thresholds and interest
+            rates. <Link href="/our-data">See how we stay current</Link>.
+          </AlertDescription>
+        </Alert>
 
         <section className="space-y-3">
           <Heading as="h2" size="section">
@@ -286,17 +298,6 @@ export function ThresholdFreezeGuide() {
               </Link>{" "}
               &mdash; set threshold growth to 0% to model the freeze, or 3% for
               inflation-linked growth.
-            </p>
-            <p>
-              Our calculator updates automatically when GOV.UK publishes new
-              figures &mdash; we check daily. See{" "}
-              <Link
-                href="/our-data"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
-                how we stay current
-              </Link>{" "}
-              for details.
             </p>
           </div>
         </section>
