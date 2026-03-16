@@ -54,7 +54,7 @@ export function ThresholdFreezeGuide() {
           <div className="space-y-2">
             <span className="text-sm text-muted-foreground">March 2026</span>
             <Heading as="h1">
-              The Plan 2 Threshold Has Been Frozen Three Times Now
+              The Plan 2 Threshold Is Being Frozen Again
             </Heading>
           </div>
           <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
