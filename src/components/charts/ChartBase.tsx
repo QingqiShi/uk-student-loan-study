@@ -67,6 +67,7 @@ export interface ChartBaseProps {
   showLegend?: boolean;
   interactionMode?: "crosshair" | "none";
   xDomain?: [number, number];
+  yDomain?: [number | "auto", number | "auto"];
   margin?: { top?: number; right?: number; bottom?: number; left?: number };
 }
 
@@ -86,6 +87,7 @@ export function ChartBase({
   showLegend = false,
   interactionMode = "crosshair",
   xDomain,
+  yDomain,
   margin: marginProp,
 }: ChartBaseProps) {
   const gradientId = useId();
@@ -121,6 +123,7 @@ export function ChartBase({
               tickLine={false}
               axisLine={false}
               tickMargin={8}
+              {...(yDomain ? { domain: yDomain } : {})}
             />
             <ChartTooltip
               content={({ active, payload }) => {
@@ -304,6 +307,7 @@ export function ChartBase({
             tickLine={false}
             axisLine={false}
             tickMargin={8}
+            {...(yDomain ? { domain: yDomain } : {})}
             {...(yLabel
               ? {
                   label: ({

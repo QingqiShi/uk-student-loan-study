@@ -110,6 +110,7 @@ export function ThresholdComparisonChart() {
         xFormatter={formatTaxYear}
         yLabel="Annual Threshold"
         yFormatter={formatThreshold}
+        yDomain={[27_000, "auto"]}
         ariaLabel="Line chart comparing Plan 2 repayment threshold under three scenarios: inflation-linked, old policy, and new policy"
         chartConfig={chartConfig}
         series={series}
