@@ -26,15 +26,15 @@ export const SALARY_GROWTH_OPTIONS: {
 ];
 
 /** Threshold growth rate options for toggle buttons.
- * Thresholds are typically RPI-linked (2-3% historically).
- * Note: Thresholds are changing — see threshold freeze guide.
+ * These represent the long-term growth rate. When the Plan 2 freeze toggle
+ * is active, these rates apply after the freeze period ends.
  */
 export const THRESHOLD_GROWTH_OPTIONS: {
   value: number;
   label: string;
   description: string;
 }[] = [
-  { value: 0, label: "0%", description: "Frozen thresholds (current policy)" },
+  { value: 0, label: "0%", description: "Frozen indefinitely" },
   { value: 0.02, label: "2%", description: "Below-inflation growth" },
   { value: 0.03, label: "3%", description: "Typical RPI-linked growth" },
   { value: 0.04, label: "4%", description: "Above-inflation growth" },

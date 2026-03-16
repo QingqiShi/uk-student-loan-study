@@ -7,6 +7,7 @@ import {
   useCurrentSalary,
   useSalaryGrowthRate,
   useThresholdGrowthRate,
+  usePlan2ThresholdSchedule,
   useRpiRate,
   useBoeBaseRate,
   useActiveDiscountRate,
@@ -39,6 +40,7 @@ export function PersonalizedResultsProvider({
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const plan2ThresholdSchedule = usePlan2ThresholdSchedule();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
   const activeDiscountRate = useActiveDiscountRate();
@@ -49,6 +51,7 @@ export function PersonalizedResultsProvider({
     loans: config.loans,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
     discountRate: activeDiscountRate,

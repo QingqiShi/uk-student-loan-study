@@ -10,7 +10,8 @@ export const initialState: LoanState = {
   // Overpay analysis defaults
   monthlyOverpayment: 0,
   salaryGrowthRate: 0.04, // 4% - typical career progression
-  thresholdGrowthRate: 0, // 0% - frozen thresholds (current policy)
+  thresholdGrowthRate: 0.03, // 3% - typical RPI-linked growth (long-term)
+  applyPlan2Freeze: true, // Budget 2025: Plan 2 frozen until 2030
   rpiRate: CURRENT_RATES.rpi, // 3.2% - Sept 2025–Aug 2026
   boeBaseRate: CURRENT_RATES.boeBaseRate, // 3.75% - Feb 2026 MPC
   lumpSumPayment: 10_000,

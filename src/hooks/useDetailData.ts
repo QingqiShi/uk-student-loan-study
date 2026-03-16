@@ -10,6 +10,7 @@ import {
   useCurrentSalary,
   useSalaryGrowthRate,
   useThresholdGrowthRate,
+  usePlan2ThresholdSchedule,
   useRpiRate,
   useBoeBaseRate,
   useActiveDiscountRate,
@@ -21,6 +22,7 @@ export function useDetailSeriesData(): DetailSeriesResult | null {
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const plan2ThresholdSchedule = usePlan2ThresholdSchedule();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
   const activeDiscountRate = useActiveDiscountRate();
@@ -31,6 +33,7 @@ export function useDetailSeriesData(): DetailSeriesResult | null {
     annualSalary: salary,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
     discountRate: activeDiscountRate,
@@ -44,6 +47,7 @@ export function useEffectiveRateBySalaryData(): EffectiveRateSalaryResult | null
   const config = useLoanConfig();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const plan2ThresholdSchedule = usePlan2ThresholdSchedule();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
 
@@ -52,6 +56,7 @@ export function useEffectiveRateBySalaryData(): EffectiveRateSalaryResult | null
     loans: config.loans,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
   };

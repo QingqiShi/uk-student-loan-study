@@ -2,6 +2,7 @@ import {
   useLoanConfigState,
   useLoanFrequentState,
 } from "@/context/LoanContext";
+import { computePlan2FreezeSchedule } from "@/lib/loans/plan2Freeze";
 import type { Loan } from "@/lib/loans/types";
 
 interface LoanConfig {
@@ -38,6 +39,7 @@ interface OverpayConfig {
   monthlyOverpayment: number;
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  plan2ThresholdSchedule: number[] | undefined;
   rpiRate: number;
   boeBaseRate: number;
   lumpSumPayment: number;
@@ -53,6 +55,14 @@ export function useSalaryGrowthRate(): number {
 export function useThresholdGrowthRate(): number {
   const { thresholdGrowthRate } = useLoanConfigState();
   return thresholdGrowthRate;
+}
+
+/** Compute Plan 2 freeze schedule from the toggle state. Returns undefined when off. */
+export function usePlan2ThresholdSchedule(): number[] | undefined {
+  const { applyPlan2Freeze, loans } = useLoanConfigState();
+  const hasPlan2 = loans.some((l) => l.planType === "PLAN_2");
+  if (!applyPlan2Freeze || !hasPlan2) return undefined;
+  return computePlan2FreezeSchedule();
 }
 
 /** Select RPI rate for simulation */
@@ -91,10 +101,12 @@ export function useOverpayConfig(): OverpayConfig {
   const { monthlyOverpayment, lumpSumPayment } = useLoanFrequentState();
   const { salaryGrowthRate, thresholdGrowthRate, rpiRate, boeBaseRate } =
     useLoanConfigState();
+  const plan2ThresholdSchedule = usePlan2ThresholdSchedule();
   return {
     monthlyOverpayment,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
     lumpSumPayment,

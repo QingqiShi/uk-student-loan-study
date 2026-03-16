@@ -11,6 +11,7 @@ import {
   useCurrentSalary,
   useSalaryGrowthRate,
   useThresholdGrowthRate,
+  usePlan2ThresholdSchedule,
   useRpiRate,
   useBoeBaseRate,
   useActiveDiscountRate,
@@ -49,6 +50,7 @@ function useSalarySeriesData(): DataPoint[] {
   const config = useLoanConfig();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const plan2ThresholdSchedule = usePlan2ThresholdSchedule();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
   const activeDiscountRate = useActiveDiscountRate();
@@ -58,6 +60,7 @@ function useSalarySeriesData(): DataPoint[] {
     loans: config.loans,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
     discountRate: activeDiscountRate,
@@ -85,6 +88,7 @@ export function useBalanceOverTimeData(): {
   const salary = useCurrentSalary();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const plan2ThresholdSchedule = usePlan2ThresholdSchedule();
   const rpiRate = useRpiRate();
   const boeBaseRate = useBoeBaseRate();
   const activeDiscountRate = useActiveDiscountRate();
@@ -95,6 +99,7 @@ export function useBalanceOverTimeData(): {
     annualSalary: salary,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
     discountRate: activeDiscountRate,
