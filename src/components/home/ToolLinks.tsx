@@ -76,6 +76,15 @@ const TOOLS: ToolCardProps[] = [
 
 const GUIDES: ToolCardProps[] = [
   {
+    href: "/guides/threshold-freeze",
+    icon: BookOpen01Icon,
+    title: "Threshold Freeze Explained",
+    description:
+      "How the Plan 2 threshold freeze from 2027 affects your monthly repayments.",
+    cta: "Read Guide",
+    isNew: true,
+  },
+  {
     href: "/guides/plan-2-vs-plan-5",
     icon: BookOpen01Icon,
     title: "Plan 2 vs Plan 5",
@@ -98,15 +107,6 @@ const GUIDES: ToolCardProps[] = [
     description:
       "How student loan repayments affect your mortgage affordability and borrowing capacity.",
     cta: "Read Guide",
-  },
-  {
-    href: "/guides/threshold-freeze",
-    icon: BookOpen01Icon,
-    title: "Threshold Freeze Explained",
-    description:
-      "How the Plan 2 threshold freeze from 2027 affects your monthly repayments.",
-    cta: "Read Guide",
-    isNew: true,
   },
   {
     href: "/guides/moving-abroad",
