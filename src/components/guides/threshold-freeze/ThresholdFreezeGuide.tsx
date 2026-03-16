@@ -14,18 +14,14 @@ import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { ThresholdComparisonChart } from "./ThresholdComparisonChart";
 
-const plan2Threshold = PLAN_CONFIGS.PLAN_2.monthlyThreshold * 12;
-const FREEZE_THRESHOLD = 29_385;
+// Historical thresholds — hardcoded because these are facts about specific
+// tax years and must not change when the live config updates.
+const SECOND_FREEZE_THRESHOLD = 27_295; // 2021/22 through 2024/25
+const THRESHOLD_2025_26 = 28_470;
+const FREEZE_THRESHOLD = 29_385; // 2026/27, then frozen 2027/28–2029/30
+
 const EXAMPLE_SALARY = 35_000;
-const REPAYMENT_RATE = PLAN_CONFIGS.PLAN_2.repaymentRate;
-
-const monthlyRepaymentCurrent = Math.round(
-  ((EXAMPLE_SALARY - plan2Threshold) * REPAYMENT_RATE) / 12,
-);
-
-const monthlyRepaymentFrozen = Math.round(
-  ((EXAMPLE_SALARY - FREEZE_THRESHOLD) * REPAYMENT_RATE) / 12,
-);
+const REPAYMENT_RATE = 0.09; // 9% for Plan 2
 
 // By 2029/30, inflation-linked would be ~£32,250 (3.2% growth for 4 years from £28,470)
 const PROJECTED_INFLATION_LINKED = 32_250;
@@ -56,6 +52,7 @@ export function ThresholdFreezeGuide() {
           </Breadcrumb>
 
           <div className="space-y-2">
+            <span className="text-sm text-muted-foreground">March 2026</span>
             <Heading as="h1">
               The Plan 2 Threshold Has Been Frozen Three Times Now
             </Heading>
@@ -70,30 +67,26 @@ export function ThresholdFreezeGuide() {
 
         <section className="space-y-3">
           <Heading as="h2" size="section">
-            Where Things Stand Today
+            The Good News First
           </Heading>
           <div className="space-y-2 text-muted-foreground">
             <p>
-              Right now (2025/26), the Plan 2 repayment threshold sits at{" "}
+              After four years frozen at {formatGBP(SECOND_FREEZE_THRESHOLD)},
+              the Plan 2 threshold is finally moving again. It rose to{" "}
               <strong className="text-foreground">
-                {formatGBP(plan2Threshold)}
-              </strong>
-              . You pay 9% of everything you earn above that figure. At a salary
-              of {formatGBP(EXAMPLE_SALARY)}, that works out to roughly{" "}
+                {formatGBP(THRESHOLD_2025_26)}
+              </strong>{" "}
+              in April 2025, and rises again to{" "}
               <strong className="text-foreground">
-                {formatGBP(monthlyRepaymentCurrent)}/month
-              </strong>
-              .
+                {formatGBP(FREEZE_THRESHOLD)}
+              </strong>{" "}
+              in April 2026 &mdash; two consecutive years of RPI-linked
+              increases that push the threshold up by over £2,000.
             </p>
             <p>
-              In April 2026, the threshold rises to{" "}
-              {formatGBP(FREEZE_THRESHOLD)} &mdash; a small bump that lowers
-              monthly repayments to around{" "}
-              <strong className="text-foreground">
-                {formatGBP(monthlyRepaymentFrozen)}/month
-              </strong>{" "}
-              at the same salary. So far, so normal. But what comes next
-              isn&apos;t.
+              That&apos;s genuinely positive. A higher threshold means you keep
+              more of your salary before repayments kick in. But what comes next
+              isn&apos;t as welcome.
             </p>
           </div>
         </section>
@@ -197,7 +190,7 @@ export function ThresholdFreezeGuide() {
               <li>
                 <strong className="text-foreground">Old policy</strong> &mdash;
                 what was in place before the Budget (frozen at{" "}
-                {formatGBP(plan2Threshold)} through April 2027, then resuming
+                {formatGBP(THRESHOLD_2025_26)} through April 2027, then resuming
                 RPI).
               </li>
               <li>
