@@ -15,7 +15,7 @@ describe("loanReducer", () => {
       expect(initialState.loans).toEqual([
         { planType: "PLAN_2", balance: 45_000 },
       ]);
-      expect(initialState.salary).toBe(40_000);
+      expect(initialState.salary).toBe(45_000);
     });
 
     it("should have rpiRate equal to CURRENT_RATES.rpi", () => {
@@ -144,7 +144,7 @@ describe("loanReducer", () => {
       expect(resetState.loans).toEqual([
         { planType: "PLAN_2", balance: 45_000 },
       ]);
-      expect(resetState.salary).toBe(40_000);
+      expect(resetState.salary).toBe(45_000);
     });
 
     it("should restore showPresentValue and discountRate to initial values", () => {
