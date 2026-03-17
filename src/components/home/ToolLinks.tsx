@@ -13,7 +13,7 @@ interface ToolCardProps {
   title: string;
   description: string;
   cta: string;
-  isNew?: boolean;
+  newUntil?: string;
 }
 
 function ToolCard({
@@ -22,7 +22,7 @@ function ToolCard({
   title,
   description,
   cta,
-  isNew,
+  newUntil,
 }: ToolCardProps) {
   return (
     <Link href={href} className="group block h-full">
@@ -33,7 +33,7 @@ function ToolCard({
           </div>
           <h4 className="font-medium">
             {title}
-            {isNew && (
+            {newUntil && new Date() < new Date(newUntil) && (
               <span className="ml-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 align-middle text-xs font-medium text-primary">
                 New
               </span>
@@ -82,7 +82,7 @@ const GUIDES: ToolCardProps[] = [
     description:
       "How the Plan 2 threshold freeze from 2027 affects your monthly repayments.",
     cta: "Read Guide",
-    isNew: true,
+    newUntil: "2026-06-01",
   },
   {
     href: "/guides/plan-2-vs-plan-5",

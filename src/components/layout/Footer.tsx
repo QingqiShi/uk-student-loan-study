@@ -67,6 +67,14 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
+                  href="/guides/threshold-freeze"
+                  className={NAV_LINK_CLASS}
+                >
+                  Threshold Freeze Explained
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/guides/plan-2-vs-plan-5"
                   className={NAV_LINK_CLASS}
                 >

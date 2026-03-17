@@ -13,6 +13,7 @@ import {
   trackPlan2FreezeToggled,
   trackThresholdGrowthSelected,
 } from "@/lib/analytics";
+import { formatGBP } from "@/lib/format";
 import {
   PLAN_2_FREEZE_TARGET,
   PLAN_2_FREEZE_END_YEAR,
@@ -80,14 +81,8 @@ export function ThresholdGrowthStep({
                 Apply Plan 2 freeze (Budget 2025)
               </span>
               <p className="text-xs text-muted-foreground">
-                Threshold rises to{" "}
-                {new Intl.NumberFormat("en-GB", {
-                  style: "currency",
-                  currency: "GBP",
-                  maximumFractionDigits: 0,
-                }).format(PLAN_2_FREEZE_TARGET)}{" "}
-                in April 2026, then frozen until{" "}
-                {String(PLAN_2_FREEZE_END_YEAR)}
+                Threshold rises to {formatGBP(PLAN_2_FREEZE_TARGET)} in April
+                2026, then frozen until {String(PLAN_2_FREEZE_END_YEAR)}
               </p>
             </div>
           </label>
