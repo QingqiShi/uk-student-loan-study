@@ -68,15 +68,6 @@ export function ThresholdFreezeGuide() {
           </p>
         </div>
 
-        <Alert>
-          <HugeiconsIcon icon={InformationCircleIcon} className="size-4" />
-          <AlertTitle>Figures update automatically</AlertTitle>
-          <AlertDescription>
-            Our calculator checks GOV.UK daily for new thresholds and interest
-            rates. <Link href="/our-data">See how we stay current</Link>.
-          </AlertDescription>
-        </Alert>
-
         <section className="space-y-3">
           <Heading as="h2" size="section">
             The Good News First
@@ -184,6 +175,15 @@ export function ThresholdFreezeGuide() {
             </p>
           </div>
         </section>
+
+        <Alert>
+          <HugeiconsIcon icon={InformationCircleIcon} className="size-4" />
+          <AlertTitle>Figures update automatically</AlertTitle>
+          <AlertDescription>
+            Our calculator checks GOV.UK daily for new thresholds and interest
+            rates. <Link href="/our-data">See how we stay current</Link>.
+          </AlertDescription>
+        </Alert>
 
         <section className="space-y-3">
           <Heading as="h2" size="section">
