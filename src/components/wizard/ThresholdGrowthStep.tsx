@@ -6,9 +6,18 @@ import { OptionCard } from "@/components/quiz/OptionCard";
 import { QuestionStep } from "@/components/quiz/QuestionStep";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { THRESHOLD_GROWTH_OPTIONS } from "@/constants";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
-import { trackThresholdGrowthSelected } from "@/lib/analytics";
+import {
+  trackPlan2FreezeToggled,
+  trackThresholdGrowthSelected,
+} from "@/lib/analytics";
+import { formatGBP } from "@/lib/format";
+import {
+  PLAN_2_FREEZE_TARGET,
+  PLAN_2_FREEZE_END_YEAR,
+} from "@/lib/loans/plan2Freeze";
 
 interface ThresholdGrowthStepProps {
   direction: "forward" | "backward";
@@ -29,22 +38,56 @@ export function ThresholdGrowthStep({
   onNext,
 }: ThresholdGrowthStepProps) {
   const { updateField } = useLoanActions();
-  const { thresholdGrowthRate } = useLoanConfigState();
+  const { thresholdGrowthRate, applyPlan2Freeze, loans } = useLoanConfigState();
   const [optimisticThresholdGrowthRate, setOptimisticThresholdGrowthRate] =
     useOptimistic(thresholdGrowthRate);
+  const [optimisticApplyPlan2Freeze, setOptimisticApplyPlan2Freeze] =
+    useOptimistic(applyPlan2Freeze);
+
+  const hasPlan2 = loans.some((l) => l.planType === "PLAN_2");
 
   const isPreset = presetValues.has(optimisticThresholdGrowthRate);
   const customDisplayValue = isPreset
     ? ""
     : optimisticThresholdGrowthRate * 100;
 
+  const subtitle =
+    optimisticApplyPlan2Freeze && hasPlan2
+      ? "After the freeze, how fast will thresholds grow?"
+      : "Thresholds determine when you start repaying";
+
   return (
     <QuestionStep
       title="How will repayment thresholds change?"
-      subtitle="Thresholds determine when you start repaying"
+      subtitle={subtitle}
       direction={direction}
     >
       <div className="space-y-6">
+        {hasPlan2 && (
+          <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-card p-4">
+            <Switch
+              checked={optimisticApplyPlan2Freeze}
+              onCheckedChange={(checked) => {
+                trackPlan2FreezeToggled(checked);
+                startTransition(() => {
+                  setOptimisticApplyPlan2Freeze(checked);
+                  updateField("applyPlan2Freeze", checked);
+                });
+              }}
+              className="mt-0.5"
+            />
+            <div className="space-y-1">
+              <span className="text-sm leading-none font-medium">
+                Apply Plan 2 freeze (Budget 2025)
+              </span>
+              <p className="text-xs text-muted-foreground">
+                Threshold rises to {formatGBP(PLAN_2_FREEZE_TARGET)} in April
+                2026, then frozen until {String(PLAN_2_FREEZE_END_YEAR)}
+              </p>
+            </div>
+          </label>
+        )}
+
         <div className="space-y-3">
           <div className="grid grid-cols-1 gap-3 xs:grid-cols-2">
             {THRESHOLD_GROWTH_OPTIONS.map((option) => (
@@ -92,10 +135,6 @@ export function ThresholdGrowthStep({
               </span>
             </div>
           </div>
-
-          <p className="text-xs text-status-warning-foreground">
-            Note: Government has frozen thresholds through 2027.
-          </p>
         </div>
 
         <Button className="w-full" onClick={onNext}>

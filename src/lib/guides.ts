@@ -1,4 +1,5 @@
 export type GuideSlug =
+  | "threshold-freeze"
   | "plan-2-vs-plan-5"
   | "student-loan-vs-mortgage"
   | "how-interest-works"
@@ -11,9 +12,17 @@ export interface GuideEntry {
   slug: GuideSlug;
   title: string;
   description: string;
+  newUntil?: string;
 }
 
 export const GUIDES: GuideEntry[] = [
+  {
+    slug: "threshold-freeze",
+    title: "Threshold Freeze Explained",
+    description:
+      "How frozen repayment thresholds cost you more each month, and what the 2026 parliamentary inquiry means.",
+    newUntil: "2026-06-01",
+  },
   {
     slug: "plan-2-vs-plan-5",
     title: "Plan 2 vs Plan 5",

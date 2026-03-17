@@ -12,10 +12,13 @@ export function AssumptionsCallout() {
     SALARY_GROWTH_OPTIONS.find((o) => o.value === config.salaryGrowthRate)
       ?.label ?? `${(config.salaryGrowthRate * 100).toFixed(0)}%`;
 
+  const hasPlan2 = config.loans.some((l) => l.planType === "PLAN_2");
   const thresholdLabel =
-    config.thresholdGrowthRate === 0
-      ? "frozen"
-      : `+${(config.thresholdGrowthRate * 100).toFixed(0)}%/yr`;
+    config.applyPlan2Freeze && hasPlan2
+      ? `frozen then +${(config.thresholdGrowthRate * 100).toFixed(0)}%/yr`
+      : config.thresholdGrowthRate === 0
+        ? "frozen"
+        : `+${(config.thresholdGrowthRate * 100).toFixed(0)}%/yr`;
 
   const rpiLabel = `${config.rpiRate % 1 === 0 ? config.rpiRate.toFixed(0) : config.rpiRate.toFixed(1)}%`;
 

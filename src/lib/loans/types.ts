@@ -98,6 +98,9 @@ export interface SimulationConfig {
   monthlyOverpayment?: number;
   /** Annual threshold growth rate (default 0) */
   thresholdGrowthRate?: number;
+  /** Per-year Plan 2 monthly threshold overrides. Index 0 = year 1, etc.
+   *  After the schedule runs out, thresholdGrowthRate applies. */
+  plan2ThresholdSchedule?: number[];
   rpiRate?: number;
   boeBaseRate?: number;
 }

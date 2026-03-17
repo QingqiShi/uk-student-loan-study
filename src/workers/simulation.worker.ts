@@ -47,6 +47,7 @@ export interface SalarySeriesPayload {
   loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  plan2ThresholdSchedule?: number[];
   rpiRate: number;
   boeBaseRate: number;
   discountRate?: number;
@@ -58,6 +59,7 @@ export interface BalanceSeriesPayload {
   annualSalary: number;
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  plan2ThresholdSchedule?: number[];
   rpiRate: number;
   boeBaseRate: number;
   discountRate?: number;
@@ -77,6 +79,7 @@ export interface InsightPayload {
   loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  plan2ThresholdSchedule?: number[];
   rpiRate: number;
   boeBaseRate: number;
   discountRate?: number;
@@ -88,6 +91,7 @@ export interface DetailSeriesPayload {
   annualSalary: number;
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  plan2ThresholdSchedule?: number[];
   rpiRate: number;
   boeBaseRate: number;
   discountRate?: number;
@@ -98,6 +102,7 @@ export interface EffectiveRateSalaryPayload {
   loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  plan2ThresholdSchedule?: number[];
   rpiRate: number;
   boeBaseRate: number;
 }
@@ -189,6 +194,7 @@ function handleSalarySeries(payload: SalarySeriesPayload): DataPoint[] {
       payload.salaryGrowthRate,
       payload.thresholdGrowthRate,
       payload.boeBaseRate,
+      payload.plan2ThresholdSchedule,
     );
   }
   return generateSalaryDataSeries(
@@ -198,6 +204,7 @@ function handleSalarySeries(payload: SalarySeriesPayload): DataPoint[] {
     payload.salaryGrowthRate,
     payload.thresholdGrowthRate,
     payload.boeBaseRate,
+    payload.plan2ThresholdSchedule,
   );
 }
 
@@ -211,6 +218,7 @@ function handleBalanceSeries(
     payload.salaryGrowthRate,
     payload.thresholdGrowthRate,
     payload.boeBaseRate,
+    payload.plan2ThresholdSchedule,
   );
 
   const { discountRate } = payload;
@@ -249,6 +257,7 @@ function handleInsight(payload: InsightPayload): {
     loans: payload.loans,
     salaryGrowthRate: payload.salaryGrowthRate,
     thresholdGrowthRate: payload.thresholdGrowthRate,
+    plan2ThresholdSchedule: payload.plan2ThresholdSchedule,
     rpiRate: payload.rpiRate,
     boeBaseRate: payload.boeBaseRate,
     discountRate: payload.discountRate,
@@ -282,6 +291,7 @@ function handleInsight(payload: InsightPayload): {
     monthsElapsed: 0,
     salaryGrowthRate: payload.salaryGrowthRate,
     thresholdGrowthRate: payload.thresholdGrowthRate,
+    plan2ThresholdSchedule: payload.plan2ThresholdSchedule,
     rpiRate: payload.rpiRate,
     boeBaseRate: payload.boeBaseRate,
   });
@@ -444,6 +454,7 @@ function handleDetailSeries(payload: DetailSeriesPayload): DetailSeriesResult {
     monthsElapsed: 0,
     salaryGrowthRate: payload.salaryGrowthRate,
     thresholdGrowthRate: payload.thresholdGrowthRate,
+    plan2ThresholdSchedule: payload.plan2ThresholdSchedule,
     rpiRate: payload.rpiRate,
     boeBaseRate: payload.boeBaseRate,
   });
@@ -581,6 +592,7 @@ function handleEffectiveRateSalary(
       rpiRate: payload.rpiRate,
       salaryGrowthRate: payload.salaryGrowthRate,
       thresholdGrowthRate: payload.thresholdGrowthRate,
+      plan2ThresholdSchedule: payload.plan2ThresholdSchedule,
       boeBaseRate: payload.boeBaseRate,
     });
 

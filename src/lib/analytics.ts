@@ -16,6 +16,10 @@ export function trackThresholdGrowthSelected(rate: number) {
   track("threshold_growth_selected", { rate });
 }
 
+export function trackPlan2FreezeToggled(enabled: boolean) {
+  track("plan2_freeze_toggled", { enabled });
+}
+
 export function trackRpiRateSelected(rate: number) {
   track("rpi_rate_selected", { rate });
 }

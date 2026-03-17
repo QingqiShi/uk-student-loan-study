@@ -852,4 +852,133 @@ describe("simulate engine", () => {
       expect(highSalaryInterest).toBeGreaterThan(lowSalaryInterest);
     });
   });
+
+  describe("Plan 2 threshold freeze schedule", () => {
+    const freezeMonthlyThreshold = 29385 / 12;
+
+    it("uses schedule values for Plan 2 during covered years", () => {
+      // 3-year freeze: Plan 2 threshold stays at freezeMonthlyThreshold
+      const result = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+        plan2ThresholdSchedule: [
+          freezeMonthlyThreshold,
+          freezeMonthlyThreshold,
+          freezeMonthlyThreshold,
+        ],
+      });
+
+      // Repayment at month 12 (year 1) should reflect the frozen threshold
+      const month12Repayment = result.snapshots[12]?.loans[0]?.repayment ?? 0;
+      // Repayment at month 24 (year 2) should be similar (threshold still frozen)
+      const month24Repayment = result.snapshots[24]?.loans[0]?.repayment ?? 0;
+
+      // Salary grows but threshold stays the same, so repayment should increase
+      // between year 1 and year 2 only due to salary growth
+      expect(month12Repayment).toBeGreaterThan(0);
+      expect(month24Repayment).toBeGreaterThan(0);
+    });
+
+    it("applies thresholdGrowthRate after schedule ends", () => {
+      // 1-year freeze then 3% growth
+      const resultWithFreeze = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+        plan2ThresholdSchedule: [freezeMonthlyThreshold],
+      });
+
+      // Without freeze, threshold grows from year 1
+      const resultWithoutFreeze = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+      });
+
+      // After 1 year, both should grow at 3%, but freeze result started from
+      // freezeMonthlyThreshold while no-freeze started from base * 1.03
+      // So repayments should differ at month 24
+      const freeze24 = resultWithFreeze.snapshots[24]?.loans[0]?.repayment ?? 0;
+      const noFreeze24 =
+        resultWithoutFreeze.snapshots[24]?.loans[0]?.repayment ?? 0;
+
+      // They should be different because the starting threshold differs
+      expect(freeze24).not.toBeCloseTo(noFreeze24, 0);
+    });
+
+    it("does not affect other plan types during freeze", () => {
+      // Multi-plan: Plan 1 + Plan 2 with freeze
+      const result = simulate({
+        loans: [
+          { planType: "PLAN_1", balance: 20000 },
+          { planType: "PLAN_2", balance: 45000 },
+        ],
+        annualSalary: 50000,
+        monthsElapsed: 0,
+        thresholdGrowthRate: 0.03,
+        plan2ThresholdSchedule: [
+          freezeMonthlyThreshold,
+          freezeMonthlyThreshold,
+          freezeMonthlyThreshold,
+        ],
+        rpiRate: CURRENT_RATES.rpi,
+        boeBaseRate: CURRENT_RATES.boeBaseRate,
+      });
+
+      // Plan 1 should have its threshold grow normally at 3%
+      const resultNoFreeze = simulate({
+        loans: [{ planType: "PLAN_1", balance: 20000 }],
+        annualSalary: 50000,
+        monthsElapsed: 0,
+        thresholdGrowthRate: 0.03,
+        rpiRate: CURRENT_RATES.rpi,
+        boeBaseRate: CURRENT_RATES.boeBaseRate,
+      });
+
+      // Plan 1 repayment at month 12 should be the same whether or not freeze exists
+      const plan1WithFreeze =
+        result.snapshots[12]?.loans.find((l) => l.planType === "PLAN_1")
+          ?.repayment ?? 0;
+      const plan1NoFreeze =
+        resultNoFreeze.snapshots[12]?.loans[0]?.repayment ?? 0;
+
+      expect(plan1WithFreeze).toBeCloseTo(plan1NoFreeze, 2);
+    });
+
+    it("freeze of 0 years is identical to no schedule", () => {
+      const resultEmpty = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+        plan2ThresholdSchedule: [],
+      });
+
+      const resultNone = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+      });
+
+      expect(resultEmpty.summary.totalPaid).toBeCloseTo(
+        resultNone.summary.totalPaid,
+        2,
+      );
+      expect(resultEmpty.summary.monthsToPayoff).toBe(
+        resultNone.summary.monthsToPayoff,
+      );
+    });
+
+    it("omitting schedule defaults to no freeze", () => {
+      const resultUndefined = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+        plan2ThresholdSchedule: undefined,
+      });
+
+      const resultNone = simulate({
+        ...defaultConfig,
+        thresholdGrowthRate: 0.03,
+      });
+
+      expect(resultUndefined.summary.totalPaid).toBe(
+        resultNone.summary.totalPaid,
+      );
+    });
+  });
 });

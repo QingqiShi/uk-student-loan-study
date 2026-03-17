@@ -32,6 +32,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     salaryGrowthRate = 0,
     monthlyOverpayment = 0,
     thresholdGrowthRate = 0,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
   } = config;
@@ -85,16 +86,43 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     // Apply annual salary and threshold growth (at the start of each year, after first year)
     if (month > 0 && month % 12 === 0) {
       currentSalary *= 1 + salaryGrowthRate;
+      const simulationYear = month / 12; // 1-indexed: first event at month 12 = year 1
       for (const [planType, threshold] of planThresholds) {
-        planThresholds.set(planType, threshold * (1 + thresholdGrowthRate));
+        // Plan 2 freeze schedule: use known government values for covered years
+        if (
+          planType === "PLAN_2" &&
+          plan2ThresholdSchedule &&
+          simulationYear <= plan2ThresholdSchedule.length
+        ) {
+          planThresholds.set(
+            planType,
+            plan2ThresholdSchedule[simulationYear - 1],
+          );
+        } else {
+          planThresholds.set(planType, threshold * (1 + thresholdGrowthRate));
+        }
       }
       if (
         hasPlan2 &&
         currentInterestLower !== undefined &&
         currentInterestUpper !== undefined
       ) {
-        currentInterestLower *= 1 + thresholdGrowthRate;
-        currentInterestUpper *= 1 + thresholdGrowthRate;
+        // Plan 2 interest thresholds: scale proportionally during freeze, grow normally after
+        if (
+          plan2ThresholdSchedule &&
+          simulationYear <= plan2ThresholdSchedule.length
+        ) {
+          const baseMonthly = PLAN_CONFIGS.PLAN_2.monthlyThreshold;
+          const scheduleMonthly = plan2ThresholdSchedule[simulationYear - 1];
+          const ratio = scheduleMonthly / baseMonthly;
+          currentInterestLower =
+            PLAN_CONFIGS.PLAN_2.interestLowerThreshold * ratio;
+          currentInterestUpper =
+            PLAN_CONFIGS.PLAN_2.interestUpperThreshold * ratio;
+        } else {
+          currentInterestLower *= 1 + thresholdGrowthRate;
+          currentInterestUpper *= 1 + thresholdGrowthRate;
+        }
         interestThresholdOverrides = {
           interestLowerThreshold: currentInterestLower,
           interestUpperThreshold: currentInterestUpper,

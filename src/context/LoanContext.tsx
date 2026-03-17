@@ -28,6 +28,7 @@ interface LoanConfigState {
   loans: Loan[];
   salaryGrowthRate: number;
   thresholdGrowthRate: number;
+  applyPlan2Freeze: boolean;
   rpiRate: number;
   boeBaseRate: number;
   showPresentValue: boolean;
@@ -82,6 +83,7 @@ export function LoanProvider({
     loans: state.loans,
     salaryGrowthRate: state.salaryGrowthRate,
     thresholdGrowthRate: state.thresholdGrowthRate,
+    applyPlan2Freeze: state.applyPlan2Freeze,
     rpiRate: state.rpiRate,
     boeBaseRate: state.boeBaseRate,
     showPresentValue: state.showPresentValue,

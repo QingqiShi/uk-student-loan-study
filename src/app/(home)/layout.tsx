@@ -36,6 +36,14 @@ const faqSchema = {
         text: "Write-off periods vary by plan: Plan 1 writes off 25 years after the April you were first due to repay. Plan 2 writes off 30 years after. Plan 4 writes off 30 years after. Plan 5 writes off 40 years after. Postgraduate loans write off 30 years after.",
       },
     },
+    {
+      "@type": "Question",
+      name: "What is the student loan threshold freeze?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The government has frozen the Plan 2 repayment threshold at £29,385 from April 2027 to April 2030. This means the salary at which you start repaying won't rise with inflation, so graduates effectively pay more each month than they would if thresholds kept pace with prices.",
+      },
+    },
   ],
 };
 

@@ -12,6 +12,8 @@ export interface OverpayInput {
   salaryGrowthRate: number;
   /** Threshold growth rate as decimal (e.g., 0.02 = 2%) */
   thresholdGrowthRate: number;
+  /** Plan 2 threshold freeze schedule (monthly values per year) */
+  plan2ThresholdSchedule?: number[];
   rpiRate?: number;
   boeBaseRate?: number;
   lumpSumPayment?: number;
