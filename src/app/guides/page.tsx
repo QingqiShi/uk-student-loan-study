@@ -53,7 +53,7 @@ export default function GuidesPage() {
                 <h2 className="font-medium">
                   {guide.title}
                   {guide.newUntil && new Date() < new Date(guide.newUntil) && (
-                    <span className="ml-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 align-middle text-xs font-medium text-primary">
+                    <span className="ml-2 inline-block rounded-full bg-primary/5 px-2 py-0.5 align-middle text-xs font-medium text-primary">
                       New
                     </span>
                   )}

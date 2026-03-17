@@ -34,7 +34,7 @@ function ToolCard({
           <h4 className="font-medium">
             {title}
             {newUntil && new Date() < new Date(newUntil) && (
-              <span className="ml-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 align-middle text-xs font-medium text-primary">
+              <span className="ml-2 inline-block rounded-full bg-primary/5 px-2 py-0.5 align-middle text-xs font-medium text-primary">
                 New
               </span>
             )}
