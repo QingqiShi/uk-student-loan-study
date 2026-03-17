@@ -107,7 +107,7 @@
   --status-warning-foreground: oklch(0.666 0.179 58.318);
   --status-warning: oklch(0.987 0.022 95.277);
   --status-warning-border: oklch(0.924 0.12 95.746);
-  --status-danger-foreground: oklch(0.577 0.245 27.325);
+  --status-danger-foreground: oklch(0.55 0.245 27.325);
   --status-danger: oklch(0.971 0.013 17.38);
   --status-danger-border: oklch(0.885 0.062 18.334);
 }
