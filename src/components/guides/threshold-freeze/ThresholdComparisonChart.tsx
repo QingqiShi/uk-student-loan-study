@@ -3,9 +3,11 @@
 import type { ChartSeriesConfig } from "@/components/charts/ChartBase";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
-import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
+import { CURRENT_RATES } from "@/lib/loans/plans";
 
-const BASE_THRESHOLD = PLAN_CONFIGS.PLAN_2.monthlyThreshold * 12; // £28,470
+// Hardcoded because the chart models specific tax years and must not shift
+// when the live config updates.
+const BASE_THRESHOLD = 28_470; // Plan 2 threshold in 2025/26
 const NEW_THRESHOLD = 29_385;
 const RPI = CURRENT_RATES.rpi / 100; // e.g. 0.032
 
@@ -108,6 +110,7 @@ export function ThresholdComparisonChart() {
         xFormatter={formatTaxYear}
         yLabel="Annual Threshold"
         yFormatter={formatThreshold}
+        yDomain={[27_000, "auto"]}
         ariaLabel="Line chart comparing Plan 2 repayment threshold under three scenarios: inflation-linked, old policy, and new policy"
         chartConfig={chartConfig}
         series={series}

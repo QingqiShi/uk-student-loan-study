@@ -32,6 +32,7 @@ export function generateSalaryDataSeries(
   salaryGrowthRate = 0,
   thresholdGrowthRate = 0,
   boeBaseRate: number = CURRENT_RATES.boeBaseRate,
+  plan2ThresholdSchedule?: number[],
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
@@ -44,6 +45,7 @@ export function generateSalaryDataSeries(
       salaryGrowthRate,
       thresholdGrowthRate,
       boeBaseRate,
+      plan2ThresholdSchedule,
     });
 
     // Convert to SimulationResult for mapper compatibility
@@ -80,6 +82,7 @@ export function generateSalaryDataSeriesPV(
   salaryGrowthRate = 0,
   thresholdGrowthRate = 0,
   boeBaseRate: number = CURRENT_RATES.boeBaseRate,
+  plan2ThresholdSchedule?: number[],
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
@@ -92,6 +95,7 @@ export function generateSalaryDataSeriesPV(
       salaryGrowthRate,
       thresholdGrowthRate,
       boeBaseRate,
+      plan2ThresholdSchedule,
     });
 
     const total = pvTotal(
@@ -136,6 +140,7 @@ export function generateBalanceTimeSeries(
   salaryGrowthRate = 0,
   thresholdGrowthRate = 0,
   boeBaseRate: number = CURRENT_RATES.boeBaseRate,
+  plan2ThresholdSchedule?: number[],
 ): BalanceTimeSeriesResult {
   if (loans.length === 0 || loans.every((loan) => loan.balance <= 0)) {
     return { data: [], writeOffMonth: null };
@@ -149,6 +154,7 @@ export function generateBalanceTimeSeries(
     salaryGrowthRate,
     thresholdGrowthRate,
     boeBaseRate,
+    plan2ThresholdSchedule,
   });
 
   const data: BalanceDataPoint[] = [];

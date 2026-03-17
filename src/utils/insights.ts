@@ -24,6 +24,7 @@ interface InsightConfig {
   loans: Loan[];
   salaryGrowthRate?: number;
   thresholdGrowthRate?: number;
+  plan2ThresholdSchedule?: number[];
   rpiRate?: number;
   boeBaseRate?: number;
   discountRate?: number;
@@ -64,6 +65,7 @@ export function generateInsight(
     loans,
     salaryGrowthRate = 0,
     thresholdGrowthRate = 0,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
     discountRate,
@@ -83,6 +85,7 @@ export function generateInsight(
     monthsElapsed: 0,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
   });

@@ -77,6 +77,9 @@ export const ASSUMPTION_PARAMS: AssumptionParamConfig[] = [
   },
 ];
 
+// Boolean assumption param — encoded as 0/1 in URL, handled separately from ASSUMPTION_PARAMS
+const PARAM_P2F = "p2f";
+
 const VALID_PLANS: PlanType[] = [
   "PLAN_1",
   "PLAN_2",
@@ -144,6 +147,9 @@ export function encodeStateToParams(
     params.set(field.urlParam, String(value));
   }
 
+  // Boolean flags
+  params.set(PARAM_P2F, state.applyPlan2Freeze ? "1" : "0");
+
   if (state.showPresentValue) {
     params.set("pv", "1");
   }
@@ -165,6 +171,7 @@ export interface DecodedState {
   monthlyOverpayment?: number;
   salaryGrowthRate?: number;
   thresholdGrowthRate?: number;
+  applyPlan2Freeze?: boolean;
   rpiRate?: number;
   boeBaseRate?: number;
   lumpSumPayment?: number;
@@ -267,6 +274,13 @@ export function decodeParamsToState(params: URLSearchParams): DecodedState {
           field.legacyMapping[raw];
       }
     }
+  }
+
+  const p2fParam = params.get(PARAM_P2F);
+  if (p2fParam === "1") {
+    result.applyPlan2Freeze = true;
+  } else if (p2fParam === "0") {
+    result.applyPlan2Freeze = false;
   }
 
   const pvParam = params.get("pv");

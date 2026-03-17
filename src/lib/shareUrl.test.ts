@@ -18,6 +18,7 @@ const mockState: LoanState = {
   monthlyOverpayment: 200,
   salaryGrowthRate: 0.04,
   thresholdGrowthRate: 0.02,
+  applyPlan2Freeze: true,
   rpiRate: 3.2,
   boeBaseRate: 3.75,
   lumpSumPayment: 10000,
@@ -416,6 +417,18 @@ describe("round-trip encoding/decoding", () => {
       const decoded = decodeParamsToState(params);
       expect(decoded.salaryGrowthRate).toBe(rate);
     }
+  });
+
+  it("round-trips Plan 2 freeze toggle", () => {
+    const stateOn: LoanState = { ...mockState, applyPlan2Freeze: true };
+    const paramsOn = encodeStateToParams(stateOn);
+    const decodedOn = decodeParamsToState(paramsOn);
+    expect(decodedOn.applyPlan2Freeze).toBe(true);
+
+    const stateOff: LoanState = { ...mockState, applyPlan2Freeze: false };
+    const paramsOff = encodeStateToParams(stateOff);
+    const decodedOff = decodeParamsToState(paramsOff);
+    expect(decodedOff.applyPlan2Freeze).toBe(false);
   });
 });
 

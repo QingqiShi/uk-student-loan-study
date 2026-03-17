@@ -50,6 +50,7 @@ export function simulateOverpayScenarios(
     monthlyOverpayment,
     salaryGrowthRate,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
     lumpSumPayment = 0,
@@ -85,6 +86,7 @@ export function simulateOverpayScenarios(
     salaryGrowthRate,
     monthlyOverpayment: 0,
     thresholdGrowthRate,
+    plan2ThresholdSchedule,
     rpiRate: rpi,
     boeBaseRate: boe,
   });
@@ -100,6 +102,7 @@ export function simulateOverpayScenarios(
           salaryGrowthRate,
           monthlyOverpayment,
           thresholdGrowthRate,
+          plan2ThresholdSchedule,
           rpiRate: rpi,
           boeBaseRate: boe,
         });
