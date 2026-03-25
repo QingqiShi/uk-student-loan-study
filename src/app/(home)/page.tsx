@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import App from "@/components/App";
+import { App } from "@/components/App";
 import { AppErrorBoundary } from "@/components/shared/ErrorBoundary";
 import { parseMetadataParams } from "@/lib/metadata";
 

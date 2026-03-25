@@ -13,7 +13,7 @@ import { ControlBar } from "./shared/ControlBar";
 import { InsightCards } from "./shared/InsightCards";
 import { PlanFromQuery } from "./shared/PlanFromQuery";
 
-function App() {
+export function App() {
   const { updateField } = useLoanActions();
   const config = useLoanConfigState();
   const { pendingQuizPlanTypes } = config;
@@ -50,5 +50,3 @@ function App() {
     </>
   );
 }
-
-export default App;

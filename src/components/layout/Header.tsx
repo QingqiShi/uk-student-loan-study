@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { GovUkBadge } from "./GovUkBadge";
 import { ShareButton } from "./ShareButton";
-import ThemeToggle from "./ThemeToggle";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface HeaderProps {
   repaymentYear?: number;

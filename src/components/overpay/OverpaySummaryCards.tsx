@@ -177,5 +177,3 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
     </div>
   );
 }
-
-export default OverpaySummaryCards;
