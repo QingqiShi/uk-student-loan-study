@@ -193,6 +193,22 @@ describe("AssumptionsWizardContext", () => {
     expect(trackWizardCompleted).toHaveBeenCalledTimes(1);
   });
 
+  it("closes the dialog when Escape is pressed", async () => {
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <AssumptionsWizardProvider>
+        <TestConsumer />
+      </AssumptionsWizardProvider>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
   it("does not call analytics when closing without completing", async () => {
     const user = userEvent.setup();
 

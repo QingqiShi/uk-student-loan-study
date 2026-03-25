@@ -2,7 +2,7 @@
 
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { startTransition, useOptimistic } from "react";
+import { startTransition, useEffect, useOptimistic, useRef } from "react";
 import { LoanConfigPanel } from "@/components/home/LoanConfigPanel";
 import { PresentValueToggle } from "@/components/home/PresentValueToggle";
 import { Slider } from "@/components/ui/slider";
@@ -239,14 +239,34 @@ function ConfigOverlay({
   onComplete: () => void;
   onClose: () => void;
 }) {
-  if (mode.view !== "loan-config") return null;
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  const isOpen = mode.view === "loan-config";
+
+  // Auto-focus the dialog container when it opens so keyboard events work
+  // and the next Tab lands inside the dialog rather than on page content.
+  useEffect(() => {
+    if (isOpen) {
+      dialogRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label="Configure your loans"
       className="fixed inset-0 z-50 flex min-h-dvh flex-col overflow-y-auto bg-background"
+      tabIndex={-1}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          onClose();
+        }
+      }}
     >
       <LoanConfigPanel
         isEditing={hasPersonalized}

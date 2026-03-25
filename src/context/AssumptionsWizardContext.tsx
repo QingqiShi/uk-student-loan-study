@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, use, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  use,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { AssumptionsWizard } from "@/components/wizard/AssumptionsWizard";
 import type { AssumptionsWizardStep } from "@/components/wizard/wizardReducer";
 import { trackWizardCompleted, trackWizardStarted } from "@/lib/analytics";
@@ -54,6 +61,16 @@ export function AssumptionsWizardProvider({
     setWizardState({ open: false });
   }
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Auto-focus the dialog container when it opens so keyboard events work
+  // and the next Tab lands inside the dialog rather than on page content.
+  useEffect(() => {
+    if (wizardState.open) {
+      dialogRef.current?.focus();
+    }
+  }, [wizardState.open]);
+
   const value: AssumptionsWizardValue = { openAssumptions };
 
   return (
@@ -61,10 +78,18 @@ export function AssumptionsWizardProvider({
       {children}
       {wizardState.open && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label="Adjust assumptions"
           className="fixed inset-0 z-50 overflow-y-auto"
+          tabIndex={-1}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              e.stopPropagation();
+              handleClose();
+            }
+          }}
         >
           <AssumptionsWizard
             onComplete={handleComplete}
