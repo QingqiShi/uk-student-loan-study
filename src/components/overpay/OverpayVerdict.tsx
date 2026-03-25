@@ -73,5 +73,3 @@ export function OverpayVerdict({
     </div>
   );
 }
-
-export default OverpayVerdict;

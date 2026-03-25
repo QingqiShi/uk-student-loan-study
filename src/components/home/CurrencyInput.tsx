@@ -49,5 +49,3 @@ function CustomInput({
 }: React.ComponentProps<"input"> & { ref?: React.Ref<HTMLInputElement> }) {
   return <Input ref={ref} {...props} />;
 }
-
-export default CurrencyInput;

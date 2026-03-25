@@ -66,5 +66,3 @@ export function OverpayComparisonChart({
     />
   );
 }
-
-export default OverpayComparisonChart;
