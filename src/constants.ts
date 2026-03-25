@@ -90,4 +90,3 @@ export const currencyFormatter = new Intl.NumberFormat("en-GB", {
 
 export const percentageFormatter = (value: number) =>
   `${(value * 100).toFixed(1)}%`;
-export const yearsFormatter = (value: number) => value.toFixed(1);
