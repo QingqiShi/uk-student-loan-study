@@ -670,6 +670,16 @@ self.onmessage = (event: MessageEvent<WorkerMessage>) => {
     return;
   }
 
+  // Prune stale cancelled IDs: any ID below the current one was either
+  // already processed or will never arrive, so keeping it leaks memory.
+  if (cancelledIds.size > 0) {
+    for (const staleId of cancelledIds) {
+      if (staleId < id) {
+        cancelledIds.delete(staleId);
+      }
+    }
+  }
+
   let result: WorkerResultType;
 
   switch (payload.type) {
