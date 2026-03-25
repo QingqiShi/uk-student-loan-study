@@ -15,6 +15,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/guides",
   },
+  openGraph: {
+    title: "Student Loan Guides — The Stuff They Don't Tell You",
+    description:
+      "The real questions graduates ask: Will my loan affect my mortgage? Should I overpay? What if I move abroad? Clear answers with interactive charts, not jargon.",
+    url: "https://studentloanstudy.uk/guides",
+    type: "website",
+  },
 };
 
 const itemListSchema = {
