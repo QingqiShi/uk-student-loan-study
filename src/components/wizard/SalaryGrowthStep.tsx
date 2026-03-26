@@ -81,6 +81,7 @@ export function SalaryGrowthStep({ direction, onNext }: SalaryGrowthStepProps) {
                 decimalScale={1}
                 inputMode="decimal"
                 placeholder="e.g. 5"
+                aria-label="Custom salary growth rate percentage"
               />
               <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs text-muted-foreground">
                 %/yr

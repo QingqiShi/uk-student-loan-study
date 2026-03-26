@@ -129,6 +129,7 @@ export function ThresholdGrowthStep({
                 decimalScale={1}
                 inputMode="decimal"
                 placeholder="e.g. 3"
+                aria-label="Custom threshold growth rate percentage"
               />
               <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs text-muted-foreground">
                 %/yr
