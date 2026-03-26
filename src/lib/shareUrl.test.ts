@@ -61,7 +61,7 @@ describe("encodeStateToParams", () => {
     "always includes assumption field $urlParam",
     (field) => {
       const params = encodeStateToParams(mockState);
-      const expected = mockState[field.stateKey] as number;
+      const expected = mockState[field.stateKey];
       expect(params.get(field.urlParam)).toBe(String(expected));
     },
   );
