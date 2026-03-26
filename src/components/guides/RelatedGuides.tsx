@@ -7,6 +7,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { Heading } from "@/components/typography/Heading";
 import type { GuideEntry, GuideSlug } from "@/lib/guides";
 import { GUIDES } from "@/lib/guides";
 
@@ -36,7 +37,9 @@ export function RelatedGuides({
   return (
     <div className="space-y-6">
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold tracking-tight">Related Guides</h2>
+        <Heading as="h2" size="section">
+          Related Guides
+        </Heading>
         <div className="grid gap-3 sm:grid-cols-2">
           {orderedGuides.map((guide) => (
             <Link
@@ -92,7 +95,9 @@ export function RelatedGuides({
       )}
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold tracking-tight">More Tools</h2>
+        <Heading as="h2" size="section">
+          More Tools
+        </Heading>
         <div className="grid gap-3 sm:grid-cols-2">
           <Link href="/" className="group block">
             <div className="flex items-center gap-3 rounded-xl border p-4 transition-all duration-200 hover:bg-accent hover:ring-1 hover:ring-primary/30">
