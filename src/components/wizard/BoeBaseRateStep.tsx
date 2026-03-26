@@ -41,7 +41,7 @@ export function BoeBaseRateStep({
   return (
     <QuestionStep
       title="What Bank of England base rate do you expect?"
-      subtitle="Plan 1 &amp; 4 interest is the lesser of RPI or base rate + 1%"
+      subtitle="Plan 1 & 4 interest is the lesser of RPI or base rate + 1%"
       direction={direction}
     >
       <div className="space-y-6">
