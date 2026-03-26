@@ -19,8 +19,9 @@ export function BrandLogo({ size = "default", className }: BrandLogoProps) {
     <div className={cn("flex items-center", className)} style={{ gap }}>
       <BrandIcon size={size} />
       <div className="relative">
-        {/* Shadow layer */}
+        {/* Shadow layer — decorative, hidden from screen readers */}
         <span
+          aria-hidden="true"
           className="absolute font-display font-bold whitespace-nowrap text-primary/15"
           style={{
             top: shadowOffset.y,
