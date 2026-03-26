@@ -13,7 +13,7 @@ const chartConfig = {
   },
   overpayBalance: {
     label: "With overpaying",
-    color: "var(--chart-1)",
+    color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
