@@ -19,17 +19,6 @@ export interface Loan {
 }
 
 /**
- * Input parameters for running a loan simulation.
- */
-export interface SimulationInput {
-  loans: Loan[];
-  annualSalary: number;
-  repaymentStartDate: Date;
-  rpiRate?: number;
-  boeBaseRate?: number;
-}
-
-/**
  * Result of simulating a single loan.
  */
 export interface LoanResult {
