@@ -13,7 +13,7 @@ export async function generateMetadata({
   const params = await searchParams;
   const meta = parseMetadataParams(params);
 
-  // No share params - use defaults from layout
+  // No share params - use defaults from root layout, just add canonical
   if (!meta.hasShareParams) {
     return {
       alternates: {
@@ -31,6 +31,12 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: "/",
+    },
+    openGraph: {
+      title,
+      description,
+      url: "https://studentloanstudy.uk",
+      type: "website",
     },
   };
 }
