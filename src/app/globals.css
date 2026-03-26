@@ -257,7 +257,3 @@ body {
     animation: none;
   }
 }
-
-@utility scrollbar-none {
-  scrollbar-width: none;
-}
