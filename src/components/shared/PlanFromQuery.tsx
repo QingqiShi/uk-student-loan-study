@@ -55,6 +55,9 @@ function PlanFromQueryInner({ onRepaymentYearChange }: PlanFromQueryProps) {
         updateField(field.stateKey, value as number);
       }
     }
+    if (decoded.applyPlan2Freeze !== undefined) {
+      updateField("applyPlan2Freeze", decoded.applyPlan2Freeze);
+    }
     if (decoded.showPresentValue) {
       updateField("showPresentValue", true);
     }
