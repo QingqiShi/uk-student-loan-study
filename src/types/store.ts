@@ -33,16 +33,3 @@ export interface LoanState {
   /** Plan types discovered via the standalone /which-plan quiz, pending config panel open */
   pendingQuizPlanTypes: PlanType[] | null;
 }
-
-/**
- * Store actions for updating loan state.
- */
-export interface LoanActions {
-  /** Update a single field in the store */
-  updateField: <K extends keyof LoanState>(key: K, value: LoanState[K]) => void;
-}
-
-/**
- * Complete store interface with state values and actions.
- */
-export type LoanStore = LoanState & LoanActions;
