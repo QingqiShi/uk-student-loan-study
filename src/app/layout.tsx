@@ -101,7 +101,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="en-GB"
       className={cn(
         manrope.variable,
         spaceGrotesk.variable,
