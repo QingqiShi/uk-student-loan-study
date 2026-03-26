@@ -1,4 +1,5 @@
 import { QuizContainer } from "@/components/quiz/QuizContainer";
+import { AppErrorBoundary } from "@/components/shared/ErrorBoundary";
 import { Heading } from "@/components/typography/Heading";
 import { currencyFormatter } from "@/constants";
 import {
@@ -13,7 +14,7 @@ const ALL_PLANS = [
 
 export default function WhichPlanPage() {
   return (
-    <>
+    <AppErrorBoundary>
       <QuizContainer />
       <section className="border-t bg-muted/30">
         <div className="mx-auto max-w-4xl px-3 py-12">
@@ -58,6 +59,6 @@ export default function WhichPlanPage() {
           </div>
         </div>
       </section>
-    </>
+    </AppErrorBoundary>
   );
 }
