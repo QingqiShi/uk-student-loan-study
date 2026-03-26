@@ -45,9 +45,19 @@ const LEGACY_SALARY_GROWTH_MAPPING: Record<string, number> = {
 // Config-driven assumption params
 // ---------------------------------------------------------------------------
 
+/** LoanState keys that hold numeric assumption values (used in URL encoding) */
+export type NumericAssumptionKey = Extract<
+  keyof LoanState,
+  | "salaryGrowthRate"
+  | "thresholdGrowthRate"
+  | "rpiRate"
+  | "boeBaseRate"
+  | "discountRate"
+>;
+
 export interface AssumptionParamConfig {
-  /** LoanState field name */
-  stateKey: keyof LoanState;
+  /** LoanState field name (restricted to numeric assumption fields) */
+  stateKey: NumericAssumptionKey;
   /** Short URL param key */
   urlParam: string;
   /** Analytics event name suffix, e.g. "salary_growth" → "shared_salary_growth_loaded" */
@@ -143,7 +153,7 @@ export function encodeStateToParams(
 
   // Assumption fields — always included
   for (const field of ASSUMPTION_PARAMS) {
-    const value = state[field.stateKey] as number;
+    const value = state[field.stateKey];
     params.set(field.urlParam, String(value));
   }
 
@@ -178,6 +188,31 @@ export interface DecodedState {
   repaymentYear?: number;
   showPresentValue?: boolean;
   discountRate?: number;
+}
+
+/** Type-safe setter for numeric assumption fields on DecodedState. */
+function setDecodedNumericField(
+  target: DecodedState,
+  key: NumericAssumptionKey,
+  value: number,
+): void {
+  switch (key) {
+    case "salaryGrowthRate":
+      target.salaryGrowthRate = value;
+      break;
+    case "thresholdGrowthRate":
+      target.thresholdGrowthRate = value;
+      break;
+    case "rpiRate":
+      target.rpiRate = value;
+      break;
+    case "boeBaseRate":
+      target.boeBaseRate = value;
+      break;
+    case "discountRate":
+      target.discountRate = value;
+      break;
+  }
 }
 
 /**
@@ -268,10 +303,13 @@ export function decodeParamsToState(params: URLSearchParams): DecodedState {
     if (raw !== null) {
       const num = parseFloat(raw);
       if (!isNaN(num)) {
-        (result as Record<string, unknown>)[field.stateKey] = num;
+        setDecodedNumericField(result, field.stateKey, num);
       } else if (field.legacyMapping && raw in field.legacyMapping) {
-        (result as Record<string, unknown>)[field.stateKey] =
-          field.legacyMapping[raw];
+        setDecodedNumericField(
+          result,
+          field.stateKey,
+          field.legacyMapping[raw],
+        );
       }
     }
   }

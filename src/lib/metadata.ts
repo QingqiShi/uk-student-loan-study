@@ -1,6 +1,6 @@
 import { currencyFormatter, DEFAULT_SALARY } from "@/constants";
 import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
-import type { Loan } from "@/lib/loans/types";
+import type { Loan, PlanType } from "@/lib/loans/types";
 import { DEFAULT_PRESET } from "@/lib/presets";
 import { decodeParamsToState } from "@/lib/shareUrl";
 
@@ -9,6 +9,13 @@ import { decodeParamsToState } from "@/lib/shareUrl";
  */
 const DEFAULT_LOANS: Loan[] = DEFAULT_PRESET.loans;
 const DEFAULT_SALARY_VALUE = DEFAULT_SALARY;
+
+/** Type guard: returns true if the plan type has an entry in PLAN_DISPLAY_INFO */
+function isUndergraduatePlan(
+  planType: PlanType,
+): planType is keyof typeof PLAN_DISPLAY_INFO {
+  return planType in PLAN_DISPLAY_INFO;
+}
 
 export interface DecodedMetadataParams {
   planName: string;
@@ -51,10 +58,10 @@ export function parseMetadataParams(
   const totalBalance = balance + pgBalance;
 
   const firstUgLoan = ugLoans.length > 0 ? ugLoans[0] : undefined;
-  const planName = firstUgLoan
-    ? PLAN_DISPLAY_INFO[firstUgLoan.planType as keyof typeof PLAN_DISPLAY_INFO]
-        .name
-    : "Postgraduate";
+  const planName =
+    firstUgLoan && isUndergraduatePlan(firstUgLoan.planType)
+      ? PLAN_DISPLAY_INFO[firstUgLoan.planType].name
+      : "Postgraduate";
 
   return {
     planName,

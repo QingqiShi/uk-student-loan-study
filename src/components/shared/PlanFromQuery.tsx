@@ -11,11 +11,7 @@ import {
   trackSharedLumpSumLoaded,
   trackSharedRepaymentYearLoaded,
 } from "@/lib/analytics";
-import {
-  decodeParamsToState,
-  ASSUMPTION_PARAMS,
-  type DecodedState,
-} from "@/lib/shareUrl";
+import { decodeParamsToState, ASSUMPTION_PARAMS } from "@/lib/shareUrl";
 
 interface PlanFromQueryProps {
   onRepaymentYearChange?: (year: number) => void;
@@ -49,10 +45,10 @@ function PlanFromQueryInner({ onRepaymentYearChange }: PlanFromQueryProps) {
       updateField("monthlyOverpayment", decoded.monthlyOverpayment);
     }
     for (const field of ASSUMPTION_PARAMS) {
-      const value = decoded[field.stateKey as keyof DecodedState];
+      const value = decoded[field.stateKey];
       if (value !== undefined) {
-        trackSharedAssumptionLoaded(field.analyticsName, value as number);
-        updateField(field.stateKey, value as number);
+        trackSharedAssumptionLoaded(field.analyticsName, value);
+        updateField(field.stateKey, value);
       }
     }
     if (decoded.applyPlan2Freeze !== undefined) {
