@@ -4,6 +4,15 @@ export const metadata: Metadata = {
   title: "What Student Loan Plan Am I On?",
   description:
     "Not sure which plan you're on? Answer 3 quick questions and we'll tell you — plus what it means for your repayments, interest rate, and write-off date.",
+  keywords: [
+    "what student loan plan am I on",
+    "which student loan plan",
+    "student loan plan type",
+    "Plan 1 Plan 2 Plan 4 Plan 5",
+    "UK student loan plan quiz",
+    "student loan plan finder",
+    "SLC loan plan type",
+  ],
   alternates: {
     canonical: "/which-plan",
   },
