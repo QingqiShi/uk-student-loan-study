@@ -9,11 +9,11 @@ import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 const chartConfig = {
   baselineBalance: {
     label: "Without overpaying",
-    color: "oklch(0.7 0.15 50)", // Orange
+    color: "var(--chart-overpay-baseline)",
   },
   overpayBalance: {
     label: "With overpaying",
-    color: "var(--chart-1)", // Theme color
+    color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
