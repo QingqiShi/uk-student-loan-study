@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: "Page Not Found",
   description:
     "The page you were looking for doesn't exist. Browse our UK student loan calculators, tools, and guides.",
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 const SUGGESTED_LINKS = [
