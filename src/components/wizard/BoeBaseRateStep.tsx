@@ -86,6 +86,7 @@ export function BoeBaseRateStep({
                 decimalScale={2}
                 inputMode="decimal"
                 placeholder="e.g. 4"
+                aria-label="Custom Bank of England base rate percentage"
               />
               <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs text-muted-foreground">
                 %
