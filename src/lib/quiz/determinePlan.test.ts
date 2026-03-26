@@ -94,13 +94,13 @@ describe("determinePlan", () => {
       ).toBe("PLAN_2");
     });
 
-    it("returns PLAN_5 for 2023 or later", () => {
+    it("returns PLAN_2 for 2023 or later (Plan 5 is England-only)", () => {
       expect(
         determinePlan({
           region: "wales",
           startYearGroup: "2023-or-later",
         }),
-      ).toBe("PLAN_5");
+      ).toBe("PLAN_2");
     });
   });
 });
@@ -176,16 +176,17 @@ describe("shouldAskAboutAdditionalCourse", () => {
 });
 
 describe("getAdditionalCoursePlan", () => {
-  it("returns PLAN_2 for before-2012 students", () => {
-    expect(getAdditionalCoursePlan("before-2012")).toBe("PLAN_2");
+  it("returns PLAN_2 for pre-2012 starters regardless of region", () => {
+    expect(getAdditionalCoursePlan("before-2012", "england")).toBe("PLAN_2");
+    expect(getAdditionalCoursePlan("before-2012", "wales")).toBe("PLAN_2");
   });
 
-  it("returns PLAN_5 for 2012-2022 students", () => {
-    expect(getAdditionalCoursePlan("2012-2022")).toBe("PLAN_5");
+  it("returns PLAN_5 for 2012-2022 England starters", () => {
+    expect(getAdditionalCoursePlan("2012-2022", "england")).toBe("PLAN_5");
   });
 
-  it("returns PLAN_5 for 2023-or-later students", () => {
-    expect(getAdditionalCoursePlan("2023-or-later")).toBe("PLAN_5");
+  it("returns PLAN_2 for 2012-2022 Wales starters (Plan 5 is England-only)", () => {
+    expect(getAdditionalCoursePlan("2012-2022", "wales")).toBe("PLAN_2");
   });
 });
 

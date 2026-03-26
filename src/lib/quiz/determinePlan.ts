@@ -27,7 +27,8 @@ export interface QuizAnswers {
  * - Northern Ireland → PLAN_1 (regardless of year)
  * - England/Wales before 2012 → PLAN_1
  * - England/Wales 2012-2022 → PLAN_2
- * - England/Wales 2023+ → PLAN_5
+ * - England 2023+ → PLAN_5
+ * - Wales 2023+ → PLAN_2 (Plan 5 is England-only)
  */
 export function determinePlan(answers: QuizAnswers): UndergraduatePlanType {
   const { region, startYearGroup } = answers;
@@ -49,7 +50,8 @@ export function determinePlan(answers: QuizAnswers): UndergraduatePlanType {
     case "2012-2022":
       return "PLAN_2";
     case "2023-or-later":
-      return "PLAN_5";
+      // Plan 5 is England-only; Welsh students starting 2023+ remain on Plan 2
+      return region === "england" ? "PLAN_5" : "PLAN_2";
     default:
       // Default to PLAN_2 if somehow called without startYearGroup for England/Wales
       return "PLAN_2";
@@ -78,12 +80,16 @@ export function shouldAskAboutAdditionalCourse(
 }
 
 /**
- * The plan type for the additional course, based on the original start year group.
+ * The plan type for the additional course, based on the original start year
+ * group and region. Plan 5 is England-only; Welsh students get Plan 2.
  */
 export function getAdditionalCoursePlan(
   yearGroup: StartYearGroup,
+  region: Region,
 ): UndergraduatePlanType {
-  return yearGroup === "before-2012" ? "PLAN_2" : "PLAN_5";
+  if (yearGroup === "before-2012") return "PLAN_2";
+  // 2012-2022 starters taking a new course after Aug 2023
+  return region === "england" ? "PLAN_5" : "PLAN_2";
 }
 
 /**
@@ -124,8 +130,8 @@ export function determineAllLoans(state: QuizState): PlanType[] {
   }
 
   // Additional undergraduate course
-  if (state.hasAdditionalCourse && state.startYearGroup) {
-    loans.push(getAdditionalCoursePlan(state.startYearGroup));
+  if (state.hasAdditionalCourse && state.startYearGroup && state.region) {
+    loans.push(getAdditionalCoursePlan(state.startYearGroup, state.region));
   }
 
   // Postgraduate loan
