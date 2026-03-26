@@ -31,14 +31,14 @@ function ToolCard({
           <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
             <HugeiconsIcon icon={icon} className="size-5" />
           </div>
-          <h4 className="font-medium">
+          <h3 className="font-medium">
             {title}
             {newUntil && new Date() < new Date(newUntil) && (
               <span className="ml-2 inline-block rounded-full bg-primary/5 px-2 py-0.5 align-middle text-xs font-medium text-primary">
                 New
               </span>
             )}
-          </h4>
+          </h3>
         </div>
         <p className="mb-4 flex-1 text-sm text-muted-foreground">
           {description}
