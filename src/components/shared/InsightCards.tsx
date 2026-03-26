@@ -19,6 +19,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
   const { cards: data } = usePersonalizedResults();
 
   return (
+    // <nav> is correct here — each card is a link to a detail page
     <nav aria-label="Loan breakdown" className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-muted-foreground">
