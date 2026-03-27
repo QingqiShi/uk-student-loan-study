@@ -89,7 +89,11 @@ export function ThresholdGrowthStep({
         )}
 
         <div className="space-y-3">
-          <div className="grid grid-cols-1 gap-3 xs:grid-cols-2">
+          <div
+            role="radiogroup"
+            aria-label="Threshold growth rate"
+            className="grid grid-cols-1 gap-3 xs:grid-cols-2"
+          >
             {THRESHOLD_GROWTH_OPTIONS.map((option) => (
               <OptionCard
                 key={option.label}

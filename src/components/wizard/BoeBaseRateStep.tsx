@@ -46,7 +46,11 @@ export function BoeBaseRateStep({
     >
       <div className="space-y-6">
         <div className="space-y-3">
-          <div className="grid grid-cols-1 gap-3 xs:grid-cols-2">
+          <div
+            role="radiogroup"
+            aria-label="Bank of England base rate"
+            className="grid grid-cols-1 gap-3 xs:grid-cols-2"
+          >
             {BOE_BASE_RATE_OPTIONS.map((option) => (
               <OptionCard
                 key={option.label}
