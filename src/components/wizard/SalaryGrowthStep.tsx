@@ -41,7 +41,11 @@ export function SalaryGrowthStep({ direction, onNext }: SalaryGrowthStepProps) {
     >
       <div className="space-y-6">
         <div className="space-y-3">
-          <div className="grid grid-cols-1 gap-3 xs:grid-cols-2">
+          <div
+            role="radiogroup"
+            aria-label="Salary growth rate"
+            className="grid grid-cols-1 gap-3 xs:grid-cols-2"
+          >
             {SALARY_GROWTH_OPTIONS.map((option) => (
               <OptionCard
                 key={option.label}
