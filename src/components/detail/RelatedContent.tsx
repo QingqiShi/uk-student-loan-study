@@ -9,11 +9,11 @@ import type { GuideEntry, GuideSlug } from "@/lib/guides";
 import { GUIDES } from "@/lib/guides";
 
 const RELATED_GUIDES: Partial<Record<string, GuideSlug[]>> = {
-  "/repaid": ["how-interest-works", "plan-2-vs-plan-5"],
-  "/balance": ["how-interest-works", "plan-2-vs-plan-5"],
+  "/repaid": ["threshold-freeze", "plan-2-vs-plan-5"],
+  "/balance": ["threshold-freeze", "plan-2-vs-plan-5"],
   "/interest": ["how-interest-works", "rpi-vs-cpi"],
   "/effective-rate": ["rpi-vs-cpi", "student-loan-vs-mortgage"],
-  "/overpay": ["how-interest-works", "student-loan-vs-mortgage"],
+  "/overpay": ["pay-upfront-or-take-loan", "how-interest-works"],
 };
 
 export function RelatedContent() {
