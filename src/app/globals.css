@@ -182,6 +182,10 @@ body {
   transition:
     background-color 300ms ease,
     color 300ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 /* Quiz step animations */
