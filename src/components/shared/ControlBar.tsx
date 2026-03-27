@@ -130,7 +130,7 @@ function ExpandedPresets({
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-linear-to-l from-card to-transparent sm:hidden" />
 
         <div
-          className="flex gap-2 overflow-x-auto pr-8 pb-1 pl-3 scrollbar-none sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden"
+          className="no-scrollbar flex gap-2 overflow-x-auto pr-8 pb-1 pl-3 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0"
           role="group"
           aria-label="Preset profiles"
         >
