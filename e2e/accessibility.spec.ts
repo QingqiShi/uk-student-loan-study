@@ -55,6 +55,60 @@ test.describe("Accessibility", () => {
     expect(results.violations).toEqual([]);
   });
 
+  test("balance detail page has no WCAG 2.1 AA violations", async ({
+    page,
+  }) => {
+    await page.goto("/balance");
+    await waitForResults(page);
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
+  test("repaid detail page has no WCAG 2.1 AA violations", async ({ page }) => {
+    await page.goto("/repaid");
+    await waitForResults(page);
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
+  test("interest detail page has no WCAG 2.1 AA violations", async ({
+    page,
+  }) => {
+    await page.goto("/interest");
+    await waitForResults(page);
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
+  test("effective rate detail page has no WCAG 2.1 AA violations", async ({
+    page,
+  }) => {
+    await page.goto("/effective-rate");
+    await waitForResults(page);
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
+  test("guides index page has no WCAG 2.1 AA violations", async ({ page }) => {
+    await page.goto("/guides");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
+  test("our data page has no WCAG 2.1 AA violations", async ({ page }) => {
+    await page.goto("/our-data");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
   test("skip-to-content link is keyboard accessible", async ({ page }) => {
     await page.goto("/");
     await waitForResults(page);
