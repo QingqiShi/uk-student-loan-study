@@ -182,9 +182,12 @@ export function OurDataPage() {
             <HugeiconsIcon icon={Tick02Icon} className="size-4 text-primary" />
             <p className="text-sm text-muted-foreground">
               Figures last updated{" "}
-              <span className="font-medium text-foreground">
+              <time
+                dateTime={LAST_UPDATED}
+                className="font-medium text-foreground"
+              >
                 {formattedLastUpdated}
-              </span>
+              </time>
             </p>
           </div>
         </div>
