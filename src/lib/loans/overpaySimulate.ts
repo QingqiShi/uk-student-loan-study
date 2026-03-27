@@ -1,3 +1,4 @@
+import { currencyFormatter } from "@/constants";
 import { monthsElapsedSince } from "@/lib/dateUtils";
 import { toPresent } from "@/utils/presentValue";
 import { simulate } from "./engine";
@@ -293,12 +294,12 @@ function formatOverpaymentSummary(
   const hasLumpSum = lumpSumPayment > 0;
 
   if (hasLumpSum && hasMonthly) {
-    return `A lump sum of ${formatCurrency(lumpSumPayment)} and ${formatCurrency(monthlyOverpayment)}/month overpayment`;
+    return `A lump sum of ${currencyFormatter.format(lumpSumPayment)} and ${currencyFormatter.format(monthlyOverpayment)}/month overpayment`;
   }
   if (hasLumpSum) {
-    return `A lump sum of ${formatCurrency(lumpSumPayment)}`;
+    return `A lump sum of ${currencyFormatter.format(lumpSumPayment)}`;
   }
-  return `Overpaying ${formatCurrency(monthlyOverpayment)}/month`;
+  return `Overpaying ${currencyFormatter.format(monthlyOverpayment)}/month`;
 }
 
 /**
@@ -329,7 +330,7 @@ function determineRecommendation(
     if (extraPaidByOverpaying > 0) {
       return {
         recommendation: "dont-overpay",
-        reason: `Without overpaying, ${formatCurrency(baseline.amountWrittenOff)} would be written off. ${summary} would increase total repayments by ${formatCurrency(extraPaidByOverpaying)}.`,
+        reason: `Without overpaying, ${currencyFormatter.format(baseline.amountWrittenOff)} would be written off. ${summary} would increase total repayments by ${currencyFormatter.format(extraPaidByOverpaying)}.`,
       };
     }
   }
@@ -343,8 +344,8 @@ function determineRecommendation(
   if (percentageDiff < 0.1 && Math.abs(paymentDifference) < 1000) {
     const marginalDetail =
       paymentDifference > 0
-        ? `would only save ${formatCurrency(paymentDifference)}`
-        : `would only cost an extra ${formatCurrency(Math.abs(paymentDifference))}`;
+        ? `would only save ${currencyFormatter.format(paymentDifference)}`
+        : `would only cost an extra ${currencyFormatter.format(Math.abs(paymentDifference))}`;
     return {
       recommendation: "marginal",
       reason: `${summary} ${marginalDetail}. Other factors like flexibility and peace of mind may be worth considering.`,
@@ -354,13 +355,13 @@ function determineRecommendation(
   if (paymentDifference > 0) {
     return {
       recommendation: "overpay",
-      reason: `${summary} could save ${formatCurrency(paymentDifference)} in total interest based on these projections.`,
+      reason: `${summary} could save ${currencyFormatter.format(paymentDifference)} in total interest based on these projections.`,
     };
   }
 
   return {
     recommendation: "dont-overpay",
-    reason: `${summary} would increase total repayments by ${formatCurrency(Math.abs(paymentDifference))} based on these projections.`,
+    reason: `${summary} would increase total repayments by ${currencyFormatter.format(Math.abs(paymentDifference))} based on these projections.`,
   };
 }
 
@@ -391,13 +392,4 @@ function createEmptyResult(): OverpayAnalysisResult {
     overpaymentContributions: 0,
     monthsSaved: 0,
   };
-}
-
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency: "GBP",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value);
 }
