@@ -7,6 +7,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/brand",
   },
+  openGraph: {
+    title: "Brand Guidelines",
+    description:
+      "Brand guidelines for studentloanstudy.uk including logo usage, color palette, and typography specifications.",
+    url: "https://studentloanstudy.uk/brand",
+    type: "website",
+  },
 };
 
 const breadcrumbSchema = {
