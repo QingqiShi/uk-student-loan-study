@@ -24,13 +24,14 @@ export function GovUkBadge({ className }: { className?: string }) {
         render={
           <Badge render={<button />} className={className}>
             <HugeiconsIcon icon={Tick02Icon} className="size-3" />
-            GOV.UK {formattedDate}
+            GOV.UK <time dateTime={LAST_UPDATED}>{formattedDate}</time>
           </Badge>
         }
       />
       <PopoverContent className="w-auto max-w-64 space-y-1.5">
         <p className="text-sm font-medium">
-          Rates &amp; thresholds as of {formattedDate}
+          Rates &amp; thresholds as of{" "}
+          <time dateTime={LAST_UPDATED}>{formattedDate}</time>
         </p>
         <p className="text-sm text-muted-foreground">
           Verified daily against GOV.UK and the Bank of England.
