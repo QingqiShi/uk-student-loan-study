@@ -6,6 +6,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { GUIDES, type GuideSlug } from "@/lib/guides";
 
 interface ToolCardProps {
   href: string;
@@ -74,57 +75,22 @@ const TOOLS: ToolCardProps[] = [
   },
 ];
 
-const GUIDES: ToolCardProps[] = [
-  {
-    href: "/guides/threshold-freeze",
-    icon: BookOpen01Icon,
-    title: "Threshold Freeze Explained",
-    description:
-      "How the Plan 2 threshold freeze from 2027 affects your monthly repayments.",
-    cta: "Read Guide",
-    newUntil: "2026-06-01",
-  },
-  {
-    href: "/guides/plan-2-vs-plan-5",
-    icon: BookOpen01Icon,
-    title: "Plan 2 vs Plan 5",
-    description:
-      "Compare thresholds, interest rates, and total repayments between the two main loan plans.",
-    cta: "Read Guide",
-  },
-  {
-    href: "/guides/how-interest-works",
-    icon: BookOpen01Icon,
-    title: "How Interest Works",
-    description:
-      "Understand the sliding scale, RPI rates, and why your balance can grow even while repaying.",
-    cta: "Read Guide",
-  },
-  {
-    href: "/guides/student-loan-vs-mortgage",
-    icon: BookOpen01Icon,
-    title: "Student Loan & Mortgage",
-    description:
-      "How student loan repayments affect your mortgage affordability and borrowing capacity.",
-    cta: "Read Guide",
-  },
-  {
-    href: "/guides/moving-abroad",
-    icon: BookOpen01Icon,
-    title: "Moving Abroad",
-    description:
-      "What happens to your student loan repayments if you leave the UK.",
-    cta: "Read Guide",
-  },
-  {
-    href: "/guides/self-employment",
-    icon: BookOpen01Icon,
-    title: "Self-Employment",
-    description:
-      "How repayments work through Self Assessment for freelancers and the self-employed.",
-    cta: "Read Guide",
-  },
+/** Slugs of guides to feature on the homepage, in display order. */
+const FEATURED_GUIDE_SLUGS: GuideSlug[] = [
+  "threshold-freeze",
+  "plan-2-vs-plan-5",
+  "how-interest-works",
+  "student-loan-vs-mortgage",
+  "moving-abroad",
+  "self-employment",
 ];
+
+/** Derive featured guides from the canonical GUIDES array to keep titles/descriptions in sync. */
+const FEATURED_GUIDES = FEATURED_GUIDE_SLUGS.flatMap((slug) => {
+  const guide = GUIDES.find((g) => g.slug === slug);
+  if (!guide) return [];
+  return [guide];
+});
 
 export function ToolLinks() {
   return (
@@ -140,8 +106,16 @@ export function ToolLinks() {
       <div className="space-y-4">
         <h2 className="text-base font-semibold">Guides</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {GUIDES.map((guide) => (
-            <ToolCard key={guide.href} {...guide} />
+          {FEATURED_GUIDES.map((guide) => (
+            <ToolCard
+              key={guide.slug}
+              href={`/guides/${guide.slug}`}
+              icon={BookOpen01Icon}
+              title={guide.title}
+              description={guide.description}
+              cta="Read Guide"
+              newUntil={guide.newUntil}
+            />
           ))}
         </div>
         <Link
