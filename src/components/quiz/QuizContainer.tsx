@@ -241,7 +241,7 @@ export function QuizContainer({
         />
       )}
 
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-8">
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-8">
         <div className="w-full max-w-lg">
           {state.currentStep === "region" && (
             <RegionQuestion
@@ -288,7 +288,7 @@ export function QuizContainer({
             />
           )}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
