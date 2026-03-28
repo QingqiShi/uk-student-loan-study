@@ -220,7 +220,7 @@ export function OurDataPage() {
           {/* Plan table */}
           <ScrollFadeWrapper className="rounded-xl ring-1 ring-foreground/10">
             <Table>
-              <TableCaption>
+              <TableCaption className="pb-4">
                 Repayment thresholds, rates, and write-off periods for each UK
                 student loan plan type.
               </TableCaption>
@@ -235,7 +235,9 @@ export function OurDataPage() {
               <TableBody>
                 {plans.map((p) => (
                   <TableRow key={p.label}>
-                    <TableHead scope="row">{p.label}</TableHead>
+                    <TableHead scope="row" className="text-foreground">
+                      {p.label}
+                    </TableHead>
                     <TableCell className="font-mono tabular-nums">
                       {formatGBP(p.threshold)}
                     </TableCell>
