@@ -40,10 +40,6 @@ export function trackBalanceChanged(planType: string, value: number) {
   track("balance_changed", { planType, value });
 }
 
-export function trackPlanInfoViewed(plan: string) {
-  track("plan_info_viewed", { plan });
-}
-
 export function trackShareClicked(method: string) {
   track("share_clicked", { method });
 }
@@ -112,10 +108,6 @@ export function trackQuizCompleted(result: string) {
 // =============================================================================
 // Overpay Page Events
 // =============================================================================
-
-export function trackOverpaySalaryChanged(value: number) {
-  track("overpay_salary_changed", { value });
-}
 
 export function trackOverpayMonthlyChanged(value: number) {
   track("overpay_monthly_changed", { value });
