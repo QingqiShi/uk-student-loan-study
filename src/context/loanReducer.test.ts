@@ -5,7 +5,6 @@ import {
   loanReducer,
   initialState,
   updateFieldAction,
-  resetAction,
   applyPresetAction,
 } from "./loanReducer";
 
@@ -122,50 +121,6 @@ describe("loanReducer", () => {
       );
       expect(newState.rpiRate).toBe(6.0);
       expect(newState.boeBaseRate).toBe(5.5);
-    });
-  });
-
-  describe("RESET action", () => {
-    it("should reset all fields to initial values", () => {
-      // Start with modified state
-      let state = loanReducer(
-        initialState,
-        updateFieldAction("loans", [
-          { planType: "PLAN_5", balance: 100_000 },
-          { planType: "POSTGRADUATE", balance: 30_000 },
-        ]),
-      );
-      state = loanReducer(state, updateFieldAction("salary", 60_000));
-
-      // Reset
-      const resetState = loanReducer(state, resetAction());
-
-      // Verify all fields are back to initial values
-      expect(resetState.loans).toEqual([
-        { planType: "PLAN_2", balance: 45_000 },
-      ]);
-      expect(resetState.salary).toBe(45_000);
-    });
-
-    it("should restore showPresentValue and discountRate to initial values", () => {
-      let state = loanReducer(
-        initialState,
-        updateFieldAction("showPresentValue", true),
-      );
-      state = loanReducer(state, updateFieldAction("discountRate", 0.1));
-
-      const resetState = loanReducer(state, resetAction());
-      expect(resetState.showPresentValue).toBe(false);
-      expect(resetState.discountRate).toBe(CURRENT_RATES.cpi / 100);
-    });
-
-    it("should restore rpiRate and boeBaseRate to initial values", () => {
-      let state = loanReducer(initialState, updateFieldAction("rpiRate", 7.0));
-      state = loanReducer(state, updateFieldAction("boeBaseRate", 6.0));
-
-      const resetState = loanReducer(state, resetAction());
-      expect(resetState.rpiRate).toBe(CURRENT_RATES.rpi);
-      expect(resetState.boeBaseRate).toBe(CURRENT_RATES.boeBaseRate);
     });
   });
 });

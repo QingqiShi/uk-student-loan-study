@@ -29,16 +29,12 @@ type UpdateFieldAction<K extends keyof LoanState = keyof LoanState> = {
   value: LoanState[K];
 };
 
-type ResetAction = {
-  type: "RESET";
-};
-
 type ApplyPresetAction = {
   type: "APPLY_PRESET";
   preset: Preset;
 };
 
-export type LoanAction = UpdateFieldAction | ResetAction | ApplyPresetAction;
+export type LoanAction = UpdateFieldAction | ApplyPresetAction;
 
 // Action creators
 export function updateFieldAction<K extends keyof LoanState>(
@@ -46,10 +42,6 @@ export function updateFieldAction<K extends keyof LoanState>(
   value: LoanState[K],
 ): UpdateFieldAction<K> {
   return { type: "UPDATE_FIELD", key, value };
-}
-
-export function resetAction(): ResetAction {
-  return { type: "RESET" };
 }
 
 export function applyPresetAction(preset: Preset): ApplyPresetAction {
@@ -61,14 +53,10 @@ export function loanReducer(state: LoanState, action: LoanAction): LoanState {
   switch (action.type) {
     case "UPDATE_FIELD":
       return { ...state, [action.key]: action.value };
-    case "RESET":
-      return initialState;
     case "APPLY_PRESET":
       return {
         ...state,
         loans: action.preset.loans,
       };
-    default:
-      return state;
   }
 }
