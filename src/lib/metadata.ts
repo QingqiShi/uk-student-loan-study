@@ -8,7 +8,6 @@ import { decodeParamsToState } from "@/lib/shareUrl";
  * Default values derived from DEFAULT_PRESET to stay in sync.
  */
 const DEFAULT_LOANS: Loan[] = DEFAULT_PRESET.loans;
-const DEFAULT_SALARY_VALUE = DEFAULT_SALARY;
 
 /** Type guard: returns true if the plan type has an entry in PLAN_DISPLAY_INFO */
 function isUndergraduatePlan(
@@ -49,7 +48,7 @@ export function parseMetadataParams(
   const hasShareParams = Object.keys(decoded).length > 0;
 
   const loans = decoded.loans ?? DEFAULT_LOANS;
-  const salary = decoded.salary ?? DEFAULT_SALARY_VALUE;
+  const salary = decoded.salary ?? DEFAULT_SALARY;
 
   const ugLoans = loans.filter((l) => l.planType !== "POSTGRADUATE");
   const pgLoans = loans.filter((l) => l.planType === "POSTGRADUATE");

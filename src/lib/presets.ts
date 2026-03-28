@@ -42,7 +42,7 @@ export const PRESETS: Preset[] = [
   },
 ];
 
-export const DEFAULT_PRESET_ID = "plan2-grad";
+const DEFAULT_PRESET_ID = "plan2-grad";
 
 /** Returns true if the given loans exactly match any preset configuration. */
 export function isPresetConfig(loans: Loan[]): boolean {
