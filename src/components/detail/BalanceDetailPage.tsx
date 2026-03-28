@@ -18,9 +18,6 @@ export function BalanceDetailPage() {
       result.stats;
 
     const peakYears = Math.round(peakBalanceMonth / 12);
-    const peakPct = Math.round(
-      ((peakBalance - initialBalance) / initialBalance) * 100,
-    );
 
     if (peakBalanceMonth === 0) {
       return writtenOff
@@ -29,6 +26,10 @@ export function BalanceDetailPage() {
     }
 
     if (writtenOff) {
+      const peakPct =
+        initialBalance > 0
+          ? Math.round(((peakBalance - initialBalance) / initialBalance) * 100)
+          : 0;
       return `Interest outpaces repayments for the first ${String(peakYears)} years, pushing your balance ${String(peakPct)}% above what you borrowed. The remaining balance is written off after ${String(payoffYears)} years.`;
     }
 
