@@ -118,9 +118,9 @@ export function AssumptionsWizard({
         closeLabel="Done"
       />
 
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-8">
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-8">
         <div className="w-full max-w-lg">{renderStep()}</div>
-      </main>
+      </div>
 
       <LivePreview />
     </div>

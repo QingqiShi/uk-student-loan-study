@@ -323,7 +323,7 @@ export function LoanConfigPanel({
         </div>
       </header>
 
-      <main className="flex flex-1 flex-col px-4 py-6">
+      <div className="flex flex-1 flex-col px-4 py-6">
         <div className="mx-auto w-full max-w-3xl space-y-6">
           <div className="space-y-3 md:flex md:gap-3 md:space-y-0">
             <div className="space-y-3 md:flex-1">
@@ -362,7 +362,7 @@ export function LoanConfigPanel({
             </Button>
           </div>
         </div>
-      </main>
+      </div>
 
       <footer className="sticky bottom-0 border-t border-border/50 bg-background/80 p-4 backdrop-blur-sm">
         <div className="mx-auto max-w-3xl">
