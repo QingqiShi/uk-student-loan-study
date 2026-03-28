@@ -53,6 +53,8 @@ Local steps:
 
 ## Code Quality
 
+- **Do not modify ShadCN components** (`src/components/ui/`) — exceptions: auto-formatting and bug fixes (bug fixes require an explicit comment explaining the fix)
+
 **Never use:**
 
 - `eslint-disable`, `@ts-ignore`, `@ts-expect-error`
