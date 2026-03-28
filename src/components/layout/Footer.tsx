@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GUIDES } from "@/lib/guides";
 
 const NAV_LINK_CLASS =
   "text-muted-foreground transition-colors hover:text-foreground";
@@ -65,61 +66,16 @@ export function Footer() {
               Guides
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/guides/threshold-freeze"
-                  className={NAV_LINK_CLASS}
-                >
-                  Threshold Freeze Explained
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/guides/plan-2-vs-plan-5"
-                  className={NAV_LINK_CLASS}
-                >
-                  Plan 2 vs Plan 5
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/guides/how-interest-works"
-                  className={NAV_LINK_CLASS}
-                >
-                  How Interest Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/guides/rpi-vs-cpi" className={NAV_LINK_CLASS}>
-                  RPI vs CPI
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/guides/student-loan-vs-mortgage"
-                  className={NAV_LINK_CLASS}
-                >
-                  Student Loans & Mortgages
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/guides/pay-upfront-or-take-loan"
-                  className={NAV_LINK_CLASS}
-                >
-                  Pay Upfront or Take the Loan?
-                </Link>
-              </li>
-              <li>
-                <Link href="/guides/moving-abroad" className={NAV_LINK_CLASS}>
-                  Moving Abroad
-                </Link>
-              </li>
-              <li>
-                <Link href="/guides/self-employment" className={NAV_LINK_CLASS}>
-                  Self-Employment
-                </Link>
-              </li>
+              {GUIDES.map((guide) => (
+                <li key={guide.slug}>
+                  <Link
+                    href={`/guides/${guide.slug}`}
+                    className={NAV_LINK_CLASS}
+                  >
+                    {guide.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="space-y-3">
