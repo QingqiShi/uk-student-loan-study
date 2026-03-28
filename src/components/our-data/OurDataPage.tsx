@@ -24,6 +24,7 @@ import {
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -219,18 +220,24 @@ export function OurDataPage() {
           {/* Plan table */}
           <ScrollFadeWrapper className="rounded-xl ring-1 ring-foreground/10">
             <Table>
+              <TableCaption className="pb-4">
+                Repayment thresholds, rates, and write-off periods for each UK
+                student loan plan type.
+              </TableCaption>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Plan</TableHead>
-                  <TableHead>Annual threshold</TableHead>
-                  <TableHead>Rate</TableHead>
-                  <TableHead>Write-off</TableHead>
+                  <TableHead scope="col">Plan</TableHead>
+                  <TableHead scope="col">Annual threshold</TableHead>
+                  <TableHead scope="col">Rate</TableHead>
+                  <TableHead scope="col">Write-off</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {plans.map((p) => (
                   <TableRow key={p.label}>
-                    <TableCell className="font-medium">{p.label}</TableCell>
+                    <TableHead scope="row" className="p-2 text-foreground">
+                      {p.label}
+                    </TableHead>
                     <TableCell className="font-mono tabular-nums">
                       {formatGBP(p.threshold)}
                     </TableCell>
