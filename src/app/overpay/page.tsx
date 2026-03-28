@@ -32,6 +32,12 @@ export async function generateMetadata({
     alternates: {
       canonical: "/overpay",
     },
+    openGraph: {
+      title,
+      description,
+      url: "https://studentloanstudy.uk/overpay",
+      type: "website",
+    },
   };
 }
 
