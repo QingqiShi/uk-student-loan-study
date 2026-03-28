@@ -54,13 +54,6 @@ export default defineConfig(
     },
   },
   {
-    // shadcn calendar uses inline component definitions for react-day-picker's components prop
-    files: ["src/components/ui/calendar.tsx"],
-    rules: {
-      "@eslint-react/no-nested-component-definitions": "off",
-    },
-  },
-  {
     // JSON-LD structured data in layouts and shadcn chart styles require dangerouslySetInnerHTML
     files: ["src/app/**/layout.tsx", "src/components/ui/chart.tsx"],
     rules: {
