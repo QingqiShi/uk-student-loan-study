@@ -80,9 +80,10 @@ export function OverpayPrimaryInputs({
                 placeholder="0"
                 className="pl-6"
                 aria-label="Enter one-off lump sum payment"
+                aria-describedby="lump-sum-max"
               />
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p id="lump-sum-max" className="text-xs text-muted-foreground">
               Max: {currencyFormatter.format(totalBalance)}
             </p>
           </>
