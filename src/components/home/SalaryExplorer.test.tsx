@@ -5,20 +5,8 @@ import { LoanProvider } from "@/context/LoanContext";
 import type { LoanState } from "@/types/store";
 import { SalaryExplorer } from "./SalaryExplorer";
 
-vi.mock("@/context/AssumptionsWizardContext", () => ({
-  useAssumptionsWizard: () => ({ openAssumptions: vi.fn() }),
-}));
-
 vi.mock("@/components/charts/TotalRepaymentChart", () => ({
   TotalRepaymentChart: () => <div data-testid="chart" />,
-}));
-
-vi.mock("@/context/PersonalizedResultsContext", () => ({
-  usePersonalizedResults: () => ({
-    summary: null,
-    insight: null,
-    cards: null,
-  }),
 }));
 
 function createWrapper(overrides?: Partial<LoanState>) {
