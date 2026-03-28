@@ -199,7 +199,6 @@ function handleSalarySeries(payload: SalarySeriesPayload): DataPoint[] {
   }
   return generateSalaryDataSeries(
     payload.loans,
-    (r) => r.totalRepayment,
     payload.rpiRate,
     payload.salaryGrowthRate,
     payload.thresholdGrowthRate,

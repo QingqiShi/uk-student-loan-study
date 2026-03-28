@@ -15,7 +15,7 @@ describe("generateSalaryDataSeries", () => {
   });
 
   it("generates correct number of data points", () => {
-    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
+    const data = generateSalaryDataSeries(loans);
     const expectedPoints =
       Math.floor((MAX_SALARY - MIN_SALARY) / SALARY_STEP) + 1;
 
@@ -23,61 +23,31 @@ describe("generateSalaryDataSeries", () => {
   });
 
   it("starts at MIN_SALARY and ends at MAX_SALARY", () => {
-    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
+    const data = generateSalaryDataSeries(loans);
 
     expect(data[0].salary).toBe(MIN_SALARY);
     expect(data[data.length - 1].salary).toBe(MAX_SALARY);
   });
 
   it("increments by SALARY_STEP", () => {
-    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
+    const data = generateSalaryDataSeries(loans);
 
     for (let i = 1; i < data.length; i++) {
       expect(data[i].salary - data[i - 1].salary).toBe(SALARY_STEP);
     }
   });
 
-  describe("mapper functions", () => {
-    it("maps totalRepayment correctly", () => {
-      const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
+  it("returns non-negative total repayment values", () => {
+    const data = generateSalaryDataSeries(loans);
 
-      // All values should be non-negative
-      data.forEach(({ value }) => {
-        expect(value).toBeGreaterThanOrEqual(0);
-      });
-    });
-
-    it("maps totalMonths for repayment years chart", () => {
-      const data = generateSalaryDataSeries(loans, (r) => r.totalMonths / 12);
-
-      // All values should be years (reasonable range)
-      data.forEach(({ value: years }) => {
-        expect(years).toBeGreaterThanOrEqual(0);
-        expect(years).toBeLessThanOrEqual(45); // Max 40 years + buffer
-      });
-    });
-
-    it("can compute custom metrics from loanResults", () => {
-      const loansWithPostgrad: Loan[] = [
-        { planType: "PLAN_2", balance: 50000 },
-        { planType: "POSTGRADUATE", balance: 25000 },
-      ];
-
-      const data = generateSalaryDataSeries(
-        loansWithPostgrad,
-        (r) => r.loanResults.length,
-      );
-
-      // Should have 2 loan results for each salary point
-      data.forEach(({ value }) => {
-        expect(value).toBe(2);
-      });
+    data.forEach(({ value }) => {
+      expect(value).toBeGreaterThanOrEqual(0);
     });
   });
 
   it("works with different plan types", () => {
     const plan5Loans: Loan[] = [{ planType: "PLAN_5", balance: 60000 }];
-    const data = generateSalaryDataSeries(plan5Loans, (r) => r.totalRepayment);
+    const data = generateSalaryDataSeries(plan5Loans);
 
     expect(data.length).toBeGreaterThan(0);
     data.forEach(({ value }) => {
@@ -86,7 +56,7 @@ describe("generateSalaryDataSeries", () => {
   });
 
   it("handles empty loans array", () => {
-    const data = generateSalaryDataSeries([], (r) => r.totalRepayment);
+    const data = generateSalaryDataSeries([]);
 
     // Should still generate data points, all with zero values
     expect(data.length).toBeGreaterThan(0);
@@ -107,21 +77,12 @@ describe("integration: chart data generation", () => {
   });
 
   it("generates TotalRepaymentChart data", () => {
-    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
+    const data = generateSalaryDataSeries(loans);
 
     // Total repayment should generally increase then plateau
     expect(data[0].value).toBeLessThanOrEqual(
       data[data.length - 1].value * 1.5,
     );
-  });
-
-  it("generates RepaymentYearsChart data", () => {
-    const data = generateSalaryDataSeries(loans, (r) => r.totalMonths / 12);
-
-    // Higher salary should mean fewer years (generally)
-    const firstYears = data[0].value;
-    const lastYears = data[data.length - 1].value;
-    expect(lastYears).toBeLessThanOrEqual(firstYears + 5); // Some tolerance
   });
 });
 
@@ -129,16 +90,8 @@ describe("generateSalaryDataSeries: rpiRate and boeBaseRate", () => {
   it("different RPI rates produce different total repayment", () => {
     const loans: Loan[] = [{ planType: "PLAN_2", balance: 50000 }];
 
-    const dataLowRpi = generateSalaryDataSeries(
-      loans,
-      (r) => r.totalRepayment,
-      0,
-    );
-    const dataHighRpi = generateSalaryDataSeries(
-      loans,
-      (r) => r.totalRepayment,
-      5,
-    );
+    const dataLowRpi = generateSalaryDataSeries(loans, 0);
+    const dataHighRpi = generateSalaryDataSeries(loans, 5);
 
     // Compare at a mid-range salary point
     const midIndex = Math.floor(dataLowRpi.length / 2);
@@ -148,22 +101,8 @@ describe("generateSalaryDataSeries: rpiRate and boeBaseRate", () => {
   it("different BOE base rates produce different results for Plan 1", () => {
     const loans: Loan[] = [{ planType: "PLAN_1", balance: 30000 }];
 
-    const dataLowBoe = generateSalaryDataSeries(
-      loans,
-      (r) => r.totalRepayment,
-      undefined,
-      0,
-      0,
-      2,
-    );
-    const dataHighBoe = generateSalaryDataSeries(
-      loans,
-      (r) => r.totalRepayment,
-      undefined,
-      0,
-      0,
-      5,
-    );
+    const dataLowBoe = generateSalaryDataSeries(loans, undefined, 0, 0, 2);
+    const dataHighBoe = generateSalaryDataSeries(loans, undefined, 0, 0, 5);
 
     const midIndex = Math.floor(dataLowBoe.length / 2);
     expect(dataLowBoe[midIndex].value).not.toBe(dataHighBoe[midIndex].value);
@@ -172,7 +111,7 @@ describe("generateSalaryDataSeries: rpiRate and boeBaseRate", () => {
   it("default values work without explicit rpiRate or boeBaseRate", () => {
     const loans: Loan[] = [{ planType: "PLAN_2", balance: 50000 }];
 
-    const data = generateSalaryDataSeries(loans, (r) => r.totalRepayment);
+    const data = generateSalaryDataSeries(loans);
 
     expect(data.length).toBeGreaterThan(0);
     data.forEach(({ value }) => {
@@ -193,10 +132,7 @@ describe("generateSalaryDataSeriesPV", () => {
   });
 
   it("all PV values are less than or equal to nominal values", () => {
-    const nominalData = generateSalaryDataSeries(
-      loans,
-      (r) => r.totalRepayment,
-    );
+    const nominalData = generateSalaryDataSeries(loans);
     const pvData = generateSalaryDataSeriesPV(loans, 0.05);
 
     for (let i = 0; i < nominalData.length; i++) {
@@ -205,10 +141,7 @@ describe("generateSalaryDataSeriesPV", () => {
   });
 
   it("discountRate 0 produces same values as nominal totalRepayment", () => {
-    const nominalData = generateSalaryDataSeries(
-      loans,
-      (r) => r.totalRepayment,
-    );
+    const nominalData = generateSalaryDataSeries(loans);
     const pvData = generateSalaryDataSeriesPV(loans, 0);
 
     for (let i = 0; i < nominalData.length; i++) {
