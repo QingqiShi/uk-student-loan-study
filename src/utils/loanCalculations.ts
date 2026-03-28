@@ -1,25 +1,20 @@
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
 import { simulate } from "@/lib/loans/engine";
 import { CURRENT_RATES } from "@/lib/loans/plans";
-import type {
-  SimulationResult,
-  Loan,
-  SimulationMapper,
-} from "@/lib/loans/types";
+import type { Loan } from "@/lib/loans/types";
 import type { DataPoint, BalanceDataPoint } from "@/types/chart";
 import { pvTotal } from "@/utils/presentValue";
 
 /**
- * Generates a data series for salary-based charts.
+ * Generates a total-repayment data series across the salary range.
  *
  * Iterates through salary range (MIN_SALARY to MAX_SALARY by SALARY_STEP)
- * and applies the mapper function to each simulation result.
+ * and records the total amount paid for each salary level.
  *
  * Uses monthsElapsed: 0 to show total duration from repayment start
  * (e.g., 30 years for Plan 2 write-off) rather than remaining time.
  *
  * @param loans - Array of loans to simulate
- * @param mapper - Function to extract desired value from simulation result
  * @param rpiRate - Optional RPI rate override
  * @param salaryGrowthRate - Annual salary growth rate (default 0)
  * @param thresholdGrowthRate - Annual threshold growth rate (default 0)
@@ -27,7 +22,6 @@ import { pvTotal } from "@/utils/presentValue";
  */
 export function generateSalaryDataSeries(
   loans: Loan[],
-  mapper: SimulationMapper,
   rpiRate: number = CURRENT_RATES.rpi,
   salaryGrowthRate = 0,
   thresholdGrowthRate = 0,
@@ -48,14 +42,7 @@ export function generateSalaryDataSeries(
       plan2ThresholdSchedule,
     });
 
-    // Convert to SimulationResult for mapper compatibility
-    const result: SimulationResult = {
-      loanResults: timeSeries.summary.perLoan,
-      totalRepayment: timeSeries.summary.totalPaid,
-      totalMonths: timeSeries.summary.monthsToPayoff,
-    };
-
-    data.push({ salary, value: mapper(result) });
+    data.push({ salary, value: timeSeries.summary.totalPaid });
   }
 
   return data;

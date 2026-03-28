@@ -29,20 +29,6 @@ export interface LoanResult {
   writtenOff: boolean;
 }
 
-/**
- * Combined result of simulating all loans.
- */
-export interface SimulationResult {
-  loanResults: LoanResult[];
-  totalRepayment: number;
-  totalMonths: number;
-}
-
-/**
- * Function that extracts a chart value from a simulation result.
- */
-export type SimulationMapper = (result: SimulationResult) => number;
-
 // =============================================================================
 // TIME-SERIES SIMULATION ENGINE TYPES
 // =============================================================================
