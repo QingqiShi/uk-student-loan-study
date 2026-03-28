@@ -61,7 +61,6 @@ export function useInputPanelMode(options?: UseInputPanelModeOptions) {
 
   return {
     mode,
-    setMode,
     hasPersonalized,
     handlePersonalise,
     handleWizardComplete,
