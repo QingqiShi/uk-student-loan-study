@@ -98,6 +98,8 @@ export function InsightBadge() {
   return (
     <div
       className={`hidden items-center gap-1.5 rounded-md border px-2 py-1 sm:flex ${config.bgClass} ${config.borderClass}`}
+      role="status"
+      aria-live="polite"
     >
       <HugeiconsIcon
         icon={config.icon}
