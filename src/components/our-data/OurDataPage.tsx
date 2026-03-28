@@ -292,7 +292,7 @@ export function OurDataPage() {
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {CROSS_CHECK_LINKS.map((link) => (
-              <Link
+              <a
                 key={link.href}
                 href={link.href}
                 target="_blank"
@@ -316,7 +316,7 @@ export function OurDataPage() {
                     </p>
                   </div>
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         </section>
