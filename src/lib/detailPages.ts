@@ -35,24 +35,3 @@ export const DETAIL_PAGES: DetailPageConfig[] = [
 export const DETAIL_PAGE_COLOR: Record<string, string> = Object.fromEntries(
   DETAIL_PAGES.map((p) => [p.href, p.color]),
 );
-
-export interface ToolPageConfig extends DetailPageConfig {
-  separated?: boolean;
-}
-
-export const TOOL_PAGES: ToolPageConfig[] = [
-  {
-    href: "/",
-    label: "Overview",
-    shortLabel: "Overview",
-    color: "var(--primary)",
-  },
-  ...DETAIL_PAGES,
-  {
-    href: "/overpay",
-    label: "Overpay",
-    shortLabel: "Overpay",
-    color: "var(--chart-overpay)",
-    separated: true,
-  },
-];
