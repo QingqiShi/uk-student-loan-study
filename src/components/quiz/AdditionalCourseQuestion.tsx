@@ -1,6 +1,8 @@
 "use client";
 
-import type { StartYearGroup } from "@/lib/quiz/determinePlan";
+import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import type { Region, StartYearGroup } from "@/lib/quiz/determinePlan";
+import { getAdditionalCoursePlan } from "@/lib/quiz/determinePlan";
 import { OptionCard } from "./OptionCard";
 import { QuestionStep } from "./QuestionStep";
 
@@ -9,6 +11,7 @@ interface AdditionalCourseQuestionProps {
   selectedValue: boolean | null;
   direction: "forward" | "backward";
   yearGroup: StartYearGroup;
+  region: Region;
 }
 
 export function AdditionalCourseQuestion({
@@ -16,10 +19,12 @@ export function AdditionalCourseQuestion({
   selectedValue,
   direction,
   yearGroup,
+  region,
 }: AdditionalCourseQuestionProps) {
   const dateLabel =
     yearGroup === "before-2012" ? "September 2012" : "August 2023";
-  const planLabel = yearGroup === "before-2012" ? "Plan 2" : "Plan 5";
+  const additionalPlanType = getAdditionalCoursePlan(yearGroup, region);
+  const planLabel = PLAN_DISPLAY_INFO[additionalPlanType].name;
 
   return (
     <QuestionStep

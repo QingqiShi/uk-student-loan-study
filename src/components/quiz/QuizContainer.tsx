@@ -260,12 +260,14 @@ export function QuizContainer({
           )}
 
           {state.currentStep === "additional-course" &&
-            state.startYearGroup && (
+            state.startYearGroup &&
+            state.region && (
               <AdditionalCourseQuestion
                 onSelect={handleAdditionalCourseSelect}
                 selectedValue={state.hasAdditionalCourse}
                 direction={state.direction}
                 yearGroup={state.startYearGroup}
+                region={state.region}
               />
             )}
 
