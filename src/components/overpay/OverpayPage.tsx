@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { RelatedContent } from "@/components/detail/RelatedContent";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -8,6 +9,14 @@ import { ControlBar } from "@/components/shared/ControlBar";
 import { InsightCards } from "@/components/shared/InsightCards";
 import { PlanFromQuery } from "@/components/shared/PlanFromQuery";
 import { Heading } from "@/components/typography/Heading";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOverpayAnalysis } from "@/hooks/useOverpayAnalysis";
 import { REPAYMENT_START_MONTH } from "@/lib/presets";
@@ -51,11 +60,25 @@ export function OverpayPage() {
     <>
       <PlanFromQuery onRepaymentYearChange={handleRepaymentYearChange} />
       <PageLayout repaymentYear={repaymentDate.getFullYear()}>
-        <div className="space-y-2">
-          <Heading as="h1">Student Loan Overpayment Calculator</Heading>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Should you overpay or invest? See which leaves you better off.
-          </p>
+        <div className="space-y-4">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Overpay Calculator</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+
+          <div className="space-y-1">
+            <Heading as="h1">Student Loan Overpayment Calculator</Heading>
+            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+              Should you overpay or invest? See which leaves you better off.
+            </p>
+          </div>
         </div>
 
         {analysis ? (
