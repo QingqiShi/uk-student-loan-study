@@ -190,6 +190,131 @@ describe("getAnnualInterestRate", () => {
     });
   });
 
+  describe("PLAN_2 with InterestThresholdOverrides", () => {
+    const rpi = 3.0;
+    const boe = 4.0;
+
+    it("uses overridden lower threshold for RPI-only boundary", () => {
+      // Custom lower threshold at £35,000; salary at £34,000 → below lower → RPI only
+      const overrides = {
+        interestLowerThreshold: 35000,
+        interestUpperThreshold: 55000,
+      };
+      expect(getAnnualInterestRate("PLAN_2", 34000, rpi, boe, overrides)).toBe(
+        rpi,
+      );
+    });
+
+    it("uses overridden upper threshold for RPI+3% boundary", () => {
+      // Custom upper threshold at £55,000; salary at £56,000 → above upper → RPI+3%
+      const overrides = {
+        interestLowerThreshold: 35000,
+        interestUpperThreshold: 55000,
+      };
+      expect(getAnnualInterestRate("PLAN_2", 56000, rpi, boe, overrides)).toBe(
+        rpi + 3,
+      );
+    });
+
+    it("interpolates correctly within overridden range", () => {
+      const overrides = {
+        interestLowerThreshold: 30000,
+        interestUpperThreshold: 50000,
+      };
+      // Midpoint of 30k–50k is 40k → RPI + 1.5%
+      expect(
+        getAnnualInterestRate("PLAN_2", 40000, rpi, boe, overrides),
+      ).toBeCloseTo(rpi + 1.5, 5);
+    });
+
+    it("returns RPI at the overridden lower threshold exactly", () => {
+      const overrides = {
+        interestLowerThreshold: 32000,
+        interestUpperThreshold: 60000,
+      };
+      expect(getAnnualInterestRate("PLAN_2", 32000, rpi, boe, overrides)).toBe(
+        rpi,
+      );
+    });
+
+    it("returns RPI+3% at the overridden upper threshold exactly", () => {
+      const overrides = {
+        interestLowerThreshold: 32000,
+        interestUpperThreshold: 60000,
+      };
+      expect(getAnnualInterestRate("PLAN_2", 60000, rpi, boe, overrides)).toBe(
+        rpi + 3,
+      );
+    });
+
+    it("only affects PLAN_2, not other plans", () => {
+      const overrides = {
+        interestLowerThreshold: 50000,
+        interestUpperThreshold: 80000,
+      };
+      // Plan 1 should ignore overrides
+      expect(getAnnualInterestRate("PLAN_1", 50000, rpi, boe, overrides)).toBe(
+        rpi,
+      );
+      // Plan 5 should ignore overrides
+      expect(getAnnualInterestRate("PLAN_5", 50000, rpi, boe, overrides)).toBe(
+        rpi,
+      );
+      // Postgraduate should ignore overrides
+      expect(
+        getAnnualInterestRate("POSTGRADUATE", 50000, rpi, boe, overrides),
+      ).toBe(rpi + 3);
+    });
+
+    it("allows partial override of lower threshold only", () => {
+      const overrides = { interestLowerThreshold: 35000 };
+      // Salary at £34,000 is below overridden lower → RPI only
+      expect(getAnnualInterestRate("PLAN_2", 34000, rpi, boe, overrides)).toBe(
+        rpi,
+      );
+      // Salary above default upper threshold → RPI+3%
+      expect(
+        getAnnualInterestRate(
+          "PLAN_2",
+          PLAN_CONFIGS.PLAN_2.interestUpperThreshold + 1000,
+          rpi,
+          boe,
+          overrides,
+        ),
+      ).toBe(rpi + 3);
+    });
+
+    it("allows partial override of upper threshold only", () => {
+      const overrides = { interestUpperThreshold: 60000 };
+      // Salary below default lower threshold → RPI only
+      expect(
+        getAnnualInterestRate(
+          "PLAN_2",
+          PLAN_CONFIGS.PLAN_2.interestLowerThreshold - 1000,
+          rpi,
+          boe,
+          overrides,
+        ),
+      ).toBe(rpi);
+      // Salary above overridden upper → RPI+3%
+      expect(getAnnualInterestRate("PLAN_2", 61000, rpi, boe, overrides)).toBe(
+        rpi + 3,
+      );
+    });
+
+    it("interpolates at 25% within wider overridden range", () => {
+      const overrides = {
+        interestLowerThreshold: 20000,
+        interestUpperThreshold: 60000,
+      };
+      // 25% of 20k–60k = 30k → RPI + 0.75%
+      const salary = 20000 + (60000 - 20000) * 0.25;
+      expect(
+        getAnnualInterestRate("PLAN_2", salary, rpi, boe, overrides),
+      ).toBeCloseTo(rpi + 0.75, 5);
+    });
+  });
+
   describe("edge cases", () => {
     it("handles zero RPI", () => {
       expect(getAnnualInterestRate("PLAN_5", 50000, 0, 4.0)).toBe(0);
