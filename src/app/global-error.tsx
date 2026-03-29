@@ -38,10 +38,10 @@ export default function GlobalError({
                   --ge-hover-border: #666;
                 }
               }
-              button[data-ge]:hover {
+              [data-ge]:hover {
                 border-color: var(--ge-hover-border);
               }
-              button[data-ge]:focus-visible {
+              [data-ge]:focus-visible {
                 outline: 2px solid var(--ge-fg);
                 outline-offset: 2px;
               }
@@ -85,23 +85,50 @@ export default function GlobalError({
             An unexpected error prevented the page from loading. Please try
             again.
           </p>
-          <button
-            type="button"
-            data-ge=""
-            onClick={reset}
+          <div
             style={{
-              padding: "0.625rem 1.25rem",
-              fontSize: "0.875rem",
-              fontWeight: 500,
-              borderRadius: "0.5rem",
-              border: "1px solid var(--ge-border)",
-              backgroundColor: "transparent",
-              color: "var(--ge-fg)",
-              cursor: "pointer",
+              display: "flex",
+              gap: "0.75rem",
+              justifyContent: "center",
             }}
           >
-            Try again
-          </button>
+            <button
+              type="button"
+              data-ge=""
+              onClick={reset}
+              style={{
+                padding: "0.625rem 1.25rem",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                borderRadius: "0.5rem",
+                border: "1px solid var(--ge-border)",
+                backgroundColor: "transparent",
+                color: "var(--ge-fg)",
+                cursor: "pointer",
+              }}
+            >
+              Try again
+            </button>
+            <a
+              href="/"
+              data-ge=""
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "0.625rem 1.25rem",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                borderRadius: "0.5rem",
+                border: "1px solid var(--ge-border)",
+                backgroundColor: "transparent",
+                color: "var(--ge-fg)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+            >
+              Go to homepage
+            </a>
+          </div>
         </div>
       </body>
     </html>
