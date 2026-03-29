@@ -54,8 +54,13 @@ export default defineConfig(
     },
   },
   {
-    // JSON-LD structured data in layouts and shadcn chart styles require dangerouslySetInnerHTML
-    files: ["src/app/**/layout.tsx", "src/components/ui/chart.tsx"],
+    // JSON-LD structured data in layouts, shadcn chart styles, and global-error
+    // inline CSS require dangerouslySetInnerHTML
+    files: [
+      "src/app/**/layout.tsx",
+      "src/app/global-error.tsx",
+      "src/components/ui/chart.tsx",
+    ],
     rules: {
       "@eslint-react/dom/no-dangerously-set-innerhtml": "off",
     },
