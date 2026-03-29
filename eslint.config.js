@@ -66,6 +66,14 @@ export default defineConfig(
     },
   },
   {
+    // global-error.tsx renders a standalone HTML document outside the Next.js
+    // router context, so next/link is unavailable — plain <a> is correct here.
+    files: ["src/app/global-error.tsx"],
+    rules: {
+      "@next/next/no-html-link-for-pages": "off",
+    },
+  },
+  {
     ignores: [
       "node_modules",
       ".next",
