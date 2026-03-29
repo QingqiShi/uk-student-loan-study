@@ -41,3 +41,4 @@ scripts/check-govuk-figures/results/
 
 # Claude Code worktrees
 .claude/worktrees/
+.claude/scheduled_tasks.lock
