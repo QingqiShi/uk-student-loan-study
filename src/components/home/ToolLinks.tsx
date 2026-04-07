@@ -77,12 +77,12 @@ const TOOLS: ToolCardProps[] = [
 
 /** Slugs of guides to feature on the homepage, in display order. */
 const FEATURED_GUIDE_SLUGS: GuideSlug[] = [
+  "interest-rate-cap",
   "threshold-freeze",
   "plan-2-vs-plan-5",
   "how-interest-works",
   "student-loan-vs-mortgage",
   "moving-abroad",
-  "self-employment",
 ];
 
 /** Derive featured guides from the canonical GUIDES array to keep titles/descriptions in sync. */

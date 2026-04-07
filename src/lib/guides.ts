@@ -18,11 +18,17 @@ export interface GuideEntry {
 
 export const GUIDES: GuideEntry[] = [
   {
+    slug: "interest-rate-cap",
+    title: "Plan 2 Interest Rate Cap",
+    description:
+      "The government is capping Plan 2 interest at 6% from September 2026. What it means for your loan.",
+    newUntil: "2026-10-01",
+  },
+  {
     slug: "threshold-freeze",
     title: "Threshold Freeze Explained",
     description:
       "How frozen repayment thresholds cost you more each month, and what the 2026 parliamentary inquiry means.",
-    newUntil: "2026-06-01",
   },
   {
     slug: "plan-2-vs-plan-5",
@@ -65,12 +71,5 @@ export const GUIDES: GuideEntry[] = [
     title: "Self-Employment",
     description:
       "How Self Assessment changes your repayments and common mistakes to avoid.",
-  },
-  {
-    slug: "interest-rate-cap",
-    title: "Plan 2 Interest Rate Cap",
-    description:
-      "The government is capping Plan 2 interest at 6% from September 2026. What it means for your loan.",
-    newUntil: "2026-10-01",
   },
 ];
