@@ -6,7 +6,8 @@ export type GuideSlug =
   | "rpi-vs-cpi"
   | "pay-upfront-or-take-loan"
   | "moving-abroad"
-  | "self-employment";
+  | "self-employment"
+  | "interest-rate-cap";
 
 export interface GuideEntry {
   slug: GuideSlug;
@@ -64,5 +65,12 @@ export const GUIDES: GuideEntry[] = [
     title: "Self-Employment",
     description:
       "How Self Assessment changes your repayments and common mistakes to avoid.",
+  },
+  {
+    slug: "interest-rate-cap",
+    title: "Plan 2 Interest Rate Cap",
+    description:
+      "The government is capping Plan 2 interest at 6% from September 2026. What it means for your loan.",
+    newUntil: "2026-10-01",
   },
 ];
