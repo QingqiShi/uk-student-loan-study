@@ -187,6 +187,22 @@ export function ChartBase({
                 />
               );
             })}
+            {horizontalAnnotations.map((ha) => (
+              <ReferenceLine
+                key={`hline-${String(ha.y)}-${ha.label}`}
+                y={ha.y}
+                stroke={ha.color ?? "var(--muted-foreground)"}
+                strokeWidth={1.5}
+                strokeDasharray={ha.strokeDasharray ?? "6 4"}
+                label={{
+                  value: ha.label,
+                  position: "right" as const,
+                  fill: ha.color ?? "var(--muted-foreground)",
+                  fontSize: 11,
+                  fontWeight: 500,
+                }}
+              />
+            ))}
           </BarChart>
         </ChartContainer>
       </div>

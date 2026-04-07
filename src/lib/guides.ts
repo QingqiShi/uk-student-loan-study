@@ -6,7 +6,8 @@ export type GuideSlug =
   | "rpi-vs-cpi"
   | "pay-upfront-or-take-loan"
   | "moving-abroad"
-  | "self-employment";
+  | "self-employment"
+  | "interest-rate-cap";
 
 export interface GuideEntry {
   slug: GuideSlug;
@@ -16,6 +17,13 @@ export interface GuideEntry {
 }
 
 export const GUIDES: GuideEntry[] = [
+  {
+    slug: "interest-rate-cap",
+    title: "Plan 2 Interest Rate Cap",
+    description:
+      "The government is capping Plan 2 interest at 6% from September 2026. What it means for your loan.",
+    newUntil: "2026-07-08",
+  },
   {
     slug: "threshold-freeze",
     title: "Threshold Freeze Explained",
