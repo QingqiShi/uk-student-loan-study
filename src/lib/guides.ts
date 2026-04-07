@@ -22,7 +22,7 @@ export const GUIDES: GuideEntry[] = [
     title: "Plan 2 Interest Rate Cap",
     description:
       "The government is capping Plan 2 interest at 6% from September 2026. What it means for your loan.",
-    newUntil: "2026-10-01",
+    newUntil: "2026-07-08",
   },
   {
     slug: "threshold-freeze",
