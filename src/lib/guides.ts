@@ -29,6 +29,7 @@ export const GUIDES: GuideEntry[] = [
     title: "Threshold Freeze Explained",
     description:
       "How frozen repayment thresholds cost you more each month, and what the 2026 parliamentary inquiry means.",
+    newUntil: "2026-06-01",
   },
   {
     slug: "plan-2-vs-plan-5",
