@@ -1,7 +1,8 @@
 import { realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname } from "node:path";
-import react from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
@@ -22,7 +23,8 @@ const realNodeModulesDir = dirname(
 
 export default defineConfig({
   plugins: [
-    react({ babel: { plugins: ["babel-plugin-react-compiler"] } }),
+    react(),
+    babel({ presets: [reactCompilerPreset()] }),
     tsconfigPaths(),
   ],
   server: {
