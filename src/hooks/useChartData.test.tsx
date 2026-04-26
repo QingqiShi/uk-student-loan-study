@@ -12,15 +12,23 @@ const defaultTestConfig: Partial<LoanState> = {
   salary: 45_000,
 };
 
-function createWrapper(overrides?: Partial<LoanState>) {
+function Wrapper({
+  children,
+  overrides,
+}: {
+  children: ReactNode;
+  overrides?: Partial<LoanState>;
+}) {
   const mergedConfig = { ...defaultTestConfig, ...overrides };
-  return function Wrapper({ children }: { children: ReactNode }) {
-    return (
-      <LoanProvider initialStateOverride={mergedConfig}>
-        {children}
-      </LoanProvider>
-    );
-  };
+  return (
+    <LoanProvider initialStateOverride={mergedConfig}>{children}</LoanProvider>
+  );
+}
+
+function createWrapper(overrides?: Partial<LoanState>) {
+  return ({ children }: { children: ReactNode }) => (
+    <Wrapper overrides={overrides}>{children}</Wrapper>
+  );
 }
 
 describe("useChartData hooks", () => {
