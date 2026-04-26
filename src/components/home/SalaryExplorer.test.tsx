@@ -9,20 +9,30 @@ vi.mock("@/components/charts/TotalRepaymentChart", () => ({
   TotalRepaymentChart: () => <div data-testid="chart" />,
 }));
 
+function Wrapper({
+  children,
+  overrides,
+}: {
+  children: ReactNode;
+  overrides?: Partial<LoanState>;
+}) {
+  return (
+    <LoanProvider
+      initialStateOverride={{
+        salary: 45_000,
+        loans: [{ planType: "PLAN_2", balance: 50_000 }],
+        ...overrides,
+      }}
+    >
+      {children}
+    </LoanProvider>
+  );
+}
+
 function createWrapper(overrides?: Partial<LoanState>) {
-  return function Wrapper({ children }: { children: ReactNode }) {
-    return (
-      <LoanProvider
-        initialStateOverride={{
-          salary: 45_000,
-          loans: [{ planType: "PLAN_2", balance: 50_000 }],
-          ...overrides,
-        }}
-      >
-        {children}
-      </LoanProvider>
-    );
-  };
+  return ({ children }: { children: ReactNode }) => (
+    <Wrapper overrides={overrides}>{children}</Wrapper>
+  );
 }
 
 describe("SalaryExplorer", () => {
