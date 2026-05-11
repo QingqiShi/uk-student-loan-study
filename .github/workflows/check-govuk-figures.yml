@@ -23,7 +23,7 @@ jobs:
       - run: pnpm install
 
       - name: Install Playwright Chromium
-        run: pnpx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Scrape GOV.UK figures
         id: scrape
