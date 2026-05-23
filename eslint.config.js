@@ -62,7 +62,7 @@ export default defineConfig(
       "src/components/ui/chart.tsx",
     ],
     rules: {
-      "@eslint-react/dom/no-dangerously-set-innerhtml": "off",
+      "@eslint-react/dom-no-dangerously-set-innerhtml": "off",
     },
   },
   {

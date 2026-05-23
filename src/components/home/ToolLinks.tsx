@@ -14,7 +14,7 @@ interface ToolCardProps {
   title: string;
   description: string;
   cta: string;
-  newUntil?: string;
+  isNew?: boolean;
 }
 
 function ToolCard({
@@ -23,7 +23,7 @@ function ToolCard({
   title,
   description,
   cta,
-  newUntil,
+  isNew,
 }: ToolCardProps) {
   return (
     <Link href={href} className="group block h-full">
@@ -34,7 +34,7 @@ function ToolCard({
           </div>
           <h3 className="font-medium">
             {title}
-            {newUntil && new Date() < new Date(newUntil) && (
+            {isNew && (
               <span className="ml-2 inline-block rounded-full bg-primary/5 px-2 py-0.5 align-middle text-xs font-medium text-primary">
                 New
               </span>
@@ -85,11 +85,20 @@ const FEATURED_GUIDE_SLUGS: GuideSlug[] = [
   "moving-abroad",
 ];
 
-/** Derive featured guides from the canonical GUIDES array to keep titles/descriptions in sync. */
+/**
+ * Derive featured guides from the canonical GUIDES array to keep titles/descriptions in sync.
+ * Evaluated at module load (build time for SSG), so the "New" badge is fixed per build.
+ */
+const BUILD_TIME = new Date();
 const FEATURED_GUIDES = FEATURED_GUIDE_SLUGS.flatMap((slug) => {
   const guide = GUIDES.find((g) => g.slug === slug);
   if (!guide) return [];
-  return [guide];
+  return [
+    {
+      ...guide,
+      isNew: !!guide.newUntil && BUILD_TIME < new Date(guide.newUntil),
+    },
+  ];
 });
 
 export function ToolLinks() {
@@ -114,7 +123,7 @@ export function ToolLinks() {
               title={guide.title}
               description={guide.description}
               cta="Read Guide"
-              newUntil={guide.newUntil}
+              isNew={guide.isNew}
             />
           ))}
         </div>
