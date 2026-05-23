@@ -1,8 +1,14 @@
 import { describe, it, expect } from "vitest";
+import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import type { Loan } from "@/lib/loans/types";
 import { generateInsight } from "./insights";
 
 const plan2Loan: Loan = { planType: "PLAN_2", balance: 50_000 };
+
+// Middle-earner zone tracks the Plan 2 threshold: roughly £30k–£50k above
+// annual threshold lands a £50k loan in the peak repayment zone. Deriving
+// from PLAN_CONFIGS keeps the test robust to GOV.UK threshold updates.
+const MIDDLE_EARNER_SALARY = PLAN_CONFIGS.PLAN_2.monthlyThreshold * 12 + 40_000;
 
 describe("generateInsight", () => {
   it("returns null for zero balance", () => {
@@ -18,7 +24,9 @@ describe("generateInsight", () => {
   });
 
   it("classifies middle-earner in peak repayment zone", () => {
-    const result = generateInsight(60_000, { loans: [plan2Loan] });
+    const result = generateInsight(MIDDLE_EARNER_SALARY, {
+      loans: [plan2Loan],
+    });
     expect(result).not.toBeNull();
     expect(result?.type).toBe("middle-earner");
     expect(result?.title).toContain("peak repayment zone");
@@ -56,8 +64,10 @@ describe("generateInsight", () => {
   });
 
   it("shows lower figures when discountRate is applied", () => {
-    const nominal = generateInsight(60_000, { loans: [plan2Loan] });
-    const pvAdjusted = generateInsight(60_000, {
+    const nominal = generateInsight(MIDDLE_EARNER_SALARY, {
+      loans: [plan2Loan],
+    });
+    const pvAdjusted = generateInsight(MIDDLE_EARNER_SALARY, {
       loans: [plan2Loan],
       discountRate: 0.05,
     });

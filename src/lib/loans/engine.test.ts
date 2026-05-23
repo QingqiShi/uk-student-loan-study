@@ -79,8 +79,9 @@ describe("simulate engine", () => {
       const firstSnapshot = result.snapshots[0];
       const loanState = firstSnapshot.loans[0];
 
-      // Expected: (50000/12 - 2172) * 0.09 = (4166.67 - 2172) * 0.09 = 179.52
-      expect(loanState.repayment).toBeCloseTo(179.52, 0);
+      const { monthlyThreshold, repaymentRate } = PLAN_CONFIGS.PLAN_1;
+      const expected = (50000 / 12 - monthlyThreshold) * repaymentRate;
+      expect(loanState.repayment).toBeCloseTo(expected, 1);
     });
   });
 
@@ -111,8 +112,9 @@ describe("simulate engine", () => {
       const firstSnapshot = result.snapshots[0];
       const loanState = firstSnapshot.loans[0];
 
-      // Expected: (50000/12 - 2372) * 0.09 = (4166.67 - 2372) * 0.09 = 161.52
-      expect(loanState.repayment).toBeCloseTo(161.52, 0);
+      const { monthlyThreshold, repaymentRate } = PLAN_CONFIGS.PLAN_2;
+      const expected = (50000 / 12 - monthlyThreshold) * repaymentRate;
+      expect(loanState.repayment).toBeCloseTo(expected, 1);
     });
   });
 
@@ -191,7 +193,17 @@ describe("simulate engine", () => {
     });
 
     it("has lowest threshold", () => {
-      expect(PLAN_CONFIGS.POSTGRADUATE.monthlyThreshold).toBe(1750);
+      const pgThreshold = PLAN_CONFIGS.POSTGRADUATE.monthlyThreshold;
+      for (const planType of [
+        "PLAN_1",
+        "PLAN_2",
+        "PLAN_4",
+        "PLAN_5",
+      ] as const) {
+        expect(pgThreshold).toBeLessThan(
+          PLAN_CONFIGS[planType].monthlyThreshold,
+        );
+      }
     });
 
     it("calculates monthly repayment using 6% rate", () => {
@@ -199,8 +211,9 @@ describe("simulate engine", () => {
       const firstSnapshot = result.snapshots[0];
       const loanState = firstSnapshot.loans[0];
 
-      // Expected: (50000/12 - 1750) * 0.06 = (4166.67 - 1750) * 0.06 = 145
-      expect(loanState.repayment).toBeCloseTo(145, 0);
+      const { monthlyThreshold, repaymentRate } = PLAN_CONFIGS.POSTGRADUATE;
+      const expected = (50000 / 12 - monthlyThreshold) * repaymentRate;
+      expect(loanState.repayment).toBeCloseTo(expected, 1);
     });
   });
 
@@ -229,11 +242,15 @@ describe("simulate engine", () => {
       expect(plan2State).toBeDefined();
       expect(pgState).toBeDefined();
 
-      // Plan 2: (60000/12 - 2372) * 0.09 = (5000 - 2372) * 0.09 = 236.52
-      expect(plan2State?.repayment).toBeCloseTo(236.52, 0);
+      const expectedPlan2 =
+        (60000 / 12 - PLAN_CONFIGS.PLAN_2.monthlyThreshold) *
+        PLAN_CONFIGS.PLAN_2.repaymentRate;
+      expect(plan2State?.repayment).toBeCloseTo(expectedPlan2, 1);
 
-      // Postgraduate: (60000/12 - 1750) * 0.06 = (5000 - 1750) * 0.06 = 195
-      expect(pgState?.repayment).toBeCloseTo(195, 0);
+      const expectedPg =
+        (60000 / 12 - PLAN_CONFIGS.POSTGRADUATE.monthlyThreshold) *
+        PLAN_CONFIGS.POSTGRADUATE.repaymentRate;
+      expect(pgState?.repayment).toBeCloseTo(expectedPg, 1);
     });
 
     it("total monthly repayment is sum of individual repayments", () => {
