@@ -27,7 +27,7 @@ function ScrollFadeWrapper({
       setShowFade(scrollLeft + clientWidth < scrollWidth - 1);
     };
 
-    update();
+    // ResizeObserver fires update() on initial observe(), so no synchronous call needed.
     scrollable.addEventListener("scroll", update, { passive: true });
     const observer = new ResizeObserver(update);
     observer.observe(scrollable);
