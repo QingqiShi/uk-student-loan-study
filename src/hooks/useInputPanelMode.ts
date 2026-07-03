@@ -11,8 +11,7 @@ import type { Preset } from "@/lib/presets";
 import { isPresetConfig } from "@/lib/presets";
 
 export type InputMode =
-  | { view: "summary" }
-  | { view: "loan-config"; initialPlanTypes?: PlanType[] };
+  { view: "summary" } | { view: "loan-config"; initialPlanTypes?: PlanType[] };
 
 interface UseInputPanelModeOptions {
   initialMode?: InputMode;

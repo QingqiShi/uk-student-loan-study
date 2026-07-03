@@ -235,15 +235,17 @@ This is separate from undergraduate loan plans.
 ### Loan Amounts (2025/26)
 
 **Master's Loan:**
-| Course Start | Maximum |
-|--------------|---------|
-| On or after 1 Aug 2025 | £12,858 |
+
+| Course Start              | Maximum |
+| ------------------------- | ------- |
+| On or after 1 Aug 2025    | £12,858 |
 | 1 Aug 2024 - 31 July 2025 | £12,471 |
 
 **Doctoral Loan:**
-| Course Start | Maximum |
-|--------------|---------|
-| On or after 1 Aug 2025 | £30,301 |
+
+| Course Start              | Maximum |
+| ------------------------- | ------- |
+| On or after 1 Aug 2025    | £30,301 |
 | 1 Aug 2024 - 31 July 2025 | £29,390 |
 
 The loan amount is not based on household income. Doctoral loans are paid in 3 instalments (33%, 33%, 34%).

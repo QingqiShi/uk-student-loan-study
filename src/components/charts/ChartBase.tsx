@@ -151,8 +151,7 @@ export function ChartBase({
                           />
                           <span className="text-muted-foreground">
                             {(chartConfig[String(item.dataKey)].label as
-                              | string
-                              | undefined) ?? String(item.dataKey ?? "")}
+                              string | undefined) ?? String(item.dataKey ?? "")}
                           </span>
                           <span className="ml-auto pl-4 font-mono font-medium tabular-nums">
                             {yFormatter(Number(item.value))}

@@ -184,8 +184,7 @@ function ChartTooltipContent({
             const key = nameKey ?? String(item.name ?? item.dataKey ?? "value");
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
             const itemPayload = item.payload as
-              | Record<string, unknown>
-              | undefined;
+              Record<string, unknown> | undefined;
             const indicatorColor =
               color ||
               (typeof itemPayload?.fill === "string"
