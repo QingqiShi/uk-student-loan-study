@@ -197,6 +197,7 @@ export function InterestGuide() {
         <RelatedGuides
           current="how-interest-works"
           order={["rpi-vs-cpi", "plan-2-vs-plan-5"]}
+          tools={["/interest", "/effective-rate"]}
         />
       </article>
     </PageLayout>

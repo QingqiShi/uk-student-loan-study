@@ -319,6 +319,7 @@ export function MovingAbroadGuide() {
         <RelatedGuides
           current="moving-abroad"
           order={["self-employment", "plan-2-vs-plan-5"]}
+          tools={["/repaid", "/"]}
           extraLinks={[
             {
               href: "https://www.gov.uk/repaying-your-student-loan/repaying-from-abroad",

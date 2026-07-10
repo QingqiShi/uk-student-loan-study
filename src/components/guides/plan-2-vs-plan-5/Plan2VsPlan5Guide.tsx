@@ -263,6 +263,7 @@ export function Plan2VsPlan5Guide() {
         <RelatedGuides
           current="plan-2-vs-plan-5"
           order={["how-interest-works", "pay-upfront-or-take-loan"]}
+          tools={["/which-plan", "/repaid"]}
         />
       </article>
     </PageLayout>

@@ -196,6 +196,7 @@ export function MortgageGuide() {
         <RelatedGuides
           current="student-loan-vs-mortgage"
           order={["plan-2-vs-plan-5", "how-interest-works"]}
+          tools={["/", "/repaid"]}
         />
       </article>
     </PageLayout>

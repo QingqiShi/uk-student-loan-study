@@ -381,6 +381,7 @@ export function SelfEmploymentGuide() {
         <RelatedGuides
           current="self-employment"
           order={["moving-abroad", "plan-2-vs-plan-5"]}
+          tools={["/", "/repaid"]}
           extraLinks={[
             {
               href: "https://www.gov.uk/repaying-your-student-loan/repaying-student-loans-overview",

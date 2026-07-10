@@ -279,6 +279,7 @@ export function RpiVsCpiGuide() {
         <RelatedGuides
           current="rpi-vs-cpi"
           order={["how-interest-works", "plan-2-vs-plan-5"]}
+          tools={["/interest", "/effective-rate"]}
         />
       </article>
     </PageLayout>

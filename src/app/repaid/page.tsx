@@ -14,7 +14,21 @@ export async function generateMetadata({
   const meta = parseMetadataParams(params);
 
   if (!meta.hasShareParams) {
-    return {};
+    const defaultTitle = "When Will My Student Loan Be Paid Off?";
+    const defaultDescription =
+      "Find out when your UK student loan will be paid off — or written off — and what it will cost in total. Enter your salary, balance and plan (1, 2, 4, 5 or Postgraduate) to see your payoff year and total repayments.";
+
+    return {
+      title: defaultTitle,
+      description: defaultDescription,
+      alternates: { canonical: "/repaid" },
+      openGraph: {
+        title: defaultTitle,
+        description: defaultDescription,
+        url: "https://studentloanstudy.uk/repaid",
+        type: "website",
+      },
+    };
   }
 
   const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary} — Total Repayments`;

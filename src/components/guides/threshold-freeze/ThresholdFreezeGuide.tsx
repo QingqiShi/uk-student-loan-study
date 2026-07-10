@@ -297,7 +297,21 @@ export function ThresholdFreezeGuide() {
                 repayment calculator
               </Link>{" "}
               &mdash; set threshold growth to 0% to model the freeze, or 3% for
-              inflation-linked growth.
+              inflation-linked growth. You can also check{" "}
+              <Link
+                href="/repaid"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                when your loan will be paid off
+              </Link>{" "}
+              and how the freeze pushes up{" "}
+              <Link
+                href="/effective-rate"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                the effective interest rate you pay
+              </Link>
+              .
             </p>
           </div>
         </section>
@@ -305,6 +319,7 @@ export function ThresholdFreezeGuide() {
         <RelatedGuides
           current="threshold-freeze"
           order={["plan-2-vs-plan-5", "how-interest-works"]}
+          tools={["/repaid", "/effective-rate"]}
           extraLinks={[
             {
               href: "https://committees.parliament.uk/work/9682/student-loans-and-taxation-of-graduates/",
