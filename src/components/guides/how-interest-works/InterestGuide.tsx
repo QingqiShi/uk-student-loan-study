@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
+import { getCurrentTaxYearLabel } from "@/lib/taxYear";
+import { CurrentRatesTable } from "./CurrentRatesTable";
 import { InterestRateChart } from "./InterestRateChart";
 
 const EXAMPLE_BALANCE = 45_000;
@@ -20,6 +22,9 @@ const maxRate = rpi + 3;
 const plan1Rate = Math.min(rpi, CURRENT_RATES.boeBaseRate + 1);
 const boeRatePlus1 = CURRENT_RATES.boeBaseRate + 1;
 const monthlyInterest = Math.round((EXAMPLE_BALANCE * maxRate) / 100 / 12);
+
+// Derived from the current date so the label tracks the live plans.ts figures.
+const currentTaxYear = getCurrentTaxYearLabel();
 
 export function InterestGuide() {
   return (
@@ -151,6 +156,22 @@ export function InterestGuide() {
               plan.
             </p>
           </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Current Interest Rates by Plan ({currentTaxYear})
+          </Heading>
+          <div className="space-y-2 text-muted-foreground">
+            <p>
+              Here are the interest rates in force across every plan for the{" "}
+              {currentTaxYear} tax year, based on RPI of {formatPercent(rpi)}.
+              Middle earners on Plan 2 feel this most: they sit on the sliding
+              scale, charged above RPI without earning enough to clear the
+              balance before interest compounds.
+            </p>
+          </div>
+          <CurrentRatesTable />
         </section>
 
         <section className="space-y-3">

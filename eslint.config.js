@@ -54,9 +54,10 @@ export default defineConfig(
     },
   },
   {
-    // JSON-LD structured data in layouts, shadcn chart styles, and global-error
-    // inline CSS require dangerouslySetInnerHTML
+    // JSON-LD structured data (the shared JsonLd component and layouts), shadcn
+    // chart styles, and global-error inline CSS require dangerouslySetInnerHTML
     files: [
+      "src/components/seo/JsonLd.tsx",
       "src/app/**/layout.tsx",
       "src/app/global-error.tsx",
       "src/components/ui/chart.tsx",

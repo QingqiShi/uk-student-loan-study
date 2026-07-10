@@ -234,11 +234,20 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Plan 2 vs Plan 5](https://studentloanstudy.uk/guides/plan-2-vs-plan-5): Compare thresholds, interest rates, and total repayments between Plan 2 and Plan 5
 - [How Interest Works](https://studentloanstudy.uk/guides/how-interest-works): Understand the sliding scale for Plan 2, RPI-only for Plan 5, and why balances grow
 - [RPI vs CPI](https://studentloanstudy.uk/guides/rpi-vs-cpi): Why student loan interest uses RPI while general inflation is measured by CPI, and what that gap means
-- [Student Loan & Mortgage](https://studentloanstudy.uk/guides/student-loan-vs-mortgage): How student loan repayments affect mortgage affordability and borrowing capacity
+- [Student Loan & Mortgage](https://studentloanstudy.uk/guides/student-loan-vs-mortgage): Whether a student loan affects your mortgage — affordability, whether it counts as income, your credit file, and paying it off first
 - [Pay Upfront or Take Loan?](https://studentloanstudy.uk/guides/pay-upfront-or-take-loan): Should parents pay tuition upfront or let their child take the loan?
 - [Moving Abroad](https://studentloanstudy.uk/guides/moving-abroad): What happens to your student loan if you leave the UK
 - [Self-Employment](https://studentloanstudy.uk/guides/self-employment): How repayments work through Self Assessment for freelancers
 - [Threshold Freeze Explained](https://studentloanstudy.uk/guides/threshold-freeze): How the Plan 2 threshold freeze from 2027-2030 increases monthly repayments and what the parliamentary inquiry means
+
+## Plan Pages
+
+- [UK Student Loan Plans Explained](https://studentloanstudy.uk/plans): Every UK student loan plan compared at a glance — thresholds, repayment rates, interest and write-off periods
+- [Plan 1 Explained](https://studentloanstudy.uk/plans/plan-1): Plan 1 threshold, capped interest and ${plan1WriteOff}-year write-off for pre-2012 England/Wales and all Northern Irish students
+- [Plan 2 Explained](https://studentloanstudy.uk/plans/plan-2): Plan 2 threshold, RPI + 3% sliding-scale interest and why middle earners repay the most over ${plan2WriteOff} years
+- [Plan 4 Explained](https://studentloanstudy.uk/plans/plan-4): Plan 4 for Scottish students — the highest threshold of any plan, capped interest and ${plan4WriteOff}-year write-off
+- [Plan 5 Explained](https://studentloanstudy.uk/plans/plan-5): Plan 5 threshold, RPI-only interest and the longest ${plan5WriteOff}-year write-off
+- [Postgraduate Loan Explained](https://studentloanstudy.uk/plans/postgraduate): Postgraduate Master's and Doctoral loan — ${fmtRate(postgradRate)} repayment rate, RPI + 3% interest, repaid alongside any undergraduate loan
 
 ## Key Facts
 
