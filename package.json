@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@10.30.3+sha512.c961d1e0a2d8e354ecaa5166b822516668b7f44cb5bd95122d590dd81922f606f5473b6d23ec4a5be05e7fcd18e8488d47d978bbe981872f1145d06e9a740017",
+  "packageManager": "pnpm@11.11.0+sha512.4463f65fd80ed80d69bc1d4bf163ee94f605c7380fc318bb5b2ebe15f8cd12d49c51a4d59e951b401e764d3b6ca751cbf51bc50ed7001a6bcb4935e684c34882",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -67,15 +67,5 @@
     "vite": "^8.0.16",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.8"
-  },
-  "pnpm": {
-    "overrides": {
-      "react-is": "^19.2.4",
-      "rollup": "^4.59.0",
-      "picomatch": "^4.0.4",
-      "flatted": "^3.4.2",
-      "yaml": "^2.8.3",
-      "brace-expansion": "^5.0.5"
-    }
   }
 }
