@@ -132,7 +132,21 @@ export function Plan2VsPlan5Guide() {
               >
                 Take the which plan quiz
               </Link>{" "}
-              to find out.
+              to find out, or read the full breakdowns for{" "}
+              <Link
+                href="/plans/plan-2"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                Plan 2
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/plans/plan-5"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                Plan 5
+              </Link>
+              .
             </p>
           </div>
         </section>
@@ -263,6 +277,7 @@ export function Plan2VsPlan5Guide() {
         <RelatedGuides
           current="plan-2-vs-plan-5"
           order={["how-interest-works", "pay-upfront-or-take-loan"]}
+          tools={["/which-plan", "/plans", "/repaid"]}
         />
       </article>
     </PageLayout>

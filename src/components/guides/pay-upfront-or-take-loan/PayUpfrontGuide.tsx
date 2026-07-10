@@ -244,6 +244,7 @@ export function PayUpfrontGuide() {
         <RelatedGuides
           current="pay-upfront-or-take-loan"
           order={["how-interest-works", "plan-2-vs-plan-5"]}
+          tools={["/overpay", "/repaid"]}
         />
       </article>
     </PageLayout>

@@ -303,6 +303,7 @@ export function InterestRateCapGuide() {
         <RelatedGuides
           current="interest-rate-cap"
           order={["how-interest-works", "rpi-vs-cpi", "plan-2-vs-plan-5"]}
+          tools={["/interest", "/repaid"]}
         />
       </article>
     </PageLayout>
