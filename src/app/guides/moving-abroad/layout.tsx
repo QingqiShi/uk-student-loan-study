@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "What Happens to Your Student Loan If You Move Abroad?",
+  title: "What Happens to Your Student Loan If You Move Abroad? (UK)",
   description:
-    "Moving overseas doesn't make your student loan disappear — the SLC will find you. Here's what they expect, what the penalties look like, and how repayment thresholds change by country.",
+    "Yes — you still repay your UK student loan abroad, and ignoring the SLC means fixed payments far higher than income-based ones. Here's what to do before you go.",
   keywords: [
     "student loan abroad",
     "SLC overseas",
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     canonical: "/guides/moving-abroad",
   },
   openGraph: {
-    title: "What Happens to Your Student Loan If You Move Abroad?",
+    title: "What Happens to Your Student Loan If You Move Abroad? (UK)",
     description:
-      "Moving overseas doesn't make your student loan disappear — the SLC will find you. Here's what they expect, what the penalties look like, and how repayment thresholds change by country.",
+      "Yes — you still repay your UK student loan abroad, and ignoring the SLC means fixed payments far higher than income-based ones. Here's what to do before you go.",
     url: "https://studentloanstudy.uk/guides/moving-abroad",
     type: "article",
   },
