@@ -39,7 +39,7 @@
     "@eslint-react/eslint-plugin": "^5.8.12",
     "@eslint/js": "^10",
     "@next/eslint-plugin-next": "^16.2.7",
-    "@playwright/test": "^1.60.0",
+    "@playwright/test": "^1.61.1",
     "@resvg/resvg-js": "^2.6.2",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tailwindcss/postcss": "^4.3.0",
