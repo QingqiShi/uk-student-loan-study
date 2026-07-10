@@ -8,6 +8,7 @@ import {
   Coins01Icon,
   CoinsPoundIcon,
   GlobalIcon,
+  Layers01Icon,
   Quiz01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -71,6 +72,12 @@ const TOOLS: Partial<Record<string, ToolLink>> = {
     title: "Which Plan Quiz",
     description: "Find out which repayment plan you are on",
     icon: Quiz01Icon,
+  },
+  "/plans": {
+    href: "/plans",
+    title: "Compare Loan Plans",
+    description: "Thresholds, interest and write-off for every plan",
+    icon: Layers01Icon,
   },
 };
 
