@@ -8,6 +8,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { ScrollFadeWrapper } from "@/components/shared/ScrollFadeWrapper";
 import { Heading } from "@/components/typography/Heading";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -18,7 +19,23 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import {
+  govUkOverseasThresholdsLink,
+  movingAbroadFaqs,
+  overseasComparisonLabel,
+  overseasThresholds,
+  UK_PLAN2_THRESHOLD,
+} from "./overseas-data";
 
 const undergradRate = `${String(PLAN_CONFIGS.PLAN_2.repaymentRate * 100)}%`;
 const postgradRate = `${String(PLAN_CONFIGS.POSTGRADUATE.repaymentRate * 100)}%`;
@@ -158,6 +175,94 @@ export function MovingAbroadGuide() {
         </section>
 
         <section className="space-y-4">
+          <Heading as="h2" size="section">
+            Country-by-Country: How Your Threshold Changes
+          </Heading>
+          <p className="text-sm text-muted-foreground sm:text-base">
+            SLC doesn&rsquo;t use a single overseas threshold for everyone.
+            Every country is placed into a price-level band that multiplies the
+            UK threshold up or down based on local living costs, so the salary
+            at which you start repaying can sit below or above the UK&rsquo;s{" "}
+            {formatGBP(UK_PLAN2_THRESHOLD)}. This is where{" "}
+            <strong>middle earners abroad feel it most</strong> &mdash; in a
+            lower-threshold country, a mid-range salary that would barely
+            trigger repayments at home can pull a much bigger slice into the{" "}
+            {undergradRate} repayment band.
+          </p>
+          <p className="text-sm text-muted-foreground sm:text-base">
+            The process is the same wherever you go: notify SLC within three
+            months, complete the overseas income assessment on your worldwide
+            income (converted into pounds), and re-submit evidence every year.
+            Only the threshold changes by country. Skip the assessment and SLC
+            falls back to fixed repayment amounts that are usually higher than
+            income-based ones.
+          </p>
+          <ScrollFadeWrapper className="rounded-lg border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead scope="col">Destination</TableHead>
+                  <TableHead scope="col">Plan 2 threshold (2026/27)</TableHead>
+                  <TableHead scope="col">Compared to the UK</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {overseasThresholds.map((row) => (
+                  <TableRow key={row.country}>
+                    <TableHead scope="row">{row.country}</TableHead>
+                    <TableCell>{formatGBP(row.threshold)}</TableCell>
+                    <TableCell>
+                      {overseasComparisonLabel(row.threshold)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollFadeWrapper>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            Figures are SLC&rsquo;s Plan 2 (undergraduate) overseas thresholds
+            for 2026/27, set against the UK threshold of{" "}
+            {formatGBP(UK_PLAN2_THRESHOLD)}. Other plans use a different base
+            figure, and SLC revises every country each April &mdash; always{" "}
+            <a
+              href={govUkOverseasThresholdsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClasses}
+            >
+              check the latest figures on GOV.UK
+            </a>
+            .
+          </p>
+          <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
+            <li>
+              <strong className="text-foreground">
+                Australia, Canada &amp; New Zealand:
+              </strong>{" "}
+              currently sit in the same band as the UK, so your threshold
+              matches the home figure and repayments feel much like they did in
+              the UK.
+            </li>
+            <li>
+              <strong className="text-foreground">Spain:</strong> a lower band
+              pulls the threshold below the UK&rsquo;s, so repayments start
+              earlier &mdash; a classic squeeze on middle earners.
+            </li>
+            <li>
+              <strong className="text-foreground">UAE (Dubai):</strong> there is
+              no local income tax, but your UK student loan is separate from
+              that &mdash; the SLC threshold is still lower than the UK&rsquo;s,
+              so a tax-free salary is caught sooner, not exempted.
+            </li>
+            <li>
+              <strong className="text-foreground">United States:</strong> a
+              higher band lifts the threshold above the UK&rsquo;s, so you keep
+              more of your salary before repayments begin.
+            </li>
+          </ul>
+        </section>
+
+        <section className="space-y-4">
           <Alert variant="destructive">
             <HugeiconsIcon icon={AlertCircleIcon} className="size-4" />
             <AlertTitle>
@@ -272,6 +377,25 @@ export function MovingAbroadGuide() {
                     {step.description}
                   </p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <Heading as="h2" size="section">
+            Moving Abroad: Frequently Asked Questions
+          </Heading>
+          <div className="space-y-3">
+            {movingAbroadFaqs.map((faq) => (
+              <div
+                key={faq.question}
+                className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10 sm:p-5"
+              >
+                <p className="font-medium text-foreground">{faq.question}</p>
+                <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+                  {faq.answer}
+                </p>
               </div>
             ))}
           </div>
