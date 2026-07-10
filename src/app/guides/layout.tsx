@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { GUIDES } from "@/lib/guides";
 
 export const metadata: Metadata = {
   title: "Student Loan Guides — The Stuff They Don't Tell You",
@@ -24,56 +23,15 @@ export const metadata: Metadata = {
   },
 };
 
-const itemListSchema = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "UK Student Loan Guides",
-  description:
-    "In-depth guides to help you understand UK student loan repayment, interest, and how it fits into your wider finances.",
-  numberOfItems: GUIDES.length,
-  itemListElement: GUIDES.map((guide, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    name: guide.title,
-    url: `https://studentloanstudy.uk/guides/${guide.slug}`,
-  })),
-};
-
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://studentloanstudy.uk",
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Guides",
-      item: "https://studentloanstudy.uk/guides",
-    },
-  ],
-};
-
+// Structured data for the guides index (ItemList + BreadcrumbList) lives in
+// the index page itself (`page.tsx`), not this shared segment layout — a layout
+// wraps every child guide route, so schema declared here would leak an
+// all-guides ItemList and a partial "Home > Guides" BreadcrumbList onto every
+// individual guide page, conflicting with each guide's own BreadcrumbList.
 export default function GuidesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      {children}
-    </>
-  );
+  return children;
 }

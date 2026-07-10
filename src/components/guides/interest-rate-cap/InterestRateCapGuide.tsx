@@ -12,13 +12,18 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
+import { getCurrentTaxYearLabel } from "@/lib/taxYear";
 import { BalanceWithCapChart } from "./BalanceWithCapChart";
+import { CurrentCapTable } from "./CurrentCapTable";
 import { TOTAL_YEARS, YEARS_ABOVE_CAP } from "./historical-rates";
 import { HistoricalRatesChart } from "./HistoricalRatesChart";
 import { TotalCostComparisonChart } from "./TotalCostComparisonChart";
 
 const rpi = CURRENT_RATES.rpi;
 const currentMaxRate = rpi + 3;
+
+// Derived from the current date so the label tracks the live plans.ts figures.
+const currentTaxYear = getCurrentTaxYearLabel();
 
 export function InterestRateCapGuide() {
   return (
@@ -85,6 +90,19 @@ export function InterestRateCapGuide() {
               rate will not follow it above 6%.
             </p>
           </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Plan 2 Interest Rates at a Glance ({currentTaxYear})
+          </Heading>
+          <div className="space-y-2 text-muted-foreground">
+            <p>
+              The key Plan 2 interest figures for the {currentTaxYear} tax year,
+              alongside the 6% cap that applies from September 2026.
+            </p>
+          </div>
+          <CurrentCapTable />
         </section>
 
         <section className="space-y-3">
