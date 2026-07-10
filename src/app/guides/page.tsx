@@ -2,6 +2,7 @@ import { ArrowRight01Icon, BookOpen01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
@@ -13,9 +14,45 @@ import {
 } from "@/components/ui/breadcrumb";
 import { GUIDES } from "@/lib/guides";
 
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "UK Student Loan Guides",
+  description:
+    "In-depth guides to help you understand UK student loan repayment, interest, and how it fits into your wider finances.",
+  numberOfItems: GUIDES.length,
+  itemListElement: GUIDES.map((guide, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: guide.title,
+    url: `https://studentloanstudy.uk/guides/${guide.slug}`,
+  })),
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://studentloanstudy.uk",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Guides",
+      item: "https://studentloanstudy.uk/guides",
+    },
+  ],
+};
+
 export default function GuidesPage() {
   return (
     <PageLayout>
+      <JsonLd data={itemListSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <div className="space-y-4">
         <Breadcrumb>
           <BreadcrumbList>
