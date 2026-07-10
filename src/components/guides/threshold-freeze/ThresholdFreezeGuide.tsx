@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import { getCurrentTaxYearLabel } from "@/lib/taxYear";
+import { CurrentThresholdsTable } from "./CurrentThresholdsTable";
 import { ThresholdComparisonChart } from "./ThresholdComparisonChart";
 
 // Historical thresholds — hardcoded because these are facts about specific
@@ -30,6 +32,9 @@ const REPAYMENT_RATE = 0.09; // 9% for Plan 2
 const PROJECTED_INFLATION_LINKED = 32_250;
 const THRESHOLD_GAP = PROJECTED_INFLATION_LINKED - FREEZE_THRESHOLD;
 const EXTRA_ANNUAL = Math.round(THRESHOLD_GAP * REPAYMENT_RATE);
+
+// Derived from the current date so the label tracks the live plans.ts figures.
+const currentTaxYear = getCurrentTaxYearLabel();
 
 export function ThresholdFreezeGuide() {
   return (
@@ -250,6 +255,23 @@ export function ThresholdFreezeGuide() {
               Plan 2 borrowers.
             </p>
           </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Current Repayment Thresholds ({currentTaxYear})
+          </Heading>
+          <div className="space-y-2 text-muted-foreground">
+            <p>
+              These are the salary thresholds that apply for the{" "}
+              {currentTaxYear} tax year. Undergraduate borrowers repay{" "}
+              {String(REPAYMENT_RATE * 100)}% of everything they earn above
+              their plan&apos;s threshold &mdash; which is exactly why the
+              freeze bites hardest for middle earners, whose pay rises push more
+              of their salary above a line that isn&apos;t moving.
+            </p>
+          </div>
+          <CurrentThresholdsTable />
         </section>
 
         <section className="space-y-3">
