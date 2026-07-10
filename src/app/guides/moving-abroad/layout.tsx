@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { movingAbroadFaqs } from "@/components/guides/moving-abroad/overseas-data";
 
 const description =
-  "Moving overseas doesn't wipe your UK student loan. See how SLC repayment thresholds change in Australia, Canada, the USA, Dubai and Spain, what the overseas income assessment involves, and what happens if you don't tell SLC.";
+  "Yes — you still repay your UK student loan abroad, and moving doesn't wipe it. See how SLC thresholds shift in Australia, Canada, the USA, Dubai and Spain, plus what to do before you go.";
 
 export const metadata: Metadata = {
-  title: "What Happens to Your Student Loan If You Move Abroad?",
+  title: "What Happens to Your Student Loan If You Move Abroad? (UK)",
   description,
   keywords: [
     "student loan abroad",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     canonical: "/guides/moving-abroad",
   },
   openGraph: {
-    title: "What Happens to Your Student Loan If You Move Abroad?",
+    title: "What Happens to Your Student Loan If You Move Abroad? (UK)",
     description,
     url: "https://studentloanstudy.uk/guides/moving-abroad",
     type: "article",

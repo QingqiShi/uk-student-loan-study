@@ -3,24 +3,24 @@ import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 
 export const metadata: Metadata = {
-  title: "Does Your Student Loan Affect Your Mortgage?",
+  title: "Does a Student Loan Affect Your Mortgage? (UK)",
   description:
-    "Yes — and it's not about the balance. Lenders care about your monthly repayment, which quietly shrinks how much you can borrow. See the exact impact at your salary.",
+    "A UK student loan won't stop you getting a mortgage, but the monthly repayment cuts how much you can borrow — and it isn't counted as income. Here's what lenders check.",
   keywords: [
-    "student loan mortgage",
-    "mortgage affordability student loan",
-    "student loan affect mortgage",
-    "student loan borrowing power",
-    "Plan 2 mortgage impact",
-    "Plan 5 mortgage impact",
+    "does student loan affect mortgage uk",
+    "do student loans count as income for mortgage",
+    "does student loan affect mortgage application",
+    "do mortgage lenders take student loans into account",
+    "declare student loan on mortgage application",
+    "student loan mortgage affordability",
   ],
   alternates: {
     canonical: "/guides/student-loan-vs-mortgage",
   },
   openGraph: {
-    title: "Does Your Student Loan Affect Your Mortgage?",
+    title: "Does a Student Loan Affect Your Mortgage? (UK)",
     description:
-      "Yes — and it's not about the balance. Lenders care about your monthly repayment, which quietly shrinks how much you can borrow. See the exact impact at your salary.",
+      "A UK student loan won't stop you getting a mortgage, but the monthly repayment cuts how much you can borrow — and it isn't counted as income. Here's what lenders check.",
     url: "https://studentloanstudy.uk/guides/student-loan-vs-mortgage",
     type: "article",
   },
@@ -74,6 +74,22 @@ const faqSchema = {
     },
     {
       "@type": "Question",
+      name: "Do student loans count as income for a mortgage?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. A UK student loan is money you borrowed, not income, so lenders will not count your maintenance or tuition loan towards how much you can borrow. The monthly repayment is a deduction from your income — it can only reduce your affordability, never increase it.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Do you have to declare a student loan on a mortgage application?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. You should disclose your regular outgoings honestly, and your student loan repayment is one of them. If you are employed it already shows on your payslips, so lenders see it during their checks. Exactly where it goes on the form varies by lender, but declare the monthly repayment — it is a deduction from income, not a conventional debt.",
+      },
+    },
+    {
+      "@type": "Question",
       name: "How much does a student loan reduce mortgage borrowing?",
       acceptedAnswer: {
         "@type": "Answer",
@@ -110,9 +126,9 @@ const faqSchema = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Does Your Student Loan Affect Your Mortgage?",
+  headline: "Does a Student Loan Affect Your Mortgage?",
   description:
-    "Yes — and it's not about the balance. Lenders care about your monthly repayment, which quietly shrinks how much you can borrow. See the exact impact at your salary.",
+    "A UK student loan won't stop you getting a mortgage, but the monthly repayment cuts how much you can borrow — and it isn't counted as income. Here's what lenders check.",
   url: "https://studentloanstudy.uk/guides/student-loan-vs-mortgage",
   author: {
     "@type": "Organization",
@@ -125,7 +141,7 @@ const articleSchema = {
     url: "https://studentloanstudy.uk",
   },
   datePublished: "2026-02-14",
-  dateModified: "2026-03-09",
+  dateModified: "2026-07-10",
 };
 
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).
