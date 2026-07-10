@@ -105,11 +105,7 @@ export interface QuizState {
 }
 
 export type QuizStep =
-  | "region"
-  | "start-year"
-  | "additional-course"
-  | "postgrad"
-  | "result";
+  "region" | "start-year" | "additional-course" | "postgrad" | "result";
 
 /**
  * Determine all loan plan types from the full quiz state.

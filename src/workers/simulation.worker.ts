@@ -116,8 +116,7 @@ export type WorkerPayload =
   | EffectiveRateSalaryPayload;
 
 export type WorkerMessage =
-  | { id: number; payload: WorkerPayload }
-  | { id: number; cancel: true };
+  { id: number; payload: WorkerPayload } | { id: number; cancel: true };
 
 export interface InsightSummary {
   totalPaid: number;

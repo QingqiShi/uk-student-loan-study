@@ -33,9 +33,7 @@ export interface DecodedMetadataParams {
  */
 export function parseMetadataParams(
   searchParams:
-    | Record<string, string | string[] | undefined>
-    | undefined
-    | null,
+    Record<string, string | string[] | undefined> | undefined | null,
 ): DecodedMetadataParams {
   const urlParams = new URLSearchParams();
   for (const [key, value] of Object.entries(searchParams ?? {})) {
