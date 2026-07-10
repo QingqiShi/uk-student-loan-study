@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "What Student Loan Plan Am I On?",
+  title: "What Student Loan Plan Am I On? Find Out in 30 Seconds",
   description:
-    "Not sure which plan you're on? Answer 3 quick questions and we'll tell you — plus what it means for your repayments, interest rate, and write-off date.",
+    "Your plan depends on when and where you studied. Take our free 30-second quiz to find if you're on Plan 1, 2, 4, 5 or Postgraduate — plus your 2026 repayments.",
   keywords: [
     "what student loan plan am I on",
     "which student loan plan",
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     canonical: "/which-plan",
   },
   openGraph: {
-    title: "What Student Loan Plan Am I On?",
+    title: "What Student Loan Plan Am I On? Find Out in 30 Seconds",
     description:
-      "Not sure which plan you're on? Answer 3 quick questions and we'll tell you — plus what it means for your repayments, interest rate, and write-off date.",
+      "Your plan depends on when and where you studied. Take our free 30-second quiz to find if you're on Plan 1, 2, 4, 5 or Postgraduate — plus your 2026 repayments.",
     url: "https://studentloanstudy.uk/which-plan",
     type: "website",
   },

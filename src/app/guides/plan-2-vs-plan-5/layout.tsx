@@ -3,10 +3,10 @@ import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const description =
-  "Plan 2 has higher interest but writes off after 30 years. Plan 5 charges less interest but repays over 40 years with a lower threshold. Compare the total cost at your salary.";
+  "Plan 2 charges more interest but writes off in 30 years; Plan 5 is cheaper but runs 40 years. See which costs you more in 2026 — middle earners lose most.";
 
 export const metadata: Metadata = {
-  title: "Plan 2 vs Plan 5: Which Student Loan Costs More?",
+  title: "Plan 2 vs Plan 5 Student Loans: Which Costs You More? (2026)",
   description,
   keywords: [
     "Plan 2 vs Plan 5",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     canonical: "/guides/plan-2-vs-plan-5",
   },
   openGraph: {
-    title: "Plan 2 vs Plan 5: Which Student Loan Costs More?",
+    title: "Plan 2 vs Plan 5 Student Loans: Which Costs You More? (2026)",
     description,
     url: "https://studentloanstudy.uk/guides/plan-2-vs-plan-5",
     type: "article",
