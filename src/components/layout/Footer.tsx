@@ -32,6 +32,11 @@ export function Footer() {
                   Which Plan Quiz
                 </Link>
               </li>
+              <li>
+                <Link href="/plans" className={NAV_LINK_CLASS}>
+                  Loan Plans Explained
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="space-y-3">
