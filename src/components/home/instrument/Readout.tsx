@@ -12,7 +12,7 @@ import {
   useSalaryGrowthRate,
   useThresholdGrowthRate,
 } from "@/hooks/useStoreSelectors";
-import { formatGBP } from "@/lib/format";
+import { formatGBP, percentagesSummingTo100 } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { primaryPlanName } from "./planInfo";
 
@@ -36,8 +36,71 @@ function VizSkeleton() {
   );
 }
 
-function pct(ratio: number): number {
-  return Math.round(ratio * 100);
+/**
+ * Value placeholder that reuses the real figure classes (`text-fig-lg
+ * leading-none`) so its line box — and therefore the card height — is identical
+ * once the live figure resolves. Used by the interest and effective-rate cells,
+ * whose viz is the tallest in the readout and so drives the equalised row.
+ */
+function ValueChipSkeleton() {
+  return (
+    <div className="w-28 max-w-full animate-[slsFade_.6s_ease_both] rounded-sm bg-muted font-mono text-fig-lg leading-none font-semibold tracking-[-0.02em] text-transparent tabular-nums">
+      0
+    </div>
+  );
+}
+
+/** One legend entry rendered as a muted chip, height-matched to the loaded row. */
+function LegendChipSkeleton({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center gap-[0.45rem] text-meta">
+      <i className="size-[9px] flex-none rounded-[3px] bg-muted" />
+      <span className="rounded-sm bg-muted text-transparent">{label}</span>{" "}
+      <b className="min-w-[4ch] rounded-sm bg-muted font-mono font-semibold tracking-[-0.015em] text-transparent tabular-nums">
+        00%
+      </b>
+    </span>
+  );
+}
+
+/** Loading placeholder for the interest split-bar + legend (mirrors its height). */
+function InterestVizSkeleton() {
+  return (
+    <div aria-hidden className="mt-auto animate-[slsFade_.6s_ease_both]">
+      <div className="h-3 rounded-full bg-muted [box-shadow:inset_0_0_0_1px_var(--border)]" />
+      <div className="mt-[0.55rem] hidden flex-col gap-y-2 md:flex">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+          <LegendChipSkeleton label="Principal" />
+          <LegendChipSkeleton label="Interest" />
+        </div>
+        <LegendChipSkeleton label="Written off" />
+      </div>
+    </div>
+  );
+}
+
+/** Loading placeholder for the effective-rate benchmark rows (mirrors its height). */
+function RateVizSkeleton() {
+  return (
+    <div aria-hidden className="mt-auto animate-[slsFade_.6s_ease_both]">
+      <div className="flex flex-col gap-2">
+        {["Yours", "BoE base"].map((label) => (
+          <div
+            key={label}
+            className="grid grid-cols-[4.5em_1fr_2.7em] items-center gap-[0.45rem]"
+          >
+            <span className="rounded-sm bg-muted text-meta text-transparent">
+              {label}
+            </span>
+            <div className="h-[7px] min-w-[26px] rounded-full bg-muted" />
+            <span className="justify-self-end rounded-sm bg-muted font-mono text-fig-sm text-transparent tabular-nums">
+              0.0%
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export function Readout({ onTailor }: { onTailor: () => void }) {
@@ -58,6 +121,12 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
   const principalRatio = interest?.principalRatio ?? 0;
   const interestRatio = interest?.interestRatio ?? 0;
   const writtenOffRatio = interest?.writtenOffRatio ?? 0;
+  // Round together so the legend always sums to exactly 100%.
+  const [principalPct, interestPct, writtenOffPct] = percentagesSummingTo100([
+    principalRatio,
+    interestRatio,
+    writtenOffRatio,
+  ]);
 
   const effRate = rate?.effectiveRate ?? 0;
   const boeRate = rate?.boeRate ?? 0;
@@ -174,14 +243,14 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
               <Figure value={interest.stat} />
             </div>
           ) : (
-            <ValueSkeleton />
+            <ValueChipSkeleton />
           )}
           {interest ? (
             <div className="mt-auto">
               <div
                 className="flex h-3 overflow-hidden rounded-full bg-muted [box-shadow:inset_0_0_0_1px_var(--border)]"
                 role="img"
-                aria-label={`Of ${interest.stat} repaid, ${String(pct(interestRatio))}% is interest and ${String(pct(principalRatio))}% is principal${writtenOffRatio > 0 ? `, with ${String(pct(writtenOffRatio))}% written off` : ""}.`}
+                aria-label={`Of ${interest.stat} repaid, ${String(interestPct)}% is interest and ${String(principalPct)}% is principal${writtenOffRatio > 0 ? `, with ${String(writtenOffPct)}% written off` : ""}.`}
               >
                 <i
                   className="h-full bg-primary [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
@@ -198,34 +267,37 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
                   />
                 )}
               </div>
-              <div className="mt-[0.55rem] hidden flex-wrap justify-between gap-x-4 gap-y-2 md:flex">
-                <span className="inline-flex items-center gap-[0.45rem] text-meta text-muted-foreground">
-                  <i className="size-[9px] flex-none rounded-[3px] bg-primary" />{" "}
-                  Principal{" "}
-                  <b className="font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
-                    {String(pct(principalRatio))}%
-                  </b>
-                </span>
-                <span className="inline-flex items-center gap-[0.45rem] text-meta text-muted-foreground">
-                  <i className="size-[9px] flex-none rounded-[3px] bg-signal" />{" "}
-                  Interest{" "}
-                  <b className="font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
-                    {String(pct(interestRatio))}%
-                  </b>
-                </span>
-                {writtenOffRatio > 0 && (
+              {/* Two fixed rows: Principal/Interest, then Written off — always
+                  shown (0% when nothing is written off) so the card keeps a
+                  constant height and the equalised grid row never shifts. */}
+              <div className="mt-[0.55rem] hidden flex-col gap-y-2 md:flex">
+                <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
                   <span className="inline-flex items-center gap-[0.45rem] text-meta text-muted-foreground">
-                    <i className="size-[9px] flex-none rounded-[3px] [background:repeating-linear-gradient(45deg,var(--muted)_0_3px,color-mix(in_oklab,var(--faint)_55%,var(--muted))_3px_6px)]" />{" "}
-                    Written off{" "}
-                    <b className="font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
-                      {String(pct(writtenOffRatio))}%
+                    <i className="size-[9px] flex-none rounded-[3px] bg-primary" />{" "}
+                    Principal{" "}
+                    <b className="min-w-[4ch] font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
+                      {String(principalPct)}%
                     </b>
                   </span>
-                )}
+                  <span className="inline-flex items-center gap-[0.45rem] text-meta text-muted-foreground">
+                    <i className="size-[9px] flex-none rounded-[3px] bg-signal" />{" "}
+                    Interest{" "}
+                    <b className="min-w-[4ch] font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
+                      {String(interestPct)}%
+                    </b>
+                  </span>
+                </div>
+                <span className="inline-flex items-center gap-[0.45rem] text-meta text-muted-foreground">
+                  <i className="size-[9px] flex-none rounded-[3px] [background:repeating-linear-gradient(45deg,var(--muted)_0_3px,color-mix(in_oklab,var(--faint)_55%,var(--muted))_3px_6px)]" />{" "}
+                  Written off{" "}
+                  <b className="min-w-[4ch] font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
+                    {String(writtenOffPct)}%
+                  </b>
+                </span>
               </div>
             </div>
           ) : (
-            <VizSkeleton />
+            <InterestVizSkeleton />
           )}
           <span className="sr-only"> — open the interest breakdown</span>
         </Link>
@@ -246,7 +318,7 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
               <Figure value={rate.stat} />
             </div>
           ) : (
-            <ValueSkeleton />
+            <ValueChipSkeleton />
           )}
           {rate ? (
             <div className="mt-auto">
@@ -284,7 +356,7 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
               </div>
             </div>
           ) : (
-            <VizSkeleton />
+            <RateVizSkeleton />
           )}
           <span className="sr-only">
             {" "}

@@ -11,7 +11,7 @@ export interface InsightCardData {
 
 export interface InterestCardData {
   stat: string;
-  /** "Interest Paid (adj.)" for write-off scenarios, "Interest Paid" otherwise */
+  /** Card heading — always "Interest Paid". */
   label: string;
   /** totalInterestPaid / totalSettled (0–1) */
   interestRatio: number;
