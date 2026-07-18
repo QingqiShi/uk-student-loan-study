@@ -8,6 +8,8 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { selfEmploymentFaqs } from "@/components/guides/self-employment/faqs";
+import { Panel } from "@/components/instrument/Panel";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
@@ -313,6 +315,25 @@ export function SelfEmploymentGuide() {
             .
           </li>
         </KeyTakeaways>
+
+        <section className="space-y-4">
+          <Heading as="h2" size="section">
+            Self-Employment: Frequently Asked Questions
+          </Heading>
+          <Panel
+            padding={false}
+            className="divide-y divide-border overflow-hidden"
+          >
+            {selfEmploymentFaqs.map((faq) => (
+              <div key={faq.question} className="space-y-2 p-4 sm:p-5">
+                <p className="font-semibold text-foreground">{faq.question}</p>
+                <p className="text-sm text-muted-foreground sm:text-base">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </Panel>
+        </section>
 
         <RelatedGuides
           current="self-employment"
