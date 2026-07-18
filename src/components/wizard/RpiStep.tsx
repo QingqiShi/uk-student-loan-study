@@ -63,7 +63,7 @@ export function RpiStep({ direction, onNext, done }: RpiStepProps) {
             ))}
           </div>
 
-          <p className="text-xs text-status-warning-foreground">
+          <p className="text-xs text-status-info-foreground">
             RPI includes housing costs, so it typically runs higher than general
             inflation (CPI).
           </p>

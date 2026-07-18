@@ -126,7 +126,9 @@
   --muted-foreground: #4f5955; /* soft — secondary text */
   --accent: #e7ebe9; /* subtle hover surface (sunk), NOT the brand */
   --accent-foreground: #131b18;
-  --destructive: oklch(0.55 0.2 29);
+  --destructive: var(
+    --status-danger-foreground
+  ); /* one danger red across shadcn + status intents */
   --border: #dbe1de; /* hair */
   --input: #dbe1de;
   --ring: #0c5c44; /* focus = spruce */
@@ -187,7 +189,9 @@
   --muted-foreground: #909a95; /* soft */
   --accent: #18231f; /* subtle hover surface */
   --accent-foreground: #e7eeea;
-  --destructive: oklch(0.704 0.191 22.216);
+  --destructive: var(
+    --status-danger-foreground
+  ); /* one danger red across shadcn + status intents */
   --border: #1e2a25; /* hair */
   --input: #1e2a25;
   --ring: #50c99f;
