@@ -158,8 +158,11 @@
 
   /* Status: bright semantic utility tokens — deliberately outside the two-colour
      thesis. Colour-blind-safe: success is emerald (blue-shifted green, not pure
-     green) so it separates from danger red under deuteranopia/protanopia; danger
-     is deepened to red-800 so its luminance parts from warning amber. */
+     green) so it separates from danger red under deuteranopia/protanopia. Danger
+     stays a vivid red-700 rather than a deeper red — darkening would only buy a
+     little warning/danger separation while dimming the red for the red-blind
+     viewers we're helping; warning-vs-danger is disambiguated by icons + text at
+     the component layer, not by colour. */
   --status-info-foreground: oklch(0.546 0.245 262.881); /* blue-600 */
   --status-info: oklch(0.97 0.014 254.604); /* blue-50 */
   --status-info-border: oklch(0.882 0.059 254.128); /* blue-200 */
@@ -169,7 +172,7 @@
   --status-warning-foreground: oklch(0.555 0.163 48.998); /* amber-700 */
   --status-warning: oklch(0.987 0.022 95.277); /* amber-50 */
   --status-warning-border: oklch(0.924 0.12 95.746); /* amber-200 */
-  --status-danger-foreground: oklch(0.444 0.177 26.899); /* red-800 */
+  --status-danger-foreground: oklch(0.505 0.213 27.518); /* red-700 */
   --status-danger: oklch(0.971 0.013 17.38); /* red-50 */
   --status-danger-border: oklch(0.885 0.062 18.334); /* red-200 */
 }
