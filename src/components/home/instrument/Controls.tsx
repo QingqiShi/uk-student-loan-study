@@ -1,5 +1,7 @@
 "use client";
 
+import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   startTransition,
   useEffect,
@@ -140,6 +142,70 @@ function computeScenFade(el: HTMLDivElement | null): ScenFade {
 const SCEN_CHIP =
   "group flex flex-[0_0_auto] flex-col gap-[0.15rem] min-w-[8.5rem] [scroll-snap-align:start] leading-[1.2] text-left border border-border rounded-[9px] px-[0.7rem] py-[0.5rem] bg-card text-muted-foreground [transition:border-color_0.15s,background_0.15s,color_0.15s] [&:not([aria-pressed=true]):hover]:border-muted-foreground @cozy:min-w-0 work:min-w-0 aria-pressed:border-primary aria-pressed:bg-accent-wash";
 
+// "Tailor to you" is a different *kind* of action than the preset chips — an
+// escape hatch into customisation rather than a mutually-exclusive quick-pick.
+// A dashed primary outline + icon marks it as distinct; it flips to a solid
+// selected treatment (matching the presets) once the config is personalised.
+const TAILOR_CHIP =
+  "group rounded-[9px] border border-dashed border-primary/40 px-[0.7rem] py-[0.5rem] text-left leading-[1.2] [transition:border-color_0.15s,background_0.15s,color_0.15s] hover:border-primary hover:bg-primary/5 aria-pressed:border-solid aria-pressed:border-primary aria-pressed:bg-accent-wash";
+
+// One button, two layouts: the narrow scroll state shows the "bar" variant
+// full-width below the strip; wider grid layouts show the "grid" variant as a
+// card in-row. Copy, handler, and aria-pressed live here once so the two
+// rendered instances can never drift apart.
+function TailorButton({
+  variant,
+  className,
+  isCustomConfig,
+  onPersonalise,
+}: {
+  variant: "grid" | "bar";
+  className: string;
+  isCustomConfig: boolean;
+  onPersonalise: () => void;
+}) {
+  const label = isCustomConfig ? "Edit details" : "Tailor to you";
+  const description = isCustomConfig ? "Your configuration" : "Your details";
+  return (
+    <button
+      className={`${TAILOR_CHIP} ${className}`}
+      type="button"
+      aria-pressed={isCustomConfig}
+      onClick={onPersonalise}
+    >
+      {variant === "grid" ? (
+        <>
+          <b className="flex items-center gap-1.5 text-sm font-semibold tracking-[-0.01em] text-primary group-aria-pressed:text-cta">
+            <HugeiconsIcon
+              icon={PreferenceHorizontalIcon}
+              className="size-4 shrink-0"
+            />
+            {label}
+          </b>
+          <span className="font-sans text-micro text-muted-foreground">
+            {description}
+          </span>
+        </>
+      ) : (
+        <>
+          <HugeiconsIcon
+            icon={PreferenceHorizontalIcon}
+            className="size-4 shrink-0 text-primary group-aria-pressed:text-cta"
+          />
+          <span className="flex-1">
+            <span className="text-sm font-semibold tracking-[-0.01em] text-primary group-aria-pressed:text-cta">
+              {label}
+            </span>
+            <span className="ml-2 font-sans text-micro text-muted-foreground">
+              {description}
+            </span>
+          </span>
+        </>
+      )}
+    </button>
+  );
+}
+
 function Presets({
   onPresetApplied,
   onPersonalise,
@@ -206,20 +272,24 @@ function Presets({
             </span>
           </button>
         ))}
-        <button
-          className={`${SCEN_CHIP} work:col-span-full @cozy:col-span-full @snug:col-auto`}
-          type="button"
-          aria-pressed={isCustomConfig}
-          onClick={onPersonalise}
-        >
-          <b className="text-sm font-semibold tracking-[-0.01em] text-foreground group-aria-pressed:text-cta">
-            {isCustomConfig ? "Edit details" : "Tailor to you"}
-          </b>
-          <span className="font-sans text-micro text-muted-foreground">
-            {isCustomConfig ? "Your configuration" : "Your details"}
-          </span>
-        </button>
+        {/* Distinct "Tailor" card — lives inside the grid on wider layouts,
+            hidden in the narrow horizontal-scroll state (shown below instead). */}
+        <TailorButton
+          variant="grid"
+          className="hidden flex-col gap-[0.15rem] work:col-span-full work:flex @cozy:col-span-full @cozy:flex @snug:col-auto"
+          isCustomConfig={isCustomConfig}
+          onPersonalise={onPersonalise}
+        />
       </div>
+
+      {/* Full-width "Tailor" CTA on its own line — only in the narrow
+          horizontal-scroll state, so it stays visible without scrolling. */}
+      <TailorButton
+        variant="bar"
+        className="mt-2 flex w-full items-center gap-2 work:hidden @cozy:hidden"
+        isCustomConfig={isCustomConfig}
+        onPersonalise={onPersonalise}
+      />
     </div>
   );
 }
