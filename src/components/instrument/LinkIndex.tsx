@@ -1,4 +1,7 @@
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import {
+  ArrowRight01Icon,
+  ArrowUpRight01Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -33,10 +36,12 @@ function RowInner({
   title,
   description,
   badge,
+  external,
 }: {
   title: React.ReactNode;
   description?: React.ReactNode;
   badge?: React.ReactNode;
+  external?: boolean;
 }) {
   return (
     <>
@@ -50,9 +55,14 @@ function RowInner({
           </span>
         )}
         <HugeiconsIcon
-          icon={ArrowRight01Icon}
-          className="ml-auto size-4 shrink-0 text-faint transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-primary group-focus-visible:translate-x-0.5 group-focus-visible:text-primary"
+          icon={external ? ArrowUpRight01Icon : ArrowRight01Icon}
+          className={cn(
+            "ml-auto size-4 shrink-0 text-faint transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-primary group-focus-visible:translate-x-0.5 group-focus-visible:text-primary",
+            external &&
+              "group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5",
+          )}
         />
+        {external && <span className="sr-only"> (opens in a new tab)</span>}
       </div>
       {description != null && (
         <p className="text-sm text-muted-foreground">{description}</p>
@@ -83,7 +93,12 @@ export function LinkIndexRow({
         rel="noopener noreferrer"
         className={ROW_CLASS}
       >
-        <RowInner title={title} description={description} badge={badge} />
+        <RowInner
+          title={title}
+          description={description}
+          badge={badge}
+          external
+        />
       </a>
     );
   }
