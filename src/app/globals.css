@@ -156,17 +156,20 @@
   --chart-5: #6c756f; /* axis grey — baseline series */
   --chart-overpay-baseline: #a8482f;
 
-  /* Status: bright semantic utility tokens — deliberately outside the two-colour thesis */
+  /* Status: bright semantic utility tokens — deliberately outside the two-colour
+     thesis. Colour-blind-safe: success is emerald (blue-shifted green, not pure
+     green) so it separates from danger red under deuteranopia/protanopia; danger
+     is deepened to red-800 so its luminance parts from warning amber. */
   --status-info-foreground: oklch(0.546 0.245 262.881); /* blue-600 */
   --status-info: oklch(0.97 0.014 254.604); /* blue-50 */
   --status-info-border: oklch(0.882 0.059 254.128); /* blue-200 */
-  --status-success-foreground: oklch(0.527 0.154 150.069); /* green-700 */
-  --status-success: oklch(0.982 0.018 155.826); /* green-50 */
-  --status-success-border: oklch(0.925 0.084 155.995); /* green-200 */
+  --status-success-foreground: oklch(0.508 0.118 165.612); /* emerald-700 */
+  --status-success: oklch(0.979 0.021 166.113); /* emerald-50 */
+  --status-success-border: oklch(0.905 0.093 164.15); /* emerald-200 */
   --status-warning-foreground: oklch(0.555 0.163 48.998); /* amber-700 */
   --status-warning: oklch(0.987 0.022 95.277); /* amber-50 */
   --status-warning-border: oklch(0.924 0.12 95.746); /* amber-200 */
-  --status-danger-foreground: oklch(0.505 0.213 27.518); /* red-700 */
+  --status-danger-foreground: oklch(0.444 0.177 26.899); /* red-800 */
   --status-danger: oklch(0.971 0.013 17.38); /* red-50 */
   --status-danger-border: oklch(0.885 0.062 18.334); /* red-200 */
 }
@@ -219,9 +222,9 @@
   --status-info-foreground: oklch(0.707 0.165 254.624); /* blue-400 */
   --status-info: oklch(0.282 0.091 267.935 / 30%); /* blue-950 */
   --status-info-border: oklch(0.424 0.199 265.638); /* blue-700 */
-  --status-success-foreground: oklch(0.792 0.209 151.711); /* green-400 */
-  --status-success: oklch(0.266 0.065 152.934 / 30%); /* green-950 */
-  --status-success-border: oklch(0.527 0.154 150.069); /* green-700 */
+  --status-success-foreground: oklch(0.765 0.177 163.223); /* emerald-400 */
+  --status-success: oklch(0.262 0.051 172.552 / 30%); /* emerald-950 */
+  --status-success-border: oklch(0.508 0.118 165.612); /* emerald-700 */
   --status-warning-foreground: oklch(0.828 0.189 84.429); /* amber-400 */
   --status-warning: oklch(0.279 0.077 45.635 / 30%); /* amber-950 */
   --status-warning-border: oklch(0.473 0.137 46.201); /* amber-800 */
