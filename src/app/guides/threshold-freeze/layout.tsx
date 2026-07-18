@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { thresholdFreezeFaqs } from "@/components/guides/threshold-freeze/faqs";
 
 export const metadata: Metadata = {
   title: "Student Loan Threshold Freeze Explained — What It Costs You",
@@ -51,40 +52,14 @@ const breadcrumbSchema = {
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is the student loan threshold freeze?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "The Chancellor announced the Plan 2 repayment threshold will freeze at £29,385 from April 2027 to April 2030. Normally thresholds rise with inflation, so freezing means graduates start repaying at a lower real salary and pay more each month.",
-      },
+  mainEntity: thresholdFreezeFaqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
     },
-    {
-      "@type": "Question",
-      name: "Which student loan plans are affected by the threshold freeze?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Plan 2 (2012-2023 borrowers) is directly affected with a 3-year freeze from 2027-28 to 2029-30. Plan 5 (2023+ borrowers) is not frozen — its £25,000 threshold starts rising with RPI from April 2027. Plan 1 and Plan 4 continue annual adjustments.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How much more will I pay because of the threshold freeze?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Depends on salary. At £35,000, the freeze costs roughly £80-100 more per year compared to an inflation-linked threshold. Over the 3-year freeze, that adds up to several hundred pounds in extra repayments.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is the 2026 parliamentary inquiry into student loans?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "The Treasury Select Committee launched an inquiry on 12 March 2026 examining whether student loan repayment terms are fair, with particular focus on the threshold freeze and its impact on Plan 2 borrowers.",
-      },
-    },
-  ],
+  })),
 };
 
 const articleSchema = {
