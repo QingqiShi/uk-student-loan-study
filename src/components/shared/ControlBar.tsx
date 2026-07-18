@@ -2,8 +2,8 @@
 
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { startTransition, useEffect, useOptimistic, useRef } from "react";
-import { LoanConfigPanel } from "@/components/home/LoanConfigPanel";
+import { startTransition, useOptimistic } from "react";
+import { ConfigOverlay } from "@/components/home/ConfigOverlay";
 import { PresentValueToggle } from "@/components/home/PresentValueToggle";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -228,60 +228,6 @@ function ExpandedPresets({
           </span>
         </span>
       </button>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// LoanConfigPanel overlay
-// ---------------------------------------------------------------------------
-
-function ConfigOverlay({
-  mode,
-  hasPersonalized,
-  onComplete,
-  onClose,
-}: {
-  mode: InputMode;
-  hasPersonalized: boolean;
-  onComplete: () => void;
-  onClose: () => void;
-}) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-
-  const isOpen = mode.view === "loan-config";
-
-  // Auto-focus the dialog container when it opens so keyboard events work
-  // and the next Tab lands inside the dialog rather than on page content.
-  useEffect(() => {
-    if (isOpen) {
-      dialogRef.current?.focus();
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Configure your loans"
-      className="fixed inset-0 z-50 flex min-h-dvh flex-col overflow-y-auto bg-background"
-      tabIndex={-1}
-      onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          e.stopPropagation();
-          onClose();
-        }
-      }}
-    >
-      <LoanConfigPanel
-        isEditing={hasPersonalized}
-        initialPlanTypes={mode.initialPlanTypes}
-        onComplete={onComplete}
-        onClose={onClose}
-      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import {
   trackPresetApplied,
@@ -24,15 +24,6 @@ export function useInputPanelMode(options?: UseInputPanelModeOptions) {
   const { applyPreset } = useLoanActions();
   const config = useLoanConfigState();
   const hasPersonalized = !isPresetConfig(config.loans);
-
-  useEffect(() => {
-    if (mode.view !== "summary") {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
-  }, [mode.view]);
 
   function handlePersonalise() {
     if (hasPersonalized) {

@@ -162,6 +162,47 @@ describe("AssumptionsWizardContext", () => {
     expect(document.body.style.overflow).toBe("");
   });
 
+  it("restores focus to the trigger when the dialog is closed", async () => {
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <AssumptionsWizardProvider>
+        <TestConsumer />
+      </AssumptionsWizardProvider>,
+    );
+
+    const trigger = screen.getByText("Open");
+    await user.click(trigger);
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+
+    await user.click(screen.getByText("Close"));
+
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it("marks background content inert + aria-hidden while open and restores on close", async () => {
+    const user = userEvent.setup();
+
+    const { container } = renderWithProviders(
+      <AssumptionsWizardProvider>
+        <TestConsumer />
+      </AssumptionsWizardProvider>,
+    );
+
+    expect(container.hasAttribute("inert")).toBe(false);
+
+    await user.click(screen.getByText("Open"));
+
+    expect(container.getAttribute("inert")).toBe("");
+    expect(container.getAttribute("aria-hidden")).toBe("true");
+
+    await user.click(screen.getByText("Close"));
+
+    expect(container.hasAttribute("inert")).toBe(false);
+    expect(container.hasAttribute("aria-hidden")).toBe(false);
+  });
+
   it("calls trackWizardStarted with 'assumptions' on open", async () => {
     const user = userEvent.setup();
 
