@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { LoanConfigPanel } from "@/components/home/LoanConfigPanel";
+import { ConfigOverlay } from "@/components/home/ConfigOverlay";
 import {
   currencyFormatter,
   MAX_SALARY,
@@ -220,57 +220,6 @@ function Presets({
           </span>
         </button>
       </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Config overlay (LoanConfigPanel dialog)
-// ---------------------------------------------------------------------------
-
-function ConfigOverlay({
-  mode,
-  hasPersonalized,
-  onComplete,
-  onClose,
-}: {
-  mode: InputMode;
-  hasPersonalized: boolean;
-  onComplete: () => void;
-  onClose: () => void;
-}) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const isOpen = mode.view === "loan-config";
-
-  useEffect(() => {
-    if (isOpen) {
-      dialogRef.current?.focus();
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      ref={dialogRef}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Configure your loans"
-      className="fixed inset-0 z-50 flex min-h-dvh flex-col overflow-y-auto bg-background"
-      tabIndex={-1}
-      onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          e.stopPropagation();
-          onClose();
-        }
-      }}
-    >
-      <LoanConfigPanel
-        isEditing={hasPersonalized}
-        initialPlanTypes={mode.initialPlanTypes}
-        onComplete={onComplete}
-        onClose={onClose}
-      />
     </div>
   );
 }
