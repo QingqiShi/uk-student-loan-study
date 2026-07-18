@@ -76,6 +76,11 @@
   --text-section--line-height: 1.1;
   --text-lead: 1.0625rem;
   --text-lead--line-height: 1.45;
+  /* Index-title size: the compact list-item title (matches text-lead) that
+     grows a step on large screens so a single-column index reads with presence
+     without competing with a section heading. */
+  --text-index: clamp(1.0625rem, 1.15vw, 1.375rem);
+  --text-index--line-height: 1.25;
   /* Instrument body + label scale (sans) — promoted from raw vars so the
      homepage uses on-system text-* utilities, not [font-size:var(--t-*)]. */
   --text-micro: 0.6875rem;

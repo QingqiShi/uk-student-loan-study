@@ -3,20 +3,16 @@ import { BrandLogo } from "@/components/brand/BrandLogo";
 import { Eyebrow } from "@/components/typography/Eyebrow";
 import { GUIDES } from "@/lib/guides";
 import { SHELL_WIDE } from "@/lib/layout";
-import { cn } from "@/lib/utils";
 
 const NAV_LINK_CLASS =
   "text-muted-foreground transition-colors hover:text-foreground";
 
-export function Footer({ wide = false }: { wide?: boolean }) {
+// Global chrome — always the full-bleed shell so the footer aligns with the
+// header and never shifts between page types (see Header for the rationale).
+export function Footer() {
   return (
     <footer className="border-t-2 border-rule bg-background">
-      <div
-        className={cn(
-          "mx-auto py-10 sm:py-12",
-          wide ? SHELL_WIDE : "max-w-4xl px-3",
-        )}
-      >
+      <div className={`mx-auto py-10 sm:py-12 ${SHELL_WIDE}`}>
         <div className="mb-10 flex flex-col gap-4 border-b pb-8 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-3">
             <BrandLogo size="sm" />
