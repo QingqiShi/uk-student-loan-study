@@ -7,13 +7,14 @@ import { Figure } from "@/components/typography/Figure";
 import { percentageFormatter } from "@/constants";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
 import {
+  useApplyPlan2Freeze,
   useCurrentSalary,
   useLoanConfig,
+  useRpiRate,
   useSalaryGrowthRate,
   useThresholdGrowthRate,
 } from "@/hooks/useStoreSelectors";
 import { formatGBP, percentagesSummingTo100 } from "@/lib/format";
-import { CURRENT_RATES } from "@/lib/loans/plans";
 import { primaryPlanName } from "./planInfo";
 
 const SKEL_VALUE: React.CSSProperties = { height: "1.7rem", width: "7rem" };
@@ -109,11 +110,23 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
   const { loans, underGradBalance, postGradBalance } = useLoanConfig();
   const salaryGrowthRate = useSalaryGrowthRate();
   const thresholdGrowthRate = useThresholdGrowthRate();
+  const applyPlan2Freeze = useApplyPlan2Freeze();
+  const rpiRate = useRpiRate();
 
   const planName = primaryPlanName(loans);
   const borrowed = underGradBalance + postGradBalance;
   const salaryGrowthPct = Math.round(salaryGrowthRate * 100);
-  const thresholdGrowthPct = Math.round(thresholdGrowthRate * 100);
+
+  // Mirror AssumptionsCallout: only Plan 2 threshold is frozen, and RPI tracks
+  // the user's configured rate rather than the static default.
+  const hasPlan2 = loans.some((l) => l.planType === "PLAN_2");
+  const thresholdLabel =
+    applyPlan2Freeze && hasPlan2
+      ? `frozen then +${(thresholdGrowthRate * 100).toFixed(0)}%/yr`
+      : thresholdGrowthRate === 0
+        ? "frozen"
+        : `+${(thresholdGrowthRate * 100).toFixed(0)}%/yr`;
+  const rpiLabel = `${rpiRate % 1 === 0 ? rpiRate.toFixed(0) : rpiRate.toFixed(1)}%`;
 
   const interest = cards?.interest ?? null;
   const rate = cards?.effectiveRate ?? null;
@@ -369,12 +382,8 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
         Modelled on{" "}
         <b className="font-semibold text-foreground">{salaryGrowthPct}%</b>{" "}
         salary growth, thresholds{" "}
-        <b className="font-semibold text-foreground">
-          frozen then +{thresholdGrowthPct}%/yr
-        </b>
-        , and{" "}
-        <b className="font-semibold text-foreground">{CURRENT_RATES.rpi}%</b>{" "}
-        RPI.{" "}
+        <b className="font-semibold text-foreground">{thresholdLabel}</b>, and{" "}
+        <b className="font-semibold text-foreground">{rpiLabel}</b> RPI.{" "}
         <button
           type="button"
           className="m-0 cursor-pointer appearance-none [border-width:0_0_1px] border-solid border-b-[color-mix(in_oklab,var(--primary)_38%,transparent)] p-0 whitespace-nowrap text-cta no-underline [background:none] [font:inherit] hover:[border-bottom-color:var(--primary)] focus-visible:rounded-[4px] focus-visible:[outline:2px_solid_var(--ring)] focus-visible:outline-offset-2"
