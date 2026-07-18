@@ -71,6 +71,16 @@ export function YearSelector({
   const years = getYearsForDecade(decadeStart);
   const decadeLabel = `${String(decadeStart)}-${String(decadeStart + 9)}`;
 
+  function handleOpenChange(open: boolean) {
+    // Resync the displayed decade to the selected year on open so the grid
+    // always contains the current selection, even when `value` changed
+    // externally (e.g. a shared URL with a repaymentYear in another decade).
+    if (open) {
+      setDecadeStart(getDecadeStart(selectedYear));
+    }
+    setIsOpen(open);
+  }
+
   function handleYearSelect(year: number) {
     trackOverpayYearSelected(year);
     onChange(createDateFromYear(year));
@@ -99,7 +109,7 @@ export function YearSelector({
       >
         {label}
       </Label>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger
           render={
             <Button
