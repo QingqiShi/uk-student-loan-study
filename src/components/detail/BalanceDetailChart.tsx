@@ -10,7 +10,10 @@ import type { DetailSeriesResult } from "@/workers/simulation.worker";
 const chartConfig = {
   balance: {
     label: "Balance",
-    color: "var(--chart-2)",
+    // Spruce trajectory (chart-1). Brick (--signal) is spent only on the peak
+    // marker below, keeping cost colour within the One-Signal budget — the
+    // brick --chart-2 flooded the whole panel.
+    color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
 
@@ -44,7 +47,7 @@ export function BalanceDetailChart({
       x: peakBalanceMonth,
       y: peakBalance,
       label: `Peak ${currencyFormatter.format(peakBalance)}`,
-      color: "var(--chart-2)",
+      color: "var(--signal)",
       labelAnchor: "end" as const,
       labelOffsetY: -8,
     });
@@ -55,7 +58,7 @@ export function BalanceDetailChart({
       x: writeOffMonth,
       label: "Written off",
       bottomLabel: "Write-off",
-      color: "var(--status-warning-foreground)",
+      color: "var(--muted-foreground)",
     });
   }
 

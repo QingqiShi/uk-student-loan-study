@@ -15,11 +15,11 @@ const EXAMPLE_BALANCE = 45_000;
 const chartConfig = {
   plan2: {
     label: "Plan 2",
-    color: "oklch(0.7 0.15 250)",
+    color: "var(--chart-1)", // spruce
   },
   plan5: {
     label: "Plan 5",
-    color: "oklch(0.7 0.15 150)",
+    color: "var(--chart-2)", // brick — the costlier (40yr) plan
   },
 } satisfies ChartConfig;
 
@@ -55,18 +55,21 @@ function buildData(salary: number) {
   return points;
 }
 
+// Annotation labels render in mono via the shared chart engine, so they carry
+// figures only ("30yr" / "40yr"). The "write-off" wording lives in the sans
+// guide prose beside the chart, keeping the Figures-Are-Mono rule intact.
 const annotations: ChartAnnotationConfig[] = [
   {
     x: PLAN_2_WRITEOFF_MONTHS,
-    label: `Plan 2 write-off (${String(PLAN_CONFIGS.PLAN_2.writeOffYears)}yr)`,
-    color: "oklch(0.7 0.15 250)",
+    label: `${String(PLAN_CONFIGS.PLAN_2.writeOffYears)}yr`,
+    color: "var(--chart-1)", // spruce — Plan 2
     labelAnchor: "end",
     labelOffsetY: 5,
   },
   {
     x: PLAN_5_WRITEOFF_MONTHS - 1,
-    label: `Plan 5 write-off (${String(PLAN_CONFIGS.PLAN_5.writeOffYears)}yr)`,
-    color: "oklch(0.7 0.15 150)",
+    label: `${String(PLAN_CONFIGS.PLAN_5.writeOffYears)}yr`,
+    color: "var(--chart-2)", // brick — Plan 5
     labelAnchor: "end",
     labelOffsetY: -10,
   },

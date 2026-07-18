@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Manrope, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Archivo, Martian_Mono } from "next/font/google";
 import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
 import { PersonalizedResultsProvider } from "@/context/PersonalizedResultsContext";
@@ -9,12 +9,14 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
-const spaceGrotesk = Space_Grotesk({
+// Instrument identity: Archivo carries every word — headings, body and the ONE
+// engraved uppercase label. Martian Mono is figures only, the readout typeface.
+// There is no separate display or poster face; weight does the work.
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-sans",
 });
-const jetbrainsMono = JetBrains_Mono({
+const martianMono = Martian_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 });
@@ -102,11 +104,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-GB"
-      className={cn(
-        manrope.variable,
-        spaceGrotesk.variable,
-        jetbrainsMono.variable,
-      )}
+      className={cn(archivo.variable, martianMono.variable)}
       suppressHydrationWarning
     >
       <head>

@@ -175,12 +175,20 @@ interface QuizContainerProps {
   onBack?: () => void;
   /** When provided, shows a close button to exit the quiz from any step */
   onClose?: () => void;
+  /**
+   * Rendered inline on the /which-plan page (below the site masthead) rather
+   * than filling a modal: caps the question stage well under the viewport so
+   * the card is not stranded in a full-height void, and lets the masthead be
+   * the sticky element instead of the progress bar.
+   */
+  standalone?: boolean;
 }
 
 export function QuizContainer({
   onLoansDiscovered,
   onBack,
   onClose,
+  standalone = false,
 }: QuizContainerProps) {
   const [state, dispatch] = useReducer(quizReducer, initialState);
   const hasStartedRef = useRef(false);
@@ -231,17 +239,30 @@ export function QuizContainer({
   const backHandler = canGoBack ? handleBack : onBack;
 
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
+    <div
+      className={
+        standalone
+          ? "flex flex-col bg-background"
+          : "flex min-h-dvh flex-col bg-background"
+      }
+    >
       {showProgress && (
         <QuizProgress
           currentStep={currentStepIndex}
           totalSteps={TOTAL_STEPS}
           onBack={backHandler}
           onClose={onClose}
+          sticky={!standalone}
         />
       )}
 
-      <div className="flex flex-1 flex-col items-center justify-center px-4 py-8">
+      <div
+        className={
+          standalone
+            ? "flex min-h-96 flex-col items-center justify-center px-4 py-12"
+            : "flex flex-1 flex-col items-center justify-center px-4 py-8"
+        }
+      >
         <div className="w-full max-w-lg">
           {state.currentStep === "region" && (
             <RegionQuestion

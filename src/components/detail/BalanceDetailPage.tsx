@@ -1,14 +1,21 @@
 "use client";
 
+import { primaryPlanName } from "@/components/home/instrument/planInfo";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
+import type { ChartLegendItem } from "@/components/instrument/ChartFrame";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
+import { useLoanConfig } from "@/hooks/useStoreSelectors";
+import { formatGBP } from "@/lib/format";
 import { BalanceDetailChart } from "./BalanceDetailChart";
 import { DetailPageShell } from "./DetailPageShell";
 import { PayoffHeroStats, PayoffHeroStatsSkeleton } from "./PayoffHeroStats";
 
 export function BalanceDetailPage() {
   const result = useDetailSeriesData();
+  const { loans } = useLoanConfig();
+  const planName = primaryPlanName(loans);
 
   const payoffYears = result ? Math.round(result.stats.monthsToPayoff / 12) : 0;
 
@@ -36,15 +43,41 @@ export function BalanceDetailPage() {
     return `Interest outpaces repayments for the first ${String(peakYears)} years. After that, your growing salary tips the balance and you pay off the loan in ${String(payoffYears)} years.`;
   }
 
+  const legend: ChartLegendItem[] = result
+    ? [
+        { label: "Outstanding balance", color: "var(--chart-2)" },
+        ...(result.stats.peakBalanceMonth > 0
+          ? [
+              {
+                label: "Peak balance",
+                color: "var(--signal)",
+                variant: "dash" as const,
+              },
+            ]
+          : []),
+        ...(result.stats.writeOffMonth !== null
+          ? [
+              {
+                label: "Written off",
+                color: "var(--muted-foreground)",
+                variant: "dash" as const,
+              },
+            ]
+          : []),
+      ]
+    : [];
+
   return (
     <DetailPageShell
       heading="Payoff Timeline"
       description="See when you'll pay off your student loan and how your balance changes over time."
     >
       {result ? (
-        <div className="space-y-2">
+        <div className="space-y-6">
           <PayoffHeroStats
             payoffYears={payoffYears}
+            peakBalance={formatGBP(Math.round(result.stats.peakBalance))}
+            totalRepaid={currencyFormatter.format(result.stats.totalPaid)}
             writtenOff={result.stats.writtenOff}
             totalWrittenOffAmount={
               result.stats.writtenOff
@@ -52,25 +85,35 @@ export function BalanceDetailPage() {
                 : undefined
             }
             aheadOfSchedule={payoffYears <= 15 && !result.stats.writtenOff}
+            sparkline={result.balanceSeries.map((d) => ({
+              month: d.month,
+              value: d.balance,
+            }))}
           />
-          <figure className="space-y-2">
-            <div className="h-65 sm:h-75 md:h-85">
-              <BalanceDetailChart
-                data={result.balanceSeries}
-                peakBalanceMonth={result.stats.peakBalanceMonth}
-                peakBalance={result.stats.peakBalance}
-                writeOffMonth={result.stats.writeOffMonth}
-              />
-            </div>
-            <figcaption className="text-center text-xs text-muted-foreground">
-              {getInsightText()}
-            </figcaption>
-          </figure>
+
+          <ChartFrame
+            caption={`Fig. 1 — Balance over time · ${planName}`}
+            figure={`Peak ${formatGBP(Math.round(result.stats.peakBalance))}`}
+            figureTone="cost"
+            legend={legend}
+            bodyClassName="h-65 sm:h-75 md:h-85"
+          >
+            <BalanceDetailChart
+              data={result.balanceSeries}
+              peakBalanceMonth={result.stats.peakBalanceMonth}
+              peakBalance={result.stats.peakBalance}
+              writeOffMonth={result.stats.writeOffMonth}
+            />
+          </ChartFrame>
+
+          <p className="max-w-prose text-sm text-muted-foreground">
+            {getInsightText()}
+          </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-6">
           <PayoffHeroStatsSkeleton />
-          <Skeleton className="h-65 sm:h-75 md:h-85" />
+          <Skeleton className="h-65 rounded-xl sm:h-75 md:h-85" />
         </div>
       )}
     </DetailPageShell>

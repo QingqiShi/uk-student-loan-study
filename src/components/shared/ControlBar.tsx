@@ -23,6 +23,7 @@ import { useInputPanelMode } from "@/hooks/useInputPanelMode";
 import { trackSalaryChanged } from "@/lib/analytics";
 import type { Preset } from "@/lib/presets";
 import { PRESETS } from "@/lib/presets";
+import { surfaceCard } from "@/lib/surfaces";
 import { cn } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
@@ -60,7 +61,9 @@ function SalarySlider() {
   return (
     <div className="flex min-w-0 flex-1 items-center gap-3">
       <div className="flex shrink-0 items-baseline gap-1.5">
-        <span className="text-xs text-muted-foreground">Salary</span>
+        <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+          Salary
+        </span>
         <span className="font-mono text-sm font-semibold tabular-nums">
           {currencyFormatter.format(optimisticSalary)}
         </span>
@@ -151,11 +154,16 @@ function ExpandedPresets({
                   "shrink-0 rounded-lg border px-3 py-2 text-left transition-colors",
                   "w-40 sm:w-auto",
                   isActive
-                    ? "border-primary bg-primary/10"
+                    ? "border-primary bg-accent-wash"
                     : "border-border hover:border-primary/50 hover:bg-accent",
                 )}
               >
-                <span className="block text-sm font-medium">
+                <span
+                  className={cn(
+                    "block text-sm font-medium",
+                    isActive && "text-cta",
+                  )}
+                >
                   {preset.label}
                 </span>
                 <span className="block text-xs text-muted-foreground">
@@ -174,7 +182,7 @@ function ExpandedPresets({
               "w-40 sm:w-auto",
               "hidden sm:block",
               isCustomConfig
-                ? "border-primary bg-primary/10"
+                ? "border-primary bg-accent-wash"
                 : "border-dashed border-primary/40 hover:border-primary hover:bg-primary/5",
             )}
           >
@@ -201,7 +209,7 @@ function ExpandedPresets({
         className={cn(
           "flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left transition-colors sm:hidden",
           isCustomConfig
-            ? "border-primary bg-primary/10"
+            ? "border-primary bg-accent-wash"
             : "border-dashed border-primary/40 hover:border-primary hover:bg-primary/5",
         )}
       >
@@ -299,7 +307,7 @@ export function ControlBar({ initialMode }: ControlBarProps) {
   return (
     <section
       aria-label="Calculator settings"
-      className="space-y-3 rounded-xl bg-card p-3 ring-1 ring-foreground/10 sm:p-4"
+      className={cn(surfaceCard, "space-y-3 p-3 sm:p-4")}
     >
       <SalarySlider />
       <ExpandedPresets

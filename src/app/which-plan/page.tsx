@@ -2,6 +2,7 @@ import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { QuizContainer } from "@/components/quiz/QuizContainer";
 import { Heading } from "@/components/typography/Heading";
 import { currencyFormatter } from "@/constants";
@@ -10,6 +11,8 @@ import {
   POSTGRADUATE_DISPLAY_INFO,
 } from "@/lib/loans/plans";
 import { PLAN_PAGE_ORDER, PLAN_PAGES } from "@/lib/planContent";
+import { surfaceCardInteractive } from "@/lib/surfaces";
+import { cn } from "@/lib/utils";
 
 const DISPLAY_BY_KEY = {
   PLAN_1: PLAN_DISPLAY_INFO.PLAN_1,
@@ -22,9 +25,10 @@ const DISPLAY_BY_KEY = {
 export default function WhichPlanPage() {
   return (
     <div className="flex min-h-screen flex-col">
+      <Header />
       <main id="main-content" className="flex-1">
-        <QuizContainer />
-        <section className="border-t bg-muted/30">
+        <QuizContainer standalone />
+        <section className="border-t border-border">
           <div className="mx-auto max-w-4xl px-3 py-12">
             <div className="mb-8 text-center">
               <Heading as="h2" size="section">
@@ -46,8 +50,15 @@ export default function WhichPlanPage() {
                     href={`/plans/${slug}`}
                     className="group block h-full"
                   >
-                    <div className="flex h-full flex-col rounded-xl border bg-card p-5 transition-all duration-200 hover:bg-accent hover:ring-1 hover:ring-primary/30">
-                      <h3 className="font-semibold">{plan.name}</h3>
+                    <div
+                      className={cn(
+                        surfaceCardInteractive,
+                        "flex h-full flex-col p-5",
+                      )}
+                    >
+                      <Heading as="h3" size="subsection">
+                        {plan.name}
+                      </Heading>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {plan.description}
                       </p>
@@ -55,7 +66,10 @@ export default function WhichPlanPage() {
                         <div className="flex items-baseline justify-between gap-2">
                           <dt className="text-muted-foreground">Threshold</dt>
                           <dd className="font-mono font-semibold tabular-nums">
-                            {currencyFormatter.format(plan.yearlyThreshold)}/yr
+                            {currencyFormatter.format(plan.yearlyThreshold)}
+                            <span className="font-sans text-xs font-normal text-muted-foreground">
+                              /yr
+                            </span>
                           </dd>
                         </div>
                         <div className="flex items-baseline justify-between gap-2">
@@ -67,15 +81,18 @@ export default function WhichPlanPage() {
                         <div className="flex items-baseline justify-between gap-2">
                           <dt className="text-muted-foreground">Write-off</dt>
                           <dd className="font-mono font-semibold tabular-nums">
-                            {String(plan.writeOffYears)} years
+                            {String(plan.writeOffYears)}
+                            <span className="ml-1 font-sans text-xs font-normal text-muted-foreground">
+                              years
+                            </span>
                           </dd>
                         </div>
                       </dl>
-                      <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
+                      <div className="mt-4 flex items-center gap-1.5 border-t border-border pt-3 text-xs font-semibold tracking-wider text-cta uppercase">
                         {plan.name} explained
                         <HugeiconsIcon
                           icon={ArrowRight01Icon}
-                          className="size-4 transition-transform group-hover:translate-x-0.5"
+                          className="size-3.5 transition-transform group-hover:translate-x-0.5"
                         />
                       </div>
                     </div>
@@ -86,7 +103,7 @@ export default function WhichPlanPage() {
             <div className="mt-8 text-center">
               <Link
                 href="/plans"
-                className="inline-flex items-center gap-1 text-sm font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+                className="inline-flex items-center gap-1 text-sm font-medium text-cta underline underline-offset-4 hover:text-cta/80"
               >
                 Compare all UK student loan plans
                 <HugeiconsIcon icon={ArrowRight01Icon} className="size-4" />

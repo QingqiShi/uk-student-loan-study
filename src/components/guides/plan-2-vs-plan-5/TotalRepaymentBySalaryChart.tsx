@@ -9,11 +9,11 @@ const EXAMPLE_BALANCE = 45_000;
 const chartConfig = {
   plan2: {
     label: "Plan 2",
-    color: "oklch(0.7 0.15 250)", // Blue
+    color: "var(--chart-1)", // spruce
   },
   plan5: {
     label: "Plan 5",
-    color: "oklch(0.7 0.15 150)", // Green
+    color: "var(--chart-2)", // brick — the costlier (40yr) plan
   },
 } satisfies ChartConfig;
 

@@ -4,6 +4,7 @@ import { ArrowLeft01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface QuizProgressProps {
   currentStep: number;
@@ -12,6 +13,9 @@ interface QuizProgressProps {
   onClose?: () => void;
   closeIcon?: IconSvgElement;
   closeLabel?: string;
+  /** Stick to the top of the scroll container (modal). Off on the standalone
+   * page, where the site masthead is the sticky element instead. */
+  sticky?: boolean;
 }
 
 export function QuizProgress({
@@ -21,11 +25,20 @@ export function QuizProgress({
   onClose,
   closeIcon = Cancel01Icon,
   closeLabel = "Exit quiz",
+  sticky = true,
 }: QuizProgressProps) {
+  const stepNumber = Math.min(currentStep + 1, totalSteps);
+  const fillPercent = (stepNumber / totalSteps) * 100;
+
   return (
-    <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-lg items-center justify-between px-4 py-3">
-        <div className="w-10">
+    <div
+      className={cn(
+        "z-10 border-b border-border bg-background",
+        sticky && "sticky top-0",
+      )}
+    >
+      <div className="mx-auto flex max-w-lg items-center gap-3 px-4 py-3">
+        <div className="w-10 shrink-0">
           {onBack && (
             <Button
               variant="ghost"
@@ -38,25 +51,30 @@ export function QuizProgress({
           )}
         </div>
 
-        <div
-          className="flex gap-2"
-          role="progressbar"
-          aria-valuenow={currentStep + 1}
-          aria-valuemin={1}
-          aria-valuemax={totalSteps}
-          aria-label={`Step ${String(currentStep + 1)} of ${String(totalSteps)}`}
-        >
-          {Array.from({ length: totalSteps }, (_, i) => (
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div
+            className="h-1 flex-1 overflow-hidden rounded-full bg-muted"
+            role="progressbar"
+            aria-valuenow={stepNumber}
+            aria-valuemin={1}
+            aria-valuemax={totalSteps}
+            aria-label={`Step ${String(stepNumber)} of ${String(totalSteps)}`}
+          >
             <div
-              key={i}
-              className={`h-1.5 w-8 rounded-full transition-colors duration-200 ${
-                i <= currentStep ? "bg-primary" : "bg-muted"
-              }`}
+              className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
+              style={{ width: `${String(fillPercent)}%` }}
             />
-          ))}
+          </div>
+          <span className="shrink-0 font-mono text-xs font-semibold text-muted-foreground tabular-nums">
+            {String(stepNumber).padStart(2, "0")}
+            <span className="text-faint">
+              {" "}
+              / {String(totalSteps).padStart(2, "0")}
+            </span>
+          </span>
         </div>
 
-        <div className="w-10">
+        <div className="w-10 shrink-0 text-right">
           {onClose && (
             <Button
               variant="ghost"
@@ -69,6 +87,6 @@ export function QuizProgress({
           )}
         </div>
       </div>
-    </header>
+    </div>
   );
 }

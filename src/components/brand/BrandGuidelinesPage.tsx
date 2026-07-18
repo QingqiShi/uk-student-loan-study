@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { Eyebrow } from "@/components/typography/Eyebrow";
 import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
@@ -9,27 +10,38 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { surfaceCard } from "@/lib/surfaces";
+import { cn } from "@/lib/utils";
 import { BrandIcon, BRAND_HEX, type BrandIconSize } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
 
+// The two-colour functional system — the whole Instrument palette in one idea:
+// one spruce carries brand and affordance, one brick marks cost and peak.
+const SEMANTIC = [
+  {
+    name: "Spruce",
+    token: "--primary",
+    role: "Brand, affordance, and every positive reading — links, actions, the paid-down curve.",
+  },
+  {
+    name: "Brick",
+    token: "--signal",
+    role: "Cost only. Interest, the peak of the balance, the number that hurts. Used sparingly.",
+  },
+] as const;
+
 const BRAND_SWATCHES = [
-  { name: "Primary Green", hex: BRAND_HEX.green },
-  { name: "Primary Emerald", hex: BRAND_HEX.emerald },
+  { name: "Spruce", hex: BRAND_HEX.green },
+  { name: "Mint", hex: BRAND_HEX.emerald },
 ];
 
 const ICON_SIZES: BrandIconSize[] = ["2xl", "lg", "md", "xs"];
 
 const CORE_TOKENS = [
-  { name: "Primary", var: "--primary" },
-  { name: "Secondary", var: "--secondary" },
-  { name: "Muted", var: "--muted" },
-  { name: "Accent", var: "--accent" },
-  { name: "Destructive", var: "--destructive" },
   { name: "Background", var: "--background" },
   { name: "Foreground", var: "--foreground" },
   { name: "Card", var: "--card" },
+  { name: "Muted", var: "--muted" },
   { name: "Border", var: "--border" },
 ];
 
@@ -77,218 +89,261 @@ const CHART_TOKENS = [
 ];
 
 const LOGO_ANATOMY = [
-  "Icon: The curve represents the peak repayment zone from the calculator chart",
-  '"StudentLoan" in white provides the context - what the site is about',
-  '"Study" in bold green is the action word - the memorable call to action',
-  "Subtle green shadow adds depth and reinforces brand color",
+  "Icon: a mint square carrying a deep-spruce wave — the peak repayment zone lifted straight from the calculator chart.",
+  '"StudentLoan" is set in ink — the context, telling you what the site is about.',
+  '"Study" is set in spruce, the single brand colour — the emphasised, memorable word.',
+  '".uk" is set in soft grey — the domain, deliberately subordinate to the name.',
 ];
 
 export function BrandGuidelinesPage() {
   return (
     <PageLayout>
-      <div className="mb-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Brand Guidelines</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-
-      {/* Header */}
-      <header className="mb-12">
-        <Heading as="h1" className="text-3xl">
-          Brand Guidelines
-        </Heading>
-        <p className="mt-2 font-display text-base text-muted-foreground">
-          studentloanstudy.uk
-        </p>
-      </header>
-
-      {/* Divider */}
-      <Separator className="mb-12" />
-
-      {/* Section: Primary Logo */}
-      <Section title="PRIMARY LOGO">
-        <div className="grid gap-8 md:grid-cols-2">
-          {/* Dark background */}
-          <div className="flex flex-col gap-4">
-            <span className="text-xs text-muted-foreground">On Dark</span>
-            <Card className="dark flex items-center justify-center p-8">
-              <BrandLogo />
-            </Card>
+      <div className="space-y-14">
+        {/* Header */}
+        <header className="space-y-5">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Brand guidelines</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <div className="space-y-4">
+            <Heading as="h1" size="page">
+              Brand guidelines
+            </Heading>
+            <p className="max-w-[68ch] text-lead text-muted-foreground">
+              The Instrument system: one spruce, one brick, cool neutrals, and
+              two typefaces. Archivo carries every word; Martian Mono is
+              reserved for figures. Everything on this page is drawn from the
+              live design tokens.
+            </p>
           </div>
-          {/* Light background */}
-          <div className="flex flex-col gap-4">
-            <span className="text-xs text-muted-foreground">On Light</span>
-            <Card className="light flex items-center justify-center p-8">
-              <BrandLogo />
-            </Card>
-          </div>
-        </div>
-      </Section>
+        </header>
 
-      {/* Section: Icon / Favicon */}
-      <Section title="ICON / FAVICON">
-        <div className="flex flex-wrap items-end gap-6">
-          {ICON_SIZES.map((size) => (
-            <div key={size} className="flex flex-col items-center gap-2">
-              <BrandIcon size={size} />
-              <span className="text-xs text-muted-foreground">{size}</span>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Section: Colors (consolidated) */}
-      <Section title="COLORS">
-        <div className="space-y-10">
-          {/* Brand */}
-          <div>
-            <SubgroupLabel>Brand</SubgroupLabel>
-            <div className="grid grid-cols-2 gap-4">
-              {BRAND_SWATCHES.map((swatch) => (
-                <ColorSwatch
-                  key={swatch.name}
-                  name={swatch.name}
-                  hex={swatch.hex}
+        {/* The two-colour system — the headline of the palette */}
+        <Section
+          title="Two colours carry meaning"
+          lede="Every other surface is a cool neutral. Colour is spent only where it means something."
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            {SEMANTIC.map((c) => (
+              <div key={c.name} className={cn(surfaceCard, "overflow-hidden")}>
+                <div
+                  className="h-28 w-full"
+                  style={{ backgroundColor: `var(${c.token})` }}
                 />
-              ))}
-            </div>
-          </div>
-
-          {/* Core */}
-          <div>
-            <SubgroupLabel>Core</SubgroupLabel>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-              {CORE_TOKENS.map((token) => (
-                <div key={token.var} className="flex flex-col gap-3">
-                  <div
-                    className="h-14 w-full rounded-lg ring-1 ring-border"
-                    style={{ backgroundColor: `var(${token.var})` }}
-                  />
-                  <div className="flex flex-col gap-0.5">
-                    <span className="font-display text-sm font-semibold text-foreground">
-                      {token.name}
-                    </span>
+                <div className="space-y-2 p-5">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <TokenName>{c.name}</TokenName>
                     <span className="font-mono text-xs text-muted-foreground">
-                      {token.var}
+                      {c.token}
                     </span>
                   </div>
+                  <p className="text-sm/relaxed text-muted-foreground">
+                    {c.role}
+                  </p>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* Primary Logo */}
+        <Section title="Primary logo">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="flex flex-col gap-3">
+              <Eyebrow as="span" marker={false}>
+                On dark
+              </Eyebrow>
+              <div
+                className={cn(
+                  surfaceCard,
+                  "dark flex items-center justify-center p-8",
+                )}
+              >
+                <BrandLogo />
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Eyebrow as="span" marker={false}>
+                On light
+              </Eyebrow>
+              <div
+                className={cn(
+                  surfaceCard,
+                  "light flex items-center justify-center p-8",
+                )}
+              >
+                <BrandLogo />
+              </div>
             </div>
           </div>
+        </Section>
 
-          {/* Status */}
-          <div>
-            <SubgroupLabel>Status</SubgroupLabel>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {STATUS_GROUPS.map((group) => (
-                <div key={group.name} className="space-y-3">
-                  <span className="font-display text-sm font-semibold text-foreground">
-                    {group.name}
-                  </span>
-                  <div className="grid grid-cols-3 gap-2">
-                    {group.tokens.map((token) => (
-                      <div key={token.label} className="flex flex-col gap-2">
-                        <div
-                          className="h-10 w-full rounded-md ring-1 ring-border"
-                          style={{ backgroundColor: `var(${token.var})` }}
-                        />
-                        <span className="text-xs text-muted-foreground">
-                          {token.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Icon / Favicon */}
+        <Section title="Icon / favicon">
+          <div
+            className={cn(surfaceCard, "flex flex-wrap items-end gap-8 p-6")}
+          >
+            {ICON_SIZES.map((size) => (
+              <div key={size} className="flex flex-col items-center gap-2">
+                <BrandIcon size={size} />
+                <span className="text-xs text-muted-foreground">{size}</span>
+              </div>
+            ))}
           </div>
+        </Section>
 
-          {/* Chart */}
-          <div>
-            <SubgroupLabel>Chart</SubgroupLabel>
-            <div className="grid grid-cols-5 gap-4">
-              {CHART_TOKENS.map((token) => (
-                <div key={token.var} className="flex flex-col gap-3">
-                  <div
-                    className="h-14 w-full rounded-lg ring-1 ring-border"
-                    style={{ backgroundColor: `var(${token.var})` }}
+        {/* Colours */}
+        <Section
+          title="Colour tokens"
+          lede="The full token set behind the two-colour system — neutrals, semantic status, and the per-series chart ramp."
+        >
+          <div className="space-y-10">
+            {/* Brand marks */}
+            <div>
+              <SubgroupLabel>Brand marks</SubgroupLabel>
+              <p className="mt-1 mb-4 max-w-[60ch] text-sm text-muted-foreground">
+                The two fixed spruce tones baked into the logo and icon.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                {BRAND_SWATCHES.map((swatch) => (
+                  <ColorSwatch
+                    key={swatch.name}
+                    name={swatch.name}
+                    hex={swatch.hex}
                   />
-                  <div className="flex flex-col gap-0.5">
-                    <span className="font-display text-sm font-semibold text-foreground">
-                      {token.name}
-                    </span>
-                    <span className="font-mono text-xs text-muted-foreground">
-                      {token.var}
-                    </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Neutrals */}
+            <div>
+              <SubgroupLabel>Neutrals</SubgroupLabel>
+              <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                {CORE_TOKENS.map((token) => (
+                  <TokenSwatch
+                    key={token.var}
+                    name={token.name}
+                    varName={token.var}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Status */}
+            <div>
+              <SubgroupLabel>Status</SubgroupLabel>
+              <p className="mt-1 mb-4 max-w-[60ch] text-sm text-muted-foreground">
+                Non-brand utility tokens for system messaging — deliberately
+                outside the two-colour thesis.
+              </p>
+              <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {STATUS_GROUPS.map((group) => (
+                  <div key={group.name} className="space-y-3">
+                    <TokenName>{group.name}</TokenName>
+                    <div className="grid grid-cols-3 gap-2">
+                      {group.tokens.map((token) => (
+                        <div key={token.label} className="flex flex-col gap-2">
+                          <div
+                            className="h-10 w-full rounded-md border border-border"
+                            style={{ backgroundColor: `var(${token.var})` }}
+                          />
+                          <span className="text-xs text-muted-foreground">
+                            {token.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+
+            {/* Chart */}
+            <div>
+              <SubgroupLabel>Chart series</SubgroupLabel>
+              <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                {CHART_TOKENS.map((token) => (
+                  <TokenSwatch
+                    key={token.var}
+                    name={token.name}
+                    varName={token.var}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </Section>
+        </Section>
 
-      {/* Section: Typography */}
-      <Section title="TYPOGRAPHY">
-        <div className="grid gap-8 md:grid-cols-2">
-          <FontShowcase
-            name="Space Grotesk"
-            usage="Logo, Headings"
-            weights="Weights: 400, 700"
-            fontFamily="var(--font-display), 'Space Grotesk', sans-serif"
-            sampleWeight={700}
-          />
-          <FontShowcase
-            name="Manrope"
-            usage="Body, UI Elements"
-            weights="Weights: 400, 500, 600, 700"
-            fontFamily="var(--font-sans), 'Manrope', sans-serif"
-            sampleWeight={600}
-          />
-        </div>
-      </Section>
+        {/* Typography */}
+        <Section
+          title="Typography"
+          lede="Two faces, one rule: words are Archivo, figures are Martian Mono. Nothing crosses over."
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <FontShowcase
+              name="Archivo"
+              usage="Display, headings, body, every label"
+              weights="400 · 500 · 600 · 700"
+              fontFamily="var(--font-sans), 'Archivo', system-ui, sans-serif"
+              sampleWeight={700}
+            />
+            <FontShowcase
+              name="Martian Mono"
+              usage="Numeric readouts — figures only"
+              weights="400 · 500 · 600"
+              fontFamily="var(--font-mono), 'Martian Mono', ui-monospace, monospace"
+              sampleWeight={600}
+              sample="1234"
+              mono
+            />
+          </div>
+        </Section>
 
-      {/* Section: Logo Anatomy */}
-      <Section title="LOGO ANATOMY">
-        <Card className="flex items-center gap-3.5 p-8">
-          <BrandLogo size="xl" />
-        </Card>
-        <ul className="mt-6 space-y-3">
-          {LOGO_ANATOMY.map((point) => (
-            <li key={point} className="flex items-start gap-3">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-sm bg-primary" />
-              <span className="text-sm/relaxed text-muted-foreground">
-                {point}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </Section>
+        {/* Logo Anatomy */}
+        <Section title="Logo anatomy">
+          <div className={cn(surfaceCard, "flex items-center gap-3.5 p-8")}>
+            <BrandLogo size="xl" />
+          </div>
+          <ul className="mt-6 space-y-3">
+            {LOGO_ANATOMY.map((point) => (
+              <li key={point} className="flex items-start gap-3">
+                <span className="mt-1.5 size-1.5 shrink-0 rounded-sm bg-primary" />
+                <span className="max-w-[68ch] text-sm/relaxed text-muted-foreground">
+                  {point}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      </div>
     </PageLayout>
   );
 }
 
 function Section({
   title,
+  lede,
   children,
 }: {
   title: string;
+  lede?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="mb-12">
-      <h2 className="mb-6 text-xs font-bold tracking-widest text-primary uppercase">
-        {title}
-      </h2>
+    <section className="space-y-5">
+      <div className="space-y-2">
+        <Heading as="h2" size="section">
+          {title}
+        </Heading>
+        {lede && <p className="max-w-[68ch] text-muted-foreground">{lede}</p>}
+      </div>
       {children}
     </section>
   );
@@ -296,9 +351,35 @@ function Section({
 
 function SubgroupLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mb-4 block text-xs font-medium tracking-wider text-muted-foreground uppercase">
+    <Eyebrow as="span" marker={false}>
+      {children}
+    </Eyebrow>
+  );
+}
+
+/** A token's human name — an Archivo uppercase engraved key, never mono. */
+function TokenName({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-sans text-xs font-semibold tracking-wider text-foreground uppercase">
       {children}
     </span>
+  );
+}
+
+function TokenSwatch({ name, varName }: { name: string; varName: string }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div
+        className="h-14 w-full rounded-lg border border-border"
+        style={{ backgroundColor: `var(${varName})` }}
+      />
+      <div className="flex flex-col gap-0.5">
+        <TokenName>{name}</TokenName>
+        <span className="font-mono text-xs text-muted-foreground">
+          {varName}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -306,13 +387,11 @@ function ColorSwatch({ name, hex }: { name: string; hex: string }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="h-20 w-full rounded-lg ring-1 ring-border"
+        className="h-20 w-full rounded-lg border border-border"
         style={{ backgroundColor: hex }}
       />
       <div className="flex flex-col gap-0.5">
-        <span className="font-display text-sm font-semibold text-foreground">
-          {name}
-        </span>
+        <TokenName>{name}</TokenName>
         <span className="font-mono text-xs text-muted-foreground">{hex}</span>
       </div>
     </div>
@@ -325,27 +404,31 @@ function FontShowcase({
   weights,
   fontFamily,
   sampleWeight,
+  sample = "Aa",
+  mono = false,
 }: {
   name: string;
   usage: string;
   weights: string;
   fontFamily: string;
   sampleWeight: number;
+  sample?: string;
+  mono?: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className={cn(surfaceCard, "flex flex-col gap-4 p-6")}>
       <span
-        className="text-5xl text-foreground"
+        className={cn("text-5xl text-foreground", mono && "tabular-nums")}
         style={{ fontFamily, fontWeight: sampleWeight }}
       >
-        Aa
+        {sample}
       </span>
       <div className="flex flex-col gap-1">
-        <span className="font-display text-sm font-semibold text-foreground">
-          {name}
-        </span>
+        <TokenName>{name}</TokenName>
         <span className="text-xs text-muted-foreground">{usage}</span>
-        <span className="text-xs text-muted-foreground">{weights}</span>
+        <span className="font-mono text-xs text-muted-foreground tabular-nums">
+          {weights}
+        </span>
       </div>
     </div>
   );

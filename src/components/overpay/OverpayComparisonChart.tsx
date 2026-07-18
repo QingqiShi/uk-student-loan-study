@@ -1,6 +1,7 @@
 "use client";
 
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
 import type { ChartConfig } from "@/components/ui/chart";
 import { currencyFormatter } from "@/constants";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
@@ -32,11 +33,19 @@ export function OverpayComparisonChart({
     (_, index) => index % 12 === 0 || index === balanceTimeSeries.length - 1,
   );
 
+  const caption = `Fig. 1 — Balance with vs without overpaying${
+    showPresentValue ? " · real terms" : ""
+  }`;
+
   if (sampledData.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center text-muted-foreground">
-        Enter an overpayment amount to see the comparison
-      </div>
+      <ChartFrame
+        className="flex h-full flex-col"
+        caption={caption}
+        bodyClassName="flex min-h-0 flex-1 items-center justify-center text-muted-foreground"
+      >
+        <span>Enter an overpayment amount to see the comparison</span>
+      </ChartFrame>
     );
   }
 
@@ -44,25 +53,40 @@ export function OverpayComparisonChart({
     `Year ${String(Math.floor(month / 12))}`;
 
   const maxMonth = sampledData[sampledData.length - 1]?.month ?? 0;
+  const peakBalance = sampledData.reduce(
+    (max, point) => Math.max(max, point.baselineBalance),
+    0,
+  );
 
   return (
-    <ChartBase
-      type="line"
-      data={sampledData}
-      xDataKey="month"
-      xLabel="Time"
-      xFormatter={formatYear}
-      yLabel={showPresentValue ? "Balance (inflation-adjusted)" : "Balance"}
-      yFormatter={(v) => currencyFormatter.format(v)}
-      ariaLabel={
-        showPresentValue
-          ? "Student loan overpayment calculator chart comparing inflation-adjusted balance with and without overpaying over time"
-          : "Student loan overpayment calculator chart comparing balance with and without overpaying over time"
-      }
-      chartConfig={chartConfig}
-      series={[{ dataKey: "baselineBalance" }, { dataKey: "overpayBalance" }]}
-      showLegend
-      xDomain={[0, maxMonth]}
-    />
+    <ChartFrame
+      className="flex h-full flex-col"
+      caption={caption}
+      figure={`Peak ${currencyFormatter.format(peakBalance)}`}
+      figureTone="cost"
+      bodyClassName="min-h-0 flex-1"
+      legend={[
+        { label: "Without overpaying", color: "var(--chart-overpay-baseline)" },
+        { label: "With overpaying", color: "var(--primary)" },
+      ]}
+    >
+      <ChartBase
+        type="line"
+        data={sampledData}
+        xDataKey="month"
+        xLabel="Time"
+        xFormatter={formatYear}
+        yLabel={showPresentValue ? "Balance (inflation-adjusted)" : "Balance"}
+        yFormatter={(v) => currencyFormatter.format(v)}
+        ariaLabel={
+          showPresentValue
+            ? "Student loan overpayment calculator chart comparing inflation-adjusted balance with and without overpaying over time"
+            : "Student loan overpayment calculator chart comparing balance with and without overpaying over time"
+        }
+        chartConfig={chartConfig}
+        series={[{ dataKey: "baselineBalance" }, { dataKey: "overpayBalance" }]}
+        xDomain={[0, maxMonth]}
+      />
+    </ChartFrame>
   );
 }

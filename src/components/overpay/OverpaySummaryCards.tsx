@@ -1,10 +1,48 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  MetricCell,
+  MetricReadout,
+} from "@/components/instrument/MetricReadout";
 import { currencyFormatter } from "@/constants";
 import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 
 interface OverpaySummaryCardsProps {
   analysis: OverpayAnalysisResult;
+}
+
+// Unit words (yrs, y, m) drop to small sans so only the digits stay mono —
+// the Figures-Are-Mono / Subordinated-Unit rule.
+function Unit({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-sans text-xs font-normal text-muted-foreground">
+      {children}
+    </span>
+  );
+}
+
+function DetailRow({
+  label,
+  value,
+  tone = "default",
+}: {
+  label: string;
+  value: React.ReactNode;
+  tone?: "default" | "muted";
+}) {
+  return (
+    <div className="flex items-baseline justify-between gap-2 text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <span
+        className={
+          tone === "muted"
+            ? "font-mono text-muted-foreground tabular-nums"
+            : "font-mono text-foreground tabular-nums"
+        }
+      >
+        {value}
+      </span>
+    </div>
+  );
 }
 
 export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
@@ -23,157 +61,88 @@ export function OverpaySummaryCards({ analysis }: OverpaySummaryCardsProps) {
     const years = Math.floor(months / 12);
     const remainingMonths = months % 12;
     if (remainingMonths === 0) {
-      return `${String(years)} ${years === 1 ? "year" : "years"}`;
+      return (
+        <>
+          {years} <Unit>{years === 1 ? "yr" : "yrs"}</Unit>
+        </>
+      );
     }
-    return `${String(years)}y ${String(remainingMonths)}m`;
+    return (
+      <>
+        {years}
+        <Unit>y</Unit> {remainingMonths}
+        <Unit>m</Unit>
+      </>
+    );
   };
 
   const hasSavings = paymentDifference > 0;
   const hasExtraCost = paymentDifference < 0;
 
-  const getCardClassName = () => {
-    if (hasSavings) {
-      return "border-status-success-border bg-status-success";
-    }
-    if (hasExtraCost) {
-      return "border-status-danger-border bg-status-danger";
-    }
-    return "";
-  };
-
-  const getValueClassName = () => {
-    if (hasSavings) {
-      return "text-status-success-foreground";
-    }
-    if (hasExtraCost) {
-      return "text-status-danger-foreground";
-    }
-    return "";
-  };
+  // Money figures are inflation-adjusted when the present-value toggle is on;
+  // disclose that on the money labels (the time figures stay nominal).
+  const pvSuffix = showPresentValue ? " (real)" : "";
+  const savingsLabel = `${hasExtraCost ? "Extra cost" : "Your savings"}${pvSuffix}`;
+  const savingsValue = hasExtraCost
+    ? `+${currencyFormatter.format(Math.abs(paymentDifference))}`
+    : currencyFormatter.format(Math.max(0, paymentDifference));
+  const savingsTone = hasSavings
+    ? "emphasis"
+    : hasExtraCost
+      ? "cost"
+      : "default";
 
   return (
-    <div
-      aria-live="polite"
-      className="-mx-4 flex snap-x scroll-pl-4 gap-3 overflow-x-auto px-4 py-1 sm:mx-0 sm:grid sm:scroll-pl-0 sm:grid-cols-3 sm:p-1 md:grid-cols-1 md:overflow-visible"
-    >
-      <Card
-        size="sm"
-        className={`min-w-50 shrink-0 snap-start sm:min-w-0 sm:shrink ${getCardClassName()}`}
-      >
-        <CardHeader>
-          <CardTitle className="text-sm font-normal text-muted-foreground">
-            {hasExtraCost ? "Extra Cost" : "Your Savings"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div>
-            <p
-              className={`text-2xl font-bold tabular-nums ${getValueClassName()}`}
-            >
-              {hasExtraCost
-                ? `+${currencyFormatter.format(Math.abs(paymentDifference))}`
-                : currencyFormatter.format(Math.max(0, paymentDifference))}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {hasExtraCost ? "Extra you'd pay" : "Money saved"}
-            </p>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Time saved</span>
-            <span className={`font-medium tabular-nums ${getValueClassName()}`}>
-              {formatYears(Math.max(0, monthsSaved))}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
+    <MetricReadout columns={1} aria-live="polite">
+      <MetricCell label={savingsLabel} value={savingsValue} tone={savingsTone}>
+        <DetailRow
+          label="Time saved"
+          value={formatYears(Math.max(0, monthsSaved))}
+        />
+      </MetricCell>
 
-      <Card
-        size="sm"
-        className="min-w-50 shrink-0 snap-start sm:min-w-0 sm:shrink"
+      <MetricCell
+        label={`Without overpaying${pvSuffix}`}
+        value={currencyFormatter.format(displayBaselineTotalPaid)}
       >
-        <CardHeader>
-          <CardTitle className="text-sm font-normal text-muted-foreground">
-            Without Overpaying
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div>
-            <p className="text-2xl font-bold tabular-nums">
-              {currencyFormatter.format(displayBaselineTotalPaid)}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {showPresentValue
-                ? "Total paid (inflation-adjusted)"
-                : "Total paid"}
-            </p>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Time</span>
-            <span className="font-medium tabular-nums">
-              {formatYears(baseline.monthsToPayoff)}
-            </span>
-          </div>
-          <div
-            className={`flex justify-between text-sm ${!baseline.writtenOff ? "invisible" : ""}`}
-          >
-            <span className="text-muted-foreground">Written off</span>
-            <span className="font-medium text-status-info-foreground tabular-nums">
-              {currencyFormatter.format(baseline.amountWrittenOff)}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card
-        size="sm"
-        className="min-w-50 shrink-0 snap-start sm:min-w-0 sm:shrink"
-      >
-        <CardHeader>
-          <CardTitle className="text-sm font-normal text-muted-foreground">
-            With Overpaying
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div>
-            <p className="text-2xl font-bold tabular-nums">
-              {currencyFormatter.format(displayOverpayTotalPaid)}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {showPresentValue
-                ? "Total paid (inflation-adjusted)"
-                : "Total paid"}
-            </p>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Time</span>
-            <span className="font-medium tabular-nums">
-              {formatYears(overpay.monthsToPayoff)}
-            </span>
-          </div>
-          {overpay.writtenOff ? (
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium text-status-info-foreground tabular-nums">
-                {currencyFormatter.format(overpay.amountWrittenOff)}
-              </span>
-            </div>
-          ) : baseline.writtenOff ? (
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Status</span>
-              <span className="font-medium text-status-success-foreground">
-                Paid off
-              </span>
-            </div>
-          ) : (
-            <div className="invisible flex justify-between text-sm">
-              <span className="text-muted-foreground">Written off</span>
-              <span className="font-medium tabular-nums">
-                {currencyFormatter.format(0)}
-              </span>
-            </div>
+        <div className="space-y-1">
+          <DetailRow
+            label="Payoff time"
+            value={formatYears(baseline.monthsToPayoff)}
+          />
+          {baseline.writtenOff && (
+            <DetailRow
+              label="Written off"
+              value={currencyFormatter.format(baseline.amountWrittenOff)}
+              tone="muted"
+            />
           )}
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </MetricCell>
+
+      <MetricCell
+        label={`With overpaying${pvSuffix}`}
+        value={currencyFormatter.format(displayOverpayTotalPaid)}
+      >
+        <div className="space-y-1">
+          <DetailRow
+            label="Payoff time"
+            value={formatYears(overpay.monthsToPayoff)}
+          />
+          {overpay.writtenOff ? (
+            <DetailRow
+              label="Written off"
+              value={currencyFormatter.format(overpay.amountWrittenOff)}
+              tone="muted"
+            />
+          ) : baseline.writtenOff ? (
+            <div className="flex items-baseline justify-between gap-2 text-sm">
+              <span className="text-muted-foreground">Status</span>
+              <span className="font-medium text-cta">Paid off</span>
+            </div>
+          ) : null}
+        </div>
+      </MetricCell>
+    </MetricReadout>
   );
 }

@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
+import { surfaceCard } from "@/lib/surfaces";
+import { specHead, specHeadNum, specNum } from "../guide-parts";
 
 // All rates derive from plans.ts so they track the current GOV.UK / BoE figures.
 const rpi = CURRENT_RATES.rpi;
@@ -45,21 +47,31 @@ const rows = [
 
 export function CurrentRatesTable() {
   return (
-    <ScrollFadeWrapper className="rounded-lg border">
+    <ScrollFadeWrapper className={surfaceCard}>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead scope="col">Plan</TableHead>
-            <TableHead scope="col">How it&apos;s set</TableHead>
-            <TableHead scope="col">Current rate</TableHead>
+            <TableHead scope="col" className={specHead}>
+              Plan
+            </TableHead>
+            <TableHead scope="col" className={specHead}>
+              How it&apos;s set
+            </TableHead>
+            <TableHead scope="col" className={specHeadNum}>
+              Current rate
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.plan}>
-              <TableHead scope="row">{row.plan}</TableHead>
-              <TableCell className="whitespace-normal">{row.formula}</TableCell>
-              <TableCell>{row.rate}</TableCell>
+              <TableHead scope="row" className="font-semibold text-foreground">
+                {row.plan}
+              </TableHead>
+              <TableCell className="whitespace-normal text-muted-foreground">
+                {row.formula}
+              </TableCell>
+              <TableCell className={specNum}>{row.rate}</TableCell>
             </TableRow>
           ))}
         </TableBody>

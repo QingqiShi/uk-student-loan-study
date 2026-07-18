@@ -1,10 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-/** Brand hex constants — the two fixed colors used in the icon and logo. */
+/** Brand hex constants — the two fixed spruce tones used in the icon and logo. */
 export const BRAND_HEX = {
-  green: "#2B7F55",
-  emerald: "#34D399",
+  green: "#0C5C44", // deep spruce — the hill (matches --primary light)
+  emerald: "#34B08A", // bright spruce — the ground (matches --primary dark)
 } as const;
 
 const brandIconVariants = cva("relative overflow-hidden", {

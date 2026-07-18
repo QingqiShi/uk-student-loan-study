@@ -3,6 +3,8 @@ import {
   waitForResults,
   getResultValues,
   waitForResultChange,
+  openConfigWizard,
+  readoutSection,
 } from "./helpers";
 
 test.describe("Config wizard dialog", () => {
@@ -12,7 +14,7 @@ test.describe("Config wizard dialog", () => {
   });
 
   test("clicking Tailor to you opens the wizard dialog", async ({ page }) => {
-    await page.getByRole("button", { name: "Tailor to you" }).click();
+    await openConfigWizard(page);
     await expect(
       page.getByRole("dialog", { name: "Configure your loans" }),
     ).toBeVisible();
@@ -22,7 +24,7 @@ test.describe("Config wizard dialog", () => {
   test("toggle plan checkbox + enter balance → Done becomes enabled", async ({
     page,
   }) => {
-    await page.getByRole("button", { name: "Tailor to you" }).click();
+    await openConfigWizard(page);
     const dialog = page.getByRole("dialog", { name: "Configure your loans" });
 
     // Done should be disabled initially
@@ -44,7 +46,7 @@ test.describe("Config wizard dialog", () => {
   }) => {
     const before = await getResultValues(page);
 
-    await page.getByRole("button", { name: "Tailor to you" }).click();
+    await openConfigWizard(page);
     const dialog = page.getByRole("dialog", { name: "Configure your loans" });
 
     // Select Plan 5 with a unique quick pick balance (£60k is only in Plan 5)
@@ -66,7 +68,7 @@ test.describe("Config wizard dialog", () => {
   }) => {
     const before = await getResultValues(page);
 
-    await page.getByRole("button", { name: "Tailor to you" }).click();
+    await openConfigWizard(page);
     const dialog = page.getByRole("dialog", { name: "Configure your loans" });
 
     // Click Close button
@@ -84,7 +86,7 @@ test.describe("Config wizard dialog", () => {
   test("Not sure? Take the quiz button switches to quiz view", async ({
     page,
   }) => {
-    await page.getByRole("button", { name: "Tailor to you" }).click();
+    await openConfigWizard(page);
     const dialog = page.getByRole("dialog", { name: "Configure your loans" });
 
     await dialog
@@ -98,7 +100,7 @@ test.describe("Config wizard dialog", () => {
   test("selecting multiple plans + Done → combined results on home page", async ({
     page,
   }) => {
-    await page.getByRole("button", { name: "Tailor to you" }).click();
+    await openConfigWizard(page);
     const dialog = page.getByRole("dialog", { name: "Configure your loans" });
 
     // Select Plan 2 with balance
@@ -117,9 +119,7 @@ test.describe("Config wizard dialog", () => {
 
     // Results should load with combined plan values
     await waitForResults(page);
-    const section = page
-      .locator("nav")
-      .filter({ hasText: "Your Loan Breakdown" });
+    const section = readoutSection(page);
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 });

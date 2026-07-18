@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
+import { surfaceCard } from "@/lib/surfaces";
+import { specHead, specHeadNum, specNum } from "../guide-parts";
 
 // The 6% cap is a policy figure (Sept 2026), not something plans.ts supplies —
 // kept as a labelled constant, consistent with the rest of this guide.
@@ -39,21 +41,28 @@ const rows = [
 
 export function CurrentCapTable() {
   return (
-    <ScrollFadeWrapper className="rounded-lg border">
+    <ScrollFadeWrapper className={surfaceCard}>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead scope="col">Figure</TableHead>
-            <TableHead scope="col">Value</TableHead>
+            <TableHead scope="col" className={specHead}>
+              Figure
+            </TableHead>
+            <TableHead scope="col" className={specHeadNum}>
+              Value
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.figure}>
-              <TableHead scope="row" className="whitespace-normal">
+              <TableHead
+                scope="row"
+                className="font-medium whitespace-normal text-muted-foreground"
+              >
                 {row.figure}
               </TableHead>
-              <TableCell>{row.value}</TableCell>
+              <TableCell className={specNum}>{row.value}</TableCell>
             </TableRow>
           ))}
         </TableBody>

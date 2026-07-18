@@ -9,15 +9,15 @@ import type { DetailSeriesResult } from "@/workers/simulation.worker";
 const chartConfig = {
   interestPaid: {
     label: "Interest paid",
-    color: "var(--chart-3)",
+    color: "var(--signal)",
   },
   interestUnpaid: {
     label: "Interest unpaid",
-    color: "var(--destructive)",
+    color: "var(--signal)",
   },
   principalPortion: {
     label: "Principal",
-    color: "oklch(0.55 0 0)",
+    color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
@@ -36,12 +36,29 @@ export function AnnualInterestChart({ data }: AnnualInterestChartProps) {
     );
   }
 
+  // Thin the x-axis labels: a category bar axis renders a tick per year, so
+  // labelling all ~30 years overprints into an unreadable smear. Show a label
+  // only at ~6 evenly-spaced milestones (always incl. first + last) to match
+  // the cadence the line charts already use.
+  //
+  // recharts calls the axis tickFormatter as (value, index); ChartBase's bar
+  // tooltip calls it as xFormatter(year) with no index. We key off that: blank
+  // only the non-milestone AXIS ticks, and always return the full "Year N" for
+  // the tooltip (index === undefined) so hovering still names the year.
+  const lastIndex = data.length - 1;
+  const step = Math.max(1, Math.ceil(data.length / 6));
+
   return (
     <LazyChartBase
       type="bar"
       data={data}
       xDataKey="year"
-      xFormatter={(v) => `Year ${String(v)}`}
+      xFormatter={(v: number, index?: number) => {
+        // No index → tooltip title: always name the year.
+        if (index === undefined) return `Year ${String(v)}`;
+        const isMilestone = index % step === 0 || index === lastIndex;
+        return isMilestone ? `Year ${String(v)}` : "";
+      }}
       yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel="Stacked bar chart showing annual interest accrual and principal payments"
       chartConfig={chartConfig}
@@ -50,7 +67,6 @@ export function AnnualInterestChart({ data }: AnnualInterestChartProps) {
         { dataKey: "interestUnpaid", stackId: "annual" },
         { dataKey: "principalPortion", stackId: "annual" },
       ]}
-      showLegend
     />
   );
 }

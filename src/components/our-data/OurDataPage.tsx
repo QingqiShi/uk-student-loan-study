@@ -2,16 +2,16 @@ import {
   ArrowUpRight01Icon,
   BankIcon,
   ChartIncreaseIcon,
-  CheckmarkCircle01Icon,
-  DocumentValidationIcon,
   Globe02Icon,
-  Search01Icon,
-  Tick02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import {
+  MetricCell,
+  MetricReadout,
+} from "@/components/instrument/MetricReadout";
+import { Panel, PanelHeader } from "@/components/instrument/Panel";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { ScrollFadeWrapper } from "@/components/shared/ScrollFadeWrapper";
 import { Heading } from "@/components/typography/Heading";
 import {
   Breadcrumb,
@@ -32,6 +32,10 @@ import {
 } from "@/components/ui/table";
 import { formatGBP } from "@/lib/format";
 import { CURRENT_RATES, LAST_UPDATED, PLAN_CONFIGS } from "@/lib/loans/plans";
+import { getCurrentTaxYearLabel } from "@/lib/taxYear";
+import { cn } from "@/lib/utils";
+
+const TAX_YEAR = getCurrentTaxYearLabel();
 
 const plans = [
   {
@@ -68,7 +72,7 @@ const plans = [
 
 const RATES = [
   {
-    label: "BoE Base Rate",
+    label: "BoE base rate",
     value: CURRENT_RATES.boeBaseRate,
     source: "Bank of England",
     icon: BankIcon,
@@ -89,58 +93,50 @@ const RATES = [
 
 const PIPELINE_STEPS = [
   {
-    icon: Globe02Icon,
-    title: "Check the sources",
+    title: "Read the sources",
     description:
-      "Every morning, we automatically read the latest figures from GOV.UK, the Bank of England, and the ONS",
+      "Every morning an automated job reads the latest figures straight from GOV.UK, the Bank of England, and the ONS.",
   },
   {
-    icon: Search01Icon,
-    title: "Spot any differences",
+    title: "Compare against the model",
     description:
-      "Each figure is compared against what our calculators currently show",
+      "Each figure is checked against what our calculators currently use, down to the exact rate and threshold.",
   },
   {
-    icon: DocumentValidationIcon,
-    title: "Prepare the changes",
+    title: "Prepare the update",
     description:
-      "If anything is out of date, an update is put together automatically",
+      "If anything has moved, a change is assembled automatically and staged for review.",
   },
   {
-    icon: CheckmarkCircle01Icon,
-    title: "Double-check everything",
+    title: "Verify, then ship",
     description:
-      "The update goes through a full round of checks before it reaches you",
+      "The update passes a full round of automated checks before it reaches the live calculators.",
   },
 ];
 
 const CROSS_CHECK_LINKS = [
   {
-    icon: Globe02Icon,
     source: "GOV.UK",
-    label: "What you pay",
-    description: "Thresholds and repayment rates",
+    label: "Thresholds and repayment rates",
+    description: "What you pay on each plan",
     href: "https://www.gov.uk/repaying-your-student-loan/what-you-pay",
   },
   {
-    icon: Globe02Icon,
     source: "GOV.UK",
-    label: "When your loan gets written off",
-    description: "Write-off periods",
+    label: "Write-off periods",
+    description: "When your loan gets cancelled",
     href: "https://www.gov.uk/repaying-your-student-loan/when-your-student-loan-gets-written-off-or-cancelled",
   },
   {
-    icon: BankIcon,
     source: "Bank of England",
     label: "Bank Rate",
     description: "Base rate for interest calculations",
     href: "https://www.bankofengland.co.uk/boeapps/database/Bank-Rate.asp",
   },
   {
-    icon: ChartIncreaseIcon,
     source: "ONS",
-    label: "CPI Annual Rate",
-    description: "Discount rate for present-value calculations",
+    label: "CPI annual rate",
+    description: "Discount rate for present-value figures",
     href: "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7g7/mm23",
   },
 ];
@@ -154,9 +150,9 @@ const formattedLastUpdated = new Intl.DateTimeFormat("en-GB", {
 export function OurDataPage() {
   return (
     <PageLayout>
-      <article className="space-y-10">
+      <article className="space-y-14">
         {/* Hero */}
-        <div className="space-y-4">
+        <header className="space-y-5">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -164,168 +160,222 @@ export function OurDataPage() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Our Data</BreadcrumbPage>
+                <BreadcrumbPage>Our data</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <div className="space-y-3">
-            <Heading as="h1">
+          <div className="space-y-4">
+            <Heading as="h1" size="page">
               Every figure comes straight from the source
             </Heading>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Our calculators use official figures from GOV.UK, the Bank of
-              England, and the ONS. They&rsquo;re checked every day by an
-              automated system&nbsp;&mdash; if anything changes, we update
-              within 24 hours.
+            <p className="max-w-[68ch] text-lead text-muted-foreground">
+              Our calculators run on the official figures published by GOV.UK,
+              the Bank of England, and the ONS. An automated job re-checks them
+              every day&nbsp;&mdash; if a number moves, the model updates within
+              24 hours.
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-xl bg-muted/30 px-4 py-3">
-            <HugeiconsIcon icon={Tick02Icon} className="size-4 text-primary" />
-            <p className="text-sm text-muted-foreground">
-              Figures last updated{" "}
-              <time
-                dateTime={LAST_UPDATED}
-                className="font-medium text-foreground"
-              >
-                {formattedLastUpdated}
-              </time>
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-border pt-4">
+            <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              Last verified
+            </span>
+            <time
+              dateTime={LAST_UPDATED}
+              className="font-mono text-sm font-semibold tracking-tight text-cta tabular-nums"
+            >
+              {formattedLastUpdated}
+            </time>
+            <span className="text-sm text-muted-foreground">
+              · {TAX_YEAR} tax year
+            </span>
+          </div>
+        </header>
+
+        {/* Live rates — one hairline-split readout, not floating cards */}
+        <section className="space-y-5" aria-labelledby="rates-h">
+          <div className="space-y-2">
+            <Heading as="h2" size="section" id="rates-h">
+              The rates we track
+            </Heading>
+            <p className="max-w-[68ch] text-muted-foreground">
+              These three market figures feed every interest and present-value
+              calculation on the site. They are the live values in use right
+              now.
             </p>
           </div>
-        </div>
-
-        {/* What we track */}
-        <section className="space-y-5">
-          <Heading as="h2" size="section">
-            What we track
-          </Heading>
-
-          {/* Rate cards */}
-          <div className="grid gap-3 sm:grid-cols-3">
+          <MetricReadout columns={3}>
             {RATES.map((rate) => (
-              <div
+              <MetricCell
                 key={rate.label}
-                className="rounded-xl bg-card p-4 ring-1 ring-foreground/10"
+                label={rate.label}
+                value={`${String(rate.value)}%`}
               >
-                <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
-                  {rate.label}
-                </p>
-                <p className="mt-2 font-mono text-3xl font-semibold tracking-tight text-primary tabular-nums">
-                  {rate.value}%
-                </p>
-                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <HugeiconsIcon icon={rate.icon} className="size-3" />
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <HugeiconsIcon
+                    icon={rate.icon}
+                    className="size-3.5 shrink-0"
+                  />
                   {rate.source}
-                </p>
-              </div>
+                </span>
+              </MetricCell>
             ))}
-          </div>
+          </MetricReadout>
+        </section>
 
-          {/* Plan table */}
-          <ScrollFadeWrapper className="rounded-xl ring-1 ring-foreground/10">
+        {/* Plan spec-sheet */}
+        <section className="space-y-5" aria-labelledby="plans-h">
+          <div className="space-y-2">
+            <Heading as="h2" size="section" id="plans-h">
+              Current plan figures
+            </Heading>
+            <p className="max-w-[68ch] text-muted-foreground">
+              The published thresholds, repayment rates, and write-off periods
+              applied by the model for each UK student loan plan.
+            </p>
+          </div>
+          <Panel padding={false} className="overflow-hidden">
+            <PanelHeader
+              caption={`Fig. 1 — Plan parameters · ${TAX_YEAR}`}
+              className="mb-0 border-b border-border p-4 sm:p-5"
+            />
             <Table>
-              <TableCaption className="pb-4">
+              <TableCaption className="px-4 pb-4">
                 Repayment thresholds, rates, and write-off periods for each UK
                 student loan plan type.
               </TableCaption>
               <TableHeader>
                 <TableRow>
-                  <TableHead scope="col">Plan</TableHead>
-                  <TableHead scope="col">Annual threshold</TableHead>
-                  <TableHead scope="col">Rate</TableHead>
-                  <TableHead scope="col">Write-off</TableHead>
+                  <TableHead
+                    scope="col"
+                    className="pl-4 text-xs font-semibold tracking-wider uppercase"
+                  >
+                    Plan
+                  </TableHead>
+                  <TableHead
+                    scope="col"
+                    className="text-right text-xs font-semibold tracking-wider uppercase"
+                  >
+                    Annual threshold
+                  </TableHead>
+                  <TableHead
+                    scope="col"
+                    className="text-right text-xs font-semibold tracking-wider uppercase"
+                  >
+                    Rate
+                  </TableHead>
+                  <TableHead
+                    scope="col"
+                    className="pr-4 text-right text-xs font-semibold tracking-wider uppercase"
+                  >
+                    Write-off
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {plans.map((p) => (
                   <TableRow key={p.label}>
-                    <TableHead scope="row" className="p-2 text-foreground">
+                    <TableHead
+                      scope="row"
+                      className="py-3 pl-4 font-medium text-foreground"
+                    >
                       {p.label}
                     </TableHead>
-                    <TableCell className="font-mono tabular-nums">
+                    <TableCell className="py-3 text-right font-mono tabular-nums">
                       {formatGBP(p.threshold)}
                     </TableCell>
-                    <TableCell className="font-mono tabular-nums">
+                    <TableCell className="py-3 text-right font-mono tabular-nums">
                       {Math.round(p.rate * 100)}%
                     </TableCell>
-                    <TableCell>{p.writeOff} years</TableCell>
+                    <TableCell className="py-3 pr-4 text-right font-mono tabular-nums">
+                      {p.writeOff} yrs
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </ScrollFadeWrapper>
+          </Panel>
         </section>
 
-        {/* How it stays current */}
-        <section className="space-y-4">
-          <Heading as="h2" size="section">
-            How it stays current
-          </Heading>
-          <p className="text-sm text-muted-foreground sm:text-base">
-            We run an automatic check every day so you never have to wonder if
-            our numbers are current.
-          </p>
-          <div>
-            {PIPELINE_STEPS.map((step, i) => (
-              <div key={step.title} className="flex gap-4">
-                <div className="flex flex-col items-center">
-                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-background">
-                    <HugeiconsIcon icon={step.icon} className="size-4" />
-                  </div>
-                  {i < PIPELINE_STEPS.length - 1 && (
-                    <div className="my-1.5 w-px flex-1 bg-border" />
-                  )}
-                </div>
-                <div
-                  className={i < PIPELINE_STEPS.length - 1 ? "pb-5" : undefined}
-                >
-                  <p className="mt-1 text-sm font-medium">{step.title}</p>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+        {/* How it stays current — a genuine 4-step sequence, so numbered */}
+        <section className="space-y-5" aria-labelledby="pipeline-h">
+          <div className="space-y-2">
+            <Heading as="h2" size="section" id="pipeline-h">
+              How it stays current
+            </Heading>
+            <p className="max-w-[68ch] text-muted-foreground">
+              The same check runs every day, so the numbers are never left to go
+              stale.
+            </p>
           </div>
-        </section>
-
-        {/* Cross-check yourself */}
-        <section className="space-y-4">
-          <Heading as="h2" size="section">
-            Cross-check yourself
-          </Heading>
-          <p className="text-sm text-muted-foreground sm:text-base">
-            You don&rsquo;t have to take our word for it. Here are the primary
-            sources we pull from:
-          </p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {CROSS_CHECK_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group"
-              >
-                <div className="flex h-full items-start gap-3 rounded-xl bg-card p-4 ring-1 ring-foreground/10 transition-all hover:bg-accent hover:ring-primary/30">
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-                    <HugeiconsIcon icon={link.icon} className="size-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1">
-                      <span className="text-sm font-medium">{link.label}</span>
-                      <HugeiconsIcon
-                        icon={ArrowUpRight01Icon}
-                        className="size-3.5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      />
-                    </div>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      {link.source} &mdash; {link.description}
+          <Panel padding={false} className="overflow-hidden">
+            <ol className="divide-y divide-border">
+              {PIPELINE_STEPS.map((step, i) => (
+                <li
+                  key={step.title}
+                  className="flex items-baseline gap-4 p-4 sm:gap-5 sm:p-5"
+                >
+                  <span className="font-mono text-sm font-semibold text-cta tabular-nums">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="space-y-1">
+                    <h3 className="font-semibold text-foreground">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {step.description}
                     </p>
                   </div>
-                </div>
-              </a>
-            ))}
+                </li>
+              ))}
+            </ol>
+          </Panel>
+        </section>
+
+        {/* Cross-check — flat spec-sheet of primary sources */}
+        <section className="space-y-5" aria-labelledby="sources-h">
+          <div className="space-y-2">
+            <Heading as="h2" size="section" id="sources-h">
+              Cross-check it yourself
+            </Heading>
+            <p className="max-w-[68ch] text-muted-foreground">
+              You don&rsquo;t have to take our word for it. Every figure traces
+              back to one of these primary sources.
+            </p>
           </div>
+          <Panel padding={false} className="overflow-hidden">
+            <ul className="divide-y divide-border">
+              {CROSS_CHECK_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group flex items-center justify-between gap-4 p-4 transition-colors sm:p-5",
+                      "hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset",
+                    )}
+                  >
+                    <div className="min-w-0 space-y-1">
+                      <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase transition-colors group-hover:text-cta group-focus-visible:text-cta">
+                        {link.source}
+                      </span>
+                      <p className="font-medium text-foreground">
+                        {link.label}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {link.description}
+                      </p>
+                    </div>
+                    <HugeiconsIcon
+                      icon={ArrowUpRight01Icon}
+                      className="size-4 shrink-0 text-faint transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary group-focus-visible:text-primary"
+                    />
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Panel>
         </section>
       </article>
     </PageLayout>

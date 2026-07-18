@@ -35,6 +35,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
+    careerBreak,
   } = config;
 
   const rpi = rpiRate ?? CURRENT_RATES.rpi;
@@ -130,6 +131,16 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
       }
     }
 
+    // During a career break the effective income drops (repayments pause and,
+    // on Plan 2, interest falls toward RPI-only) while interest still accrues.
+    const inCareerBreak =
+      careerBreak !== undefined &&
+      month >= careerBreak.startMonth &&
+      month < careerBreak.startMonth + careerBreak.months;
+    const effectiveSalary = inCareerBreak
+      ? (careerBreak.salary ?? 0)
+      : currentSalary;
+
     const monthLoanStates: LoanMonthState[] = [];
     let totalMonthRepayment = 0;
 
@@ -142,7 +153,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
       }
       const repayment = calculateBaseRepayment(
         state.loan.planType,
-        currentSalary,
+        effectiveSalary,
         planThresholds.get(state.loan.planType),
       );
       baseRepayments.push({ index: i, repayment });
@@ -183,7 +194,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
       // 1. Apply interest
       const annualInterest = getAnnualInterestRate(
         state.loan.planType,
-        currentSalary,
+        effectiveSalary,
         rpi,
         boe,
         interestThresholdOverrides,
@@ -227,7 +238,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
 
     snapshots.push({
       month,
-      salary: currentSalary,
+      salary: effectiveSalary,
       loans: monthLoanStates,
       totalRepayment: totalMonthRepayment,
     });

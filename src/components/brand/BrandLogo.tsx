@@ -19,17 +19,20 @@ export function BrandLogo({ size = "default", className }: BrandLogoProps) {
     <div className={cn("flex items-center", className)} style={{ gap }}>
       <BrandIcon size={size} />
       <div className="relative">
-        {/* Shadow layer — decorative, hidden from screen readers */}
+        {/* Shadow layer — decorative, hidden from screen readers.
+            Per-segment weights must mirror the main text below: bold glyphs
+            advance wider than regular, so a blanket weight here would drift
+            the shadow progressively rightward instead of holding a constant offset. */}
         <span
           aria-hidden="true"
-          className="absolute font-display font-bold whitespace-nowrap text-primary/15"
+          className="absolute font-display whitespace-nowrap text-primary/15"
           style={{
             top: shadowOffset.y,
             left: shadowOffset.x,
             fontSize,
           }}
         >
-          StudentLoanStudy.uk
+          StudentLoan<span className="font-bold">Study.uk</span>
         </span>
         {/* Main text */}
         <span

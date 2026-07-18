@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import {
+  MetricCell,
+  MetricReadout,
+} from "@/components/instrument/MetricReadout";
+import { Eyebrow } from "@/components/typography/Eyebrow";
 import { Heading } from "@/components/typography/Heading";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { currencyFormatter } from "@/constants";
 import { useLoanActions } from "@/context/LoanContext";
 import { trackQuizCompleted, trackQuizRestarted } from "@/lib/analytics";
@@ -59,49 +63,37 @@ export function ResultScreen({
       aria-live="polite"
     >
       <div className="text-center">
-        <p className="mb-3 text-sm font-medium tracking-wide text-muted-foreground uppercase">
+        <Eyebrow as="p" marker={false} className="mb-3 justify-center">
           {planTypes.length === 1 ? "Your plan type" : "Your plan types"}
-        </p>
+        </Eyebrow>
 
-        <Heading as="h1" size="page-hero" className="mb-2 text-4xl md:text-5xl">
+        <Heading as="h1" size="page-hero" className="mb-2">
           {planTypes.map((p) => getPlanDisplayInfo(p).name).join(" + ")}
         </Heading>
       </div>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-6">
         {planTypes.map((planType) => {
           const info = getPlanDisplayInfo(planType);
           return (
-            <div
-              key={planType}
-              className="rounded-2xl border border-border bg-card p-6"
-            >
-              <h2 className="mb-4 text-lg font-semibold">{info.name}</h2>
-              <dl className="space-y-4">
-                <div className="flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:justify-between">
-                  <dt className="text-muted-foreground">Repayment threshold</dt>
-                  <dd className="font-semibold">
-                    {currencyFormatter.format(info.yearlyThreshold)}/year
-                  </dd>
-                </div>
-
-                <Separator />
-
-                <div className="flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:justify-between">
-                  <dt className="text-muted-foreground">Repayment rate</dt>
-                  <dd className="font-semibold">
-                    {String(info.repaymentRate * 100)}% of income above
-                    threshold
-                  </dd>
-                </div>
-
-                <Separator />
-
-                <div className="flex flex-col items-start gap-1 xs:flex-row xs:items-center xs:justify-between">
-                  <dt className="text-muted-foreground">Write-off period</dt>
-                  <dd className="font-semibold">{info.writeOffYears} years</dd>
-                </div>
-              </dl>
+            <div key={planType} className="space-y-3">
+              <Heading as="h2" size="subsection">
+                {info.name}
+              </Heading>
+              <MetricReadout columns={3}>
+                <MetricCell
+                  label="Threshold / yr"
+                  value={currencyFormatter.format(info.yearlyThreshold)}
+                />
+                <MetricCell
+                  label="Repayment rate"
+                  value={`${String(info.repaymentRate * 100)}%`}
+                />
+                <MetricCell
+                  label="Write-off / yrs"
+                  value={String(info.writeOffYears)}
+                />
+              </MetricReadout>
             </div>
           );
         })}

@@ -1,22 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
+import { Fold } from "@/components/home/instrument/Fold";
+import { LeversSection } from "@/components/home/instrument/LeversSection";
+import { RulesSection } from "@/components/home/instrument/RulesSection";
+import { ToolsSection } from "@/components/home/instrument/ToolsSection";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { useLoanActions, useLoanConfigState } from "@/context/LoanContext";
 import type { InputMode } from "@/hooks/useInputPanelMode";
-import { HeroSection } from "./home/HeroSection";
-import { InsightBadge, InsightCallout } from "./home/InsightCallout";
-import { SalaryExplorer } from "./home/SalaryExplorer";
-import { ToolLinks } from "./home/ToolLinks";
-import { PageLayout } from "./layout/PageLayout";
-import { AssumptionsCallout } from "./shared/AssumptionsCallout";
-import { ControlBar } from "./shared/ControlBar";
-import { InsightCards } from "./shared/InsightCards";
+import { SHELL_MAX } from "@/lib/layout";
 import { PlanFromQuery } from "./shared/PlanFromQuery";
 
 export function App() {
   const { updateField } = useLoanActions();
-  const config = useLoanConfigState();
-  const { pendingQuizPlanTypes } = config;
+  const { pendingQuizPlanTypes } = useLoanConfigState();
 
   const initialMode: InputMode | undefined =
     pendingQuizPlanTypes && pendingQuizPlanTypes.length > 0
@@ -30,23 +28,19 @@ export function App() {
   }, [pendingQuizPlanTypes, updateField]);
 
   return (
-    <>
+    <div className="flex min-h-dvh flex-col">
       <PlanFromQuery />
-      <PageLayout>
-        <div className="space-y-3">
-          <HeroSection />
-          <InsightCallout />
-          <SalaryExplorer badge={<InsightBadge />} />
-        </div>
-
-        <ControlBar initialMode={initialMode} />
-
-        <InsightCards />
-
-        <AssumptionsCallout />
-
-        <ToolLinks />
-      </PageLayout>
-    </>
+      <Header wide />
+      <main
+        id="main-content"
+        className={`mx-auto w-full ${SHELL_MAX} flex-auto`}
+      >
+        <Fold initialMode={initialMode} />
+        <RulesSection />
+        <LeversSection />
+        <ToolsSection />
+      </main>
+      <Footer wide />
+    </div>
   );
 }
