@@ -154,19 +154,19 @@
   --chart-5: #6c756f; /* axis grey — baseline series */
   --chart-overpay-baseline: #a8482f;
 
-  /* Status: success reads spruce, danger reads brick; info/warning stay semantic */
-  --status-info-foreground: oklch(0.546 0.245 262.881);
-  --status-info: oklch(0.97 0.014 254.604);
-  --status-info-border: oklch(0.882 0.059 254.128);
-  --status-success-foreground: #0b4a37;
-  --status-success: color-mix(in oklab, var(--primary) 8%, var(--card));
-  --status-success-border: color-mix(in oklab, var(--primary) 28%, var(--card));
-  --status-warning-foreground: oklch(0.5 0.12 60);
-  --status-warning: oklch(0.97 0.03 85);
-  --status-warning-border: oklch(0.88 0.09 82);
-  --status-danger-foreground: #8a3a25;
-  --status-danger: color-mix(in oklab, var(--signal) 9%, var(--card));
-  --status-danger-border: color-mix(in oklab, var(--signal) 30%, var(--card));
+  /* Status: bright semantic utility tokens — deliberately outside the two-colour thesis */
+  --status-info-foreground: oklch(0.546 0.245 262.881); /* blue-600 */
+  --status-info: oklch(0.97 0.014 254.604); /* blue-50 */
+  --status-info-border: oklch(0.882 0.059 254.128); /* blue-200 */
+  --status-success-foreground: oklch(0.527 0.154 150.069); /* green-700 */
+  --status-success: oklch(0.982 0.018 155.826); /* green-50 */
+  --status-success-border: oklch(0.925 0.084 155.995); /* green-200 */
+  --status-warning-foreground: oklch(0.555 0.163 48.998); /* amber-700 */
+  --status-warning: oklch(0.987 0.022 95.277); /* amber-50 */
+  --status-warning-border: oklch(0.924 0.12 95.746); /* amber-200 */
+  --status-danger-foreground: oklch(0.505 0.213 27.518); /* red-700 */
+  --status-danger: oklch(0.971 0.013 17.38); /* red-50 */
+  --status-danger-border: oklch(0.885 0.062 18.334); /* red-200 */
 }
 
 /* ==========================================================================
@@ -212,18 +212,18 @@
   --chart-5: #7e877f;
   --chart-overpay-baseline: #e0836a;
 
-  --status-info-foreground: oklch(0.707 0.165 254.624);
-  --status-info: oklch(0.282 0.091 267.935 / 30%);
-  --status-info-border: oklch(0.424 0.199 265.638);
-  --status-success-foreground: #6fd3ae;
-  --status-success: color-mix(in oklab, var(--primary) 16%, var(--card));
-  --status-success-border: color-mix(in oklab, var(--primary) 34%, var(--card));
-  --status-warning-foreground: oklch(0.828 0.189 84.429);
-  --status-warning: oklch(0.279 0.077 45.635 / 30%);
-  --status-warning-border: oklch(0.473 0.137 46.201);
-  --status-danger-foreground: #e79c86;
-  --status-danger: color-mix(in oklab, var(--signal) 16%, var(--card));
-  --status-danger-border: color-mix(in oklab, var(--signal) 34%, var(--card));
+  --status-info-foreground: oklch(0.707 0.165 254.624); /* blue-400 */
+  --status-info: oklch(0.282 0.091 267.935 / 30%); /* blue-950 */
+  --status-info-border: oklch(0.424 0.199 265.638); /* blue-700 */
+  --status-success-foreground: oklch(0.792 0.209 151.711); /* green-400 */
+  --status-success: oklch(0.266 0.065 152.934 / 30%); /* green-950 */
+  --status-success-border: oklch(0.527 0.154 150.069); /* green-700 */
+  --status-warning-foreground: oklch(0.828 0.189 84.429); /* amber-400 */
+  --status-warning: oklch(0.279 0.077 45.635 / 30%); /* amber-950 */
+  --status-warning-border: oklch(0.473 0.137 46.201); /* amber-800 */
+  --status-danger-foreground: oklch(0.704 0.191 22.216); /* red-400 */
+  --status-danger: oklch(0.258 0.092 26.042 / 30%); /* red-950 */
+  --status-danger-border: oklch(0.505 0.213 27.518); /* red-700 */
 }
 
 @layer base {
