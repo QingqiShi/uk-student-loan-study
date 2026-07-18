@@ -79,14 +79,18 @@ export function InflationComparisonChart() {
   return (
     <div className="flex h-full flex-col gap-3">
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-muted-foreground">
+        <span
+          id="salary-label"
+          className="text-sm font-medium text-muted-foreground"
+        >
           Salary:
         </span>
-        <div className="flex gap-1">
+        <div className="flex gap-1" role="group" aria-labelledby="salary-label">
           {SALARY_OPTIONS.map((option) => (
             <button
               key={option}
               type="button"
+              aria-pressed={salary === option}
               onClick={() => {
                 setSalary(option);
               }}

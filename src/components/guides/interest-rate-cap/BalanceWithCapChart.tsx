@@ -123,6 +123,7 @@ export function BalanceWithCapChart() {
             <button
               key={option.value}
               type="button"
+              aria-pressed={rpi === option.value}
               onClick={() => {
                 setRpi(option.value);
               }}
