@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CURRENT_RATES } from "@/lib/loans/plans";
+import { rpiVsCpiFaqs } from "@/components/guides/rpi-vs-cpi/faqs";
 
 export const metadata: Metadata = {
   title: "RPI vs CPI: Why Your Student Loan Interest Outpaces Inflation",
@@ -51,32 +51,14 @@ const breadcrumbSchema = {
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is the difference between RPI and CPI for student loans?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: `RPI (Retail Prices Index) includes housing costs and uses an arithmetic mean formula, while CPI (Consumer Prices Index) excludes housing costs and uses a geometric mean. Student loan interest is tied to RPI, which currently sits at ${String(CURRENT_RATES.rpi)}%. CPI, the Bank of England's target measure, sits lower at around 2%. This means your loan interest is based on the higher measure.`,
-      },
+  mainEntity: rpiVsCpiFaqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
     },
-    {
-      "@type": "Question",
-      name: "Why does my student loan interest seem higher than inflation?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Your loan interest is tied to RPI, which historically runs 0.5-1 percentage points higher than CPI (the measure most people think of as 'inflation'). On top of that, some plans add up to 3% on top of RPI. So even Plan 5's 'inflation-only' rate exceeds general inflation as measured by CPI.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What does 'adjusted for inflation' mean in the student loan calculator?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "When you toggle 'Adjust for inflation' in the calculator, it discounts future values by CPI (approximately 2%) to show amounts in today's money. This does not use RPI. Any growth that remains after toggling represents the real above-inflation cost of the loan.",
-      },
-    },
-  ],
+  })),
 };
 
 const articleSchema = {
