@@ -368,13 +368,20 @@ function handleInsight(payload: InsightPayload): {
   const ratePct = annualRate * 100;
   const rateStat = ratePct < 0.05 ? "0%" : `${ratePct.toFixed(1)}%`;
 
-  const cumulativeStat = `${formatCompactCurrency(totalPaid)} total`;
+  // Compact figure only — the surfaces that show this stat already label it
+  // ("Total repaid" / "TOTAL REPAYMENTS"), so a trailing " total" is redundant
+  // and, being a second word, wraps to a new line in the narrow readout cell and
+  // shifts the card height on load. Keeping it to one token keeps that fixed.
+  const cumulativeStat = formatCompactCurrency(totalPaid);
 
   const cards: InsightCardsResult = {
     balance: { data: balanceData, stat: balanceStat, label: "Duration" },
     interest: {
       stat: formatCompactCurrency(Math.max(0, totalPaid - totalBalance)),
-      label: insightWrittenOff ? "Interest Paid (adj.)" : "Interest Paid",
+      // Constant label at every width: the "(adj.)" suffix wrapped to a second
+      // line on the narrow readout cell and shifted the card height. The
+      // write-off is already conveyed by the striped bar and the legend.
+      label: "Interest Paid",
       interestRatio:
         insightTotalSettled > 0 ? insightCumInterest / insightTotalSettled : 0,
       principalRatio:

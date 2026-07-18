@@ -10,7 +10,14 @@ import {
 import { Heading } from "@/components/typography/Heading";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
 import { DETAIL_PAGES } from "@/lib/detailPages";
-import { ProportionViz, RateBenchmarkViz, SparklineViz } from "./InsightCard";
+import {
+  ProportionViz,
+  ProportionVizSkeleton,
+  RateBenchmarkViz,
+  RateBenchmarkVizSkeleton,
+  SparklineViz,
+  SparklineVizSkeleton,
+} from "./InsightCard";
 
 interface InsightCardsProps {
   excludeHref?: string;
@@ -50,6 +57,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
           href={REPAID.href}
           active={excludeHref === REPAID.href}
           loading={loading}
+          skeleton={<SparklineVizSkeleton />}
           linkLabel="open the full repayment breakdown"
         >
           {data && (
@@ -64,6 +72,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
           href={BALANCE.href}
           active={excludeHref === BALANCE.href}
           loading={loading}
+          skeleton={<SparklineVizSkeleton />}
           linkLabel="open the full payoff timeline"
         >
           {data && (
@@ -79,6 +88,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
           href={INTEREST.href}
           active={excludeHref === INTEREST.href}
           loading={loading}
+          skeleton={<ProportionVizSkeleton />}
           linkLabel="open the interest breakdown"
         >
           {data && <ProportionViz cardData={data.interest} />}
@@ -91,6 +101,7 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
           href={RATE.href}
           active={excludeHref === RATE.href}
           loading={loading}
+          skeleton={<RateBenchmarkVizSkeleton />}
           linkLabel="see how the effective rate is worked out"
         >
           {data && <RateBenchmarkViz cardData={data.effectiveRate} />}

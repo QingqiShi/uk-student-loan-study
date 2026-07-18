@@ -86,6 +86,12 @@ type MetricCellProps = {
   chevron?: boolean;
   /** Render the skeleton state while live figures resolve. */
   loading?: boolean;
+  /**
+   * Height-matched placeholder for the viz slot while `loading`. Provide one that
+   * mirrors the real viz structure so the cell keeps a constant height when live
+   * figures resolve; falls back to a generic bar when omitted.
+   */
+  skeleton?: React.ReactNode;
   /** Extra sr-only context appended to the link, e.g. "open the interest breakdown". */
   linkLabel?: string;
   /** Inline viz slot (sparkline / split-bar / benchmark), pinned to the baseline. */
@@ -100,9 +106,14 @@ function CellInner({
   active,
   chevron,
   loading,
+  skeleton,
   linkLabel,
   children,
 }: MetricCellProps & { chevron: boolean }) {
+  const valueClass = cn(
+    "font-mono leading-none font-semibold tracking-tight tabular-nums",
+    VALUE_TONE[tone],
+  );
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -120,24 +131,26 @@ function CellInner({
       </div>
 
       {loading ? (
-        <div className="h-7 w-28 animate-pulse rounded-sm bg-muted" />
-      ) : (
+        // Same value classes → identical line box → no height jump when the
+        // figure resolves; `text-transparent` over `bg-muted` reads as a chip.
         <div
           className={cn(
-            "font-mono leading-none font-semibold tracking-tight tabular-nums",
-            VALUE_TONE[tone],
+            valueClass,
+            "w-28 max-w-full animate-pulse rounded-sm bg-muted text-transparent",
           )}
         >
-          {value}
+          0
         </div>
+      ) : (
+        <div className={valueClass}>{value}</div>
       )}
 
       <div className="mt-auto">
-        {loading ? (
-          <div className="h-10 w-full animate-pulse rounded-sm bg-muted" />
-        ) : (
-          children
-        )}
+        {loading
+          ? (skeleton ?? (
+              <div className="h-10 w-full animate-pulse rounded-sm bg-muted" />
+            ))
+          : children}
       </div>
 
       {linkLabel && <span className="sr-only"> — {linkLabel}</span>}

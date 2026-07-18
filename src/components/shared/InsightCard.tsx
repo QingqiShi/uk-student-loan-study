@@ -1,5 +1,6 @@
 import { Sparkline } from "@/components/charts/Sparkline";
 import { percentageFormatter } from "@/constants";
+import { percentagesSummingTo100 } from "@/lib/format";
 import type {
   EffectiveRateCardData,
   InsightCardData,
@@ -31,9 +32,12 @@ export function SparklineViz({
 
 /** Principal / interest / written-off split bar with a mono legend. */
 export function ProportionViz({ cardData }: { cardData: InterestCardData }) {
-  const interestPct = Math.round(cardData.interestRatio * 100);
-  const principalPct = Math.round(cardData.principalRatio * 100);
-  const writtenOffPct = Math.round(cardData.writtenOffRatio * 100);
+  // Round together so the legend and bar always sum to exactly 100%.
+  const [principalPct, interestPct, writtenOffPct] = percentagesSummingTo100([
+    cardData.principalRatio,
+    cardData.interestRatio,
+    cardData.writtenOffRatio,
+  ]);
 
   return (
     <div>
@@ -57,28 +61,31 @@ export function ProportionViz({ cardData }: { cardData: InterestCardData }) {
           />
         )}
       </div>
-      <div className="mt-2 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5">
-          <span className="size-2 rounded-sm bg-primary" /> Principal{" "}
-          <b className="font-mono font-semibold text-foreground tabular-nums">
-            {String(principalPct)}%
-          </b>
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="size-2 rounded-sm bg-signal" /> Interest{" "}
-          <b className="font-mono font-semibold text-foreground tabular-nums">
-            {String(interestPct)}%
-          </b>
-        </span>
-        {writtenOffPct > 0 && (
+      {/* Two fixed rows: Principal/Interest, then Written off — always shown
+          (0% when nothing is written off) so the card keeps a constant height
+          and the equalised grid row never shifts. */}
+      <div className="mt-2 flex flex-col gap-y-1 text-xs text-muted-foreground">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
           <span className="inline-flex items-center gap-1.5">
-            <span className="size-2 rounded-sm bg-muted-foreground/30" />{" "}
-            Written off{" "}
-            <b className="font-mono font-semibold text-foreground tabular-nums">
-              {String(writtenOffPct)}%
+            <span className="size-2 rounded-sm bg-primary" /> Principal{" "}
+            <b className="min-w-[4ch] font-mono font-semibold text-foreground tabular-nums">
+              {String(principalPct)}%
             </b>
           </span>
-        )}
+          <span className="inline-flex items-center gap-1.5">
+            <span className="size-2 rounded-sm bg-signal" /> Interest{" "}
+            <b className="min-w-[4ch] font-mono font-semibold text-foreground tabular-nums">
+              {String(interestPct)}%
+            </b>
+          </span>
+        </div>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2 rounded-sm bg-muted-foreground/30" /> Written
+          off{" "}
+          <b className="min-w-[4ch] font-mono font-semibold text-foreground tabular-nums">
+            {String(writtenOffPct)}%
+          </b>
+        </span>
       </div>
     </div>
   );
@@ -132,6 +139,65 @@ export function RateBenchmarkViz({
           {percentageFormatter(cardData.boeRate)}
         </span>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Skeleton legend row: mirrors a `ProportionViz` legend entry exactly (same dot,
+ * label text and mono percent), rendered as muted chips via `text-transparent`.
+ * Keeping the real label text means the row occupies an identical line box — and
+ * wraps identically — to the loaded legend, so the card height never shifts when
+ * live figures resolve.
+ */
+function ProportionLegendChipSkeleton({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span className="size-2 rounded-sm bg-muted" />
+      <span className="rounded-sm bg-muted text-transparent">{label}</span>{" "}
+      <b className="min-w-[4ch] rounded-sm bg-muted font-mono font-semibold text-transparent tabular-nums">
+        00%
+      </b>
+    </span>
+  );
+}
+
+/** Loading placeholder for `SparklineViz` — the `h-12` matches the loaded chart. */
+export function SparklineVizSkeleton() {
+  return <div aria-hidden className="h-12 animate-pulse rounded-sm bg-muted" />;
+}
+
+/** Loading placeholder for `ProportionViz`, height-matched to the loaded viz. */
+export function ProportionVizSkeleton() {
+  return (
+    <div aria-hidden className="animate-pulse">
+      <div className="h-3 rounded-full bg-muted ring-1 ring-border ring-inset" />
+      <div className="mt-2 flex flex-col gap-y-1 text-xs">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
+          <ProportionLegendChipSkeleton label="Principal" />
+          <ProportionLegendChipSkeleton label="Interest" />
+        </div>
+        <ProportionLegendChipSkeleton label="Written off" />
+      </div>
+    </div>
+  );
+}
+
+/** Loading placeholder for `RateBenchmarkViz`, height-matched to the loaded viz. */
+export function RateBenchmarkVizSkeleton() {
+  return (
+    <div aria-hidden className="flex animate-pulse flex-col gap-2">
+      {["Yours", "BoE base"].map((label) => (
+        <div key={label} className="flex items-center gap-2 text-xs">
+          <span className="w-14 shrink-0 rounded-sm bg-muted text-transparent">
+            {label}
+          </span>
+          <span className="h-1.5 min-w-0 flex-1 rounded-full bg-muted" />
+          <span className="w-11 shrink-0 rounded-sm bg-muted text-right text-transparent">
+            0.0%
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
