@@ -13,6 +13,11 @@ const COST_ZONES = new Set<Insight["type"]>(["middle-earner"]);
  * under the chart with a deep-link into the overpayment calculator. Driven live
  * by the same simulation as the readout (generateInsight), so it updates as the
  * salary slider moves.
+ *
+ * Layout: the status dot sits in a fixed marker column so the title and CTA
+ * share one left edge. When they fit, the CTA rides inline to the right
+ * (justify-between); when the panel is too narrow it drops onto its own line
+ * and stays aligned under the title instead of orphaning against the right edge.
  */
 export function ChartInsight() {
   const { insight } = usePersonalizedResults();
@@ -23,32 +28,36 @@ export function ChartInsight() {
 
   return (
     <div
-      className="group mt-[0.85rem] flex flex-wrap items-baseline gap-x-[0.9rem] gap-y-[0.35rem] border-t border-border pt-[0.85rem]"
+      className="group mt-3.5 flex items-start gap-3.5 border-t border-border pt-3.5"
       data-tone={tone}
       role="status"
       aria-live="polite"
     >
-      <span
-        className="size-2 flex-none self-center rounded-full bg-primary group-data-[tone=cost]:[background:var(--signal)]"
-        aria-hidden="true"
-      />
-      <p className="m-0 font-sans text-sm font-semibold tracking-[-0.01em] text-foreground">
-        {insight.title}
-      </p>
-      {insight.cta && (
-        <Link
-          className="group/cta ml-auto inline-flex items-baseline gap-[0.3rem] font-sans text-sm font-semibold whitespace-nowrap text-cta no-underline [transition:color_0.15s]"
-          href={insight.cta.href}
-        >
-          {insight.cta.text}
-          <span
-            className="text-primary [transition:transform_0.15s] group-hover/cta:translate-x-[3px]"
-            aria-hidden="true"
+      {/* Marker column is exactly one line tall (h-5 = text-sm leading), so the
+          dot centres on the first line of the title and stays there however the
+          content below it wraps. */}
+      <span className="flex h-5 flex-none items-center" aria-hidden="true">
+        <span className="size-2 rounded-full bg-primary group-data-[tone=cost]:[background:var(--signal)]" />
+      </span>
+      <div className="flex min-w-0 flex-1 flex-wrap items-baseline justify-between gap-x-3.5 gap-y-1.5">
+        <p className="m-0 font-sans text-sm font-semibold text-foreground">
+          {insight.title}
+        </p>
+        {insight.cta && (
+          <Link
+            className="group/cta inline-flex items-baseline gap-1 font-sans text-sm font-semibold whitespace-nowrap text-cta no-underline transition-colors"
+            href={insight.cta.href}
           >
-            →
-          </span>
-        </Link>
-      )}
+            {insight.cta.text}
+            <span
+              className="text-primary transition-transform group-hover/cta:translate-x-0.5 motion-reduce:transition-none"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

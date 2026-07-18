@@ -45,7 +45,7 @@ export function BalanceDetailPage() {
 
   const legend: ChartLegendItem[] = result
     ? [
-        { label: "Outstanding balance", color: "var(--chart-2)" },
+        { label: "Outstanding balance", color: "var(--chart-1)" },
         ...(result.stats.peakBalanceMonth > 0
           ? [
               {
