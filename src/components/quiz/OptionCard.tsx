@@ -27,22 +27,20 @@ export function OptionCard({
       aria-checked={isSelected}
       onClick={onClick}
       className={cn(
-        "group relative flex size-full min-h-18 items-center gap-4 rounded-xl border-2 px-5 py-4 text-left transition-all duration-150",
-        "hover:border-primary/50 hover:bg-accent/50",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none",
-        "active:scale-[0.98]",
+        "group relative flex size-full min-h-18 items-center gap-4 rounded-xl px-5 py-4 text-left ring-1 transition-colors duration-150",
+        "focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-inset",
         isSelected
-          ? "border-primary bg-primary/5 ring-2 ring-primary/20"
-          : "border-border bg-card",
+          ? "bg-accent-wash ring-primary"
+          : "bg-card ring-border hover:bg-muted",
       )}
     >
       {icon && (
         <div
           className={cn(
-            "flex size-10 shrink-0 items-center justify-center rounded-lg text-lg",
+            "flex size-10 shrink-0 items-center justify-center rounded-lg text-lg ring-1 transition-colors",
             isSelected
-              ? "bg-primary/10 text-primary"
-              : "bg-muted text-muted-foreground",
+              ? "bg-card text-cta ring-primary/30"
+              : "bg-muted text-muted-foreground ring-border",
           )}
         >
           {icon}
@@ -52,8 +50,8 @@ export function OptionCard({
       <div className="flex-1">
         <span
           className={cn(
-            "block font-medium",
-            isSelected ? "text-primary" : "text-foreground",
+            "block font-medium transition-colors",
+            isSelected ? "text-cta" : "text-foreground",
           )}
         >
           {label}
@@ -68,10 +66,8 @@ export function OptionCard({
       {variant === "radio" ? (
         <div
           className={cn(
-            "size-5 shrink-0 rounded-full border-2 transition-colors",
-            isSelected
-              ? "border-primary bg-primary"
-              : "border-muted-foreground",
+            "size-5 shrink-0 rounded-full ring-2 transition-colors",
+            isSelected ? "bg-primary ring-primary" : "ring-border",
           )}
         >
           {isSelected && (
@@ -79,6 +75,7 @@ export function OptionCard({
               className="size-full text-primary-foreground"
               viewBox="0 0 20 20"
               fill="currentColor"
+              aria-hidden="true"
             >
               <path
                 fillRule="evenodd"
@@ -91,10 +88,8 @@ export function OptionCard({
       ) : (
         <div
           className={cn(
-            "flex size-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors",
-            isSelected
-              ? "border-primary bg-primary"
-              : "border-muted-foreground",
+            "flex size-5 shrink-0 items-center justify-center rounded-md ring-2 transition-colors",
+            isSelected ? "bg-primary ring-primary" : "ring-border",
           )}
         >
           {isSelected && (
@@ -106,6 +101,7 @@ export function OptionCard({
               strokeWidth={2.5}
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               <path d="M2.5 7.5L5.5 10.5L11.5 3.5" />
             </svg>

@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { currencyFormatter } from "@/constants";
 import { formatPercent } from "@/lib/format";
+import { PROSE_LINK } from "@/lib/layout";
 import type { PlanPageKey } from "@/lib/planContent";
 import { PLAN_PAGE_ORDER, PLAN_PAGES } from "@/lib/planContent";
+import { surfaceCard } from "@/lib/surfaces";
 import { cn } from "@/lib/utils";
 
 interface AllPlansTableProps {
@@ -16,31 +18,33 @@ interface AllPlansTableProps {
  * with the daily GOV.UK automation. Reused on the /plans hub and each plan page.
  */
 export function AllPlansTable({ highlight }: AllPlansTableProps) {
+  const headClass =
+    "px-4 py-3 font-sans text-xs font-semibold tracking-wider text-muted-foreground uppercase";
   return (
-    <div className="overflow-x-auto rounded-xl border">
+    <div className={cn(surfaceCard, "overflow-x-auto")}>
       <table className="w-full border-collapse text-sm">
         <caption className="sr-only">
           Comparison of UK student loan plans: repayment threshold, rate,
           interest and write-off period.
         </caption>
         <thead>
-          <tr className="border-b bg-muted/50 text-left">
-            <th scope="col" className="px-4 py-3 font-semibold">
+          <tr className="border-b border-border bg-muted/40 text-left">
+            <th scope="col" className={headClass}>
               Plan
             </th>
-            <th scope="col" className="px-4 py-3 font-semibold">
+            <th scope="col" className={headClass}>
               Who &amp; when
             </th>
-            <th scope="col" className="px-4 py-3 text-right font-semibold">
+            <th scope="col" className={cn(headClass, "text-right")}>
               Threshold
             </th>
-            <th scope="col" className="px-4 py-3 text-right font-semibold">
+            <th scope="col" className={cn(headClass, "text-right")}>
               Rate
             </th>
-            <th scope="col" className="px-4 py-3 font-semibold">
+            <th scope="col" className={headClass}>
               Interest
             </th>
-            <th scope="col" className="px-4 py-3 text-right font-semibold">
+            <th scope="col" className={cn(headClass, "text-right")}>
               Write-off
             </th>
           </tr>
@@ -53,21 +57,20 @@ export function AllPlansTable({ highlight }: AllPlansTableProps) {
               <tr
                 key={key}
                 className={cn(
-                  "border-b last:border-b-0",
-                  isActive && "bg-primary/5",
+                  "border-b border-border last:border-b-0",
+                  isActive && "bg-accent-wash",
                 )}
               >
                 <th
                   scope="row"
-                  className="px-4 py-3 text-left align-top font-medium whitespace-nowrap"
+                  className="px-4 py-3 text-left align-top font-semibold whitespace-nowrap"
                 >
                   {isActive ? (
-                    <span className="text-primary">{plan.name}</span>
+                    <span className="text-cta" aria-current="page">
+                      {plan.name}
+                    </span>
                   ) : (
-                    <Link
-                      href={`/plans/${plan.slug}`}
-                      className="text-primary underline underline-offset-4 hover:text-primary/80"
-                    >
+                    <Link href={`/plans/${plan.slug}`} className={PROSE_LINK}>
                       {plan.name}
                     </Link>
                   )}
@@ -89,7 +92,10 @@ export function AllPlansTable({ highlight }: AllPlansTableProps) {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right align-top font-mono whitespace-nowrap tabular-nums">
-                  {String(plan.writeOffYears)} yrs
+                  {plan.writeOffYears}
+                  <span className="ml-0.5 font-sans text-xs font-medium text-muted-foreground">
+                    yrs
+                  </span>
                 </td>
               </tr>
             );

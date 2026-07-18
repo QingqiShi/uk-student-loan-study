@@ -10,109 +10,64 @@ import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import {
+  GuideArticle,
+  guideLink,
+  KeyTakeaways,
+  SeamCell,
+  SeamGrid,
+} from "../guide-parts";
 
 const undergradRate = `${String(PLAN_CONFIGS.PLAN_2.repaymentRate * 100)}%`;
 const postgradRate = `${String(PLAN_CONFIGS.POSTGRADUATE.repaymentRate * 100)}%`;
 
-const linkClasses =
-  "text-primary underline-offset-2 hover:underline font-medium";
+const linkClasses = guideLink;
 
 export function SelfEmploymentGuide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Self-Employment</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <div className="space-y-2">
-            <Heading as="h1">Student Loans and Self-Employment</Heading>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              If you&rsquo;re self-employed, your student loan repayments work
-              differently from PAYE. Instead of automatic monthly deductions
-              from your payslip, you repay through your annual{" "}
-              <a
-                href="https://www.gov.uk/self-assessment-tax-returns"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClasses}
-              >
-                Self Assessment tax return
-              </a>{" "}
-              — and that changes how you need to plan your finances.
-            </p>
-          </div>
-        </div>
-
+      <GuideArticle
+        breadcrumbLabel="Self-Employment"
+        title="Student loans and self-employment"
+        intro={
+          <>
+            If you&rsquo;re self-employed, your student loan repayments work
+            differently from PAYE. Instead of automatic monthly deductions from
+            your payslip, you repay through your annual{" "}
+            <a
+              href="https://www.gov.uk/self-assessment-tax-returns"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClasses}
+            >
+              Self Assessment tax return
+            </a>{" "}
+            — and that changes how you need to plan your finances.
+          </>
+        }
+      >
         <section className="space-y-4">
           <Heading as="h2" size="section">
             How Repayments Work Through Self Assessment
           </Heading>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10">
-              <p className="mb-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                PAYE (Employed)
-              </p>
-              <ul className="space-y-1.5 text-sm text-muted-foreground">
-                <li className="flex gap-2">
-                  <span className="text-primary">&#x2022;</span>Monthly
-                  deductions from payslip
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-primary">&#x2022;</span>Automatic —
-                  employer handles it
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-primary">&#x2022;</span>Based on salary
-                  each pay period
-                </li>
+          <SeamGrid columns={2}>
+            <SeamCell eyebrow="PAYE (employed)">
+              <ul className="list-disc space-y-1.5 pl-5 marker:text-primary">
+                <li>Monthly deductions from payslip</li>
+                <li>Automatic — employer handles it</li>
+                <li>Based on salary each pay period</li>
               </ul>
-            </div>
-            <div className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10">
-              <p className="mb-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                Self Assessment (Self-employed)
-              </p>
-              <ul className="space-y-1.5 text-sm text-muted-foreground">
-                <li className="flex gap-2">
-                  <span className="text-primary">&#x2022;</span>Annual lump sums
-                  (Jan &amp; Jul)
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-primary">&#x2022;</span>You calculate
-                  and submit
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-primary">&#x2022;</span>Based on net
-                  profit for the year
-                </li>
+            </SeamCell>
+            <SeamCell eyebrow="Self Assessment (self-employed)">
+              <ul className="list-disc space-y-1.5 pl-5 marker:text-primary">
+                <li>Annual lump sums (Jan &amp; Jul)</li>
+                <li>You calculate and submit</li>
+                <li>Based on net profit for the year</li>
               </ul>
-            </div>
-          </div>
+            </SeamCell>
+          </SeamGrid>
 
           <div className="space-y-3 text-sm text-muted-foreground sm:text-base">
             <p>
@@ -162,46 +117,42 @@ export function SelfEmploymentGuide() {
             HMRC looks at your total taxable income when calculating student
             loan repayments. For the self-employed, this includes:
           </p>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10">
-              <div className="mb-2 flex size-9 items-center justify-center rounded-full bg-primary/10">
+          <SeamGrid columns={3}>
+            <SeamCell
+              icon={
                 <HugeiconsIcon
                   icon={Calculator01Icon}
                   className="size-5 text-primary"
                 />
-              </div>
-              <p className="font-medium">Net Profit</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Revenue minus allowable business expenses from self-employment.
-              </p>
-            </div>
-            <div className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10">
-              <div className="mb-2 flex size-9 items-center justify-center rounded-full bg-primary/10">
+              }
+              title="Net profit"
+            >
+              Revenue minus allowable business expenses from self-employment.
+            </SeamCell>
+            <SeamCell
+              icon={
                 <HugeiconsIcon
                   icon={Briefcase01Icon}
                   className="size-5 text-primary"
                 />
-              </div>
-              <p className="font-medium">Employment Income</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Salary from a PAYE job if you also have one alongside
-                freelancing.
-              </p>
-            </div>
-            <div className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10">
-              <div className="mb-2 flex size-9 items-center justify-center rounded-full bg-primary/10">
+              }
+              title="Employment income"
+            >
+              Salary from a PAYE job if you also have one alongside freelancing.
+            </SeamCell>
+            <SeamCell
+              icon={
                 <HugeiconsIcon
                   icon={Coins01Icon}
                   className="size-5 text-primary"
                 />
-              </div>
-              <p className="font-medium">Other Taxable Income</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Rental income, dividends, interest above your personal savings
-                allowance, etc.
-              </p>
-            </div>
-          </div>
+              }
+              title="Other taxable income"
+            >
+              Rental income, dividends, interest above your personal savings
+              allowance, etc.
+            </SeamCell>
+          </SeamGrid>
           <p className="text-sm text-muted-foreground sm:text-base">
             All of these sources are combined to determine whether you exceed
             the repayment threshold and how much you owe.
@@ -243,7 +194,7 @@ export function SelfEmploymentGuide() {
           <Heading as="h2" size="section">
             Common Mistakes to Avoid
           </Heading>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <SeamGrid columns={2}>
             {[
               {
                 title: "Not budgeting for annual payments",
@@ -266,29 +217,27 @@ export function SelfEmploymentGuide() {
                   "Every pound of allowable business expense you miss increases your net profit \u2014 and therefore your student loan repayment. Common overlooked expenses include home office costs, professional subscriptions, and travel.",
               },
             ].map((mistake) => (
-              <div
+              <SeamCell
                 key={mistake.title}
-                className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10"
+                icon={
+                  <HugeiconsIcon
+                    icon={AlertCircleIcon}
+                    className="size-5 text-signal"
+                  />
+                }
+                title={mistake.title}
               >
-                <div className="mb-2 flex items-center gap-2.5">
-                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-destructive/10 text-sm font-semibold text-destructive">
-                    <HugeiconsIcon icon={AlertCircleIcon} className="size-4" />
-                  </span>
-                  <p className="font-medium">{mistake.title}</p>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {mistake.description}
-                </p>
-              </div>
+                {mistake.description}
+              </SeamCell>
             ))}
-          </div>
+          </SeamGrid>
         </section>
 
         <section className="space-y-4">
           <Heading as="h2" size="section">
             Practical Tips for Freelancers
           </Heading>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <SeamGrid columns={2}>
             {[
               {
                 title: `Set aside ${undergradRate} monthly`,
@@ -323,60 +272,47 @@ export function SelfEmploymentGuide() {
                   "An accountant familiar with student loans can help you optimise your expenses, avoid mistakes, and ensure your repayments are calculated correctly.",
               },
             ].map((tip) => (
-              <div
+              <SeamCell
                 key={tip.title}
-                className="rounded-lg border bg-card p-4 ring-1 ring-foreground/10"
+                icon={
+                  <HugeiconsIcon
+                    icon={BulbIcon}
+                    className="size-5 text-primary"
+                  />
+                }
+                title={tip.title}
               >
-                <div className="mb-2 flex items-center gap-2.5">
-                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <HugeiconsIcon
-                      icon={BulbIcon}
-                      className="size-4 text-primary"
-                    />
-                  </span>
-                  <p className="font-medium">{tip.title}</p>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {tip.description}
-                </p>
-              </div>
+                {tip.description}
+              </SeamCell>
             ))}
-          </div>
+          </SeamGrid>
         </section>
 
-        <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-          <Heading as="h2" size="subsection">
-            Key Takeaways
-          </Heading>
-          <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
-            <li>
-              Self-employed borrowers repay through Self Assessment, not PAYE —
-              expect annual lump-sum payments, not monthly deductions.
-            </li>
-            <li>
-              Repayments are based on <strong>net profit</strong>, so claiming
-              all legitimate business expenses directly reduces what you owe.
-            </li>
-            <li>
-              If you have mixed income (PAYE + freelance), HMRC collects through
-              both mechanisms based on your combined total income.
-            </li>
-            <li>
-              Budget monthly by setting aside {undergradRate} of profit above
-              the threshold to avoid being caught out by large tax bills.
-            </li>
-            <li>
-              Estimate your annual repayments with the{" "}
-              <Link
-                href="/"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
-                student loan calculator
-              </Link>
-              .
-            </li>
-          </ul>
-        </section>
+        <KeyTakeaways>
+          <li>
+            Self-employed borrowers repay through Self Assessment, not PAYE —
+            expect annual lump-sum payments, not monthly deductions.
+          </li>
+          <li>
+            Repayments are based on <strong>net profit</strong>, so claiming all
+            legitimate business expenses directly reduces what you owe.
+          </li>
+          <li>
+            If you have mixed income (PAYE + freelance), HMRC collects through
+            both mechanisms based on your combined total income.
+          </li>
+          <li>
+            Budget monthly by setting aside {undergradRate} of profit above the
+            threshold to avoid being caught out by large tax bills.
+          </li>
+          <li>
+            Estimate your annual repayments with the{" "}
+            <Link href="/" className={guideLink}>
+              student loan calculator
+            </Link>
+            .
+          </li>
+        </KeyTakeaways>
 
         <RelatedGuides
           current="self-employment"
@@ -389,7 +325,7 @@ export function SelfEmploymentGuide() {
             },
           ]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

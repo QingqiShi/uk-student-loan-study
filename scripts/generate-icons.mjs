@@ -18,12 +18,15 @@ const icon512Png = icon512.render();
 writeFileSync(join(appDir, "icon.png"), icon512Png.asPng());
 console.log("Generated icon.png (512x512)");
 
-// Generate 180x180 apple-icon.png
-const icon180 = new Resvg(svgContent, {
+// Generate 180x180 apple-icon.png (full-bleed square — iOS applies its own mask)
+const squareSvgContent = svgContent.replace(/rx="10"/g, 'rx="0"');
+const icon180 = new Resvg(squareSvgContent, {
   fitTo: { mode: "width", value: 180 },
 });
 const icon180Png = icon180.render();
 writeFileSync(join(appDir, "apple-icon.png"), icon180Png.asPng());
 console.log("Generated apple-icon.png (180x180)");
 
-console.log("Done! Icons generated with square corners.");
+console.log(
+  "Done! Rounded favicon/manifest icon, square full-bleed apple-icon.",
+);

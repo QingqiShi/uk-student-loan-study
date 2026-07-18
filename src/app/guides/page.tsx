@@ -1,6 +1,5 @@
-import { ArrowRight01Icon, BookOpen01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { LinkIndex, LinkIndexRow } from "@/components/instrument/LinkIndex";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Heading } from "@/components/typography/Heading";
@@ -53,7 +52,7 @@ export default function GuidesPage() {
     <PageLayout>
       <JsonLd data={itemListSchema} />
       <JsonLd data={breadcrumbSchema} />
-      <div className="space-y-4">
+      <header className="space-y-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -66,50 +65,33 @@ export default function GuidesPage() {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <div className="space-y-2">
-          <Heading as="h1">Student Loan Guides</Heading>
-          <p className="text-muted-foreground">
+        <div className="space-y-3">
+          <Heading as="h1" size="page-hero">
+            Student loan guides
+          </Heading>
+          <p className="max-w-2xl text-lead text-pretty text-muted-foreground">
             In-depth guides to help you understand UK student loan repayment,
-            interest, and how it fits into your wider finances.
+            interest, and how it fits into your wider finances — every figure
+            sourced from the same GOV.UK data as the calculator.
           </p>
         </div>
-      </div>
+      </header>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {GUIDES.map((guide) => (
-          <Link
-            key={guide.slug}
-            href={`/guides/${guide.slug}`}
-            className="group block h-full"
-          >
-            <div className="flex h-full flex-col rounded-xl bg-card p-5 ring-1 ring-foreground/10 transition-all duration-200 hover:bg-accent hover:ring-primary/30">
-              <div className="mb-3 flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-                  <HugeiconsIcon icon={BookOpen01Icon} className="size-5" />
-                </div>
-                <h2 className="font-medium">
-                  {guide.title}
-                  {guide.newUntil && new Date() < new Date(guide.newUntil) && (
-                    <span className="ml-2 inline-block rounded-full bg-primary/5 px-2 py-0.5 align-middle text-xs font-medium text-primary">
-                      New
-                    </span>
-                  )}
-                </h2>
-              </div>
-              <p className="mb-4 flex-1 text-sm text-muted-foreground">
-                {guide.description}
-              </p>
-              <div className="flex items-center gap-1 text-sm font-medium text-primary">
-                Read Guide
-                <HugeiconsIcon
-                  icon={ArrowRight01Icon}
-                  className="size-4 transition-transform group-hover:translate-x-0.5"
-                />
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <LinkIndex>
+        {GUIDES.map((guide) => {
+          const isNew =
+            guide.newUntil != null && new Date() < new Date(guide.newUntil);
+          return (
+            <LinkIndexRow
+              key={guide.slug}
+              href={`/guides/${guide.slug}`}
+              title={guide.title}
+              description={guide.description}
+              badge={isNew ? "New" : undefined}
+            />
+          );
+        })}
+      </LinkIndex>
     </PageLayout>
   );
 }

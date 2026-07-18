@@ -1,21 +1,40 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand/BrandLogo";
+import { Eyebrow } from "@/components/typography/Eyebrow";
 import { GUIDES } from "@/lib/guides";
+import { SHELL_WIDE } from "@/lib/layout";
+import { cn } from "@/lib/utils";
 
 const NAV_LINK_CLASS =
   "text-muted-foreground transition-colors hover:text-foreground";
 
-export function Footer() {
+export function Footer({ wide = false }: { wide?: boolean }) {
   return (
-    <footer className="border-t bg-muted/30">
-      <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
+    <footer className="border-t-2 border-rule bg-background">
+      <div
+        className={cn(
+          "mx-auto py-10 sm:py-12",
+          wide ? SHELL_WIDE : "max-w-4xl px-3",
+        )}
+      >
+        <div className="mb-10 flex flex-col gap-4 border-b pb-8 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-3">
+            <BrandLogo size="sm" />
+            <p className="max-w-sm text-sm text-muted-foreground">
+              Independent UK student loan calculator. Figures sourced from
+              GOV.UK and the Bank of England.
+            </p>
+          </div>
+          <Eyebrow marker={false}>studentloanstudy.uk</Eyebrow>
+        </div>
         <nav
           aria-label="Footer navigation"
           className="grid grid-cols-1 gap-8 text-sm xs:grid-cols-2 md:grid-cols-4"
         >
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            <Eyebrow as="h3" marker={false}>
               Calculators
-            </h3>
+            </Eyebrow>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className={NAV_LINK_CLASS}>
@@ -40,9 +59,9 @@ export function Footer() {
             </ul>
           </div>
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            <Eyebrow as="h3" marker={false}>
               Charts
-            </h3>
+            </Eyebrow>
             <ul className="space-y-2">
               <li>
                 <Link href="/balance" className={NAV_LINK_CLASS}>
@@ -67,9 +86,9 @@ export function Footer() {
             </ul>
           </div>
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            <Eyebrow as="h3" marker={false}>
               Guides
-            </h3>
+            </Eyebrow>
             <ul className="space-y-2">
               {GUIDES.map((guide) => (
                 <li key={guide.slug}>
@@ -84,9 +103,9 @@ export function Footer() {
             </ul>
           </div>
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            <Eyebrow as="h3" marker={false}>
               About
-            </h3>
+            </Eyebrow>
             <ul className="space-y-2">
               <li>
                 <Link href="/our-data" className={NAV_LINK_CLASS}>

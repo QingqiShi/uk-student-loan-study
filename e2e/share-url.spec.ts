@@ -1,27 +1,23 @@
 import { test, expect } from "@playwright/test";
-import { waitForResults } from "./helpers";
+import { readoutSection, waitForResults } from "./helpers";
 
 test.describe("Share URL round-trip", () => {
   test("loads results from new-format loans param", async ({ page }) => {
     await page.goto("/?loans=PLAN_2:45000&sal=50000");
     await waitForResults(page);
 
-    const section = page
-      .locator("nav")
-      .filter({ hasText: "Your Loan Breakdown" });
+    const section = readoutSection(page);
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
-    await expect(section.getByText("Total Repayments")).toBeVisible();
-    await expect(section.getByText("Payoff Timeline")).toBeVisible();
-    await expect(section.getByText("Interest Paid")).toBeVisible();
+    await expect(section.getByText("Total repaid").first()).toBeVisible();
+    await expect(section.getByText("Payoff timeline").first()).toBeVisible();
+    await expect(section.getByText("Interest paid").first()).toBeVisible();
   });
 
   test("loads results from legacy plan/ug/sal params", async ({ page }) => {
     await page.goto("/?plan=PLAN_2&ug=45000&sal=65000");
     await waitForResults(page);
 
-    const section = page
-      .locator("nav")
-      .filter({ hasText: "Your Loan Breakdown" });
+    const section = readoutSection(page);
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 
@@ -31,9 +27,7 @@ test.describe("Share URL round-trip", () => {
     await page.goto("/?loans=PLAN_2:45000,POSTGRADUATE:12000&sal=50000");
     await waitForResults(page);
 
-    const section = page
-      .locator("nav")
-      .filter({ hasText: "Your Loan Breakdown" });
+    const section = readoutSection(page);
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 
@@ -50,9 +44,7 @@ test.describe("Share URL round-trip", () => {
 
     // Should not crash — default preset loads instead
     await waitForResults(page);
-    const section = page
-      .locator("nav")
-      .filter({ hasText: "Your Loan Breakdown" });
+    const section = readoutSection(page);
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 });

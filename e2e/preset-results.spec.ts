@@ -4,6 +4,7 @@ import {
   waitForResultChange,
   getResultValues,
   clickPreset,
+  readoutSection,
 } from "./helpers";
 
 test.describe("Home page preset selection", () => {
@@ -13,12 +14,10 @@ test.describe("Home page preset selection", () => {
   });
 
   test("default preset loads results with £ values", async ({ page }) => {
-    const section = page
-      .locator("nav")
-      .filter({ hasText: "Your Loan Breakdown" });
-    await expect(section.getByText("Total Repayments")).toBeVisible();
-    await expect(section.getByText("Payoff Timeline")).toBeVisible();
-    await expect(section.getByText("Interest Paid")).toBeVisible();
+    const section = readoutSection(page);
+    await expect(section.getByText("Total repaid").first()).toBeVisible();
+    await expect(section.getByText("Payoff timeline").first()).toBeVisible();
+    await expect(section.getByText("Interest paid").first()).toBeVisible();
     await expect(section.getByText(/£[\d,]+/).first()).toBeVisible();
   });
 
@@ -52,31 +51,5 @@ test.describe("Home page preset selection", () => {
 
     const after = await getResultValues(page);
     expect(after.totalText).not.toBe(before.totalText);
-  });
-
-  test("toggling inflation adjustment changes total repayment", async ({
-    page,
-  }) => {
-    const before = await getResultValues(page);
-
-    await page.getByRole("switch", { name: "Adjust for inflation" }).click();
-    await waitForResultChange(page, before.totalText);
-
-    const after = await getResultValues(page);
-    expect(after.totalText).not.toBe(before.totalText);
-  });
-
-  test("insight text appears on page", async ({ page }) => {
-    // Desktop: InsightBadge (last match) is visible next to the chart heading
-    // (the first match is the mobile-only InsightCallout, hidden at desktop viewport)
-    await expect(
-      page
-        .getByText(
-          /peak repayment zone|loan will be written off|pay off quickly/,
-        )
-        .last(),
-    ).toBeVisible({
-      timeout: 15_000,
-    });
   });
 });

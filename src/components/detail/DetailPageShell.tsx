@@ -48,9 +48,11 @@ export function DetailPageShell({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="space-y-1">
-            <Heading as="h1">{heading}</Heading>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+          <div className="space-y-2">
+            <Heading as="h1" size="page">
+              {heading}
+            </Heading>
+            <p className="max-w-prose text-base text-muted-foreground sm:text-lg">
               {description}
             </p>
           </div>

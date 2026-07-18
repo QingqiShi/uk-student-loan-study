@@ -1,17 +1,11 @@
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
 import { BalanceComparisonChart } from "./BalanceComparisonChart";
 import { ComparisonTable } from "./ComparisonTable";
 import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
@@ -31,39 +25,20 @@ const plan5Annual = Math.round(
 export function Plan2VsPlan5Guide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Plan 2 vs Plan 5</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <div className="space-y-2">
-            <Heading as="h1">Plan 2 vs Plan 5: Which Is Better?</Heading>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Plan 2 and Plan 5 are the two loan types most English university
-              students will encounter. Plan 2 covers those who started between
-              2012 and 2023, while Plan 5 applies from 2023 onwards. They differ
-              in repayment threshold, interest rate, and write-off period — and
-              these differences can mean tens of thousands of pounds more or
-              less repaid over your career.
-            </p>
-          </div>
-        </div>
-
+      <GuideArticle
+        breadcrumbLabel="Plan 2 vs Plan 5"
+        title="Plan 2 vs Plan 5: which is better?"
+        intro={
+          <>
+            Plan 2 and Plan 5 are the two loan types most English university
+            students will encounter. Plan 2 covers those who started between
+            2012 and 2023, while Plan 5 applies from 2023 onwards. They differ
+            in repayment threshold, interest rate, and write-off period — and
+            these differences can mean tens of thousands of pounds more or less
+            repaid over your career.
+          </>
+        }
+      >
         <section className="space-y-4">
           <Heading as="h2" size="section">
             Side-by-Side Comparison
@@ -77,32 +52,39 @@ export function Plan2VsPlan5Guide() {
 
         <section className="space-y-4">
           <Heading as="h2" size="section">
-            Total Repayment by Salary
+            Total repayment by salary
           </Heading>
-          <p className="text-sm text-muted-foreground sm:text-base">
+          <p className="text-pretty text-muted-foreground">
             How much you repay in total depends heavily on your salary. This
             chart shows the total amount repaid over the life of each loan for a
             range of starting salaries, assuming a balance of
             {"\u00a0"}
             {formatGBP(EXAMPLE_BALANCE)}.
           </p>
-          <div className="h-75 sm:h-95">
+          <ChartFrame
+            caption={`Fig. 1 \u2014 Lifetime repaid by salary \u00b7 ${formatGBP(EXAMPLE_BALANCE)} balance`}
+            bodyClassName="h-75 sm:h-95"
+          >
             <TotalRepaymentBySalaryChart />
-          </div>
+          </ChartFrame>
         </section>
 
         <section className="space-y-4">
           <Heading as="h2" size="section">
-            Balance Over Time
+            Balance over time
           </Heading>
-          <p className="text-sm text-muted-foreground sm:text-base">
+          <p className="text-pretty text-muted-foreground">
             See how the outstanding balance changes month by month. Toggle
             between salary levels to see how income affects the repayment
-            trajectory for each plan.
+            trajectory for each plan. The dashed markers show each plan&rsquo;s
+            write-off point &mdash; Plan 2 at 30 years, Plan 5 at 40 years.
           </p>
-          <div className="h-85 sm:h-105">
+          <ChartFrame
+            caption={`Fig. 2 \u2014 Balance over time \u00b7 Plan 2 vs Plan 5`}
+            bodyClassName="h-85 sm:h-105"
+          >
             <BalanceComparisonChart />
-          </div>
+          </ChartFrame>
         </section>
 
         <section className="space-y-3">
@@ -126,24 +108,15 @@ export function Plan2VsPlan5Guide() {
             </p>
             <p>
               Not sure?{" "}
-              <Link
-                href="/which-plan"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/which-plan" className={guideLink}>
                 Take the which plan quiz
               </Link>{" "}
               to find out, or read the full breakdowns for{" "}
-              <Link
-                href="/plans/plan-2"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/plans/plan-2" className={guideLink}>
                 Plan 2
               </Link>{" "}
               and{" "}
-              <Link
-                href="/plans/plan-5"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/plans/plan-5" className={guideLink}>
                 Plan 5
               </Link>
               .
@@ -200,10 +173,7 @@ export function Plan2VsPlan5Guide() {
               For most borrowers, repayments are automatic through PAYE &mdash;
               you do not need to do anything. The real question is whether it
               makes sense to{" "}
-              <Link
-                href="/overpay"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/overpay" className={guideLink}>
                 overpay your loan
               </Link>
               .
@@ -212,10 +182,7 @@ export function Plan2VsPlan5Guide() {
               Plan 2 middle earners are hit hardest. They earn too much for the
               30-year write-off to help significantly, but not enough to pay off
               the balance quickly before{" "}
-              <Link
-                href="/guides/how-interest-works"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/guides/how-interest-works" className={guideLink}>
                 interest
               </Link>{" "}
               (up to RPI + 3%) compounds over decades. These borrowers often end
@@ -224,10 +191,7 @@ export function Plan2VsPlan5Guide() {
             </p>
             <p>
               Use the{" "}
-              <Link
-                href="/"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/" className={guideLink}>
                 student loan repayment calculator
               </Link>{" "}
               to model your specific scenario and see exactly how much
@@ -236,50 +200,41 @@ export function Plan2VsPlan5Guide() {
           </div>
         </section>
 
-        <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-          <Heading as="h2" size="subsection">
-            Key Takeaways
-          </Heading>
-          <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
-            <li>
-              Lower earners often pay <strong>more</strong> on Plan 5 because
-              the 40-year term and lower threshold mean more months of
-              repayments.
-            </li>
-            <li>
-              Middle earners may pay <strong>more</strong> on Plan 2 because
-              interest can reach RPI + 3%, and they earn too much for write-off
-              to help but not enough to pay off the balance quickly.
-            </li>
-            <li>
-              Plan 5&rsquo;s simpler interest (RPI only) makes the balance more
-              predictable, but the longer write-off window is the real cost
-              driver.
-            </li>
-            <li>
-              Plan 5&rsquo;s lower threshold ({formatGBP(plan5Threshold)} vs{" "}
-              {formatGBP(plan2Threshold)}) means earlier and larger repayments
-              at the same salary.
-            </li>
-            <li>
-              Model your own salary in the{" "}
-              <Link
-                href="/"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
-                student loan calculator
-              </Link>{" "}
-              to see the total cost under each plan.
-            </li>
-          </ul>
-        </section>
+        <KeyTakeaways>
+          <li>
+            Lower earners often pay <strong>more</strong> on Plan 5 because the
+            40-year term and lower threshold mean more months of repayments.
+          </li>
+          <li>
+            Middle earners may pay <strong>more</strong> on Plan 2 because
+            interest can reach RPI + 3%, and they earn too much for write-off to
+            help but not enough to pay off the balance quickly.
+          </li>
+          <li>
+            Plan 5&rsquo;s simpler interest (RPI only) makes the balance more
+            predictable, but the longer write-off window is the real cost
+            driver.
+          </li>
+          <li>
+            Plan 5&rsquo;s lower threshold ({formatGBP(plan5Threshold)} vs{" "}
+            {formatGBP(plan2Threshold)}) means earlier and larger repayments at
+            the same salary.
+          </li>
+          <li>
+            Model your own salary in the{" "}
+            <Link href="/" className={guideLink}>
+              student loan calculator
+            </Link>{" "}
+            to see the total cost under each plan.
+          </li>
+        </KeyTakeaways>
 
         <RelatedGuides
           current="plan-2-vs-plan-5"
           order={["how-interest-works", "pay-upfront-or-take-loan"]}
           tools={["/which-plan", "/plans", "/repaid"]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

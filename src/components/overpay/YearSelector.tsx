@@ -93,11 +93,20 @@ export function YearSelector({
 
   return (
     <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+      <Label
+        htmlFor={id}
+        className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+      >
+        {label}
+      </Label>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger
           render={
-            <Button id={id} variant="outline" className="w-20 tabular-nums" />
+            <Button
+              id={id}
+              variant="outline"
+              className="w-20 font-mono tabular-nums"
+            />
           }
         >
           {selectedYear}
@@ -113,7 +122,7 @@ export function YearSelector({
             >
               <HugeiconsIcon icon={ArrowLeftIcon} />
             </Button>
-            <span className="text-sm font-medium tabular-nums">
+            <span className="font-mono text-sm font-medium tabular-nums">
               {decadeLabel}
             </span>
             <Button

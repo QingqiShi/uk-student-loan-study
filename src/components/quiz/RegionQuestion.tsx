@@ -10,30 +10,33 @@ interface RegionQuestionProps {
   direction: "forward" | "backward";
 }
 
+// Monochrome initial chips instead of OS colour flag emoji, so no off-palette
+// hue enters the instrument — the chip inherits the spruce/muted token from
+// OptionCard. The full nation name stays in the label.
 const REGION_OPTIONS: Array<{
   value: Region;
   label: string;
-  icon: string;
+  initial: string;
 }> = [
   {
     value: "england",
     label: "England",
-    icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    initial: "E",
   },
   {
     value: "wales",
     label: "Wales",
-    icon: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+    initial: "W",
   },
   {
     value: "scotland",
     label: "Scotland",
-    icon: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    initial: "S",
   },
   {
     value: "northern-ireland",
     label: "Northern Ireland",
-    icon: "☘️",
+    initial: "NI",
   },
 ];
 
@@ -57,7 +60,11 @@ export function RegionQuestion({
           <OptionCard
             key={option.value}
             label={option.label}
-            icon={<span className="text-xl">{option.icon}</span>}
+            icon={
+              <span className="font-sans text-sm font-semibold tracking-wide">
+                {option.initial}
+              </span>
+            }
             isSelected={selectedValue === option.value}
             onClick={() => {
               onSelect(option.value);

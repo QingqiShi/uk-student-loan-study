@@ -26,7 +26,7 @@ export function QuestionStep({
       aria-live="polite"
     >
       <div className="mb-8 text-center">
-        <Heading as="h1" className="text-foreground md:text-3xl">
+        <Heading as="h1" size="section">
           {title}
         </Heading>
         {subtitle && (

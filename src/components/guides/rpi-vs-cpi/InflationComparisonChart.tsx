@@ -17,15 +17,15 @@ const RPI_RATE = CURRENT_RATES.rpi / 100;
 const chartConfig = {
   nominal: {
     label: "Nominal",
-    color: "oklch(0.7 0.15 250)",
+    color: "var(--muted-foreground)", // neutral — reference line
   },
   cpiAdjusted: {
     label: "CPI-adjusted",
-    color: "oklch(0.7 0.15 150)",
+    color: "var(--chart-1)", // spruce
   },
   rpiAdjusted: {
     label: "RPI-adjusted",
-    color: "oklch(0.7 0.15 50)",
+    color: "var(--chart-2)", // brick — the costlier real-terms line
   },
 } satisfies ChartConfig;
 

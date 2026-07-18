@@ -78,6 +78,17 @@ export interface SimulationConfig {
   plan2ThresholdSchedule?: number[];
   rpiRate?: number;
   boeBaseRate?: number;
+  /** A period of reduced/zero income (e.g. a career break or parental leave).
+   *  During the window, repayments follow the lower income and (on Plan 2) so
+   *  does the interest rate; interest still accrues. Omit for no break. */
+  careerBreak?: {
+    /** 0-indexed month the break starts. */
+    startMonth: number;
+    /** Length of the break in months. */
+    months: number;
+    /** Income during the break (default 0). */
+    salary?: number;
+  };
 }
 
 /**

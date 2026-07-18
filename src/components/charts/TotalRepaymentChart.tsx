@@ -43,7 +43,7 @@ export function TotalRepaymentChart() {
             y: deferredValue,
             label: currencyFormatter.format(deferredValue),
             bottomLabel: currencyFormatter.format(deferredSalary),
-            color: "var(--chart-3)",
+            color: "var(--signal)",
           },
         ]
       : [];
@@ -68,7 +68,7 @@ export function TotalRepaymentChart() {
       interactionMode="none"
       annotations={annotations}
       xDomain={[MIN_SALARY, MAX_SALARY]}
-      margin={{ top: 25, right: 25, bottom: 8, left: 25 }}
+      margin={{ top: 25, right: 16, bottom: 8, left: 25 }}
     />
   );
 }

@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { type Page, test, expect } from "@playwright/test";
-import { waitForResults } from "./helpers";
+import { openConfigWizard, waitForResults } from "./helpers";
 
 function axeScan(page: Page) {
   return new AxeBuilder({ page }).withTags([
@@ -46,7 +46,7 @@ test.describe("Accessibility", () => {
     await waitForResults(page);
 
     // Open the wizard
-    await page.getByRole("button", { name: "Tailor to you" }).click();
+    await openConfigWizard(page);
     await expect(
       page.getByRole("dialog", { name: "Configure your loans" }),
     ).toBeVisible();

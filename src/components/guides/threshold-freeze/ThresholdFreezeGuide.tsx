@@ -2,20 +2,14 @@ import { InformationCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
+import { GuideArticle, guideLink } from "../guide-parts";
 import { CurrentThresholdsTable } from "./CurrentThresholdsTable";
 import { ThresholdComparisonChart } from "./ThresholdComparisonChart";
 
@@ -39,40 +33,18 @@ const currentTaxYear = getCurrentTaxYearLabel();
 export function ThresholdFreezeGuide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Threshold Freeze Explained</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <div className="space-y-2">
-            <span className="text-sm text-muted-foreground">March 2026</span>
-            <Heading as="h1">
-              The Plan 2 Threshold Is Being Frozen Again
-            </Heading>
-          </div>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+      <GuideArticle
+        breadcrumbLabel="Threshold Freeze Explained"
+        title="The Plan 2 threshold is being frozen again"
+        intro={
+          <>
             Every few years, the government freezes the salary at which Plan 2
             graduates start repaying. Each freeze quietly increases what you pay
             each month. It&apos;s happened before, it&apos;s happening again,
             and Parliament is finally asking whether it&apos;s fair.
-          </p>
-        </div>
-
+          </>
+        }
+      >
         <section className="space-y-3">
           <Heading as="h2" size="section">
             The Good News First
@@ -224,7 +196,13 @@ export function ThresholdFreezeGuide() {
           </div>
         </section>
 
-        <ThresholdComparisonChart />
+        <ChartFrame
+          caption="Fig. 1 — Plan 2 threshold trajectories · 2025/26–2030/31"
+          figure={`Gap ${formatGBP(THRESHOLD_GAP)}`}
+          figureTone="cost"
+        >
+          <ThresholdComparisonChart />
+        </ChartFrame>
 
         <section className="space-y-3">
           <Heading as="h2" size="section">
@@ -312,25 +290,16 @@ export function ThresholdFreezeGuide() {
             <p>
               The numbers above use a {formatGBP(EXAMPLE_SALARY)} salary as an
               example. To see what the freeze means at your income, try the{" "}
-              <Link
-                href="/"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/" className={guideLink}>
                 repayment calculator
               </Link>{" "}
               &mdash; set threshold growth to 0% to model the freeze, or 3% for
               inflation-linked growth. You can also check{" "}
-              <Link
-                href="/repaid"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/repaid" className={guideLink}>
                 when your loan will be paid off
               </Link>{" "}
               and how the freeze pushes up{" "}
-              <Link
-                href="/effective-rate"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/effective-rate" className={guideLink}>
                 the effective interest rate you pay
               </Link>
               .
@@ -350,7 +319,7 @@ export function ThresholdFreezeGuide() {
             },
           ]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

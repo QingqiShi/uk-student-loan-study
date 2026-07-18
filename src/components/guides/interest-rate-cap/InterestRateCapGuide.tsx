@@ -1,18 +1,11 @@
-import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
+import { GuideArticle, KeyTakeaways } from "../guide-parts";
 import { BalanceWithCapChart } from "./BalanceWithCapChart";
 import { CurrentCapTable } from "./CurrentCapTable";
 import { TOTAL_YEARS, YEARS_ABOVE_CAP } from "./historical-rates";
@@ -28,38 +21,17 @@ const currentTaxYear = getCurrentTaxYearLabel();
 export function InterestRateCapGuide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Interest Rate Cap</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <div className="space-y-2">
-            <Heading as="h1">
-              Plan 2 Interest Rate Capped at 6%: What It Means for You
-            </Heading>
-            <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              On 7 April 2026, the government announced a 6% cap on Plan 2 and
-              Plan 3 student loan interest rates from September 2026. Here is
-              what that means in practice and how much it could save you.
-            </p>
-          </div>
-        </div>
-
+      <GuideArticle
+        breadcrumbLabel="Interest Rate Cap"
+        title="Plan 2 interest rate capped at 6%: what it means for you"
+        intro={
+          <>
+            On 7 April 2026, the government announced a 6% cap on Plan 2 and
+            Plan 3 student loan interest rates from September 2026. Here is what
+            that means in practice and how much it could save you.
+          </>
+        }
+      >
         <section className="space-y-3">
           <Heading as="h2" size="section">
             What Changed
@@ -85,9 +57,9 @@ export function InterestRateCapGuide() {
             <p>
               At current rates, this barely bites &mdash; the maximum is{" "}
               {formatPercent(currentMaxRate)}, only{" "}
-              {formatPercent(currentMaxRate - 6)} above the cap. But the cap is
-              designed as insurance: if inflation surges again, your interest
-              rate will not follow it above 6%.
+              {formatPercent(Math.round((currentMaxRate - 6) * 100) / 100)}{" "}
+              above the cap. But the cap is designed as insurance: if inflation
+              surges again, your interest rate will not follow it above 6%.
             </p>
           </div>
         </section>
@@ -140,7 +112,13 @@ export function InterestRateCapGuide() {
             &mdash; without that intervention, the formula rate would have
             reached 16.5%.
           </p>
-          <HistoricalRatesChart />
+          <ChartFrame
+            caption="Fig. 1 — Maximum Plan 2 rate charged by year"
+            figure="Cap 6%"
+            figureTone="cost"
+          >
+            <HistoricalRatesChart />
+          </ChartFrame>
           <p className="text-sm text-muted-foreground">
             The bars show the maximum rate actually charged each year (after any
             PMR intervention). The dashed line marks the new 6% cap.
@@ -167,9 +145,14 @@ export function InterestRateCapGuide() {
               salary, and 3% annual growth.
             </p>
           </div>
-          <div className="h-80 sm:h-100">
+          <ChartFrame
+            caption="Fig. 2 — Balance with and without the 6% cap"
+            figure="Cap 6%"
+            figureTone="cost"
+            bodyClassName="h-80 sm:h-100"
+          >
             <BalanceWithCapChart />
-          </div>
+          </ChartFrame>
           <p className="text-sm text-muted-foreground">
             At higher RPI values, the gap between the capped and uncapped
             balance widens significantly. At 7% RPI, the uncapped rate would be
@@ -196,7 +179,9 @@ export function InterestRateCapGuide() {
               earners see meaningful savings.
             </p>
           </div>
-          <TotalCostComparisonChart />
+          <ChartFrame caption="Fig. 3 — Total repaid by salary · sustained 7% RPI">
+            <TotalCostComparisonChart />
+          </ChartFrame>
         </section>
 
         <section className="space-y-3">
@@ -272,40 +257,34 @@ export function InterestRateCapGuide() {
           </div>
         </section>
 
-        <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-          <Heading as="h2" size="subsection">
-            Key Takeaways
-          </Heading>
-          <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
-            <li>
-              Plan 2 and Plan 3 interest will be capped at 6% from September
-              2026
-            </li>
-            <li>
-              The maximum rate has exceeded 6% in {String(YEARS_ABOVE_CAP)} of
-              the {String(TOTAL_YEARS)} years since Plan 2 was introduced
-            </li>
-            <li>
-              The biggest beneficiaries are higher earners and current students,
-              especially if inflation rises again
-            </li>
-            <li>
-              Monthly repayments do not change &mdash; the cap only slows
-              balance growth
-            </li>
-            <li>
-              The cap is announced for one year only (2026/27), though it may be
-              extended
-            </li>
-          </ul>
-        </section>
+        <KeyTakeaways>
+          <li>
+            Plan 2 and Plan 3 interest will be capped at 6% from September 2026.
+          </li>
+          <li>
+            The maximum rate has exceeded 6% in {String(YEARS_ABOVE_CAP)} of the{" "}
+            {String(TOTAL_YEARS)} years since Plan 2 was introduced.
+          </li>
+          <li>
+            The biggest beneficiaries are higher earners and current students,
+            especially if inflation rises again.
+          </li>
+          <li>
+            Monthly repayments do not change &mdash; the cap only slows balance
+            growth.
+          </li>
+          <li>
+            The cap is announced for one year only (2026/27), though it may be
+            extended.
+          </li>
+        </KeyTakeaways>
 
         <RelatedGuides
           current="interest-rate-cap"
           order={["how-interest-works", "rpi-vs-cpi", "plan-2-vs-plan-5"]}
           tools={["/interest", "/repaid"]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

@@ -1,17 +1,11 @@
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
+import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
 import { InflationComparisonChart } from "./InflationComparisonChart";
 
 const rpi = CURRENT_RATES.rpi;
@@ -23,37 +17,18 @@ const plan1Rate = Math.min(rpi, CURRENT_RATES.boeBaseRate + 1);
 export function RpiVsCpiGuide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>RPI vs CPI</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <Heading as="h1">
-            RPI vs CPI: Why Your Student Loan Interest Outpaces Inflation
-          </Heading>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+      <GuideArticle
+        breadcrumbLabel="RPI vs CPI"
+        title="RPI vs CPI: why your student loan interest outpaces inflation"
+        intro={
+          <>
             Your student loan interest is tied to RPI, but when the calculator
             shows &ldquo;adjusted for inflation,&rdquo; it uses CPI. RPI
             typically runs 0.5&ndash;1% higher. That gap means your balance
             grows faster than the general cost of living.
-          </p>
-        </div>
-
+          </>
+        }
+      >
         <section className="space-y-3">
           <Heading as="h2" size="section">
             What Are RPI and CPI?
@@ -156,13 +131,18 @@ export function RpiVsCpiGuide() {
           </div>
         </section>
 
-        <section className="space-y-3">
+        <section className="space-y-4">
           <Heading as="h2" size="section">
-            Inflation Comparison
+            Inflation comparison
           </Heading>
-          <div className="h-85 sm:h-105">
+          <ChartFrame
+            caption={`Fig. 1 \u2014 Balance in real terms \u00b7 Plan 5, \u00a345,000`}
+            figure={`RPI ${formatPercent(rpi)}`}
+            figureTone="cost"
+            bodyClassName="h-85 sm:h-105"
+          >
             <InflationComparisonChart />
-          </div>
+          </ChartFrame>
           <p className="text-sm text-muted-foreground">
             Plan 5, {"\u00a3"}45,000 balance. The gap between the CPI-adjusted
             and RPI-adjusted lines is the real above-inflation cost.
@@ -228,10 +208,7 @@ export function RpiVsCpiGuide() {
             <p>
               If your loan is growing faster than general prices, explore
               whether{" "}
-              <Link
-                href="/overpay"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/overpay" className={guideLink}>
                 overpaying
               </Link>{" "}
               could reduce the above-inflation cost.
@@ -239,49 +216,38 @@ export function RpiVsCpiGuide() {
           </div>
         </section>
 
-        <section className="space-y-3">
-          <div className="rounded-xl border bg-muted/50 p-5">
-            <Heading as="h2" size="subsection" className="mb-3">
-              Key Takeaways
-            </Heading>
-            <ul className="list-disc space-y-2 pl-6 text-muted-foreground">
-              <li>
-                RPI typically runs 0.5&ndash;1% higher than CPI &mdash; your
-                loan interest is tied to the higher measure.
-              </li>
-              <li>
-                &ldquo;Adjusted for inflation&rdquo; in the calculator uses CPI,
-                not RPI. Remaining growth after toggling is real above-inflation
-                cost.
-              </li>
-              <li>
-                Plan 5&apos;s &ldquo;inflation-only&rdquo; interest is
-                RPI-inflation, not CPI-inflation.
-              </li>
-              <li>
-                RPI may align with CPIH by 2030, but current borrowers are
-                unlikely to benefit.
-              </li>
-              <li>
-                See how inflation affects your total repayment with the{" "}
-                <Link
-                  href="/"
-                  className="text-primary underline underline-offset-4 hover:text-primary/80"
-                >
-                  student loan calculator
-                </Link>
-                .
-              </li>
-            </ul>
-          </div>
-        </section>
+        <KeyTakeaways>
+          <li>
+            RPI typically runs 0.5&ndash;1% higher than CPI &mdash; your loan
+            interest is tied to the higher measure.
+          </li>
+          <li>
+            &ldquo;Adjusted for inflation&rdquo; in the calculator uses CPI, not
+            RPI. Remaining growth after toggling is real above-inflation cost.
+          </li>
+          <li>
+            Plan 5&apos;s &ldquo;inflation-only&rdquo; interest is
+            RPI-inflation, not CPI-inflation.
+          </li>
+          <li>
+            RPI may align with CPIH by 2030, but current borrowers are unlikely
+            to benefit.
+          </li>
+          <li>
+            See how inflation affects your total repayment with the{" "}
+            <Link href="/" className={guideLink}>
+              student loan calculator
+            </Link>
+            .
+          </li>
+        </KeyTakeaways>
 
         <RelatedGuides
           current="rpi-vs-cpi"
           order={["how-interest-works", "plan-2-vs-plan-5"]}
           tools={["/interest", "/effective-rate"]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

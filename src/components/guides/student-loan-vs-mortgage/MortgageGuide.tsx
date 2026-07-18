@@ -7,18 +7,13 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
+import { Panel } from "@/components/instrument/Panel";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
 import { RepaymentImpactChart } from "./RepaymentImpactChart";
 
 const plan2Threshold = PLAN_DISPLAY_INFO.PLAN_2.yearlyThreshold;
@@ -40,8 +35,8 @@ const example60kMonthly = Math.round(
 const example60kAnnual = example60kMonthly * 12;
 const example60kMortgageReduction = Math.round(example60kAnnual * 4.5);
 
-const goodBadge = "bg-primary/10 text-primary";
-const watchBadge = "bg-destructive/10 text-destructive";
+const goodBadge = "bg-accent-wash text-cta";
+const watchBadge = "bg-signal-wash text-signal";
 
 const quickAnswers = [
   {
@@ -70,53 +65,40 @@ const quickAnswers = [
   },
 ];
 
-const linkClasses =
-  "text-primary underline underline-offset-4 hover:text-primary/80";
+const linkClasses = guideLink;
 
 export function MortgageGuide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Student Loans &amp; Mortgages</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <Heading as="h1">Does a Student Loan Affect Your Mortgage?</Heading>
-
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+      <GuideArticle
+        breadcrumbLabel="Student Loans & Mortgages"
+        title="Does a student loan affect your mortgage?"
+        intro={
+          <>
             A UK student loan won&rsquo;t stop you getting a mortgage, and it
             isn&rsquo;t treated as normal debt. But the monthly repayment does
             quietly shrink how much a lender will let you borrow &mdash; and, as
             ever, it&rsquo;s middle earners who feel the squeeze most.
             Here&rsquo;s exactly what lenders look at.
-          </p>
-        </div>
-
-        <section className="grid gap-3 sm:grid-cols-2">
+          </>
+        }
+      >
+        <Panel
+          padding={false}
+          className="divide-y divide-border overflow-hidden"
+        >
           {quickAnswers.map((item) => (
             <div
               key={item.question}
-              className="flex items-center gap-3 rounded-lg border bg-card p-4 ring-1 ring-foreground/10"
+              className="flex items-center gap-3 p-4 sm:p-5"
             >
-              <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <HugeiconsIcon icon={item.icon} className="size-5" />
-              </div>
-              <p className="flex-1 text-sm font-medium">{item.question}</p>
+              <HugeiconsIcon
+                icon={item.icon}
+                className="size-5 shrink-0 text-primary"
+              />
+              <p className="flex-1 font-medium text-foreground">
+                {item.question}
+              </p>
               <span
                 className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${item.answerClass}`}
               >
@@ -124,7 +106,7 @@ export function MortgageGuide() {
               </span>
             </div>
           ))}
-        </section>
+        </Panel>
 
         <section className="space-y-3">
           <Heading as="h2" size="section">
@@ -160,9 +142,12 @@ export function MortgageGuide() {
           <Heading as="h2" size="section">
             How Much You Repay at Each Salary
           </Heading>
-          <div className="h-75 sm:h-90">
+          <ChartFrame
+            caption="Fig. 1 — Monthly repayment by salary · Plan 2 vs Plan 5"
+            bodyClassName="h-75 sm:h-90"
+          >
             <RepaymentImpactChart />
-          </div>
+          </ChartFrame>
           <p className="text-sm text-muted-foreground">
             Based on current thresholds: Plan 2 at {formatGBP(plan2Threshold)}{" "}
             and Plan 5 at {formatGBP(plan5Threshold)} per year. Both charge{" "}
@@ -324,41 +309,36 @@ export function MortgageGuide() {
           </div>
         </section>
 
-        <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-          <Heading as="h2" size="subsection">
-            Key Takeaways
-          </Heading>
-          <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
-            <li>
-              A UK student loan <strong>won&rsquo;t stop</strong> you getting a
-              mortgage and isn&rsquo;t treated as conventional debt.
-            </li>
-            <li>
-              It <strong>does</strong> affect affordability: lenders deduct your
-              monthly repayment from income, reducing how much you can borrow.
-            </li>
-            <li>
-              It <strong>doesn&rsquo;t count as income</strong> &mdash; it can
-              only lower the figure a lender uses, never raise it.
-            </li>
-            <li>
-              <strong>Declare</strong> the monthly repayment honestly; on PAYE
-              it shows on your payslips anyway.
-            </li>
-            <li>
-              It <strong>doesn&rsquo;t appear</strong> on your credit file or
-              affect your credit score.
-            </li>
-            <li>
-              Paying it off to boost borrowing rarely beats a bigger deposit
-              &mdash; middle earners feel the squeeze most, so model it with the{" "}
-              <Link href="/overpay" className={linkClasses}>
-                overpay calculator
-              </Link>
-              .
-            </li>
-          </ul>
-        </section>
+        <KeyTakeaways>
+          <li>
+            A UK student loan <strong>won&rsquo;t stop</strong> you getting a
+            mortgage and isn&rsquo;t treated as conventional debt.
+          </li>
+          <li>
+            It <strong>does</strong> affect affordability: lenders deduct your
+            monthly repayment from income, reducing how much you can borrow.
+          </li>
+          <li>
+            It <strong>doesn&rsquo;t count as income</strong> &mdash; it can
+            only lower the figure a lender uses, never raise it.
+          </li>
+          <li>
+            <strong>Declare</strong> the monthly repayment honestly; on PAYE it
+            shows on your payslips anyway.
+          </li>
+          <li>
+            It <strong>doesn&rsquo;t appear</strong> on your credit file or
+            affect your credit score.
+          </li>
+          <li>
+            Paying it off to boost borrowing rarely beats a bigger deposit
+            &mdash; middle earners feel the squeeze most, so model it with the{" "}
+            <Link href="/overpay" className={linkClasses}>
+              overpay calculator
+            </Link>
+            .
+          </li>
+        </KeyTakeaways>
 
         <RelatedGuides
           current="student-loan-vs-mortgage"
@@ -371,7 +351,7 @@ export function MortgageGuide() {
             },
           ]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

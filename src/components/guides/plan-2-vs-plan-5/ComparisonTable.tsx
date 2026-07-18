@@ -8,6 +8,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import { surfaceCard } from "@/lib/surfaces";
+import { specHead } from "../guide-parts";
 
 const plan2 = PLAN_DISPLAY_INFO.PLAN_2;
 const plan5 = PLAN_DISPLAY_INFO.PLAN_5;
@@ -46,21 +48,36 @@ const rows = [
 
 export function ComparisonTable() {
   return (
-    <ScrollFadeWrapper className="rounded-lg border">
+    <ScrollFadeWrapper className={surfaceCard}>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead scope="col">Feature</TableHead>
-            <TableHead scope="col">Plan 2</TableHead>
-            <TableHead scope="col">Plan 5</TableHead>
+            <TableHead scope="col" className={specHead}>
+              Feature
+            </TableHead>
+            <TableHead scope="col" className={specHead}>
+              Plan 2
+            </TableHead>
+            <TableHead scope="col" className={specHead}>
+              Plan 5
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.label}>
-              <TableHead scope="row">{row.label}</TableHead>
-              <TableCell>{row.plan2}</TableCell>
-              <TableCell>{row.plan5}</TableCell>
+              <TableHead
+                scope="row"
+                className="font-medium text-muted-foreground"
+              >
+                {row.label}
+              </TableHead>
+              <TableCell className="whitespace-normal text-foreground">
+                {row.plan2}
+              </TableCell>
+              <TableCell className="whitespace-normal text-foreground">
+                {row.plan5}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

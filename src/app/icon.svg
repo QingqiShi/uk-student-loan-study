@@ -5,7 +5,7 @@
     </clipPath>
   </defs>
   <g clip-path="url(#rounded)">
-    <rect width="44" height="44" rx="10" fill="#10B981"/>
-    <path d="M44 44l0-20q-11-16-22-12-11 5-22 16l0 16z" fill="#2B7F55"/>
+    <rect width="44" height="44" rx="10" fill="#34B08A"/>
+    <path d="M44 44l0-20q-11-16-22-12-11 5-22 16l0 16z" fill="#0C5C44"/>
   </g>
 </svg>

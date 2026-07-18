@@ -12,7 +12,7 @@ export function PageLayout({ children, repaymentYear }: PageLayoutProps) {
       <Header repaymentYear={repaymentYear} />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-4xl flex-1 space-y-6 px-3 pt-8 pb-6 sm:pt-18 md:pb-8"
+        className="mx-auto w-full max-w-4xl flex-1 space-y-6 px-3 py-6 sm:pt-10 md:pb-8"
       >
         {children}
       </main>

@@ -11,11 +11,12 @@ const appDir = join(__dirname, "..", "src", "app");
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// Brand emerald palette (Tailwind emerald scale)
-const EMERALD_300 = "#6EE7B7";
-const EMERALD_400 = "#34D399";
-const EMERALD_500 = "#10B981";
-const EMERALD_600 = "#2B7F55";
+// Brand spruce palette (Instrument identity). Names kept for minimal diff;
+// values are the new spruce ramp (bright accent on the dark ground → deep hill).
+const EMERALD_300 = "#6FD3AE";
+const EMERALD_400 = "#50C99F";
+const EMERALD_500 = "#34B08A";
+const EMERALD_600 = "#0C5C44";
 
 // Icon settings
 const ICON_SIZE = 100;
@@ -130,16 +131,16 @@ const socialSvg = `<svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH
   <rect x="400" y="270" width="400" height="2" fill="url(#lineGradient)" rx="1"/>
 
   <!-- Title -->
-  <text x="${WIDTH / 2}" y="340" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="56" font-weight="700" fill="white" letter-spacing="-1.5">UK Student Loan Study</text>
+  <text x="${WIDTH / 2}" y="340" text-anchor="middle" font-family="Archivo, system-ui, sans-serif" font-size="56" font-weight="700" fill="white" letter-spacing="-1.5">UK Student Loan Study</text>
 
   <!-- Tagline -->
-  <text x="${WIDTH / 2}" y="405" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="24" font-weight="400" fill="#A1A1AA" letter-spacing="0.3">See how much you'll actually repay</text>
+  <text x="${WIDTH / 2}" y="405" text-anchor="middle" font-family="Archivo, system-ui, sans-serif" font-size="24" font-weight="400" fill="#A1A1AA" letter-spacing="0.3">See how much you'll actually repay</text>
 
   <!-- Bottom accent bar -->
   <rect x="0" y="620" width="${WIDTH}" height="10" fill="url(#bottomGradient)" opacity="0.6"/>
 
   <!-- Domain URL -->
-  <text x="${WIDTH / 2}" y="560" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-size="15" font-weight="600" fill="${EMERALD_400}" letter-spacing="3">STUDENTLOANSTUDY.UK</text>
+  <text x="${WIDTH / 2}" y="560" text-anchor="middle" font-family="Archivo, system-ui, sans-serif" font-size="15" font-weight="600" fill="${EMERALD_400}" letter-spacing="3">STUDENTLOANSTUDY.UK</text>
 
   <!-- Subtle decorative corners -->
   <path d="M30 0 L30 30 L0 30" fill="none" stroke="${EMERALD_500}" stroke-width="1" opacity="0.2"/>
@@ -152,7 +153,7 @@ const socialSvg = `<svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH
 const resvg = new Resvg(socialSvg, {
   font: {
     loadSystemFonts: true,
-    defaultFontFamily: "Space Grotesk",
+    defaultFontFamily: "Archivo",
   },
 });
 const pngData = resvg.render();

@@ -1,18 +1,12 @@
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
+import { GuideArticle, guideLink } from "../guide-parts";
 import { CurrentRatesTable } from "./CurrentRatesTable";
 import { InterestRateChart } from "./InterestRateChart";
 
@@ -29,35 +23,18 @@ const currentTaxYear = getCurrentTaxYearLabel();
 export function InterestGuide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>How Interest Works</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <Heading as="h1">How Interest Works on UK Student Loans</Heading>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+      <GuideArticle
+        breadcrumbLabel="How Interest Works"
+        title="How interest works on UK student loans"
+        intro={
+          <>
             Interest is one of the most confusing parts of student loans. Each
             plan type calculates it differently, which means the amount your
             balance grows varies depending on when you started university and
             how much you earn.
-          </p>
-        </div>
-
+          </>
+        }
+      >
         <section className="space-y-3">
           <Heading as="h2" size="section">
             Plan 2: The Sliding Scale
@@ -116,7 +93,13 @@ export function InterestGuide() {
           </div>
         </section>
 
-        <InterestRateChart />
+        <ChartFrame
+          caption="Fig. 1 — Annual interest rate by salary · Plan 2 vs Plan 5"
+          figure={`${formatPercent(maxRate)} max`}
+          figureTone="cost"
+        >
+          <InterestRateChart />
+        </ChartFrame>
 
         <section className="space-y-3">
           <Heading as="h2" size="section">
@@ -196,18 +179,12 @@ export function InterestGuide() {
               and balances are at their highest. Over time, salary growth
               increases your repayments while the balance (hopefully) shrinks,
               eventually tipping the scales. Use the{" "}
-              <Link
-                href="/"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/" className={guideLink}>
                 repayment calculator
               </Link>{" "}
               to see when this tipping point occurs at your salary, or explore
               whether{" "}
-              <Link
-                href="/overpay"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
+              <Link href="/overpay" className={guideLink}>
                 overpaying your loan
               </Link>{" "}
               could reduce the total cost.
@@ -220,7 +197,7 @@ export function InterestGuide() {
           order={["rpi-vs-cpi", "plan-2-vs-plan-5"]}
           tools={["/interest", "/effective-rate"]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

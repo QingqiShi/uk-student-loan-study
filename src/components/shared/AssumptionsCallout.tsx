@@ -32,7 +32,10 @@ export function AssumptionsCallout() {
 
   const hasTrailingItem = showBoe || config.showPresentValue;
 
-  const bold = "font-medium text-foreground";
+  // Matches the homepage `.assume` treatment: inline figures are sans-semibold
+  // ink, not mono — several values ("frozen then +2%/yr") are mixed words +
+  // numbers, so the Figures-Are-Mono rule keeps them in Archivo.
+  const bold = "font-semibold text-foreground";
 
   return (
     <p className="text-center text-xs text-muted-foreground">
@@ -54,7 +57,7 @@ export function AssumptionsCallout() {
       .{" "}
       <button
         type="button"
-        className="cursor-pointer text-primary underline underline-offset-2 hover:text-primary/80"
+        className="cursor-pointer text-cta underline decoration-primary/40 underline-offset-2 transition-colors hover:decoration-primary"
         onClick={() => {
           openAssumptions();
         }}

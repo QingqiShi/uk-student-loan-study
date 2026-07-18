@@ -1,6 +1,3 @@
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import Link from "next/link";
 import { Sparkline } from "@/components/charts/Sparkline";
 import { percentageFormatter } from "@/constants";
 import type {
@@ -10,285 +7,131 @@ import type {
 } from "@/types/insightCards";
 
 // ---------------------------------------------------------------------------
-// Shared card shell
+// Per-metric vizzes — the baseline-pinned instrument that rides inside each
+// MetricReadout cell (see InsightCards). Spruce carries the positive series and
+// principal; brick carries interest/cost; everything else is a cool neutral.
 // ---------------------------------------------------------------------------
 
-function CardShell({
-  title,
-  href,
-  active,
-  color,
-  children,
+/** Sparkline viz for the trend metrics (total repaid, payoff timeline). */
+export function SparklineViz({
+  cardData,
+  label,
 }: {
-  title: string;
-  href: string;
-  active?: boolean;
-  color?: string;
-  children: React.ReactNode;
+  cardData: InsightCardData;
+  label: string;
 }) {
-  const inner = (
-    <div
-      className={
-        active
-          ? "flex h-full flex-col overflow-hidden rounded-xl bg-card ring-2"
-          : "flex h-full flex-col overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10 transition-all duration-200 hover:bg-accent hover:ring-primary/30"
-      }
-      style={
-        active && color
-          ? ({ "--tw-ring-color": color } as React.CSSProperties)
-          : undefined
-      }
-    >
-      <div className="flex items-center justify-between px-5 pt-5">
-        <span className="text-sm font-medium text-muted-foreground">
-          {title}
-        </span>
-        {!active && (
-          <HugeiconsIcon
-            icon={ArrowRight01Icon}
-            className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+  return (
+    <Sparkline
+      data={cardData.data}
+      color="var(--primary)"
+      ariaLabel={`${label}: ${cardData.stat}`}
+    />
+  );
+}
+
+/** Principal / interest / written-off split bar with a mono legend. */
+export function ProportionViz({ cardData }: { cardData: InterestCardData }) {
+  const interestPct = Math.round(cardData.interestRatio * 100);
+  const principalPct = Math.round(cardData.principalRatio * 100);
+  const writtenOffPct = Math.round(cardData.writtenOffRatio * 100);
+
+  return (
+    <div>
+      <div
+        className="flex h-3 overflow-hidden rounded-full bg-muted ring-1 ring-border ring-inset"
+        role="img"
+        aria-label={`Of ${cardData.stat} repaid, ${String(interestPct)}% is interest and ${String(principalPct)}% is principal${writtenOffPct > 0 ? `, with ${String(writtenOffPct)}% written off` : ""}.`}
+      >
+        <div
+          className="h-full bg-primary transition-all duration-500"
+          style={{ width: `${String(principalPct)}%` }}
+        />
+        <div
+          className="h-full bg-signal transition-all duration-500"
+          style={{ width: `${String(interestPct)}%` }}
+        />
+        {writtenOffPct > 0 && (
+          <div
+            className="h-full bg-muted-foreground/30 transition-all duration-500"
+            style={{ width: `${String(writtenOffPct)}%` }}
           />
         )}
       </div>
-      {children}
+      <div className="mt-2 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2 rounded-sm bg-primary" /> Principal{" "}
+          <b className="font-mono font-semibold text-foreground tabular-nums">
+            {String(principalPct)}%
+          </b>
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2 rounded-sm bg-signal" /> Interest{" "}
+          <b className="font-mono font-semibold text-foreground tabular-nums">
+            {String(interestPct)}%
+          </b>
+        </span>
+        {writtenOffPct > 0 && (
+          <span className="inline-flex items-center gap-1.5">
+            <span className="size-2 rounded-sm bg-muted-foreground/30" />{" "}
+            Written off{" "}
+            <b className="font-mono font-semibold text-foreground tabular-nums">
+              {String(writtenOffPct)}%
+            </b>
+          </span>
+        )}
+      </div>
     </div>
   );
-
-  if (active) {
-    return (
-      <div className="block h-full" aria-current="page">
-        {inner}
-      </div>
-    );
-  }
-
-  return (
-    <Link href={href} className="group block h-full">
-      {inner}
-    </Link>
-  );
 }
 
-function StatSkeleton() {
-  return (
-    <>
-      <div className="px-5 pt-2">
-        <div className="h-7 w-24 animate-pulse rounded-sm bg-muted" />
-      </div>
-      <div className="mt-2 h-12 animate-pulse bg-muted" />
-    </>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Sparkline card (Balance, Cumulative)
-// ---------------------------------------------------------------------------
-
-interface SparklineCardProps {
-  title: string;
-  href: string;
-  color: string;
-  active?: boolean;
-  cardData: InsightCardData | null;
-}
-
-export function SparklineCard({
-  title,
-  href,
-  color,
-  active,
+/** Effective-rate-vs-BoE benchmark rows: label · track · mono value. */
+export function RateBenchmarkViz({
   cardData,
-}: SparklineCardProps) {
-  return (
-    <CardShell title={title} href={href} active={active} color={color}>
-      {cardData ? (
-        <div className="flex flex-1 flex-col">
-          <span className="px-5 pt-2 font-mono text-xl font-semibold tabular-nums">
-            {cardData.stat}
-          </span>
-          <div className="mt-auto">
-            <Sparkline
-              data={cardData.data}
-              color={color}
-              ariaLabel={`${title}: ${cardData.stat}`}
-            />
-          </div>
-        </div>
-      ) : (
-        <StatSkeleton />
-      )}
-    </CardShell>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Proportion bar card (Interest)
-// ---------------------------------------------------------------------------
-
-interface ProportionCardProps {
-  title: string;
-  href: string;
-  color: string;
-  active?: boolean;
-  cardData: InterestCardData | null;
-}
-
-export function ProportionCard({
-  title,
-  href,
-  color,
-  active,
-  cardData,
-}: ProportionCardProps) {
-  const interestPct = Math.round((cardData?.interestRatio ?? 0) * 100);
-  const principalPct = Math.round((cardData?.principalRatio ?? 0) * 100);
-  const writtenOffPct = Math.round((cardData?.writtenOffRatio ?? 0) * 100);
-
-  return (
-    <CardShell title={title} href={href} active={active} color={color}>
-      {cardData ? (
-        <div className="flex flex-1 flex-col justify-between px-5 pt-2 pb-5">
-          <span className="font-mono text-xl font-semibold tabular-nums">
-            {cardData.stat}
-          </span>
-          <div>
-            <div
-              className="flex h-2.5 overflow-hidden rounded-full"
-              role="img"
-              aria-label={`Interest is ${String(interestPct)}% of total repayments`}
-            >
-              <div
-                className="transition-all duration-500"
-                style={{
-                  width: `${String(Math.max(interestPct, 2))}%`,
-                  backgroundColor: color,
-                }}
-              />
-              {principalPct > 0 && (
-                <div
-                  className="bg-(--chart-1) transition-all duration-500"
-                  style={{ width: `${String(principalPct)}%` }}
-                />
-              )}
-              {writtenOffPct > 0 && (
-                <div
-                  className="bg-muted-foreground/30 transition-all duration-500"
-                  style={{ width: `${String(writtenOffPct)}%` }}
-                />
-              )}
-              <div className="flex-1 bg-muted" />
-            </div>
-            <div className="mt-1.5 flex justify-between text-xs text-muted-foreground">
-              <span>{String(interestPct)}% interest</span>
-              {writtenOffPct > 0 ? (
-                <span>{String(writtenOffPct)}% written off</span>
-              ) : (
-                <span>{String(principalPct)}% principal</span>
-              )}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="px-5 pt-2 pb-5">
-          <div className="h-7 w-24 animate-pulse rounded-sm bg-muted" />
-          <div className="mt-3 h-2.5 animate-pulse rounded-full bg-muted" />
-          <div className="mt-1.5 flex justify-between">
-            <div className="h-4 w-16 animate-pulse rounded-sm bg-muted" />
-            <div className="h-4 w-16 animate-pulse rounded-sm bg-muted" />
-          </div>
-        </div>
-      )}
-    </CardShell>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Rate comparison card (Effective Rate vs BoE)
-// ---------------------------------------------------------------------------
-
-interface RateComparisonCardProps {
-  title: string;
-  href: string;
-  color: string;
-  active?: boolean;
-  cardData: EffectiveRateCardData | null;
-}
-
-export function RateComparisonCard({
-  title,
-  href,
-  color,
-  active,
-  cardData,
-}: RateComparisonCardProps) {
-  const maxRate = Math.max(
-    cardData?.effectiveRate ?? 0,
-    cardData?.boeRate ?? 0,
-    0.001,
-  );
-  const effectiveWidth =
-    cardData && cardData.effectiveRate > 0
+}: {
+  cardData: EffectiveRateCardData;
+}) {
+  const maxRate = Math.max(cardData.effectiveRate, cardData.boeRate, 0.001);
+  const yoursWidth =
+    cardData.effectiveRate > 0
       ? Math.max((cardData.effectiveRate / maxRate) * 100, 2)
       : 0;
   const boeWidth =
-    cardData && cardData.boeRate > 0
-      ? Math.max((cardData.boeRate / maxRate) * 100, 2)
-      : 0;
+    cardData.boeRate > 0 ? Math.max((cardData.boeRate / maxRate) * 100, 2) : 0;
 
   return (
-    <CardShell title={title} href={href} active={active} color={color}>
-      {cardData ? (
-        <div className="flex flex-1 flex-col justify-between px-5 pt-2 pb-5">
-          <span className="font-mono text-xl font-semibold tabular-nums">
-            {cardData.stat}
-          </span>
-          <div
-            className="space-y-1.5"
-            role="img"
-            aria-label={`Effective rate ${percentageFormatter(cardData.effectiveRate)} vs base rate ${percentageFormatter(cardData.boeRate)}`}
-          >
-            <div className="flex items-center gap-2">
-              <span className="w-14 shrink-0 text-xs text-muted-foreground">
-                Yours
-              </span>
-              <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full transition-all duration-500"
-                  style={{
-                    width: `${String(effectiveWidth)}%`,
-                    backgroundColor: color,
-                  }}
-                />
-              </div>
-              <span className="w-10 shrink-0 text-right font-mono text-xs tabular-nums">
-                {percentageFormatter(cardData.effectiveRate)}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-14 shrink-0 text-xs text-muted-foreground">
-                BoE base
-              </span>
-              <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full bg-muted-foreground/30 transition-all duration-500"
-                  style={{ width: `${String(boeWidth)}%` }}
-                />
-              </div>
-              <span className="w-10 shrink-0 text-right font-mono text-xs text-muted-foreground tabular-nums">
-                {percentageFormatter(cardData.boeRate)}
-              </span>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="px-5 pt-2 pb-5">
-          <div className="h-7 w-24 animate-pulse rounded-sm bg-muted" />
-          <div className="mt-3 space-y-1.5">
-            <div className="h-2 animate-pulse rounded-full bg-muted" />
-            <div className="h-2 animate-pulse rounded-full bg-muted" />
-          </div>
-        </div>
-      )}
-    </CardShell>
+    <div
+      className="flex flex-col gap-2"
+      role="img"
+      aria-label={`Your effective rate ${percentageFormatter(cardData.effectiveRate)} versus the Bank of England base rate ${percentageFormatter(cardData.boeRate)}.`}
+    >
+      <div className="flex items-center gap-2">
+        <span className="w-14 shrink-0 text-xs text-muted-foreground">
+          Yours
+        </span>
+        <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-muted">
+          <span
+            className="block h-full rounded-full bg-primary transition-all duration-500"
+            style={{ width: `${String(yoursWidth)}%` }}
+          />
+        </span>
+        <span className="w-11 shrink-0 text-right font-mono text-xs font-semibold tabular-nums">
+          {percentageFormatter(cardData.effectiveRate)}
+        </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="w-14 shrink-0 text-xs text-muted-foreground">
+          BoE base
+        </span>
+        <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-muted">
+          <span
+            className="block h-full rounded-full bg-axis transition-all duration-500"
+            style={{ width: `${String(boeWidth)}%` }}
+          />
+        </span>
+        <span className="w-11 shrink-0 text-right font-mono text-xs text-muted-foreground tabular-nums">
+          {percentageFormatter(cardData.boeRate)}
+        </span>
+      </div>
+    </div>
   );
 }

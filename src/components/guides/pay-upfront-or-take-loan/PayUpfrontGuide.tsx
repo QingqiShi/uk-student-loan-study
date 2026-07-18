@@ -1,21 +1,15 @@
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
+import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { formatGBP } from "@/lib/format";
 import {
   PLAN_CONFIGS,
   PLAN_DISPLAY_INFO,
   TUITION_FEE_CAP,
 } from "@/lib/loans/plans";
+import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
 import { CostComparisonChart } from "./CostComparisonChart";
 
 const tuitionTotal = TUITION_FEE_CAP * 3;
@@ -27,36 +21,17 @@ const feeCapFormatted = formatGBP(TUITION_FEE_CAP);
 export function PayUpfrontGuide() {
   return (
     <PageLayout>
-      <article className="space-y-8">
-        <div className="space-y-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/guides" />}>
-                  Guides
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Pay Upfront or Take the Loan?</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <Heading as="h1">
-            Should You Pay Tuition Upfront or Take the Loan?
-          </Heading>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+      <GuideArticle
+        breadcrumbLabel="Pay Upfront or Take the Loan?"
+        title="Should you pay tuition upfront or take the loan?"
+        intro={
+          <>
             The answer depends on how much the graduate will earn over their
             career &mdash; and starting salary alone doesn&rsquo;t tell the
             whole story.
-          </p>
-        </div>
-
+          </>
+        }
+      >
         <section className="space-y-3">
           <Heading as="h2" size="section">
             The Cost of Paying Upfront
@@ -148,7 +123,14 @@ export function PayUpfrontGuide() {
           </div>
         </section>
 
-        <CostComparisonChart />
+        <ChartFrame
+          caption="Fig. 1 — Total cost: loan vs upfront by salary · Plan 5"
+          figure={`Upfront ${tuitionFormatted}`}
+          figureTone="cost"
+          bodyClassName="h-75 sm:h-90"
+        >
+          <CostComparisonChart />
+        </ChartFrame>
 
         <section className="space-y-3">
           <Heading as="h2" size="section">
@@ -207,46 +189,38 @@ export function PayUpfrontGuide() {
           </div>
         </section>
 
-        <section className="space-y-3 rounded-lg border bg-muted/30 p-4 sm:p-6">
-          <Heading as="h2" size="subsection">
-            Key Takeaways
-          </Heading>
-          <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground sm:text-base">
-            <li>
-              The loan is not universally cheaper than paying upfront &mdash; it
-              depends on earning trajectory
-            </li>
-            <li>
-              Starting salary is misleading; salary growth pushes many graduates
-              into higher repayment brackets over time
-            </li>
-            <li>
-              Middle earners often end up paying the most due to interest
-              compounding over decades of repayments
-            </li>
-            <li>
-              The loan works best for genuine low earners (partial write-off) or
-              very high earners (fast repayment)
-            </li>
-            <li>
-              <Link
-                href="/"
-                className="text-primary underline underline-offset-4 hover:text-primary/80"
-              >
-                Use the student loan repayment calculator
-              </Link>{" "}
-              to model your specific scenario with your expected salary and
-              growth rate
-            </li>
-          </ul>
-        </section>
+        <KeyTakeaways>
+          <li>
+            The loan is not universally cheaper than paying upfront &mdash; it
+            depends on earning trajectory.
+          </li>
+          <li>
+            Starting salary is misleading; salary growth pushes many graduates
+            into higher repayment brackets over time.
+          </li>
+          <li>
+            Middle earners often end up paying the most due to interest
+            compounding over decades of repayments.
+          </li>
+          <li>
+            The loan works best for genuine low earners (partial write-off) or
+            very high earners (fast repayment).
+          </li>
+          <li>
+            <Link href="/" className={guideLink}>
+              Use the student loan repayment calculator
+            </Link>{" "}
+            to model your specific scenario with your expected salary and growth
+            rate.
+          </li>
+        </KeyTakeaways>
 
         <RelatedGuides
           current="pay-upfront-or-take-loan"
           order={["how-interest-works", "plan-2-vs-plan-5"]}
           tools={["/overpay", "/repaid"]}
         />
-      </article>
+      </GuideArticle>
     </PageLayout>
   );
 }

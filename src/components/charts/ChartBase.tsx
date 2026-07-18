@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, useSyncExternalStore } from "react";
 import {
   Area,
   AreaChart,
@@ -21,6 +21,70 @@ import {
   ChartTooltip,
   type ChartConfig,
 } from "@/components/ui/chart";
+
+/**
+ * Axis ticks are set in the mono face (with the same size/weight recharts uses
+ * by default) so every figure on every chart aligns as a tabular readout —
+ * the site's numeric personality carried through to the data itself.
+ */
+const CHART_TICK_STYLE = { fontFamily: "var(--font-mono)", fontSize: 11 };
+
+/**
+ * Below the `sm` breakpoint (Tailwind's 640px) a chart is often only ~360px
+ * wide, and the mono axis tick labels plus their reserved axis band steal a
+ * large share of that plot area. We hide the tick labels, zero their reserved
+ * width/height, and pull the surrounding margins in so the curve/area fills the
+ * panel. The crosshair readout and reference-line annotations still render, so
+ * the numbers ticks would have carried stay on the surface. Desktop (>=640px)
+ * is unchanged.
+ */
+const SMALL_SCREEN_QUERY = "(max-width: 639px)";
+
+function subscribeSmallScreen(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const mql = window.matchMedia(SMALL_SCREEN_QUERY);
+  mql.addEventListener("change", callback);
+  return () => {
+    mql.removeEventListener("change", callback);
+  };
+}
+
+function getSmallScreenSnapshot() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia(SMALL_SCREEN_QUERY).matches
+  );
+}
+
+function getSmallScreenServerSnapshot() {
+  // SSR-safe default: assume desktop so hydration matches the server markup.
+  return false;
+}
+
+function useIsSmallScreen() {
+  return useSyncExternalStore(
+    subscribeSmallScreen,
+    getSmallScreenSnapshot,
+    getSmallScreenServerSnapshot,
+  );
+}
+
+const DEFAULT_CHART_MARGIN = { top: 25, right: 25, bottom: 25, left: 25 };
+
+/**
+ * On small screens keep the top/right margins from the caller (they hold the
+ * annotation value label and near-edge readouts) but pull the tick-side margins
+ * in — the ticks themselves are hidden and their reserved band zeroed by the
+ * axis props below.
+ */
+function resolveChartMargin(
+  marginProp: ChartBaseProps["margin"],
+  isSmallScreen: boolean,
+) {
+  const base = marginProp ?? DEFAULT_CHART_MARGIN;
+  if (!isSmallScreen) return base;
+  return { top: base.top ?? 25, right: base.right ?? 25, bottom: 10, left: 10 };
+}
 
 export interface ChartSeriesConfig {
   dataKey: string;
@@ -95,13 +159,14 @@ export function ChartBase({
   const [crosshairPoint, setCrosshairPoint] = useState<CrosshairPoint | null>(
     null,
   );
+  const isSmallScreen = useIsSmallScreen();
 
   const ChartComponent = type === "area" ? AreaChart : LineChart;
   const isCrosshair = interactionMode === "crosshair" && type !== "bar";
 
   // --- Bar chart: simple dedicated render path ---
   if (type === "bar") {
-    const margin = marginProp ?? { top: 25, right: 25, bottom: 25, left: 25 };
+    const margin = resolveChartMargin(marginProp, isSmallScreen);
     return (
       <div
         role="img"
@@ -117,12 +182,16 @@ export function ChartBase({
               tickLine={false}
               axisLine={false}
               tickMargin={8}
+              tick={isSmallScreen ? false : CHART_TICK_STYLE}
+              {...(isSmallScreen ? { height: 0 } : {})}
             />
             <YAxis
               tickFormatter={yFormatter}
               tickLine={false}
               axisLine={false}
               tickMargin={8}
+              tick={isSmallScreen ? false : CHART_TICK_STYLE}
+              {...(isSmallScreen ? { width: 0 } : {})}
               {...(yDomain ? { domain: yDomain } : {})}
             />
             <ChartTooltip
@@ -268,7 +337,7 @@ export function ChartBase({
         <ChartComponent
           data={data}
           accessibilityLayer
-          margin={marginProp ?? { top: 25, right: 25, bottom: 25, left: 25 }}
+          margin={resolveChartMargin(marginProp, isSmallScreen)}
           onMouseMove={isCrosshair ? handleChartMouseMove : undefined}
           onMouseLeave={isCrosshair ? handleChartMouseLeave : undefined}
         >
@@ -306,7 +375,9 @@ export function ChartBase({
             tickLine={false}
             axisLine={false}
             tickMargin={8}
-            {...(xLabel
+            tick={isSmallScreen ? false : CHART_TICK_STYLE}
+            {...(isSmallScreen ? { height: 0 } : {})}
+            {...(xLabel && !isSmallScreen
               ? {
                   label: {
                     value: xLabel,
@@ -322,8 +393,10 @@ export function ChartBase({
             tickLine={false}
             axisLine={false}
             tickMargin={8}
+            tick={isSmallScreen ? false : CHART_TICK_STYLE}
+            {...(isSmallScreen ? { width: 0 } : {})}
             {...(yDomain ? { domain: yDomain } : {})}
-            {...(yLabel
+            {...(yLabel && !isSmallScreen
               ? {
                   label: ({
                     viewBox,
@@ -418,6 +491,7 @@ export function ChartBase({
                     x={viewBox.x}
                     y={viewBox.y}
                     textAnchor="middle"
+                    fontFamily="var(--font-mono)"
                     fontSize={11}
                     fontWeight={500}
                     stroke="var(--background)"
@@ -469,6 +543,7 @@ export function ChartBase({
                           x={viewBox.x}
                           y={viewBox.y + (annotation.labelOffsetY ?? 14)}
                           fill={annotation.color ?? "var(--muted-foreground)"}
+                          fontFamily="var(--font-mono)"
                           fontSize={11}
                           fontWeight={500}
                           textAnchor={annotation.labelAnchor}
@@ -480,6 +555,7 @@ export function ChartBase({
                         value: annotation.label,
                         position: "insideTop" as const,
                         fill: annotation.color ?? "var(--muted-foreground)",
+                        fontFamily: "var(--font-mono)",
                         fontSize: 11,
                         fontWeight: 500,
                         dy: -25,
@@ -525,6 +601,7 @@ export function ChartBase({
                         textAnchor="middle"
                         dominantBaseline="central"
                         fill={annotation.color ?? "var(--muted-foreground)"}
+                        fontFamily="var(--font-mono)"
                         fontSize={11}
                         fontWeight={500}
                         stroke="var(--background)"
@@ -549,6 +626,7 @@ export function ChartBase({
                 value: ha.label,
                 position: "right" as const,
                 fill: ha.color ?? "var(--muted-foreground)",
+                fontFamily: "var(--font-mono)",
                 fontSize: 11,
                 fontWeight: 500,
               }}

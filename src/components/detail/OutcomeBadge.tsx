@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 type Condition = {
   when: boolean;
@@ -10,20 +10,26 @@ interface OutcomeBadgeProps {
   conditions: Condition[];
 }
 
+/**
+ * A flat Instrument status chip: a hairline-ruled pill with an engraved sans
+ * label and a single tonal dot — spruce for a positive outcome (paid in full),
+ * brick for a caution (written off). No filled status backgrounds, no rounded
+ * Ledger badge — the meaning rides on the dot and the word.
+ */
 export function OutcomeBadge({ conditions }: OutcomeBadgeProps) {
   const match = conditions.find((c) => c.when);
   if (!match) return null;
 
   return (
-    <Badge
-      variant="outline"
-      className={
-        match.variant === "warning"
-          ? "rounded-md border-status-warning-border bg-status-warning text-status-warning-foreground"
-          : "rounded-md border-status-success-border bg-status-success text-status-success-foreground"
-      }
-    >
+    <span className="inline-flex items-center gap-2 rounded-md bg-card px-2.5 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase ring-1 ring-border">
+      <span
+        aria-hidden="true"
+        className={cn(
+          "size-1.5 shrink-0 rounded-full",
+          match.variant === "warning" ? "bg-signal" : "bg-primary",
+        )}
+      />
       {match.label}
-    </Badge>
+    </span>
   );
 }

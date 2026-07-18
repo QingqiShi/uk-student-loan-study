@@ -1,51 +1,71 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Sparkline } from "@/components/charts/Sparkline";
+import {
+  MetricCell,
+  MetricReadout,
+} from "@/components/instrument/MetricReadout";
+import type { SparklinePoint } from "@/types/insightCards";
 import { OutcomeBadge } from "./OutcomeBadge";
 
 interface RepaidHeroStatsProps {
   totalRepaid: string;
+  monthlyRepayment: string;
   writtenOff: boolean;
   payoffYears: number;
   aheadOfSchedule: boolean;
+  sparkline: SparklinePoint[];
 }
 
 export function RepaidHeroStats({
   totalRepaid,
+  monthlyRepayment,
   writtenOff,
   payoffYears,
   aheadOfSchedule,
+  sparkline,
 }: RepaidHeroStatsProps) {
   return (
-    <div className="flex animate-timeline-enter flex-wrap items-center justify-end gap-x-3 gap-y-1">
-      <OutcomeBadge
-        conditions={[
-          {
-            when: writtenOff,
-            label: `Written off after ${String(payoffYears)} years`,
-            variant: "warning",
-          },
-          {
-            when: aheadOfSchedule,
-            label: "Paid in full — ahead of schedule",
-            variant: "success",
-          },
-          { when: true, label: "Paid in full", variant: "success" },
-        ]}
-      />
-      <p
-        className="font-mono text-2xl font-bold tabular-nums"
-        style={{ color: writtenOff ? "var(--chart-5)" : "var(--chart-1)" }}
+    <MetricReadout columns={3} className="animate-timeline-enter">
+      <MetricCell label="Total repaid" value={totalRepaid} tone="emphasis">
+        <Sparkline
+          data={sparkline}
+          color="var(--primary)"
+          ariaLabel={`Cumulative repayments, totalling ${totalRepaid}`}
+        />
+      </MetricCell>
+      <MetricCell label="Monthly repayment · start" value={monthlyRepayment} />
+      <MetricCell
+        label={writtenOff ? "Written off in" : "Cleared in"}
+        value={
+          <>
+            {payoffYears}
+            <span className="ml-1 font-sans text-base font-medium tracking-normal text-muted-foreground">
+              years
+            </span>
+          </>
+        }
       >
-        {totalRepaid}
-      </p>
-    </div>
+        <OutcomeBadge
+          conditions={[
+            { when: writtenOff, label: "Written off", variant: "warning" },
+            {
+              when: aheadOfSchedule,
+              label: "Ahead of schedule",
+              variant: "success",
+            },
+            { when: true, label: "Paid in full", variant: "success" },
+          ]}
+        />
+      </MetricCell>
+    </MetricReadout>
   );
 }
 
 export function RepaidHeroStatsSkeleton() {
   return (
-    <div className="flex items-baseline justify-center gap-3">
-      <Skeleton className="h-5 w-44" />
-      <Skeleton className="h-7 w-36" />
-    </div>
+    <MetricReadout columns={3}>
+      <MetricCell label="Total repaid" loading tone="emphasis" />
+      <MetricCell label="Monthly repayment · start" loading />
+      <MetricCell label="Cleared in" loading />
+    </MetricReadout>
   );
 }

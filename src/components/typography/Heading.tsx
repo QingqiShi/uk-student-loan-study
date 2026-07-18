@@ -1,13 +1,16 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const headingVariants = cva("font-display tracking-tight", {
+// Instrument identity: headings are Archivo, sentence case, bold, tracked in.
+// One face, weight does the work — no separate poster/display face, no uppercase
+// masthead. Fluid sizes come from real `--text-*` tokens defined in globals.
+const headingVariants = cva("font-sans text-balance text-foreground", {
   variants: {
     size: {
-      "page-hero": "text-3xl font-bold text-balance sm:text-4xl lg:text-5xl",
-      page: "text-2xl font-bold sm:text-3xl",
-      section: "text-xl font-semibold sm:text-2xl",
-      subsection: "text-lg font-semibold",
+      "page-hero": "text-hero font-bold tracking-hero",
+      page: "text-page font-bold tracking-heading",
+      section: "text-section font-bold tracking-heading",
+      subsection: "text-lead font-semibold tracking-tight text-balance",
     },
   },
   defaultVariants: {
