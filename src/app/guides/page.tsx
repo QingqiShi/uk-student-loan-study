@@ -123,7 +123,7 @@ export default function GuidesPage() {
               guide.newUntil != null && new Date() < new Date(guide.newUntil);
             return (
               <Link
-                className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[clamp(1.25rem,3vw,3.5rem)] border-b border-border py-[clamp(1.1rem,1.9vw,1.9rem)] no-underline"
+                className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[clamp(1.25rem,3vw,3.5rem)] border-b border-border py-[clamp(1.1rem,1.9vw,1.9rem)] no-underline max-work:last:border-b-0"
                 href={`/guides/${guide.slug}`}
                 key={guide.slug}
               >
