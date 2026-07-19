@@ -141,6 +141,7 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
             headline number and the whole trust thesis. */}
         <MetricCell
           href="/repaid"
+          dataSlot="metric-total"
           tone="emphasis"
           label="Total repaid"
           value={summary ? formatGBP(Math.round(summary.totalPaid)) : undefined}

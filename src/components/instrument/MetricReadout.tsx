@@ -102,6 +102,8 @@ type MetricCellProps = {
   linkLabel?: string;
   /** Inline viz slot (sparkline / split-bar / benchmark), pinned to the baseline. */
   children?: React.ReactNode;
+  /** Optional `data-slot` on the cell root — a stable hook for e2e/scripts. */
+  dataSlot?: string;
   className?: string;
 };
 
@@ -148,7 +150,7 @@ function CellInner({
           0
         </div>
       ) : (
-        <div className={valueClass}>
+        <div className={valueClass} data-slot="metric-value">
           {typeof value === "string" ? <Figure value={value} /> : value}
         </div>
       )}
@@ -177,6 +179,7 @@ function MetricCell({
   active,
   chevron,
   className,
+  dataSlot,
   ...rest
 }: MetricCellProps) {
   const showChevron = chevron ?? (href != null && !active);
@@ -187,6 +190,7 @@ function MetricCell({
     return (
       <Link
         href={href}
+        data-slot={dataSlot}
         className={cn(
           base,
           "hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset",
@@ -201,6 +205,7 @@ function MetricCell({
   return (
     <div
       className={cn(base, className)}
+      data-slot={dataSlot}
       {...(active ? { "aria-current": "page" as const } : {})}
     >
       <CellInner {...rest} active={active} chevron={showChevron} />
