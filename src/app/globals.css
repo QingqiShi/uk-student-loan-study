@@ -165,13 +165,16 @@
   --thumb-shadow: 0 1px 3px rgba(19, 27, 24, 0.25);
   --thumb-shadow-active: 0 3px 8px rgba(19, 27, 24, 0.3);
 
-  /* Categorical DATA colours — colour-blind-safe. Principal is a lifted cool
-     spruce kept SEPARATE from the chrome --primary (so lifting it for data never
-     touches button/CTA/focus contrast). Interest is a dark earthy clay; --signal
-     (the brand cost accent) points at it below, so every cost surface stays one
-     colour. A wide luminance gap + distinct hue keep the pair separable under
-     deuteranopia/protanopia by colour alone (validated: worst-case CVD ΔE 16). */
-  --chart-principal: #2b9667; /* Principal / good — cool spruce, data-lifted */
+  /* Categorical DATA colours. Principal IS the brand spruce — one green across
+     the whole page (hero accent, slider, charts, sparklines, bars), by design;
+     never fork it into a second "data" green. Interest is a dark earthy clay;
+     --signal (the brand cost accent) points at it below, so every cost surface
+     stays one colour. CVD safety is carried by the clay side: vs the brand green
+     the pair holds deuteranopia ΔE ~34 / protanopia ΔE ~21 (better than the old
+     brick #a8482f), backed by non-colour redundancy (legend dots + % labels)
+     wherever the two meet. If more margin is ever needed, hatch the Interest
+     areas — do not re-introduce a lifted green. */
+  --chart-principal: var(--primary); /* Principal / good — the brand spruce */
   --chart-interest: #8b3014; /* Interest / cost — dark earthy clay (drives --signal) */
   --chart-1: var(--chart-principal); /* primary series = Principal */
   --chart-2: var(--chart-interest); /* second series = Interest */
@@ -243,17 +246,15 @@
   --thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   --thumb-shadow-active: 0 3px 8px rgba(0, 0, 0, 0.55);
 
-  /* Categorical DATA colours (dark) — same roles, lifted for the dark surface.
-     Validated CVD-safe by colour alone. Not the brand tokens. */
-  --chart-principal: #4fd0a2; /* Principal / good — spruce lifted brighter for dark so
-    its luminance clears the red-rust Interest (ratio ~1.7 vs ~1.1 before), keeping the
-    stacked principal/interest bar separable for CVD viewers, not by hue alone. */
+  /* Categorical DATA colours (dark) — same roles. Principal stays coupled to the
+     brand spruce here too (see light note: one green, never fork it). */
+  --chart-principal: var(--primary); /* Principal / good — the brand spruce */
   --chart-interest: #e26845; /* Interest / cost — clay lifted for dark, HELD at the
     light clay's red-rust hue (~37deg) instead of drifting to orange, so the cost colour
     reads the same across themes (as Principal does) and the tonal ramp stays coherent.
-    Clears 4.5:1 as text; stays CVD-separable from Principal on luminance (the reliable
-    channel; red is even darker so the gap widens) + the always-shown legend/hatch —
-    not on hue alone. Earlier it was orange #dd7438, which broke cross-theme consistency. */
+    Clears 4.5:1 as text; vs the brand green the pair holds deuteranopia ΔE ~40 /
+    protanopia ΔE ~24, backed by the always-shown legend + labels — see light note.
+    Earlier it was orange #dd7438, which broke cross-theme consistency. */
   --chart-1: var(--chart-principal);
   --chart-2: var(--chart-interest);
   --chart-3: #4cc4e0; /* teal-cyan — CVD-safe 3rd series (see light note) */
