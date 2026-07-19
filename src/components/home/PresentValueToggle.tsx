@@ -44,7 +44,7 @@ export function PresentValueToggle() {
     <Field.Root>
       <div
         className={`flex items-center rounded-lg px-2 py-1 transition-colors ${
-          optimisticShowPresentValue ? "bg-primary/5 dark:bg-primary/10" : ""
+          optimisticShowPresentValue ? "bg-accent-wash" : ""
         }`}
       >
         {/* Desktop: rate slides in to the left of the switch */}

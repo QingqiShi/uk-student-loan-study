@@ -38,18 +38,18 @@
       },
       "signal": {
         "role": "secondary",
-        "displayName": "Brick",
-        "canonical": "#A8482F",
-        "dark": "#E0836A",
+        "displayName": "Clay",
+        "canonical": "#8b3014",
+        "dark": "#e26845",
         "tonalRamp": [
-          "#2E120A",
-          "#4A2013",
-          "#6E301F",
-          "#A8482F",
-          "#C4694F",
-          "#E0836A",
-          "#EEB2A1",
-          "#F7DDD4"
+          "#2c0902",
+          "#511806",
+          "#752912",
+          "#8b3014",
+          "#b44e30",
+          "#e26845",
+          "#eea791",
+          "#fedcd1"
         ]
       },
       "ink": {
@@ -149,7 +149,7 @@
       "refersTo": "panel",
       "description": "The signature framed dial — the chart and first-class readouts live inside one. Flat surface, hairline border, one soft lift.",
       "html": "<div class='ds-panel'><div class='ds-panel-cap'><span class='ds-panel-t'>Fig. 1 — Lifetime repaid by salary · Plan 2</span><span class='ds-panel-peak'>Peak £124,361</span></div><div class='ds-panel-body'>Instrument surface</div></div>",
-      "css": ".ds-panel { background: #FAFBFA; border: 1px solid #DBE1DE; border-radius: 14px; box-shadow: 0 1px 0 rgba(19,27,24,.03), 0 14px 34px -30px rgba(19,27,24,.20); padding: 1.2rem; font-family: Archivo, system-ui, sans-serif; } .ds-panel-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: .6rem; } .ds-panel-t { font-size: .8125rem; font-weight: 500; color: #4F5955; } .ds-panel-peak { font-family: 'Martian Mono', ui-monospace, monospace; font-size: .8125rem; font-weight: 600; color: #A8482F; font-variant-numeric: tabular-nums; letter-spacing: -.01em; } .ds-panel-body { color: #656E68; font-size: .875rem; padding: 1.4rem 0; }"
+      "css": ".ds-panel { background: #FAFBFA; border: 1px solid #DBE1DE; border-radius: 14px; box-shadow: 0 1px 0 rgba(19,27,24,.03), 0 14px 34px -30px rgba(19,27,24,.20); padding: 1.2rem; font-family: Archivo, system-ui, sans-serif; } .ds-panel-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: .6rem; } .ds-panel-t { font-size: .8125rem; font-weight: 500; color: #4F5955; } .ds-panel-peak { font-family: 'Martian Mono', ui-monospace, monospace; font-size: .8125rem; font-weight: 600; color: #8b3014; font-variant-numeric: tabular-nums; letter-spacing: -.01em; } .ds-panel-body { color: #656E68; font-size: .875rem; padding: 1.4rem 0; }"
     },
     {
       "name": "Readout Metric Cell",
@@ -203,16 +203,16 @@
       "name": "Principal / Interest Split Bar",
       "kind": "custom",
       "refersTo": "metric-cell",
-      "description": "The interest viz inside a readout quadrant — a spruce principal segment against a brick interest segment, with a mono key.",
+      "description": "The interest viz inside a readout quadrant — a spruce principal segment against a clay interest segment, with a mono key.",
       "html": "<div class='ds-split-wrap'><div class='ds-split' role='img' aria-label='Of £114,526 repaid, 39% is principal and 61% is interest.'><i class='ds-seg-p' style='width:39%'></i><i class='ds-seg-i' style='width:61%'></i></div><div class='ds-split-key'><span class='ds-kk'><i class='ds-dot-p'></i>Principal <b>39%</b></span><span class='ds-kk'><i class='ds-dot-i'></i>Interest <b>61%</b></span></div></div>",
-      "css": ".ds-split-wrap { font-family: Archivo, system-ui, sans-serif; max-width: 320px; } .ds-split { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: #E7EBE9; box-shadow: inset 0 0 0 1px #DBE1DE; } .ds-seg-p { height: 100%; background: #0C5C44; } .ds-seg-i { height: 100%; background: #A8482F; } .ds-split-key { display: flex; justify-content: space-between; gap: .5rem 1rem; margin-top: .55rem; flex-wrap: wrap; } .ds-kk { display: inline-flex; align-items: center; gap: .45rem; font-size: .8125rem; color: #4F5955; } .ds-kk b { font-family: 'Martian Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; color: #131B18; font-weight: 600; letter-spacing: -.015em; } .ds-dot-p, .ds-dot-i { width: 9px; height: 9px; border-radius: 3px; flex: none; } .ds-dot-p { background: #0C5C44; } .ds-dot-i { background: #A8482F; }"
+      "css": ".ds-split-wrap { font-family: Archivo, system-ui, sans-serif; max-width: 320px; } .ds-split { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: #E7EBE9; box-shadow: inset 0 0 0 1px #DBE1DE; } .ds-seg-p { height: 100%; background: #0C5C44; } .ds-seg-i { height: 100%; background: #8b3014; } .ds-split-key { display: flex; justify-content: space-between; gap: .5rem 1rem; margin-top: .55rem; flex-wrap: wrap; } .ds-kk { display: inline-flex; align-items: center; gap: .45rem; font-size: .8125rem; color: #4F5955; } .ds-kk b { font-family: 'Martian Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; color: #131B18; font-weight: 600; letter-spacing: -.015em; } .ds-dot-p, .ds-dot-i { width: 9px; height: 9px; border-radius: 3px; flex: none; } .ds-dot-p { background: #0C5C44; } .ds-dot-i { background: #8b3014; }"
     }
   ],
   "narrative": {
     "northStar": "The Instrument",
-    "overview": "The page is a calibrated measuring instrument, not a marketing site. Its whole job is trust: a middle earner should read the numbers and believe them, because the surface behaves like a spec sheet from a lab bench, not a fintech landing page. Every figure is a live readout; every panel is a framed dial; every claim is sourced to GOV.UK in the same breath it is made. The system is dense and quiet — it layers tone (paper → surface → sunk) and draws structure with 1px hairlines and two heavy 2px ink rules that bracket the instrument like the edges of a device. There is exactly one brand color, spruce green, carrying every affordance, and exactly one signal color, brick, reserved for the costly peak. It rejects the fintech hero-metric template and, more importantly, the editorial uppercase-mono wash: labels are sans, metadata is sans, and mono is quarantined to the figures.",
+    "overview": "The page is a calibrated measuring instrument, not a marketing site. Its whole job is trust: a middle earner should read the numbers and believe them, because the surface behaves like a spec sheet from a lab bench, not a fintech landing page. Every figure is a live readout; every panel is a framed dial; every claim is sourced to GOV.UK in the same breath it is made. The system is dense and quiet — it layers tone (paper → surface → sunk) and draws structure with 1px hairlines and two heavy 2px ink rules that bracket the instrument like the edges of a device. There is exactly one brand color, spruce green, carrying every affordance, and exactly one signal color, clay, reserved for the costly peak. It rejects the fintech hero-metric template and, more importantly, the editorial uppercase-mono wash: labels are sans, metadata is sans, and mono is quarantined to the figures.",
     "keyCharacteristics": [
-      "One brand color (spruce #0C5C44), one signal color (brick #A8482F), everything else tonal neutral.",
+      "One brand color (spruce #0C5C44), one signal color (clay #8b3014), everything else tonal neutral.",
       "Monospace is figures only; every word, including labels, is Archivo.",
       "Flat surfaces; depth comes from hairlines and tonal layering, not drop shadows.",
       "Cool, spruce-biased neutrals — never a warm cream/paper ground.",
@@ -227,7 +227,7 @@
       },
       {
         "name": "The One-Signal Rule",
-        "body": "Brick is the cost color and nothing else — the peak marker, the interest segment, upward (worse) deltas. Never decoration, never a heading, never a hover. On any screen it should cover well under 10% of the surface; its scarcity is what makes 'this is expensive' legible.",
+        "body": "Clay is the cost color and nothing else — the peak marker, the interest segment, upward (worse) deltas. Never decoration, never a heading, never a hover. On any screen it should cover well under 10% of the surface; its scarcity is what makes 'this is expensive' legible.",
         "section": "colors"
       },
       {
@@ -260,7 +260,7 @@
       "Do keep Martian Mono for figures only, and set every word — labels included — in Archivo.",
       "Do subordinate the £ sign (.cur) and unit words (.unit) so the digit is the subject of every figure.",
       "Do use font-variant-numeric: tabular-nums on every figure the slider changes, so digits don't jitter.",
-      "Do reserve brick #A8482F for cost — the peak, interest, worse deltas — and let spruce #0C5C44 carry every affordance.",
+      "Do reserve clay #8b3014 for cost — the peak, interest, worse deltas — and let spruce #0C5C44 carry every affordance.",
       "Do draw structure with 1px Hair dividers and the two 2px Ink bracket rules; keep surfaces flat and layer tone for depth.",
       "Do keep the four-metric breakdown as ONE panel split by 1px seams, each quadrant carrying its own differentiated viz.",
       "Do design both themes at the token level with equal care; never a naive invert.",
