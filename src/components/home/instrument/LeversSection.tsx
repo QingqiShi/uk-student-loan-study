@@ -20,13 +20,13 @@ export function LeversSection() {
     >
       <div className="mt-[clamp(1.6rem,2.4vw,2.4rem)] grid grid-cols-1 gap-x-[clamp(2rem,3vw,3.5rem)] gap-y-[clamp(1.8rem,2.4vw,2.6rem)] roomy:grid-cols-3 work:mt-0">
         {levers.map((lever) => {
-          // Down (saves) reads spruce; up (costs) reads brick — the exact
-          // colours from the former `.delta.down`/`.up` and `.bar>i.down`/`.up`
-          // rules, now derived from the datum instead of a scoped class.
+          // Down (saves) reads the Principal data green; up (costs) reads the
+          // Interest clay — the CVD-safe data pair (text-signal resolves to the
+          // same clay via --signal), derived from the datum, not a scoped class.
           const deltaColor =
-            lever.direction === "down" ? "text-primary" : "text-signal";
+            lever.direction === "down" ? "text-chart-principal" : "text-signal";
           const barColor =
-            lever.direction === "down" ? "bg-primary" : "bg-signal";
+            lever.direction === "down" ? "bg-chart-principal" : "bg-signal";
           return (
             <div key={lever.name}>
               <div className="mb-[0.4rem] flex items-baseline justify-between gap-[0.8rem]">

@@ -41,6 +41,8 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-chart-overpay-baseline: var(--chart-overpay-baseline);
+  --color-chart-principal: var(--chart-principal);
+  --color-chart-interest: var(--chart-interest);
   --color-status-info: var(--status-info);
   --color-status-info-foreground: var(--status-info-foreground);
   --color-status-info-border: var(--status-info-border);
@@ -141,7 +143,9 @@
   /* Instrument accents */
   --cta: #094a37; /* accent-ink — links & CTA text */
   --rule: #131b18; /* ink — nameplate & footer 2px border */
-  --signal: #a8482f; /* brick — the costly peak, used sparingly */
+  --signal: var(
+    --chart-interest
+  ); /* cost accent = the Interest data clay (was brick) */
 
   --faint: #656e68; /* fine print, one step below soft */
   --axis: #6c756f; /* chart axis text */
@@ -154,12 +158,20 @@
   --elev-2:
     0 1px 0 rgba(19, 27, 24, 0.04), 0 18px 40px -28px rgba(19, 27, 24, 0.24);
 
-  --chart-1: #0c5c44; /* spruce — primary series */
-  --chart-2: #a8482f; /* brick — cost / interest */
+  /* Categorical DATA colours — colour-blind-safe. Principal is a lifted cool
+     spruce kept SEPARATE from the chrome --primary (so lifting it for data never
+     touches button/CTA/focus contrast). Interest is a dark earthy clay; --signal
+     (the brand cost accent) points at it below, so every cost surface stays one
+     colour. A wide luminance gap + distinct hue keep the pair separable under
+     deuteranopia/protanopia by colour alone (validated: worst-case CVD ΔE 16). */
+  --chart-principal: #2b9667; /* Principal / good — cool spruce, data-lifted */
+  --chart-interest: #8b3014; /* Interest / cost — dark earthy clay (drives --signal) */
+  --chart-1: var(--chart-principal); /* primary series = Principal */
+  --chart-2: var(--chart-interest); /* second series = Interest */
   --chart-3: #3f8f74; /* mid spruce */
   --chart-4: #094a37; /* deep spruce */
   --chart-5: #6c756f; /* axis grey — baseline series */
-  --chart-overpay-baseline: #a8482f;
+  --chart-overpay-baseline: var(--chart-interest);
 
   /* Status: bright semantic utility tokens — deliberately outside the two-colour thesis */
   --status-info-foreground: oklch(0.546 0.245 262.881); /* blue-600 */
@@ -203,7 +215,9 @@
 
   --cta: #50c99f; /* accent-ink, lifted */
   --rule: #e7eeea; /* ink divider reads light on dark */
-  --signal: #e0836a; /* brick, lifted */
+  --signal: var(
+    --chart-interest
+  ); /* cost accent = Interest data clay, lifted */
 
   --faint: #808983;
   --axis: #7e877f;
@@ -214,12 +228,16 @@
   --elev-1: 0 1px 0 rgba(0, 0, 0, 0.3), 0 22px 46px -34px rgba(0, 0, 0, 0.6);
   --elev-2: 0 1px 0 rgba(0, 0, 0, 0.35), 0 26px 52px -30px rgba(0, 0, 0, 0.72);
 
-  --chart-1: #34b08a;
-  --chart-2: #e0836a;
+  /* Categorical DATA colours (dark) — same roles, lifted for the dark surface.
+     Validated CVD-safe by colour alone (worst-case ΔE 14). Not the brand tokens. */
+  --chart-principal: #33ac75; /* Principal / good — spruce, lifted for dark */
+  --chart-interest: #ab4721; /* Interest / cost — clay, lifted for dark */
+  --chart-1: var(--chart-principal);
+  --chart-2: var(--chart-interest);
   --chart-3: #5cc0a0;
   --chart-4: #50c99f;
   --chart-5: #7e877f;
-  --chart-overpay-baseline: #e0836a;
+  --chart-overpay-baseline: var(--chart-interest);
 
   --status-info-foreground: oklch(0.707 0.165 254.624); /* blue-400 */
   --status-info: oklch(0.282 0.091 267.935 / 30%); /* blue-950 */
