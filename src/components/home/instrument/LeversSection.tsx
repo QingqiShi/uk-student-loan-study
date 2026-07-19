@@ -20,11 +20,12 @@ export function LeversSection() {
     >
       <div className="mt-[clamp(1.6rem,2.4vw,2.4rem)] grid grid-cols-1 gap-x-[clamp(2rem,3vw,3.5rem)] gap-y-[clamp(1.8rem,2.4vw,2.6rem)] roomy:grid-cols-3 work:mt-0">
         {levers.map((lever) => {
-          // Down (saves) reads the Principal data green; up (costs) reads the
-          // Interest clay — the CVD-safe data pair (text-signal resolves to the
-          // same clay via --signal), derived from the datum, not a scoped class.
+          // Down (saves) reads the brand spruce (--primary is dark enough for
+          // AA text on card); up (costs) reads the Interest clay via --signal.
+          // The 4px bar underneath uses the lifted chart-principal fill — that
+          // passes non-text 3:1 without needing to satisfy 4.5:1 text contrast.
           const deltaColor =
-            lever.direction === "down" ? "text-chart-principal" : "text-signal";
+            lever.direction === "down" ? "text-primary" : "text-signal";
           const barColor =
             lever.direction === "down" ? "bg-chart-principal" : "bg-signal";
           return (
