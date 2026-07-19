@@ -143,7 +143,7 @@ A cool, spruce-biased neutral field with a single green brand voice and a single
 
 ### Secondary
 
-- **Clay** (`#8b3014`; dark `#dd7438`): The single signal color. Reserved for cost — the peak of the curve, the interest segment, the "up" delta on a lever. Its rarity is the entire point; it means _this is what the loan costs you_.
+- **Clay** (`#8b3014`; dark `#e26845`): The single signal color. Reserved for cost — the peak of the curve, the interest segment, the "up" delta on a lever. Its rarity is the entire point; it means _this is what the loan costs you_.
 
 ### Neutral
 

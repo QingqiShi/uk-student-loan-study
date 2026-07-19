@@ -246,11 +246,14 @@
   /* Categorical DATA colours (dark) — same roles, lifted for the dark surface.
      Validated CVD-safe by colour alone. Not the brand tokens. */
   --chart-principal: #4fd0a2; /* Principal / good — spruce lifted brighter for dark so
-    its luminance clears the coral Interest (ratio ~1.6 vs ~1.1 before), keeping the
+    its luminance clears the red-rust Interest (ratio ~1.7 vs ~1.1 before), keeping the
     stacked principal/interest bar separable for CVD viewers, not by hue alone. */
-  --chart-interest: #dd7438; /* Interest / cost — clay lifted to a readable coral
-    for dark: the dark clay was a fine bar fill but only ~3:1 as text on the dark
-    surface; this clears 4.5:1 for text and still holds CVD ΔE ~8 vs the green. */
+  --chart-interest: #e26845; /* Interest / cost — clay lifted for dark, HELD at the
+    light clay's red-rust hue (~37deg) instead of drifting to orange, so the cost colour
+    reads the same across themes (as Principal does) and the tonal ramp stays coherent.
+    Clears 4.5:1 as text; stays CVD-separable from Principal on luminance (the reliable
+    channel; red is even darker so the gap widens) + the always-shown legend/hatch —
+    not on hue alone. Earlier it was orange #dd7438, which broke cross-theme consistency. */
   --chart-1: var(--chart-principal);
   --chart-2: var(--chart-interest);
   --chart-3: #4cc4e0; /* teal-cyan — CVD-safe 3rd series (see light note) */

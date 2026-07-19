@@ -40,16 +40,16 @@
         "role": "secondary",
         "displayName": "Clay",
         "canonical": "#8b3014",
-        "dark": "#dd7438",
+        "dark": "#e26845",
         "tonalRamp": [
-          "#2E120A",
-          "#4A2013",
-          "#6E301F",
+          "#2c0902",
+          "#511806",
+          "#752912",
           "#8b3014",
-          "#C4694F",
-          "#dd7438",
-          "#EEB2A1",
-          "#F7DDD4"
+          "#b44e30",
+          "#e26845",
+          "#eea791",
+          "#fedcd1"
         ]
       },
       "ink": {
