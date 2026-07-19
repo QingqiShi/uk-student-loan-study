@@ -231,7 +231,9 @@
   /* Categorical DATA colours (dark) — same roles, lifted for the dark surface.
      Validated CVD-safe by colour alone (worst-case ΔE 14). Not the brand tokens. */
   --chart-principal: #33ac75; /* Principal / good — spruce, lifted for dark */
-  --chart-interest: #ab4721; /* Interest / cost — clay, lifted for dark */
+  --chart-interest: #dd7438; /* Interest / cost — clay lifted to a readable coral
+    for dark: the dark clay was a fine bar fill but only ~3:1 as text on the dark
+    surface; this clears 4.5:1 for text and still holds CVD ΔE ~8 vs the green. */
   --chart-1: var(--chart-principal);
   --chart-2: var(--chart-interest);
   --chart-3: #5cc0a0;
