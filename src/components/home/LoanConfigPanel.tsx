@@ -172,7 +172,7 @@ export function LoanConfigPanel({
         className={cn(
           "rounded-xl border-2 transition-all duration-150",
           isSelected
-            ? "border-primary bg-accent-wash ring-2 ring-primary/20"
+            ? "border-primary bg-primary/5 ring-2 ring-primary/20"
             : "border-border bg-card",
         )}
       >
@@ -186,7 +186,7 @@ export function LoanConfigPanel({
           }}
           className={cn(
             "flex w-full items-center gap-3 px-4 py-3.5 text-left",
-            "hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none",
+            "hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none",
             isSelected ? "rounded-t-xl" : "rounded-xl",
           )}
         >
@@ -237,7 +237,7 @@ export function LoanConfigPanel({
           }}
         >
           <div className="overflow-hidden">
-            <div className="border-t border-border px-4 pt-3 pb-4">
+            <div className="border-t border-border/50 px-4 pt-3 pb-4">
               <div className="mb-2 flex items-center justify-between">
                 <label
                   htmlFor={`balance-${planType}`}
@@ -269,8 +269,8 @@ export function LoanConfigPanel({
                     className={cn(
                       "rounded-full border px-2.5 py-0.5 text-xs transition-colors",
                       loan?.balance === amount
-                        ? "border-primary bg-accent-wash text-primary"
-                        : "border-border text-muted-foreground hover:border-primary hover:text-foreground",
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground",
                     )}
                   >
                     {formatQuickPick(amount)}
@@ -296,7 +296,7 @@ export function LoanConfigPanel({
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <h2 className="text-lg font-semibold">Customise your loans</h2>
           <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export function LoanConfigPanel({
         </div>
       </div>
 
-      <footer className="sticky bottom-0 border-t border-border bg-background/80 p-4 backdrop-blur-sm">
+      <footer className="sticky bottom-0 border-t border-border/50 bg-background/80 p-4 backdrop-blur-sm">
         <div className="mx-auto max-w-3xl">
           <Button
             size="lg"
