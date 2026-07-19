@@ -11,7 +11,7 @@ import { formatYearFromMonth } from "@/lib/format";
 const chartConfig = {
   balance: {
     label: "Balance",
-    color: "var(--chart-3)",
+    color: "var(--chart-1)", // principal green — matches the panel's other data green
   },
 } satisfies ChartConfig;
 

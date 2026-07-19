@@ -14,11 +14,11 @@ const HIGH_RPI = 7;
 const chartConfig = {
   uncapped: {
     label: "Without cap (7% RPI)",
-    color: "var(--chart-5)",
+    color: "var(--chart-2)", // costlier path — the cost clay
   },
   capped: {
     label: "With 6% cap",
-    color: "var(--chart-2)",
+    color: "var(--chart-1)", // better outcome — principal green
   },
 } satisfies ChartConfig;
 
