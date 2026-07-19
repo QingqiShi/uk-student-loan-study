@@ -17,7 +17,7 @@ const chartConfig = {
   },
   principalPortion: {
     label: "Principal",
-    color: "var(--primary)",
+    color: "var(--chart-principal)",
   },
 } satisfies ChartConfig;
 

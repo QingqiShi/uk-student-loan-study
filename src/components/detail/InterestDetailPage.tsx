@@ -42,7 +42,7 @@ export function InterestDetailPage() {
 
   const legend: ChartLegendItem[] = result
     ? [
-        { label: "Principal", color: "var(--primary)" },
+        { label: "Principal", color: "var(--chart-principal)" },
         { label: "Interest", color: "var(--signal)" },
       ]
     : [];
