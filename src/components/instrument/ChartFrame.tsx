@@ -4,14 +4,14 @@ import { Panel, PanelHeader } from "./Panel";
 export interface ChartLegendItem {
   /** Legend label (sans). */
   label: string;
-  /** Swatch colour as a CSS value, e.g. "var(--chart-1)". Defaults to the Principal data colour. */
+  /** Swatch colour as a CSS value, e.g. "var(--chart-1)". Defaults to spruce. */
   color?: string;
   /** Swatch shape: a line (default), a dot, or a dashed rule. */
   variant?: "line" | "dot" | "dash";
 }
 
 function Swatch({ color, variant = "line" }: Omit<ChartLegendItem, "label">) {
-  const c = color ?? "var(--chart-principal)";
+  const c = color ?? "var(--primary)";
   if (variant === "dot") {
     return (
       <span

@@ -47,8 +47,7 @@ Local steps:
 - Icons: `@hugeicons/react` with `@hugeicons/core-free-icons` — `<HugeiconsIcon icon={Quiz01Icon} />`
 - **No arbitrary Tailwind values** — use standard tokens only (`text-sm` not `text-[13px]`)
 - Standard Tailwind breakpoints only (`xs`/`sm`/`md`/`lg`/`xl`/`2xl`)
-- **Brand green (light):** `#0C5C44` (spruce) — used in `globals.css` (`--primary`/`--ring`), `BRAND_HEX.green` (`BrandIcon.tsx`), `icon.svg`, `manifest.json`, `scripts/generate-social-images.mjs`. Update ALL locations when changing. Note `--chart-1` is now `var(--chart-principal)` and deliberately decoupled from the brand — do NOT re-couple it.
-- **Brand green (dark):** `#34B08A` (spruce lifted for dark) is a separate value that must stay in sync across its own locations: `globals.css` `--primary` (dark), `BRAND_HEX.emerald` (`BrandIcon.tsx`), `icon.svg`, and `scripts/generate-social-images.mjs`.
+- **Brand green:** `#0C5C44` (spruce) — used in `globals.css` (`--primary`/`--ring`/`--chart-1` light), `BRAND_HEX.green` (`BrandIcon.tsx`), `icon.svg`, `manifest.json`, `scripts/generate-social-images.mjs`. Update ALL locations when changing.
 - `dark` / `light` classes on containers scope CSS variables for that subtree
 - **Headings**: Use `<Heading>` from `@/components/typography/Heading` for content headings — do not use raw `<h1>`–`<h6>` with inline classes. Sizes: `page-hero` | `page` (default) | `section` | `subsection`. Polymorphic `as` prop sets the HTML element.
 

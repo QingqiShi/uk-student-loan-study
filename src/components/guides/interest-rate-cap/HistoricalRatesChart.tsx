@@ -14,11 +14,11 @@ const chartData = HISTORICAL_RATES.map((d) => ({
 const chartConfig = {
   below: {
     label: "Below cap",
-    color: "var(--chart-5)", // within-cap portion — neutral baseline grey
+    color: "var(--chart-2)",
   },
   above: {
     label: "Above 6% cap",
-    color: "var(--chart-2)", // the costly excess the cap removes — cost clay
+    color: "var(--chart-5)",
   },
 } satisfies ChartConfig;
 

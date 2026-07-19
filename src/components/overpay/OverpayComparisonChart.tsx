@@ -14,7 +14,7 @@ const chartConfig = {
   },
   overpayBalance: {
     label: "With overpaying",
-    color: "var(--chart-1)", // better outcome — principal green (data token, not chrome brand)
+    color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
@@ -67,7 +67,7 @@ export function OverpayComparisonChart({
       bodyClassName="min-h-0 flex-1"
       legend={[
         { label: "Without overpaying", color: "var(--chart-overpay-baseline)" },
-        { label: "With overpaying", color: "var(--chart-1)" },
+        { label: "With overpaying", color: "var(--primary)" },
       ]}
     >
       <ChartBase

@@ -11,7 +11,7 @@ import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 const chartConfig = {
   value: {
     label: "Total Repayment by Salary",
-    color: "var(--chart-1)", // principal green — clay --signal marks only the peak
+    color: "var(--chart-3)",
   },
 } satisfies ChartConfig;
 

@@ -28,7 +28,7 @@ export function RepaidHeroStats({
       <MetricCell label="Total repaid" value={totalRepaid} tone="emphasis">
         <Sparkline
           data={sparkline}
-          color="var(--chart-principal)"
+          color="var(--primary)"
           ariaLabel={`Cumulative repayments, totalling ${totalRepaid}`}
         />
       </MetricCell>

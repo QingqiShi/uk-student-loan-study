@@ -9,9 +9,8 @@ import type {
 
 // ---------------------------------------------------------------------------
 // Per-metric vizzes — the baseline-pinned instrument that rides inside each
-// MetricReadout cell (see InsightCards). The Principal data colour carries the
-// positive series and principal; the Interest clay carries interest/cost;
-// everything else is a cool neutral.
+// MetricReadout cell (see InsightCards). Spruce carries the positive series and
+// principal; brick carries interest/cost; everything else is a cool neutral.
 // ---------------------------------------------------------------------------
 
 /** Sparkline viz for the trend metrics (total repaid, payoff timeline). */
@@ -25,7 +24,7 @@ export function SparklineViz({
   return (
     <Sparkline
       data={cardData.data}
-      color="var(--chart-principal)"
+      color="var(--primary)"
       ariaLabel={`${label}: ${cardData.stat}`}
     />
   );
@@ -48,11 +47,11 @@ export function ProportionViz({ cardData }: { cardData: InterestCardData }) {
         aria-label={`Of ${cardData.stat} repaid, ${String(interestPct)}% is interest and ${String(principalPct)}% is principal${writtenOffPct > 0 ? `, with ${String(writtenOffPct)}% written off` : ""}.`}
       >
         <div
-          className="h-full bg-chart-principal transition-all duration-500"
+          className="h-full bg-primary transition-all duration-500"
           style={{ width: `${String(principalPct)}%` }}
         />
         <div
-          className="h-full bg-chart-interest transition-all duration-500"
+          className="h-full bg-signal transition-all duration-500"
           style={{ width: `${String(interestPct)}%` }}
         />
         {writtenOffPct > 0 && (
@@ -68,13 +67,13 @@ export function ProportionViz({ cardData }: { cardData: InterestCardData }) {
       <div className="mt-2 flex flex-col gap-y-1 text-xs text-muted-foreground">
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
           <span className="inline-flex items-center gap-1.5">
-            <span className="size-2 rounded-sm bg-chart-principal" /> Principal{" "}
+            <span className="size-2 rounded-sm bg-primary" /> Principal{" "}
             <b className="min-w-[4ch] font-mono font-semibold text-foreground tabular-nums">
               {String(principalPct)}%
             </b>
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="size-2 rounded-sm bg-chart-interest" /> Interest{" "}
+            <span className="size-2 rounded-sm bg-signal" /> Interest{" "}
             <b className="min-w-[4ch] font-mono font-semibold text-foreground tabular-nums">
               {String(interestPct)}%
             </b>
@@ -118,7 +117,7 @@ export function RateBenchmarkViz({
         </span>
         <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-muted">
           <span
-            className="block h-full rounded-full bg-chart-principal transition-all duration-500"
+            className="block h-full rounded-full bg-primary transition-all duration-500"
             style={{ width: `${String(yoursWidth)}%` }}
           />
         </span>

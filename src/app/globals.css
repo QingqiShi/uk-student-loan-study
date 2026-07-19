@@ -41,8 +41,6 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-chart-overpay-baseline: var(--chart-overpay-baseline);
-  --color-chart-principal: var(--chart-principal);
-  --color-chart-interest: var(--chart-interest);
   --color-status-info: var(--status-info);
   --color-status-info-foreground: var(--status-info-foreground);
   --color-status-info-border: var(--status-info-border);
@@ -131,24 +129,19 @@
   --secondary-foreground: #131b18;
   --muted: #e7ebe9; /* sunk */
   --muted-foreground: #4f5955; /* soft — secondary text */
-  --accent: #e7ebe9; /* subtle hover surface — coincides with --muted in light by
-    design (tonal step + hairline carry hover here); dark gives it a distinct lift. */
+  --accent: #e7ebe9; /* subtle hover surface (sunk), NOT the brand */
   --accent-foreground: #131b18;
   --destructive: var(
     --status-danger-foreground
   ); /* one danger red across shadcn + status intents */
   --border: #dbe1de; /* hair */
-  --input: #c0c8c4; /* input boundary — a step firmer than the hairline so a field
-    reads as a control. A true 3:1 boundary would need a heavy dark edge that fights
-    the flat instrument look; inputs also carry the spruce focus ring + a label. */
+  --input: #dbe1de;
   --ring: #0c5c44; /* focus = spruce */
 
   /* Instrument accents */
   --cta: #094a37; /* accent-ink — links & CTA text */
-  --rule: var(--foreground); /* ink — nameplate & footer 2px border */
-  --signal: var(
-    --chart-interest
-  ); /* cost accent = the Interest data clay (was brick) */
+  --rule: #131b18; /* ink — nameplate & footer 2px border */
+  --signal: #a8482f; /* brick — the costly peak, used sparingly */
 
   --faint: #656e68; /* fine print, one step below soft */
   --axis: #6c756f; /* chart axis text */
@@ -161,28 +154,12 @@
   --elev-2:
     0 1px 0 rgba(19, 27, 24, 0.04), 0 18px 40px -28px rgba(19, 27, 24, 0.24);
 
-  /* Control-thumb shadow — tight, ink-tinted to match --elev (not raw black). */
-  --thumb-shadow: 0 1px 3px rgba(19, 27, 24, 0.25);
-  --thumb-shadow-active: 0 3px 8px rgba(19, 27, 24, 0.3);
-
-  /* Categorical DATA colours — colour-blind-safe. Principal is a lifted cool
-     spruce kept SEPARATE from the chrome --primary (so lifting it for data never
-     touches button/CTA/focus contrast). Interest is a dark earthy clay; --signal
-     (the brand cost accent) points at it below, so every cost surface stays one
-     colour. A wide luminance gap + distinct hue keep the pair separable under
-     deuteranopia/protanopia by colour alone (validated: worst-case CVD ΔE 16). */
-  --chart-principal: #2b9667; /* Principal / good — cool spruce, data-lifted */
-  --chart-interest: #8b3014; /* Interest / cost — dark earthy clay (drives --signal) */
-  --chart-1: var(--chart-principal); /* primary series = Principal */
-  --chart-2: var(--chart-interest); /* second series = Interest */
-  /* 3rd categorical hue is a teal-cyan, NOT a third green: two spruces can't be
-     both visible on paper AND luminance-separated from Principal, so they collapse
-     under deuteranopia (CVD ΔE ~9). Cyan clears green + clay for every CVD type
-     (worst-case ΔE ~40) while staying cool enough to sit with the spruce field. */
-  --chart-3: #0e7490; /* teal-cyan — CVD-safe 3rd series */
-  --chart-4: #094a37; /* deep spruce (coincides with --cta; independent role) */
-  --chart-5: var(--axis); /* baseline / comparison series = the axis grey */
-  --chart-overpay-baseline: var(--chart-interest);
+  --chart-1: #0c5c44; /* spruce — primary series */
+  --chart-2: #a8482f; /* brick — cost / interest */
+  --chart-3: #3f8f74; /* mid spruce */
+  --chart-4: #094a37; /* deep spruce */
+  --chart-5: #6c756f; /* axis grey — baseline series */
+  --chart-overpay-baseline: #a8482f;
 
   /* Status: bright semantic utility tokens — deliberately outside the two-colour thesis */
   --status-info-foreground: oklch(0.546 0.245 262.881); /* blue-600 */
@@ -221,14 +198,12 @@
     --status-danger-foreground
   ); /* one danger red across shadcn + status intents */
   --border: #1e2a25; /* hair */
-  --input: #40514a; /* input boundary — firmer than the hairline (see light note) */
+  --input: #1e2a25;
   --ring: #50c99f;
 
   --cta: #50c99f; /* accent-ink, lifted */
-  --rule: var(--foreground); /* ink divider reads light on dark */
-  --signal: var(
-    --chart-interest
-  ); /* cost accent = Interest data clay, lifted */
+  --rule: #e7eeea; /* ink divider reads light on dark */
+  --signal: #e0836a; /* brick, lifted */
 
   --faint: #808983;
   --axis: #7e877f;
@@ -239,27 +214,12 @@
   --elev-1: 0 1px 0 rgba(0, 0, 0, 0.3), 0 22px 46px -34px rgba(0, 0, 0, 0.6);
   --elev-2: 0 1px 0 rgba(0, 0, 0, 0.35), 0 26px 52px -30px rgba(0, 0, 0, 0.72);
 
-  /* Control-thumb shadow — black reads fine on the dark surface. */
-  --thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
-  --thumb-shadow-active: 0 3px 8px rgba(0, 0, 0, 0.55);
-
-  /* Categorical DATA colours (dark) — same roles, lifted for the dark surface.
-     Validated CVD-safe by colour alone. Not the brand tokens. */
-  --chart-principal: #4fd0a2; /* Principal / good — spruce lifted brighter for dark so
-    its luminance clears the red-rust Interest (ratio ~1.7 vs ~1.1 before), keeping the
-    stacked principal/interest bar separable for CVD viewers, not by hue alone. */
-  --chart-interest: #e26845; /* Interest / cost — clay lifted for dark, HELD at the
-    light clay's red-rust hue (~37deg) instead of drifting to orange, so the cost colour
-    reads the same across themes (as Principal does) and the tonal ramp stays coherent.
-    Clears 4.5:1 as text; stays CVD-separable from Principal on luminance (the reliable
-    channel; red is even darker so the gap widens) + the always-shown legend/hatch —
-    not on hue alone. Earlier it was orange #dd7438, which broke cross-theme consistency. */
-  --chart-1: var(--chart-principal);
-  --chart-2: var(--chart-interest);
-  --chart-3: #4cc4e0; /* teal-cyan — CVD-safe 3rd series (see light note) */
-  --chart-4: #50c99f; /* deep spruce, lifted (coincides with --cta dark) */
-  --chart-5: var(--axis); /* baseline / comparison series = the axis grey */
-  --chart-overpay-baseline: var(--chart-interest);
+  --chart-1: #34b08a;
+  --chart-2: #e0836a;
+  --chart-3: #5cc0a0;
+  --chart-4: #50c99f;
+  --chart-5: #7e877f;
+  --chart-overpay-baseline: #e0836a;
 
   --status-info-foreground: oklch(0.707 0.165 254.624); /* blue-400 */
   --status-info: oklch(0.282 0.091 267.935 / 30%); /* blue-950 */

@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { Sparkline } from "@/components/charts/Sparkline";
-import { MetricCell } from "@/components/instrument/MetricReadout";
+import { Chevron } from "@/components/instrument/MetricReadout";
 import { Figure } from "@/components/typography/Figure";
 import { percentageFormatter } from "@/constants";
 import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
@@ -15,14 +16,37 @@ import { formatGBP, percentagesSummingTo100 } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { primaryPlanName } from "./planInfo";
 
+const SKEL_VALUE: React.CSSProperties = { height: "1.7rem", width: "7rem" };
 const SKEL_VIZ: React.CSSProperties = { height: "2.6rem", width: "100%" };
 
+function ValueSkeleton() {
+  return (
+    <div
+      className="animate-[slsFade_.6s_ease_both] rounded-sm bg-muted"
+      style={SKEL_VALUE}
+    />
+  );
+}
 function VizSkeleton() {
   return (
     <div
       className="animate-[slsFade_.6s_ease_both] rounded-sm bg-muted"
       style={SKEL_VIZ}
     />
+  );
+}
+
+/**
+ * Value placeholder that reuses the real figure classes (`text-fig-lg
+ * leading-none`) so its line box — and therefore the card height — is identical
+ * once the live figure resolves. Used by the interest and effective-rate cells,
+ * whose viz is the tallest in the readout and so drives the equalised row.
+ */
+function ValueChipSkeleton() {
+  return (
+    <div className="w-28 max-w-full animate-[slsFade_.6s_ease_both] rounded-sm bg-muted font-mono text-fig-lg leading-none font-semibold tracking-[-0.02em] text-transparent tabular-nums">
+      0
+    </div>
   );
 }
 
@@ -44,7 +68,7 @@ function InterestVizSkeleton() {
   return (
     <div aria-hidden className="mt-auto animate-[slsFade_.6s_ease_both]">
       <div className="h-3 rounded-full bg-muted [box-shadow:inset_0_0_0_1px_var(--border)]" />
-      <div className="mt-[0.55rem] flex flex-col gap-y-2">
+      <div className="mt-[0.55rem] hidden flex-col gap-y-2 md:flex">
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
           <LegendChipSkeleton label="Principal" />
           <LegendChipSkeleton label="Interest" />
@@ -132,69 +156,104 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
         </span>
       </div>
 
-      {/* Bespoke grid: the readout reflows to a single column inside the wide
-          workspace rail (work:), which the shared column presets don't model —
-          so the container lives here, but each cell is the shared MetricCell. */}
       <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-4 work:grid-cols-1">
-        {/* Total repaid — the headline number (emphasis: hero figure + cta label).
-            The exact figure, not the compact card stat: this is the instrument's
-            headline number and the whole trust thesis. */}
-        <MetricCell
+        {/* Total repaid */}
+        <Link
+          data-slot="metric-total"
+          className="group flex min-h-[134px] flex-col gap-2 bg-card px-4 pt-[0.9rem] pb-4 text-inherit no-underline [transition:background_0.15s_ease] hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset work:min-h-[118px]"
           href="/repaid"
-          dataSlot="metric-total"
-          tone="emphasis"
-          label="Total repaid"
-          value={summary ? formatGBP(Math.round(summary.totalPaid)) : undefined}
-          loading={!summary || !cards}
-          skeleton={<VizSkeleton />}
-          linkLabel="open the full repayment breakdown"
         >
-          {cards && (
-            <Sparkline
-              data={cards.cumulative.data}
-              color="var(--chart-principal)"
-              ariaLabel={`Total repaid: ${cards.cumulative.stat}`}
-            />
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-sans text-xs font-semibold tracking-label text-cta uppercase group-hover:text-cta group-focus-visible:text-cta">
+              Total repaid
+            </span>
+            <Chevron />
+          </div>
+          {summary && cards ? (
+            <div
+              data-slot="metric-value"
+              className="font-mono text-fig-hero leading-none font-semibold tracking-[-0.02em] tabular-nums"
+            >
+              {/* the exact figure, not the compact card stat — this is the
+                  instrument's headline number and the whole trust thesis */}
+              <Figure value={formatGBP(Math.round(summary.totalPaid))} />
+            </div>
+          ) : (
+            <ValueSkeleton />
           )}
-        </MetricCell>
+          {cards ? (
+            <div className="mt-auto">
+              <Sparkline
+                data={cards.cumulative.data}
+                color="var(--primary)"
+                ariaLabel={`Total repaid: ${cards.cumulative.stat}`}
+              />
+            </div>
+          ) : (
+            <VizSkeleton />
+          )}
+          <span className="sr-only"> — open the full repayment breakdown</span>
+        </Link>
 
         {/* Payoff timeline */}
-        <MetricCell
+        <Link
+          className="group flex min-h-[134px] flex-col gap-2 bg-card px-4 pt-[0.9rem] pb-4 text-inherit no-underline [transition:background_0.15s_ease] hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset work:min-h-[118px]"
           href="/balance"
-          label="Payoff timeline"
-          value={cards?.balance.stat}
-          loading={!cards}
-          skeleton={<VizSkeleton />}
-          linkLabel="open the full payoff timeline"
         >
-          {cards && (
-            <Sparkline
-              data={cards.balance.data}
-              color="var(--chart-principal)"
-              ariaLabel={`Payoff timeline: ${cards.balance.stat}`}
-            />
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-sans text-xs font-semibold tracking-label text-muted-foreground uppercase group-hover:text-cta group-focus-visible:text-cta">
+              Payoff timeline
+            </span>
+            <Chevron />
+          </div>
+          {cards ? (
+            <div className="font-mono text-fig-lg leading-none font-semibold tracking-[-0.02em] tabular-nums">
+              <Figure value={cards.balance.stat} />
+            </div>
+          ) : (
+            <ValueSkeleton />
           )}
-        </MetricCell>
+          {cards ? (
+            <div className="mt-auto">
+              <Sparkline
+                data={cards.balance.data}
+                color="var(--primary)"
+                ariaLabel={`Payoff timeline: ${cards.balance.stat}`}
+              />
+            </div>
+          ) : (
+            <VizSkeleton />
+          )}
+          <span className="sr-only"> — open the full payoff timeline</span>
+        </Link>
 
-        {/* Interest paid — the cost figure (clay signal) + split-bar */}
-        <MetricCell
+        {/* Interest paid */}
+        <Link
+          className="group flex min-h-[134px] flex-col gap-2 bg-card px-4 pt-[0.9rem] pb-4 text-inherit no-underline [transition:background_0.15s_ease] hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset work:min-h-[118px]"
           href="/interest"
-          tone="cost"
-          label={interest?.label ?? "Interest paid"}
-          value={interest?.stat}
-          loading={!interest}
-          skeleton={<InterestVizSkeleton />}
-          linkLabel="open the interest breakdown"
         >
-          {interest && (
-            <>
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-sans text-xs font-semibold tracking-label text-muted-foreground uppercase group-hover:text-cta group-focus-visible:text-cta">
+              {interest?.label ?? "Interest paid"}
+            </span>
+            <Chevron />
+          </div>
+          {interest ? (
+            <div className="font-mono text-fig-lg leading-none font-semibold tracking-[-0.02em] text-signal tabular-nums">
+              <Figure value={interest.stat} />
+            </div>
+          ) : (
+            <ValueChipSkeleton />
+          )}
+          {interest ? (
+            <div className="mt-auto">
               <div
                 className="flex h-3 overflow-hidden rounded-full bg-muted [box-shadow:inset_0_0_0_1px_var(--border)]"
                 role="img"
                 aria-label={`Of ${interest.stat} repaid, ${String(interestPct)}% is interest and ${String(principalPct)}% is principal${writtenOffRatio > 0 ? `, with ${String(writtenOffPct)}% written off` : ""}.`}
               >
                 <i
-                  className="h-full bg-chart-principal [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
+                  className="h-full bg-primary [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
                   style={{ width: `${String(principalRatio * 100)}%` }}
                 />
                 <i
@@ -211,10 +270,10 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
               {/* Two fixed rows: Principal/Interest, then Written off — always
                   shown (0% when nothing is written off) so the card keeps a
                   constant height and the equalised grid row never shifts. */}
-              <div className="mt-[0.55rem] flex flex-col gap-y-2">
+              <div className="mt-[0.55rem] hidden flex-col gap-y-2 md:flex">
                 <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
                   <span className="inline-flex items-center gap-[0.45rem] text-meta text-muted-foreground">
-                    <i className="size-[9px] flex-none rounded-[3px] bg-chart-principal" />{" "}
+                    <i className="size-[9px] flex-none rounded-[3px] bg-primary" />{" "}
                     Principal{" "}
                     <b className="min-w-[4ch] font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
                       {String(principalPct)}%
@@ -236,54 +295,74 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
                   </b>
                 </span>
               </div>
-            </>
+            </div>
+          ) : (
+            <InterestVizSkeleton />
           )}
-        </MetricCell>
+          <span className="sr-only"> — open the interest breakdown</span>
+        </Link>
 
         {/* Effective rate */}
-        <MetricCell
+        <Link
+          className="group flex min-h-[134px] flex-col gap-2 bg-card px-4 pt-[0.9rem] pb-4 text-inherit no-underline [transition:background_0.15s_ease] hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset work:min-h-[118px]"
           href="/effective-rate"
-          label="Effective rate"
-          value={rate?.stat}
-          loading={!rate}
-          skeleton={<RateVizSkeleton />}
-          linkLabel="see how the effective rate is worked out"
         >
-          {rate && (
-            <div
-              className="flex flex-col gap-2"
-              role="img"
-              aria-label={`Your effective rate ${percentageFormatter(effRate)} versus the Bank of England base rate ${percentageFormatter(boeRate)}.`}
-            >
-              <div className="grid grid-cols-[4.5em_1fr_2.7em] items-center gap-[0.45rem]">
-                <span className="text-meta text-muted-foreground">Yours</span>
-                <div className="h-[7px] min-w-[26px] overflow-hidden rounded-full bg-muted">
-                  <i
-                    className="block h-full rounded-full bg-chart-principal [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
-                    style={{ width: `${String(yoursWidth)}%` }}
-                  />
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-sans text-xs font-semibold tracking-label text-muted-foreground uppercase group-hover:text-cta group-focus-visible:text-cta">
+              Effective rate
+            </span>
+            <Chevron />
+          </div>
+          {rate ? (
+            <div className="font-mono text-fig-lg leading-none font-semibold tracking-[-0.02em] tabular-nums">
+              <Figure value={rate.stat} />
+            </div>
+          ) : (
+            <ValueChipSkeleton />
+          )}
+          {rate ? (
+            <div className="mt-auto">
+              <div
+                className="flex flex-col gap-2"
+                role="img"
+                aria-label={`Your effective rate ${percentageFormatter(effRate)} versus the Bank of England base rate ${percentageFormatter(boeRate)}.`}
+              >
+                <div className="grid grid-cols-[4.5em_1fr_2.7em] items-center gap-[0.45rem]">
+                  <span className="text-meta text-muted-foreground">Yours</span>
+                  <div className="h-[7px] min-w-[26px] overflow-hidden rounded-full bg-muted">
+                    <i
+                      className="block h-full rounded-full bg-primary [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
+                      style={{ width: `${String(yoursWidth)}%` }}
+                    />
+                  </div>
+                  <span className="text-right font-mono text-fig-sm font-semibold tracking-[-0.015em] tabular-nums">
+                    {percentageFormatter(effRate)}
+                  </span>
                 </div>
-                <span className="text-right font-mono text-fig-sm font-semibold tracking-[-0.015em] tabular-nums">
-                  {percentageFormatter(effRate)}
-                </span>
-              </div>
-              <div className="grid grid-cols-[4.5em_1fr_2.7em] items-center gap-[0.45rem]">
-                <span className="text-meta text-muted-foreground">
-                  BoE base
-                </span>
-                <div className="h-[7px] min-w-[26px] overflow-hidden rounded-full bg-muted">
-                  <i
-                    className="block h-full rounded-full bg-axis [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
-                    style={{ width: `${String(boeWidth)}%` }}
-                  />
+                <div className="grid grid-cols-[4.5em_1fr_2.7em] items-center gap-[0.45rem]">
+                  <span className="text-meta text-muted-foreground">
+                    BoE base
+                  </span>
+                  <div className="h-[7px] min-w-[26px] overflow-hidden rounded-full bg-muted">
+                    <i
+                      className="block h-full rounded-full bg-axis [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
+                      style={{ width: `${String(boeWidth)}%` }}
+                    />
+                  </div>
+                  <span className="text-right font-mono text-fig-sm font-medium tracking-[-0.015em] text-muted-foreground tabular-nums">
+                    {percentageFormatter(boeRate)}
+                  </span>
                 </div>
-                <span className="text-right font-mono text-fig-sm font-medium tracking-[-0.015em] text-muted-foreground tabular-nums">
-                  {percentageFormatter(boeRate)}
-                </span>
               </div>
             </div>
+          ) : (
+            <RateVizSkeleton />
           )}
-        </MetricCell>
+          <span className="sr-only">
+            {" "}
+            — see how the effective rate is worked out
+          </span>
+        </Link>
       </div>
 
       <p className="mt-[0.85rem] font-sans text-meta leading-[1.6] text-muted-foreground">

@@ -11,7 +11,7 @@ const chartConfig = {
   },
   plan5: {
     label: "Plan 5",
-    color: "var(--chart-2)",
+    color: "oklch(0.7 0.15 50)",
   },
 } satisfies ChartConfig;
 
