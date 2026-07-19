@@ -68,7 +68,7 @@ function InterestVizSkeleton() {
   return (
     <div aria-hidden className="mt-auto animate-[slsFade_.6s_ease_both]">
       <div className="h-3 rounded-full bg-muted [box-shadow:inset_0_0_0_1px_var(--border)]" />
-      <div className="mt-[0.55rem] hidden flex-col gap-y-2 md:flex">
+      <div className="mt-[0.55rem] flex flex-col gap-y-2">
         <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
           <LegendChipSkeleton label="Principal" />
           <LegendChipSkeleton label="Interest" />
@@ -185,7 +185,7 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
             <div className="mt-auto">
               <Sparkline
                 data={cards.cumulative.data}
-                color="var(--primary)"
+                color="var(--chart-principal)"
                 ariaLabel={`Total repaid: ${cards.cumulative.stat}`}
               />
             </div>
@@ -217,7 +217,7 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
             <div className="mt-auto">
               <Sparkline
                 data={cards.balance.data}
-                color="var(--primary)"
+                color="var(--chart-principal)"
                 ariaLabel={`Payoff timeline: ${cards.balance.stat}`}
               />
             </div>
@@ -253,7 +253,7 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
                 aria-label={`Of ${interest.stat} repaid, ${String(interestPct)}% is interest and ${String(principalPct)}% is principal${writtenOffRatio > 0 ? `, with ${String(writtenOffPct)}% written off` : ""}.`}
               >
                 <i
-                  className="h-full bg-primary [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
+                  className="h-full bg-chart-principal [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
                   style={{ width: `${String(principalRatio * 100)}%` }}
                 />
                 <i
@@ -270,10 +270,10 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
               {/* Two fixed rows: Principal/Interest, then Written off — always
                   shown (0% when nothing is written off) so the card keeps a
                   constant height and the equalised grid row never shifts. */}
-              <div className="mt-[0.55rem] hidden flex-col gap-y-2 md:flex">
+              <div className="mt-[0.55rem] flex flex-col gap-y-2">
                 <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
                   <span className="inline-flex items-center gap-[0.45rem] text-meta text-muted-foreground">
-                    <i className="size-[9px] flex-none rounded-[3px] bg-primary" />{" "}
+                    <i className="size-[9px] flex-none rounded-[3px] bg-chart-principal" />{" "}
                     Principal{" "}
                     <b className="min-w-[4ch] font-mono font-semibold tracking-[-0.015em] text-foreground tabular-nums">
                       {String(principalPct)}%
@@ -331,7 +331,7 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
                   <span className="text-meta text-muted-foreground">Yours</span>
                   <div className="h-[7px] min-w-[26px] overflow-hidden rounded-full bg-muted">
                     <i
-                      className="block h-full rounded-full bg-primary [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
+                      className="block h-full rounded-full bg-chart-principal [transition:width_0.4s_cubic-bezier(0.22,1,0.36,1)]"
                       style={{ width: `${String(yoursWidth)}%` }}
                     />
                   </div>
