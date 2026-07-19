@@ -27,11 +27,11 @@ const SALARY_GROWTH = 0.03;
 const chartConfig = {
   uncapped: {
     label: "Without cap",
-    color: "var(--chart-5)",
+    color: "var(--chart-2)", // costlier path — the cost clay
   },
   capped: {
     label: "With 6% cap",
-    color: "var(--chart-2)",
+    color: "var(--chart-1)", // better outcome — principal green
   },
 } satisfies ChartConfig;
 

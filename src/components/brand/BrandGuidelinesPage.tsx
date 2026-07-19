@@ -16,7 +16,7 @@ import { BrandIcon, BRAND_HEX, type BrandIconSize } from "./BrandIcon";
 import { BrandLogo } from "./BrandLogo";
 
 // The two-colour functional system — the whole Instrument palette in one idea:
-// one spruce carries brand and affordance, one brick marks cost and peak.
+// one spruce carries brand and affordance, one clay marks cost and peak.
 const SEMANTIC = [
   {
     name: "Spruce",
@@ -24,7 +24,7 @@ const SEMANTIC = [
     role: "Brand, affordance, and every positive reading — links, actions, the paid-down curve.",
   },
   {
-    name: "Brick",
+    name: "Clay",
     token: "--signal",
     role: "Cost only. Interest, the peak of the balance, the number that hurts. Used sparingly.",
   },
@@ -117,7 +117,7 @@ export function BrandGuidelinesPage() {
               Brand guidelines
             </Heading>
             <p className="max-w-[68ch] text-lead text-muted-foreground">
-              The Instrument system: one spruce, one brick, cool neutrals, and
+              The Instrument system: one spruce, one clay, cool neutrals, and
               two typefaces. Archivo carries every word; Martian Mono is
               reserved for figures. Everything on this page is drawn from the
               live design tokens.

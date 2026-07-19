@@ -14,7 +14,7 @@ colors:
   accent-ink: "#094A37"
   accent-wash: "#EAF1EE"
   on-accent: "#F5FAF7"
-  signal: "#A8482F"
+  signal: "#8b3014"
   signal-wash: "#F6EAE6"
 typography:
   display:
@@ -119,13 +119,13 @@ This spec captures the **Instrument** redesign — the approved homepage prototy
 
 The page is a calibrated measuring instrument, not a marketing site. Its whole job is trust: a middle earner should read the numbers and believe them, because the surface behaves like a spec sheet from a lab bench, not a fintech landing page. Every figure is a live readout; every panel is a framed dial; every claim is sourced to GOV.UK in the same breath it is made. The thesis it exists to prove — _middle earners repay the most_ — is uncomfortable, so the delivery has to be scrupulously plain. Restraint here is not minimalism for taste; it is the argument.
 
-The system is dense and quiet. It layers tone (paper → surface → sunk) and draws structure with 1px hairlines and two heavy 2px ink rules (the nameplate and the footer) that bracket the instrument like the top and bottom edges of a device. There is exactly one brand color — spruce green — carrying every affordance, and exactly one signal color — brick — reserved for the costly peak. Type does the rest of the work: Archivo for language, Martian Mono for the numeric readout, and a hard rule that the two never trade places.
+The system is dense and quiet. It layers tone (paper → surface → sunk) and draws structure with 1px hairlines and two heavy 2px ink rules (the nameplate and the footer) that bracket the instrument like the top and bottom edges of a device. There is exactly one brand color — spruce green — carrying every affordance, and exactly one signal color — clay — reserved for the costly peak. Type does the rest of the work: Archivo for language, Martian Mono for the numeric readout, and a hard rule that the two never trade places.
 
 It explicitly rejects the two reflexes it was built against. First-order: the fintech-SaaS hero-metric template (giant gradient number, glass cards, purple accents) — none of it appears. Second-order, and more important: the editorial-typographic reflex (display-serif headline, ruled columns, and a _uniform uppercase-mono wash_ over every label). An earlier pass wore that costume; it was stripped. Labels are sans, sentence-case metadata is sans, and mono is quarantined to the figures. That single decision is what keeps this out of the "AI made that" bucket.
 
 **Key Characteristics:**
 
-- One brand color (spruce `#0C5C44`), one signal color (brick `#A8482F`), everything else tonal neutral.
+- One brand color (spruce `#0C5C44`), one signal color (clay `#8b3014`), everything else tonal neutral.
 - Monospace is figures only; every word, including labels, is Archivo.
 - Flat surfaces; depth comes from hairlines and tonal layering, not drop shadows.
 - Cool, spruce-biased neutrals — never a warm cream/paper ground.
@@ -134,7 +134,7 @@ It explicitly rejects the two reflexes it was built against. First-order: the fi
 
 ## 2. Colors
 
-A cool, spruce-biased neutral field with a single green brand voice and a single brick signal. The neutrals carry a faint accent-hue bias so they read as chosen, not as default grey.
+A cool, spruce-biased neutral field with a single green brand voice and a single clay signal. The neutrals carry a faint accent-hue bias so they read as chosen, not as default grey.
 
 ### Primary
 
@@ -143,7 +143,7 @@ A cool, spruce-biased neutral field with a single green brand voice and a single
 
 ### Secondary
 
-- **Brick** (`#A8482F`; dark `#E0836A`): The single signal color. Reserved for cost — the peak of the curve, the interest segment, the "up" delta on a lever. Its rarity is the entire point; it means _this is what the loan costs you_.
+- **Clay** (`#8b3014`; dark `#dd7438`): The single signal color. Reserved for cost — the peak of the curve, the interest segment, the "up" delta on a lever. Its rarity is the entire point; it means _this is what the loan costs you_.
 
 ### Neutral
 
@@ -165,7 +165,7 @@ A cool, spruce-biased neutral field with a single green brand voice and a single
 
 **The Spruce-Only Rule.** There is one accent hue. No second brand color, no gradients, no per-section palettes. Affordance is spruce; if a new element needs to signal "interactive," it turns spruce, it does not introduce a color.
 
-**The One-Signal Rule.** Brick is the cost color and nothing else. It appears on the peak marker, the interest segment, and upward (worse) deltas. It is never decoration, never a heading color, never a hover. On any given screen it should cover well under 10% of the surface — its scarcity is what makes "this is expensive" legible.
+**The One-Signal Rule.** Clay is the cost color and nothing else. It appears on the peak marker, the interest segment, and upward (worse) deltas. It is never decoration, never a heading color, never a hover. On any given screen it should cover well under 10% of the surface — its scarcity is what makes "this is expensive" legible.
 
 ## 3. Typography
 
@@ -222,7 +222,7 @@ Lead with the character, then the spec. Every interactive element resolves to sp
 
 - **Character:** The spec sheet. ONE bordered panel split by 1px gap-seams into four metric quadrants (Total repaid / Payoff timeline / Interest / Effective rate) — never four separate cards.
 - **Structure:** `display: grid` with `gap: 1px` over a `Hair` background so the seams read as etched dividers; 12px outer radius, `overflow: hidden`.
-- **Each quadrant:** an engraved `label` key + a chevron, a Martian Mono value (`Total` steps up to the hero size and spruce-ink; `Interest` is brick), then a differentiated live viz pinned to the baseline (a sparkline, a principal/interest split-bar, or a rate benchmark) so all four align.
+- **Each quadrant:** an engraved `label` key + a chevron, a Martian Mono value (`Total` steps up to the hero size and spruce-ink; `Interest` is clay), then a differentiated live viz pinned to the baseline (a sparkline, a principal/interest split-bar, or a rate benchmark) so all four align.
 - **States:** whole quadrant is a link (drill-down). Hover/focus → `Sunk` background, key turns spruce-ink, chevron turns spruce and nudges +2px. Focus-visible → inset 2px spruce ring.
 
 ### Buttons
@@ -259,7 +259,7 @@ Lead with the character, then the spec. Every interactive element resolves to sp
 
 - **Character:** Not cards. Content is separated by space and a numbered index alone — no boxes, no side-stripes.
 - **Rules:** a `mono` spruce index (`01`…) beside a titled paragraph; a real enumerated set, which is the only reason numbering is allowed.
-- **Levers:** a name, a mono delta on the right (spruce for "down/better", brick for "up/worse"), and a thin proportion bar.
+- **Levers:** a name, a mono delta on the right (spruce for "down/better", clay for "up/worse"), and a thin proportion bar.
 - **Tools:** a linked index — bold title, spruce arrow that slides +3px on hover, a dek beneath.
 
 ## 6. Do's and Don'ts
@@ -269,7 +269,7 @@ Lead with the character, then the spec. Every interactive element resolves to sp
 - **Do** keep Martian Mono for figures only, and set every word — labels included — in Archivo. (The Figures-Are-Mono Rule.)
 - **Do** subordinate the `£` sign (`.cur`) and unit words (`.unit`) so the digit is the subject of every figure.
 - **Do** use `font-variant-numeric: tabular-nums` on every figure the slider changes, so digits don't jitter as they update.
-- **Do** reserve brick `#A8482F` for cost — the peak, interest, worse deltas — and let spruce `#0C5C44` carry every affordance.
+- **Do** reserve clay `#8b3014` for cost — the peak, interest, worse deltas — and let spruce `#0C5C44` carry every affordance.
 - **Do** draw structure with 1px `Hair` dividers and the two 2px `Ink` bracket rules; keep surfaces flat and layer tone (paper → surface → sunk) for depth.
 - **Do** keep the four-metric breakdown as ONE panel split by 1px seams, each quadrant carrying its own differentiated viz.
 - **Do** design both themes at the token level — cool near-white + spruce, deep spruce-black + mint — with equal care; never a naive invert.

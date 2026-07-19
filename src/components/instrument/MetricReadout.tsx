@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Figure } from "@/components/typography/Figure";
 import { cn } from "@/lib/utils";
 
 /**
@@ -32,7 +33,7 @@ function MetricReadout({
     <div
       data-slot="metric-readout"
       className={cn(
-        "grid gap-px overflow-hidden rounded-xl bg-border ring-1 ring-border",
+        "grid gap-px overflow-hidden rounded-lg border border-border bg-border",
         COLUMN_CLASS[columns],
         className,
       )}
@@ -62,10 +63,14 @@ function Chevron() {
   );
 }
 
+// The mono figure ramp is the readout's identity: default figures at `fig-lg`,
+// the headline steps up to `fig-hero`, cost figures take the clay signal. Emphasis
+// keeps the value in ink and flips the *label* to spruce-ink (see CellInner) — the
+// homepage readout's headline treatment, now the shared standard.
 const VALUE_TONE: Record<"default" | "emphasis" | "cost", string> = {
-  default: "text-2xl text-foreground",
-  emphasis: "text-3xl text-cta",
-  cost: "text-2xl text-signal",
+  default: "text-fig-lg text-foreground",
+  emphasis: "text-fig-hero text-foreground",
+  cost: "text-fig-lg text-signal",
 };
 
 type MetricCellProps = {
@@ -74,8 +79,9 @@ type MetricCellProps = {
   /** The figure — rendered mono/tabular automatically. Omit while `loading`. */
   value?: React.ReactNode;
   /**
-   * Figure treatment: `default`, `emphasis` (steps up size + spruce-ink, for the
-   * headline number) or `cost` (brick, for interest/cost figures).
+   * Figure treatment: `default`, `emphasis` (steps the figure up to the hero size
+   * and flips the label to spruce-ink, for the headline number) or `cost` (clay
+   * signal, for interest/cost figures).
    */
   tone?: "default" | "emphasis" | "cost";
   /** Turns the whole cell into a drill-down link with hover + focus states. */
@@ -119,8 +125,8 @@ function CellInner({
       <div className="flex items-center justify-between gap-2">
         <span
           className={cn(
-            "text-xs font-semibold tracking-wider uppercase transition-colors",
-            active
+            "font-sans text-xs font-semibold tracking-label uppercase transition-colors",
+            active || tone === "emphasis"
               ? "text-cta"
               : "text-muted-foreground group-hover:text-cta group-focus-visible:text-cta",
           )}
@@ -142,7 +148,9 @@ function CellInner({
           0
         </div>
       ) : (
-        <div className={valueClass}>{value}</div>
+        <div className={valueClass}>
+          {typeof value === "string" ? <Figure value={value} /> : value}
+        </div>
       )}
 
       <div className="mt-auto">
