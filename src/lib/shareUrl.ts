@@ -107,6 +107,14 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 /**
+ * Stringifies an assumption rate for the URL, trimming IEEE-754 noise
+ * (e.g. 2.8 / 100 → 0.027999999999999997 → "0.028").
+ */
+function encodeAssumptionValue(value: number): string {
+  return String(Number(value.toFixed(6)));
+}
+
+/**
  * Encodes a loans array to the URL-safe format: "PLAN_2:45000,POSTGRADUATE:12000"
  */
 function encodeLoans(loans: Loan[]): string {
@@ -154,7 +162,7 @@ export function encodeStateToParams(
   // Assumption fields — always included
   for (const field of ASSUMPTION_PARAMS) {
     const value = state[field.stateKey];
-    params.set(field.urlParam, String(value));
+    params.set(field.urlParam, encodeAssumptionValue(value));
   }
 
   // Boolean flags

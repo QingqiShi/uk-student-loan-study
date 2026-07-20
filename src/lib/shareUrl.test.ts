@@ -66,6 +66,13 @@ describe("encodeStateToParams", () => {
     },
   );
 
+  it("trims floating-point noise from assumption values", () => {
+    const state: LoanState = { ...mockState, discountRate: 2.8 / 100 };
+    const params = encodeStateToParams(state);
+
+    expect(params.get("dr")).toBe("0.028");
+  });
+
   it("excludes overpay fields by default", () => {
     const params = encodeStateToParams(mockState);
 

@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 import { surfaceCard } from "@/lib/surfaces";
 import { specHead } from "../guide-parts";
@@ -14,8 +15,8 @@ import { specHead } from "../guide-parts";
 const plan2 = PLAN_DISPLAY_INFO.PLAN_2;
 const plan5 = PLAN_DISPLAY_INFO.PLAN_5;
 
-const plan2Threshold = String(PLAN_CONFIGS.PLAN_2.monthlyThreshold * 12);
-const plan5Threshold = String(PLAN_CONFIGS.PLAN_5.monthlyThreshold * 12);
+const plan2Threshold = formatGBP(PLAN_CONFIGS.PLAN_2.monthlyThreshold * 12);
+const plan5Threshold = formatGBP(PLAN_CONFIGS.PLAN_5.monthlyThreshold * 12);
 const repaymentRate = String(plan2.repaymentRate * 100);
 
 const rows = [
@@ -26,8 +27,8 @@ const rows = [
   },
   {
     label: "Repayment threshold",
-    plan2: `\u00a3${plan2Threshold}/yr`,
-    plan5: `\u00a3${plan5Threshold}/yr`,
+    plan2: `${plan2Threshold}/yr`,
+    plan5: `${plan5Threshold}/yr`,
   },
   {
     label: "Repayment rate",
