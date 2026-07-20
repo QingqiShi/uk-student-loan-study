@@ -4,7 +4,7 @@ import { dirname } from "node:path";
 import babel from "@rolldown/plugin-babel";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 // Resolve setup files to absolute paths so Vite doesn't misresolve bare
 // specifiers through the main repo's node_modules when running in a git
@@ -35,7 +35,14 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: [resolvedWebWorker, "./src/test/setup.ts"],
-    exclude: ["e2e/**", "scripts/**", "node_modules/**"],
+    // Extend (don't replace) the defaults: losing **/node_modules/** made
+    // vitest crawl dependency test suites inside .claude/worktrees/*/node_modules.
+    exclude: [
+      ...configDefaults.exclude,
+      "e2e/**",
+      "scripts/**",
+      "**/.claude/**",
+    ],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],
