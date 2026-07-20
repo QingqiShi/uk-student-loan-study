@@ -32,7 +32,9 @@ test.describe("Accessibility", () => {
   test("overpay page has no WCAG 2.1 AA violations", async ({ page }) => {
     await page.goto("/overpay");
     // Wait for verdict to load
-    const verdict = page.locator("[role='status'][aria-live='polite']").first();
+    const verdict = page.getByRole("status", {
+      name: "Overpay recommendation",
+    });
     await expect(verdict).toBeVisible({ timeout: 15_000 });
 
     const results = await axeScan(page).analyze();

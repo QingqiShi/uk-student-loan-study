@@ -145,6 +145,7 @@ export function OverpayVerdict({
       <div
         role="status"
         aria-live="polite"
+        aria-label="Overpay recommendation"
         className={cn(
           "col-start-1 row-start-1 flex flex-col rounded-xl p-4 ring-1 sm:p-5",
           config.surface,
