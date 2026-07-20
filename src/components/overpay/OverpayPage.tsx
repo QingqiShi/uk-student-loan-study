@@ -23,13 +23,13 @@ import { REPAYMENT_START_MONTH } from "@/lib/presets";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
 import { OverpayPrimaryInputs } from "./OverpayPrimaryInputs";
 import { OverpaySummaryCards } from "./OverpaySummaryCards";
-import { OverpayVerdict } from "./OverpayVerdict";
+import { OverpayVerdict, OverpayVerdictSkeleton } from "./OverpayVerdict";
 
 function OverpayPageSkeleton() {
   return (
     <>
       {/* Verdict skeleton */}
-      <Skeleton className="min-h-43 w-full rounded-lg xs:min-h-38 sm:min-h-29 md:min-h-0" />
+      <OverpayVerdictSkeleton />
 
       {/* Chart + cards grid skeleton */}
       <div className="grid gap-6 md:flex">
