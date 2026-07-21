@@ -27,3 +27,29 @@ export const YEARS_ABOVE_CAP = HISTORICAL_RATES.filter(
 ).length;
 
 export const TOTAL_YEARS = HISTORICAL_RATES.length;
+
+export type InterestRateCapFaq = {
+  question: string;
+  answer: string;
+};
+
+// Single source of truth for the visible FAQ and the FAQPage JSON-LD in
+// layout.tsx, so the structured data can never drift from what the page shows.
+// The YEARS_ABOVE_CAP / TOTAL_YEARS interpolation stays derived from
+// HISTORICAL_RATES above.
+export const interestRateCapFaqs: InterestRateCapFaq[] = [
+  {
+    question: "What is the Plan 2 student loan interest rate cap?",
+    answer:
+      "From 1 September 2026, the maximum interest rate on Plan 2 and Plan 3 student loans will be capped at 6% for the 2026/27 academic year, regardless of what the RPI + 3% formula produces.",
+  },
+  {
+    question: "How often has the Plan 2 interest rate exceeded 6%?",
+    answer: `The maximum Plan 2 interest rate has exceeded 6% in ${String(YEARS_ABOVE_CAP)} out of ${String(TOTAL_YEARS)} academic years since Plan 2 was introduced in 2012. During the 2022-2024 inflation crisis, rates reached 7.7% even after prevailing market rate interventions.`,
+  },
+  {
+    question: "Does the 6% cap change my monthly student loan repayments?",
+    answer:
+      "No. Monthly repayments are based on your income (9% of earnings above the threshold), not the interest rate. The cap only affects how fast your outstanding balance grows.",
+  },
+];

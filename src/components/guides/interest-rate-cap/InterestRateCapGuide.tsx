@@ -1,5 +1,6 @@
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
+import { Panel } from "@/components/instrument/Panel";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import { formatGBP, formatPercent } from "@/lib/format";
@@ -8,7 +9,11 @@ import { getCurrentTaxYearLabel } from "@/lib/taxYear";
 import { GuideArticle, KeyTakeaways } from "../guide-parts";
 import { BalanceWithCapChart } from "./BalanceWithCapChart";
 import { CurrentCapTable } from "./CurrentCapTable";
-import { TOTAL_YEARS, YEARS_ABOVE_CAP } from "./historical-rates";
+import {
+  interestRateCapFaqs,
+  TOTAL_YEARS,
+  YEARS_ABOVE_CAP,
+} from "./historical-rates";
 import { HistoricalRatesChart } from "./HistoricalRatesChart";
 import { TotalCostComparisonChart } from "./TotalCostComparisonChart";
 
@@ -278,6 +283,25 @@ export function InterestRateCapGuide() {
             extended.
           </li>
         </KeyTakeaways>
+
+        <section className="space-y-4">
+          <Heading as="h2" size="section">
+            Interest Rate Cap: Frequently Asked Questions
+          </Heading>
+          <Panel
+            padding={false}
+            className="divide-y divide-border overflow-hidden"
+          >
+            {interestRateCapFaqs.map((faq) => (
+              <div key={faq.question} className="space-y-2 p-4 sm:p-5">
+                <p className="font-semibold text-foreground">{faq.question}</p>
+                <p className="text-sm text-muted-foreground sm:text-base">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </Panel>
+        </section>
 
         <RelatedGuides
           current="interest-rate-cap"
