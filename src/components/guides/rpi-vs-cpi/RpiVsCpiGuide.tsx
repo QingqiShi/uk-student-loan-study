@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
+import { Panel } from "@/components/instrument/Panel";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
+import { rpiVsCpiFaqs } from "./faqs";
 import { InflationComparisonChart } from "./InflationComparisonChart";
 
 const rpi = CURRENT_RATES.rpi;
@@ -241,6 +243,25 @@ export function RpiVsCpiGuide() {
             .
           </li>
         </KeyTakeaways>
+
+        <section className="space-y-4">
+          <Heading as="h2" size="section">
+            RPI vs CPI: Frequently Asked Questions
+          </Heading>
+          <Panel
+            padding={false}
+            className="divide-y divide-border overflow-hidden"
+          >
+            {rpiVsCpiFaqs.map((faq) => (
+              <div key={faq.question} className="space-y-2 p-4 sm:p-5">
+                <p className="font-semibold text-foreground">{faq.question}</p>
+                <p className="text-sm text-muted-foreground sm:text-base">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </Panel>
+        </section>
 
         <RelatedGuides
           current="rpi-vs-cpi"
