@@ -3,6 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
+import { Panel } from "@/components/instrument/Panel";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -11,6 +12,7 @@ import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
 import { GuideArticle, guideLink } from "../guide-parts";
 import { CurrentThresholdsTable } from "./CurrentThresholdsTable";
+import { thresholdFreezeFaqs } from "./faqs";
 import { ThresholdComparisonChart } from "./ThresholdComparisonChart";
 
 // Historical thresholds — hardcoded because these are facts about specific
@@ -280,6 +282,25 @@ export function ThresholdFreezeGuide() {
               shape future threshold policy.
             </p>
           </div>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h2" size="section">
+            Threshold Freeze: Frequently Asked Questions
+          </Heading>
+          <Panel
+            padding={false}
+            className="divide-y divide-border overflow-hidden"
+          >
+            {thresholdFreezeFaqs.map((faq) => (
+              <div key={faq.question} className="space-y-2 p-4 sm:p-5">
+                <p className="font-semibold text-foreground">{faq.question}</p>
+                <p className="text-sm text-muted-foreground sm:text-base">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </Panel>
         </section>
 
         <section className="space-y-3">
