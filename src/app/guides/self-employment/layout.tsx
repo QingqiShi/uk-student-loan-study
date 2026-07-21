@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import { selfEmploymentFaqs } from "@/components/guides/self-employment/faqs";
 
 export const metadata: Metadata = {
   title: "Self-Employed? Your Student Loan Repayments Work Differently",
@@ -53,32 +53,14 @@ const breadcrumbSchema = {
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "How do I repay my student loan if I'm self-employed?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "If you're self-employed, you repay your student loan through your annual Self Assessment tax return rather than automatic PAYE deductions. HMRC calculates what you owe based on your net profit, and you pay it as part of your tax bill — typically in two lump-sum payments in January and July.",
-      },
+  mainEntity: selfEmploymentFaqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
     },
-    {
-      "@type": "Question",
-      name: "Do I pay student loan through Self Assessment?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: `Yes. Self-employed borrowers repay their student loan through Self Assessment. Your repayment is calculated at ${String(PLAN_CONFIGS.PLAN_2.repaymentRate * 100)}% (Plan 2 and Plan 5) of your profit above the repayment threshold and is included in your tax bill alongside income tax and National Insurance.`,
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What happens if I have both PAYE and self-employment income?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "If you have mixed income, HMRC collects student loan repayments through both mechanisms. Your employer deducts repayments from your salary via PAYE, and your Self Assessment tops up the difference based on your combined total income.",
-      },
-    },
-  ],
+  })),
 };
 
 const articleSchema = {
