@@ -49,6 +49,9 @@ export default defineConfig(
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",
       "better-tailwindcss/no-unknown-classes": [
         "error",
+        // `dark` / `light` scope the theme CSS variables for a subtree; they are
+        // plain marker classes, not Tailwind utilities, so the resolver can't
+        // see them.
         { ignore: ["dark", "light"] },
       ],
     },
@@ -72,6 +75,17 @@ export default defineConfig(
     files: ["src/app/global-error.tsx"],
     rules: {
       "@next/next/no-html-link-for-pages": "off",
+    },
+  },
+  {
+    // guide-parts.tsx deliberately walks the guide body with Children.map +
+    // cloneElement to inject server-rendered section anchor ids (the standard
+    // heading-anchor transform, à la rehype-slug), so the "uncommon React API"
+    // nudges don't apply here.
+    files: ["src/components/guides/guide-parts.tsx"],
+    rules: {
+      "@eslint-react/no-children-map": "off",
+      "@eslint-react/no-clone-element": "off",
     },
   },
   {

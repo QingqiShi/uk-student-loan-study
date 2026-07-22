@@ -289,6 +289,14 @@
   }
 }
 
+/* The guide lead paragraph — a step above body, sized in `em` so it rides the
+   fluid reading base (the guide body's font-size) instead of a fixed rem. Body
+   copy just inherits that base; only the lead needs a ratio of its own. */
+@utility guide-lead {
+  font-size: 1.0625em;
+  line-height: 1.45;
+}
+
 /* Theme transition */
 body {
   transition:

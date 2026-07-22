@@ -1,5 +1,8 @@
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 import { LinkIndex, LinkIndexRow } from "@/components/instrument/LinkIndex";
-import { Heading } from "@/components/typography/Heading";
+import { Eyebrow } from "@/components/typography/Eyebrow";
 import type { GuideEntry, GuideSlug } from "@/lib/guides";
 import { GUIDES } from "@/lib/guides";
 
@@ -60,6 +63,26 @@ const TOOLS: Partial<Record<string, ToolLink>> = {
 
 const DEFAULT_TOOLS = ["/", "/overpay"];
 
+/** A quiet grouped block in the companion rail: engraved label + a link index. */
+function RailGroup({
+  label,
+  children,
+  labelId,
+}: {
+  label: string;
+  labelId: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section aria-labelledby={labelId}>
+      <Eyebrow as="h2" marker={false} id={labelId}>
+        {label}
+      </Eyebrow>
+      <div className="mt-2.5">{children}</div>
+    </section>
+  );
+}
+
 interface RelatedGuidesProps {
   current: GuideSlug;
   order: GuideSlug[];
@@ -68,6 +91,14 @@ interface RelatedGuidesProps {
   tools?: string[];
 }
 
+/**
+ * The guide companion — the content of a guide's right-anchored rail (and, below
+ * the workspace breakpoint, the closing block beneath the article). It opens
+ * with a standing wayfinding link into the calculator, then a compact index of
+ * related guides, optional references, and the guide's other tools. Set quietly
+ * (engraved labels + hairline-separated rows) so it frames the reading column
+ * without competing with it.
+ */
 export function RelatedGuides({
   current,
   order,
@@ -79,35 +110,55 @@ export function RelatedGuides({
     .filter((slug) => slug !== current)
     .map((slug) => guidesBySlug.get(slug))
     .filter((g): g is GuideEntry => g !== undefined)
-    .slice(0, 2);
+    .slice(0, 3);
 
+  // The main calculator is the standing call-to-action, so drop it from the
+  // "More tools" index to avoid listing the same destination twice.
   const toolLinks = tools
+    .filter((href) => href !== "/")
     .map((href) => TOOLS[href])
     .filter((t): t is ToolLink => t !== undefined);
 
   return (
-    <div className="space-y-10 border-t border-border pt-10">
-      <section className="space-y-4" aria-labelledby="related-guides-h">
-        <Heading as="h2" size="section" id="related-guides-h">
-          Related guides
-        </Heading>
-        <LinkIndex>
-          {orderedGuides.map((guide) => (
-            <LinkIndexRow
-              key={guide.slug}
-              href={`/guides/${guide.slug}`}
-              title={guide.title}
-              description={guide.description}
-            />
-          ))}
-        </LinkIndex>
-      </section>
+    <div className="space-y-8">
+      <Link
+        href="/"
+        className="group block no-underline"
+        aria-labelledby="companion-cta-h"
+      >
+        <Eyebrow marker={false}>Try it yourself</Eyebrow>
+        <span
+          id="companion-cta-h"
+          className="mt-2 flex items-center gap-1.5 font-semibold text-foreground transition-colors group-hover:text-cta"
+        >
+          Open the calculator
+          <HugeiconsIcon
+            icon={ArrowRight01Icon}
+            className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-[3px]"
+          />
+        </span>
+        <span className="mt-1 block text-sm text-muted-foreground">
+          See what you will actually repay at your salary.
+        </span>
+      </Link>
+
+      {orderedGuides.length > 0 && (
+        <RailGroup label="Related guides" labelId="related-guides-h">
+          <LinkIndex>
+            {orderedGuides.map((guide) => (
+              <LinkIndexRow
+                key={guide.slug}
+                href={`/guides/${guide.slug}`}
+                title={guide.title}
+                description={guide.description}
+              />
+            ))}
+          </LinkIndex>
+        </RailGroup>
+      )}
 
       {extraLinks && extraLinks.length > 0 && (
-        <section className="space-y-4" aria-labelledby="references-h">
-          <Heading as="h2" size="section" id="references-h">
-            References
-          </Heading>
+        <RailGroup label="References" labelId="references-h">
           <LinkIndex>
             {extraLinks.map((link) => (
               <LinkIndexRow
@@ -118,14 +169,11 @@ export function RelatedGuides({
               />
             ))}
           </LinkIndex>
-        </section>
+        </RailGroup>
       )}
 
       {toolLinks.length > 0 && (
-        <section className="space-y-4" aria-labelledby="more-tools-h">
-          <Heading as="h2" size="section" id="more-tools-h">
-            More tools
-          </Heading>
+        <RailGroup label="More tools" labelId="more-tools-h">
           <LinkIndex>
             {toolLinks.map((tool) => (
               <LinkIndexRow
@@ -136,7 +184,7 @@ export function RelatedGuides({
               />
             ))}
           </LinkIndex>
-        </section>
+        </RailGroup>
       )}
     </div>
   );
