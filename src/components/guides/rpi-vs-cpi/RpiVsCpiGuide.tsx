@@ -3,7 +3,12 @@ import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
-import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
+import {
+  GuideArticle,
+  guideBreakout,
+  guideLink,
+  KeyTakeaways,
+} from "../guide-parts";
 import { InflationComparisonChart } from "./InflationComparisonChart";
 
 const rpi = CURRENT_RATES.rpi;
@@ -144,7 +149,7 @@ export function RpiVsCpiGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption={`Fig. 1 \u2014 Balance in real terms \u00b7 Plan 5, \u00a345,000`}
         figure={`RPI ${formatPercent(rpi)}`}
         figureTone="cost"

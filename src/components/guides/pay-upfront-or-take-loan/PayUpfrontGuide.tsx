@@ -7,7 +7,12 @@ import {
   PLAN_DISPLAY_INFO,
   TUITION_FEE_CAP,
 } from "@/lib/loans/plans";
-import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
+import {
+  GuideArticle,
+  guideBreakout,
+  guideLink,
+  KeyTakeaways,
+} from "../guide-parts";
 import { CostComparisonChart } from "./CostComparisonChart";
 
 const tuitionTotal = TUITION_FEE_CAP * 3;
@@ -124,7 +129,7 @@ export function PayUpfrontGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption="Fig. 1 — Total cost: loan vs upfront by salary · Plan 5"
         figure={`Upfront ${tuitionFormatted}`}
         figureTone="cost"

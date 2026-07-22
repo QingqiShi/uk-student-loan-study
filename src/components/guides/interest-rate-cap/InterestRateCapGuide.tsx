@@ -3,7 +3,7 @@ import { Heading } from "@/components/typography/Heading";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
-import { GuideArticle, KeyTakeaways } from "../guide-parts";
+import { GuideArticle, guideBreakout, KeyTakeaways } from "../guide-parts";
 import { BalanceWithCapChart } from "./BalanceWithCapChart";
 import { CurrentCapTable } from "./CurrentCapTable";
 import { TOTAL_YEARS, YEARS_ABOVE_CAP } from "./historical-rates";
@@ -77,7 +77,7 @@ export function InterestRateCapGuide() {
         </div>
       </section>
 
-      <div className="guide-breakout">
+      <div className={guideBreakout}>
         <CurrentCapTable />
       </div>
 
@@ -123,7 +123,7 @@ export function InterestRateCapGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption="Fig. 1 — Maximum Plan 2 rate charged by year"
         figure="Cap 6%"
         figureTone="cost"
@@ -159,7 +159,7 @@ export function InterestRateCapGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption="Fig. 2 — Balance with and without the 6% cap"
         figure="Cap 6%"
         figureTone="cost"
@@ -189,7 +189,7 @@ export function InterestRateCapGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption="Fig. 3 — Total repaid by salary · sustained 7% RPI"
       >
         <TotalCostComparisonChart />

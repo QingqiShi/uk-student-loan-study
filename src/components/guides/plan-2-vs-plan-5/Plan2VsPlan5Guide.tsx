@@ -3,7 +3,12 @@ import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
-import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
+import {
+  GuideArticle,
+  guideBreakout,
+  guideLink,
+  KeyTakeaways,
+} from "../guide-parts";
 import { BalanceComparisonChart } from "./BalanceComparisonChart";
 import { ComparisonTable } from "./ComparisonTable";
 import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
@@ -51,7 +56,7 @@ export function Plan2VsPlan5Guide() {
         </p>
       </section>
 
-      <div className="guide-breakout">
+      <div className={guideBreakout}>
         <ComparisonTable />
       </div>
 
@@ -69,7 +74,7 @@ export function Plan2VsPlan5Guide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption={`Fig. 1 — Lifetime repaid by salary · ${formatGBP(EXAMPLE_BALANCE)} balance`}
         bodyClassName="h-75 sm:h-95"
       >
@@ -89,7 +94,7 @@ export function Plan2VsPlan5Guide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption={`Fig. 2 — Balance over time · Plan 2 vs Plan 5`}
         bodyClassName="h-85 sm:h-105"
       >

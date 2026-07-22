@@ -49,11 +49,10 @@ export default defineConfig(
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",
       "better-tailwindcss/no-unknown-classes": [
         "error",
-        // `guide-body` / `guide-breakout` drive the guide reading-column grid in
-        // globals.css `@layer components` (`guide-breakout` exists only as the
-        // `.guide-body > .guide-breakout` target), not as Tailwind utilities, so
-        // the resolver can't see them.
-        { ignore: ["dark", "light", "guide-body", "guide-breakout"] },
+        // `dark` / `light` scope the theme CSS variables for a subtree; they are
+        // plain marker classes, not Tailwind utilities, so the resolver can't
+        // see them.
+        { ignore: ["dark", "light"] },
       ],
     },
   },

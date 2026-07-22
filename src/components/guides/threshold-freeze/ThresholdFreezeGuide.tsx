@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
-import { GuideArticle, guideLink } from "../guide-parts";
+import { GuideArticle, guideBreakout, guideLink } from "../guide-parts";
 import { CurrentThresholdsTable } from "./CurrentThresholdsTable";
 import { ThresholdComparisonChart } from "./ThresholdComparisonChart";
 
@@ -203,7 +203,7 @@ export function ThresholdFreezeGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption="Fig. 1 — Plan 2 threshold trajectories · 2025/26–2030/31"
         figure={`Gap ${formatGBP(THRESHOLD_GAP)}`}
         figureTone="cost"
@@ -258,7 +258,7 @@ export function ThresholdFreezeGuide() {
         </div>
       </section>
 
-      <div className="guide-breakout">
+      <div className={guideBreakout}>
         <CurrentThresholdsTable />
       </div>
 
