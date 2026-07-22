@@ -11,6 +11,7 @@ import {
   MetricReadout,
 } from "@/components/instrument/MetricReadout";
 import { Panel, PanelHeader } from "@/components/instrument/Panel";
+import { VerifiedAgo } from "@/components/instrument/VerifiedAgo";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Heading } from "@/components/typography/Heading";
 import {
@@ -171,22 +172,37 @@ export function OurDataPage() {
             <p className="max-w-[68ch] text-lead text-muted-foreground">
               Our calculators run on the official figures published by GOV.UK,
               the Bank of England, and the ONS. An automated job re-checks them
-              every day&nbsp;&mdash; if a number moves, the model updates within
-              24 hours.
+              every day and refreshes the model whenever a figure changes.
             </p>
           </div>
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-border pt-4">
-            <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              Last verified
+          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 border-t border-border pt-4 text-meta text-muted-foreground">
+            <span className="inline-flex items-center gap-2 font-medium text-foreground">
+              <span
+                className="size-1.5 shrink-0 rounded-full bg-primary"
+                aria-hidden="true"
+              />
+              <VerifiedAgo />
             </span>
-            <time
-              dateTime={LAST_UPDATED}
-              className="font-mono text-sm font-semibold tracking-tight text-cta tabular-nums"
-            >
-              {formattedLastUpdated}
-            </time>
-            <span className="text-sm text-muted-foreground">
-              · {TAX_YEAR} tax year
+            <span className="text-faint" aria-hidden="true">
+              ·
+            </span>
+            <span>
+              Last changed{" "}
+              <time
+                dateTime={LAST_UPDATED}
+                className="font-medium text-foreground tabular-nums"
+              >
+                {formattedLastUpdated}
+              </time>
+            </span>
+            <span className="text-faint" aria-hidden="true">
+              ·
+            </span>
+            <span>
+              <span className="font-medium text-foreground tabular-nums">
+                {TAX_YEAR}
+              </span>{" "}
+              tax year
             </span>
           </div>
         </header>

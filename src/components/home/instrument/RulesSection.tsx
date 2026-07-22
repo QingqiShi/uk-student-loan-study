@@ -80,7 +80,8 @@ export function RulesSection() {
           </h3>
           <p className="col-start-2 text-body leading-[1.55] text-pretty text-muted-foreground">
             Thresholds, repayment rates and the RPI figure come straight from
-            GOV.UK and the Bank of England, and are refreshed when they change.
+            GOV.UK and the Bank of England, checked daily by an automated job
+            and refreshed whenever they change.
           </p>
           <span className="col-start-2 mt-[0.55rem] font-sans text-meta text-muted-foreground">
             {TAX_YEAR} tax year
