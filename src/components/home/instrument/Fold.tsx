@@ -11,7 +11,7 @@ import { Readout } from "./Readout";
 export function Fold({ initialMode }: { initialMode?: InputMode }) {
   const {
     mode,
-    hasPersonalized,
+    hasPersonalised,
     handlePersonalise,
     handlePresetApplied,
     handleWizardComplete,
@@ -29,7 +29,7 @@ export function Fold({ initialMode }: { initialMode?: InputMode }) {
         <Readout onTailor={handlePersonalise} />
         <Controls
           mode={mode}
-          hasPersonalized={hasPersonalized}
+          hasPersonalised={hasPersonalised}
           handlePersonalise={handlePersonalise}
           handlePresetApplied={handlePresetApplied}
           handleWizardComplete={handleWizardComplete}

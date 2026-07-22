@@ -222,8 +222,9 @@ export function InterestRateCapGuide() {
               <strong className="text-foreground">
                 Graduates who will repay in full
               </strong>{" "}
-              &mdash; if your salary is high enough to clear the loan before the
-              30-year write-off, lower interest means a lower total cost.
+              &mdash; if your salary is high enough to pay off the loan before
+              the 30-year write-off, lower interest means you repay less
+              overall.
             </li>
           </ul>
           <p>

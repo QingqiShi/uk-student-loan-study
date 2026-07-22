@@ -60,11 +60,11 @@ export function RulesSection() {
             03
           </span>
           <h3 className="col-start-2 mb-[0.35rem] text-lead font-semibold tracking-[-0.011em]">
-            The balance clears at {PLAN2_WRITEOFF} years
+            The balance is written off at {PLAN2_WRITEOFF} years
           </h3>
           <p className="col-start-2 text-body leading-[1.55] text-pretty text-muted-foreground">
             Anything unpaid {PLAN2_WRITEOFF} years after you were first due to
-            repay is cancelled. On a middle income, reaching that point is the
+            repay is written off. On a middle income, reaching that point is the
             norm, not the exception.
           </p>
           <span className="col-start-2 mt-[0.55rem] font-sans text-meta text-muted-foreground">

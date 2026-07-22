@@ -6,7 +6,7 @@
  * - SALARY_SERIES: 126 simulations across salary range
  * - BALANCE_SERIES: 1 simulation for balance over time
  * - OVERPAY_ANALYSIS: 2 simulations for overpay comparison
- * - INSIGHT: 1 simulation for personalized insight text
+ * - INSIGHT: 1 simulation for personalised insight text
  * - DETAIL_SERIES: 1 simulation extracting all time-series for detail pages
  * - EFFECTIVE_RATE_SALARY: 126 simulations computing effective rate by salary
  */
@@ -276,7 +276,7 @@ function handleInsight(payload: InsightPayload): {
       effectiveRate: 0,
       boeRate: payload.boeBaseRate / 100,
     },
-    cumulative: { data: [], stat: "\u2014", label: "Total Cost" },
+    cumulative: { data: [], stat: "\u2014", label: "Total Repayments" },
   };
 
   if (totalBalance <= 0) {
@@ -402,7 +402,7 @@ function handleInsight(payload: InsightPayload): {
     cumulative: {
       data: cumulativeData,
       stat: cumulativeStat,
-      label: "Total Cost",
+      label: "Total Repayments",
     },
   };
 

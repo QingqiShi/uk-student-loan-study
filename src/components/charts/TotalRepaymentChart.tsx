@@ -54,13 +54,11 @@ export function TotalRepaymentChart() {
       data={data}
       xDataKey="salary"
       xFormatter={(v) => currencyFormatter.format(v)}
-      yLabel={
-        showPresentValue ? "Total repayment (inflation-adjusted)" : undefined
-      }
+      yLabel={showPresentValue ? "Total repayment (present value)" : undefined}
       yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel={
         showPresentValue
-          ? "UK student loan calculator results showing inflation-adjusted total repayment by salary. Middle earners pay the most, while lower earners benefit from loan write-off."
+          ? "UK student loan calculator results showing present-value total repayment by salary. Middle earners pay the most, while lower earners benefit from loan write-off."
           : "UK student loan calculator results showing total repayment by salary. Middle earners pay the most, while lower earners benefit from loan write-off."
       }
       chartConfig={chartConfig}

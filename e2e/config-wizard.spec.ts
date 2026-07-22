@@ -18,7 +18,7 @@ test.describe("Config wizard dialog", () => {
     await expect(
       page.getByRole("dialog", { name: "Configure your loans" }),
     ).toBeVisible();
-    await expect(page.getByText("Customise your loans")).toBeVisible();
+    await expect(page.getByText("Tailor your loans")).toBeVisible();
   });
 
   test("toggle plan checkbox + enter balance → Done becomes enabled", async ({

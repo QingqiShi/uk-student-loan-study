@@ -281,7 +281,7 @@ export function MovingAbroadGuide() {
               If you fail to complete the overseas income assessment, SLC
               doesn&rsquo;t simply stop collecting. Instead, they apply{" "}
               <strong>fixed repayment amounts</strong> that are not based on
-              your actual earnings.
+              your actual income.
             </p>
             <ul className="mt-2 list-inside list-disc space-y-1 marker:text-signal">
               <li>

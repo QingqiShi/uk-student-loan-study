@@ -46,8 +46,8 @@ const TOOLS: Partial<Record<string, ToolLink>> = {
   },
   "/effective-rate": {
     href: "/effective-rate",
-    title: "Effective interest rate",
-    description: "Your true rate vs the Bank of England base rate.",
+    title: "Effective rate",
+    description: "Your effective rate vs the Bank of England base rate.",
   },
   "/which-plan": {
     href: "/which-plan",

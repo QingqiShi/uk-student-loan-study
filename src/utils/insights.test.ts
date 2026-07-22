@@ -49,7 +49,7 @@ describe("generateInsight", () => {
     expect(result?.title).toContain("pay off quickly");
   });
 
-  it("uses custom rpiRate and boeBaseRate when provided", () => {
+  it("uses personalised rpiRate and boeBaseRate when provided", () => {
     const withDefaults = generateInsight(60_000, { loans: [plan2Loan] });
     const withCustomRates = generateInsight(60_000, {
       loans: [plan2Loan],

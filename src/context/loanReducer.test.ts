@@ -109,7 +109,7 @@ describe("loanReducer", () => {
       expect(newState.loans).toEqual([{ planType: "PLAN_5", balance: 50_000 }]);
     });
 
-    it("should preserve custom rpiRate and boeBaseRate when applying preset", () => {
+    it("should preserve personalised rpiRate and boeBaseRate when applying preset", () => {
       let state = loanReducer(initialState, updateFieldAction("rpiRate", 6.0));
       state = loanReducer(state, updateFieldAction("boeBaseRate", 5.5));
 

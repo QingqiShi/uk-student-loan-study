@@ -128,7 +128,7 @@ function comparePlans(scraped: ScrapedGovUkData): Mismatch[] {
     }
   }
 
-  // Plan 2 interest scale
+  // Plan 2 sliding scale
   const plan2 = PLAN_CONFIGS.PLAN_2;
   if (
     plan2.interestLowerThreshold !== scraped.plan2InterestScale.lowerThreshold

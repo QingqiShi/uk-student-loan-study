@@ -24,7 +24,7 @@ function getChartCaption(
   )?.year;
 
   if (!firstGreenYear) {
-    return "Your repayments never exceeded the monthly interest — the outstanding balance is cleared at write-off.";
+    return "Your repayments never exceeded the monthly interest — the remaining balance is written off.";
   }
   if (firstGreenYear === 1) {
     return "Your repayments covered the interest every year — you were always reducing your balance.";
@@ -88,7 +88,7 @@ export function InterestDetailPage() {
               <p>
                 You were charged{" "}
                 {currencyFormatter.format(result.stats.attributedInterestPaid)}{" "}
-                in interest. When the loan is written off, the cleared balance
+                in interest. When the loan is written off, the remaining balance
                 is treated as a final principal repayment, so the adjusted
                 figure above counts only what you repaid on top of your original
                 loan.

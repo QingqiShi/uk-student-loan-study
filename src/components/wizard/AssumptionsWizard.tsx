@@ -20,7 +20,7 @@ import {
 } from "./wizardReducer";
 import type { AssumptionsWizardStep } from "./wizardReducer";
 
-/** BOE base rate only affects Plan 1 & Plan 4 interest */
+/** BoE base rate only affects Plan 1 & Plan 4 interest */
 const BOE_RELEVANT_PLANS = new Set(["PLAN_1", "PLAN_4"]);
 
 interface AssumptionsWizardProps {

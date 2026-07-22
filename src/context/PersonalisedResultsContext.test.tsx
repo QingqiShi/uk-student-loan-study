@@ -5,9 +5,9 @@ import { MIN_SALARY } from "@/constants";
 import type { LoanState } from "@/types/store";
 import { LoanProvider } from "./LoanContext";
 import {
-  PersonalizedResultsProvider,
-  usePersonalizedResults,
-} from "./PersonalizedResultsContext";
+  PersonalisedResultsProvider,
+  usePersonalisedResults,
+} from "./PersonalisedResultsContext";
 
 const defaultTestConfig: Partial<LoanState> = {
   loans: [{ planType: "PLAN_2", balance: 50_000 }],
@@ -19,13 +19,13 @@ function createWrapper(overrides?: Partial<LoanState>) {
   return function Wrapper({ children }: { children: ReactNode }) {
     return (
       <LoanProvider initialStateOverride={mergedConfig}>
-        <PersonalizedResultsProvider>{children}</PersonalizedResultsProvider>
+        <PersonalisedResultsProvider>{children}</PersonalisedResultsProvider>
       </LoanProvider>
     );
   };
 }
 
-describe("usePersonalizedResults (summary + insight)", () => {
+describe("usePersonalisedResults (summary + insight)", () => {
   beforeEach(() => {
     vi.setSystemTime(new Date("2024-01-15"));
     localStorage.clear();
@@ -36,7 +36,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns null initially before worker responds", () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns summary with totalPaid, monthlyRepayment, and monthsToPayoff", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper(),
     });
 
@@ -58,7 +58,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns positive totalPaid for active loans", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper(),
     });
 
@@ -69,7 +69,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns positive monthlyRepayment when salary exceeds threshold", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({ salary: 45_000 }),
     });
 
@@ -80,7 +80,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns positive monthsToPayoff for active loans", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper(),
     });
 
@@ -91,7 +91,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns null summary when no loans have balance", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({ loans: [] }),
     });
 
@@ -103,14 +103,14 @@ describe("usePersonalizedResults (summary + insight)", () => {
 
   it("returns higher monthlyRepayment for higher salary", async () => {
     const { result: lowSalaryResult } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({ salary: 35_000 }),
       },
     );
 
     const { result: highSalaryResult } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({ salary: 80_000 }),
       },
@@ -132,7 +132,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns zero monthlyRepayment for salary below threshold", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({ salary: MIN_SALARY }),
     });
 
@@ -142,9 +142,9 @@ describe("usePersonalizedResults (summary + insight)", () => {
     });
   });
 
-  it("includes postgrad loan in summary when present", async () => {
+  it("includes Postgraduate loan in summary when present", async () => {
     const { result: undergradOnly } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({
           loans: [{ planType: "PLAN_2", balance: 50_000 }],
@@ -154,7 +154,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
     );
 
     const { result: withPostgrad } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({
           loans: [
@@ -171,7 +171,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
       expect(withPostgrad.current.summary).not.toBeNull();
     });
 
-    // Adding a postgrad loan should increase total repayment
+    // Adding a Postgraduate loan should increase total repayment
     if (
       withPostgrad.current.summary !== null &&
       undergradOnly.current.summary !== null
@@ -184,7 +184,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
 
   it("returns lower totalPaid with present value enabled", async () => {
     const { result: nominalResult } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({
           showPresentValue: false,
@@ -193,7 +193,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
       },
     );
 
-    const { result: pvResult } = renderHook(() => usePersonalizedResults(), {
+    const { result: pvResult } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({
         showPresentValue: true,
         discountRate: 0.05,
@@ -211,7 +211,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
 
   it("monthlyRepayment and monthsToPayoff are the same in PV mode", async () => {
     const { result: nominalResult } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({
           showPresentValue: false,
@@ -220,7 +220,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
       },
     );
 
-    const { result: pvResult } = renderHook(() => usePersonalizedResults(), {
+    const { result: pvResult } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({
         showPresentValue: true,
         discountRate: 0.05,
@@ -241,7 +241,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
 
   it("insight description changes when showPresentValue is true", async () => {
     const { result: nominalResult } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({
           showPresentValue: false,
@@ -250,7 +250,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
       },
     );
 
-    const { result: pvResult } = renderHook(() => usePersonalizedResults(), {
+    const { result: pvResult } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({
         showPresentValue: true,
         discountRate: 0.05,
@@ -267,14 +267,14 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 
   it("returns different results for different plan types", async () => {
-    const { result: plan2Result } = renderHook(() => usePersonalizedResults(), {
+    const { result: plan2Result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({
         loans: [{ planType: "PLAN_2", balance: 50_000 }],
         salary: 45_000,
       }),
     });
 
-    const { result: plan5Result } = renderHook(() => usePersonalizedResults(), {
+    const { result: plan5Result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({
         loans: [{ planType: "PLAN_5", balance: 50_000 }],
         salary: 45_000,
@@ -299,7 +299,7 @@ describe("usePersonalizedResults (summary + insight)", () => {
   });
 });
 
-describe("usePersonalizedResults (cards)", () => {
+describe("usePersonalisedResults (cards)", () => {
   beforeEach(() => {
     vi.setSystemTime(new Date("2024-01-15"));
     localStorage.clear();
@@ -310,7 +310,7 @@ describe("usePersonalizedResults (cards)", () => {
   });
 
   it("returns all 4 card datasets with stat and label", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper(),
     });
 
@@ -340,7 +340,7 @@ describe("usePersonalizedResults (cards)", () => {
   });
 
   it("balance sparkline starts at initial balance and decreases", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper(),
     });
 
@@ -356,7 +356,7 @@ describe("usePersonalizedResults (cards)", () => {
   });
 
   it("cumulative sparkline is monotonically increasing", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper(),
     });
 
@@ -373,7 +373,7 @@ describe("usePersonalizedResults (cards)", () => {
 
   it("PV mode returns lower cumulative totals", async () => {
     const { result: nominalResult } = renderHook(
-      () => usePersonalizedResults(),
+      () => usePersonalisedResults(),
       {
         wrapper: createWrapper({
           showPresentValue: false,
@@ -382,7 +382,7 @@ describe("usePersonalizedResults (cards)", () => {
       },
     );
 
-    const { result: pvResult } = renderHook(() => usePersonalizedResults(), {
+    const { result: pvResult } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({
         showPresentValue: true,
         discountRate: 0.05,
@@ -401,7 +401,7 @@ describe("usePersonalizedResults (cards)", () => {
   });
 
   it("empty loans returns dash stats", async () => {
-    const { result } = renderHook(() => usePersonalizedResults(), {
+    const { result } = renderHook(() => usePersonalisedResults(), {
       wrapper: createWrapper({ loans: [] }),
     });
 

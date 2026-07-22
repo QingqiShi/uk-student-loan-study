@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Interest Paid — Student Loan Interest Breakdown",
   description:
-    "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the true cost.",
+    "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the overall cost.",
   keywords: [
     "student loan interest breakdown",
     "student loan interest vs principal",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Interest Paid — Student Loan Interest Breakdown",
     description:
-      "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the true cost.",
+      "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the overall cost.",
     url: "https://studentloanstudy.uk/interest",
     type: "website",
   },

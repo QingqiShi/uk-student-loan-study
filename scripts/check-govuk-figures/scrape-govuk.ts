@@ -18,7 +18,7 @@ const PLAN_NAME_MAP: Record<string, string> = {
   postgraduate: "POSTGRADUATE",
 };
 
-function normalizePlanName(raw: string): string {
+function normalisePlanName(raw: string): string {
   const lower = raw.trim().toLowerCase();
   for (const [key, value] of Object.entries(PLAN_NAME_MAP)) {
     if (lower.includes(key)) return value;
@@ -93,7 +93,7 @@ async function scrapeThresholds(page: Page): Promise<{
         `Threshold row has unexpected cell count: ${cells.length}`,
       );
     }
-    const planName = normalizePlanName(cells[0]);
+    const planName = normalisePlanName(cells[0]);
     const yearlyThreshold = parseCurrency(cells[1]);
     const monthlyThreshold = parseCurrency(cells[2]);
     return {
@@ -107,16 +107,16 @@ async function scrapeThresholds(page: Page): Promise<{
     throw new Error(`Expected 5 threshold rows, got ${thresholds.length}`);
   }
 
-  // Find the second table — Plan 2 interest scale
+  // Find the second table — Plan 2 sliding scale
   const plan2Rows = await page.$$eval("table", (tables) => {
-    // The second table is the income-based interest table
+    // The second table is the sliding scale table
     const interestTables = tables.filter((t) => {
       const headerText =
         t.querySelector("thead, tr:first-child")?.textContent ?? "";
       return !headerText.toLowerCase().includes("plan type");
     });
     if (interestTables.length === 0) {
-      throw new Error("Could not find Plan 2 interest scale table");
+      throw new Error("Could not find Plan 2 sliding scale table");
     }
     const table = interestTables[0];
     const rows = Array.from(table.querySelectorAll("tbody tr"));
@@ -126,7 +126,7 @@ async function scrapeThresholds(page: Page): Promise<{
     });
   });
 
-  // Parse the interest scale thresholds from table rows
+  // Parse the sliding scale thresholds from table rows
   let lowerThreshold = 0;
   let upperThreshold = 0;
 
@@ -146,7 +146,7 @@ async function scrapeThresholds(page: Page): Promise<{
 
   if (lowerThreshold === 0 || upperThreshold === 0) {
     throw new Error(
-      `Could not extract Plan 2 interest scale thresholds. Lower: ${lowerThreshold}, Upper: ${upperThreshold}`,
+      `Could not extract Plan 2 sliding scale thresholds. Lower: ${lowerThreshold}, Upper: ${upperThreshold}`,
     );
   }
 
@@ -186,7 +186,7 @@ async function scrapeRepaymentRates(
 
 async function scrapeInterestRates(page: Page): Promise<ScrapedInterestRate[]> {
   // Interest rate list items follow patterns like "3.2% if you\u2019re on Plan 1"
-  // GOV.UK uses curly apostrophes (\u2019), so we normalize to straight quotes before matching
+  // GOV.UK uses curly apostrophes (\u2019), so we normalise to straight quotes before matching
   const listItems = await page.$$eval("li", (items) =>
     items
       .filter((li) => {

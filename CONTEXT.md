@@ -53,7 +53,7 @@ A voluntary extra payment beyond the mandatory repayment. A **lump sum** is a on
 _Avoid_: voluntary payment, voluntary overpayment, extra payment, paying extra
 
 **Write-off**:
-The cancellation of any remaining balance at the end of the plan's term (25–40 years). Genuinely opposite to "paid off" — do not blur them.
+The cancellation of any remaining balance at the end of the plan's term (25–40 years). Genuinely opposite to "paid off" — do not blur them. (Exception: the moving-abroad myth FAQ and its SEO keyword deliberately echo the myth's own words — "wiped"/"wipe"/"cancel" — to debunk the belief that moving abroad clears your loan; the factual statements there still use "written off".)
 _Avoid_: forgiven, cancelled, wiped, cleared
 
 **Paid off**:

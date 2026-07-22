@@ -13,7 +13,7 @@ interface OutcomeBadgeProps {
 /**
  * A flat Instrument status chip: a hairline-ruled pill with an engraved sans
  * label and a single tonal dot — the Principal data green for a positive outcome
- * (paid in full), the Interest clay for a caution (written off). No filled status
+ * (paid off), the Interest clay for a caution (written off). No filled status
  * backgrounds, no rounded
  * Ledger badge — the meaning rides on the dot and the word.
  */

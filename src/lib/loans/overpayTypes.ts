@@ -63,7 +63,7 @@ export interface OverpayAnalysisResult {
   writeOffMonth: number | null;
   /** Payment difference: baseline.totalPaid - overpay.totalPaid
    * Positive = overpaying saves money (less interest paid)
-   * Negative = overpaying costs more (e.g., paying off debt that would be written off) */
+   * Negative = overpaying costs more (e.g., paying off a balance that would be written off) */
   paymentDifference: number;
   /** Extra amount paid when overpaying (overpayment contributions) */
   overpaymentContributions: number;

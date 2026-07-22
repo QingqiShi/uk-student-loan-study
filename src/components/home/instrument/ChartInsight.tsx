@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
+import { usePersonalisedResults } from "@/context/PersonalisedResultsContext";
 import type { Insight } from "@/utils/insights";
 
 // The peak/costly zone reads brick (the one cost signal); the "written off" and
@@ -20,7 +20,7 @@ const COST_ZONES = new Set<Insight["type"]>(["middle-earner"]);
  * and stays aligned under the title instead of orphaning against the right edge.
  */
 export function ChartInsight() {
-  const { insight } = usePersonalizedResults();
+  const { insight } = usePersonalisedResults();
 
   if (!insight) return null;
 

@@ -19,19 +19,19 @@ import type {
   InsightPayload,
 } from "@/workers/simulation.worker";
 
-interface PersonalizedResults {
+interface PersonalisedResults {
   summary: InsightSummary | null;
   insight: Insight | null;
   cards: InsightCardsResult | null;
 }
 
-const PersonalizedResultsContext = createContext<PersonalizedResults>({
+const PersonalisedResultsContext = createContext<PersonalisedResults>({
   summary: null,
   insight: null,
   cards: null,
 });
 
-export function PersonalizedResultsProvider({
+export function PersonalisedResultsProvider({
   children,
 }: {
   children: ReactNode;
@@ -64,19 +64,19 @@ export function PersonalizedResultsProvider({
     summary = { ...summary, totalPaid: summary.pvTotalPaid };
   }
 
-  const value: PersonalizedResults = {
+  const value: PersonalisedResults = {
     summary,
     insight: result?.insight ?? null,
     cards: result?.cards ?? null,
   };
 
   return (
-    <PersonalizedResultsContext value={value}>
+    <PersonalisedResultsContext value={value}>
       {children}
-    </PersonalizedResultsContext>
+    </PersonalisedResultsContext>
   );
 }
 
-export function usePersonalizedResults(): PersonalizedResults {
-  return use(PersonalizedResultsContext);
+export function usePersonalisedResults(): PersonalisedResults {
+  return use(PersonalisedResultsContext);
 }

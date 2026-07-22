@@ -366,7 +366,7 @@ function determineRecommendation(
 }
 
 /**
- * Creates an empty result for when there's nothing to analyze.
+ * Creates an empty result for when there's nothing to analyse.
  */
 function createEmptyResult(): OverpayAnalysisResult {
   return {

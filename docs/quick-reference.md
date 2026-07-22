@@ -8,33 +8,33 @@ For detailed explanations, see [uk-student-loans-research.md](./uk-student-loans
 
 ## Current Thresholds (2025/26)
 
-| Plan         | Annual  | Monthly | Weekly | Rate |
-| ------------ | ------- | ------- | ------ | ---- |
-| **Plan 1**   | £26,065 | £2,172  | £501   | 9%   |
-| **Plan 2**   | £28,470 | £2,372  | £547   | 9%   |
-| **Plan 4**   | £32,745 | £2,728  | £629   | 9%   |
-| **Plan 5**   | £25,000 | £2,083  | £480   | 9%   |
-| **Postgrad** | £21,000 | £1,750  | £403   | 6%   |
+| Plan             | Annual  | Monthly | Weekly | Rate |
+| ---------------- | ------- | ------- | ------ | ---- |
+| **Plan 1**       | £26,065 | £2,172  | £501   | 9%   |
+| **Plan 2**       | £28,470 | £2,372  | £547   | 9%   |
+| **Plan 4**       | £32,745 | £2,728  | £629   | 9%   |
+| **Plan 5**       | £25,000 | £2,083  | £480   | 9%   |
+| **Postgraduate** | £21,000 | £1,750  | £403   | 6%   |
 
 ## Thresholds from April 2026
 
-| Plan         | Annual  | Notes                 |
-| ------------ | ------- | --------------------- |
-| **Plan 1**   | £26,900 | Confirmed             |
-| **Plan 2**   | £29,385 | Confirmed             |
-| **Plan 4**   | TBC     | Expected RPI increase |
-| **Plan 5**   | £25,000 | Confirmed             |
-| **Postgrad** | £21,000 | Unchanged             |
+| Plan             | Annual  | Notes                 |
+| ---------------- | ------- | --------------------- |
+| **Plan 1**       | £26,900 | Confirmed             |
+| **Plan 2**       | £29,385 | Confirmed             |
+| **Plan 4**       | TBC     | Expected RPI increase |
+| **Plan 5**       | £25,000 | Confirmed             |
+| **Postgraduate** | £21,000 | Unchanged             |
 
 ## Interest Rates (Sept 2025 - Aug 2026)
 
-| Plan         | Method                       | Current Rate |
-| ------------ | ---------------------------- | ------------ |
-| **Plan 1**   | Lower of RPI or BoE+1%       | 3.2%         |
-| **Plan 2**   | RPI to RPI+3% (income-based) | 3.2% - 6.2%  |
-| **Plan 4**   | Lower of RPI or BoE+1%       | 3.2%         |
-| **Plan 5**   | RPI only                     | 3.2%         |
-| **Postgrad** | RPI + 3%                     | 6.2%         |
+| Plan             | Method                        | Current Rate |
+| ---------------- | ----------------------------- | ------------ |
+| **Plan 1**       | Lower of RPI or BoE+1%        | 3.2%         |
+| **Plan 2**       | RPI to RPI+3% (sliding scale) | 3.2% - 6.2%  |
+| **Plan 4**       | Lower of RPI or BoE+1%        | 3.2%         |
+| **Plan 5**       | RPI only                      | 3.2%         |
+| **Postgraduate** | RPI + 3%                      | 6.2%         |
 
 ## Plan 2 Interest Sliding Scale (2025/26)
 
@@ -56,17 +56,17 @@ For detailed explanations, see [uk-student-loans-research.md](./uk-student-loans
 | **Plan 4** (pre-Aug 2007)  | Age 65 or 30 years |
 | **Plan 4** (Aug 2007+)     | 30 years           |
 | **Plan 5**                 | 40 years           |
-| **Postgrad**               | 30 years           |
+| **Postgraduate**           | 30 years           |
 
 ## Who's On Which Plan?
 
-| Plan         | Criteria                                          |
-| ------------ | ------------------------------------------------- |
-| **Plan 1**   | England/Wales pre-Sept 2012; ALL Northern Ireland |
-| **Plan 2**   | England Sept 2012 - July 2023; Wales Sept 2012+   |
-| **Plan 4**   | ALL Scotland                                      |
-| **Plan 5**   | England Aug 2023+ only                            |
-| **Postgrad** | Master's/Doctoral in England/Wales                |
+| Plan             | Criteria                                          |
+| ---------------- | ------------------------------------------------- |
+| **Plan 1**       | England/Wales pre-Sept 2012; ALL Northern Ireland |
+| **Plan 2**       | England Sept 2012 - July 2023; Wales Sept 2012+   |
+| **Plan 4**       | ALL Scotland                                      |
+| **Plan 5**       | England Aug 2023+ only                            |
+| **Postgraduate** | Master's/Doctoral in England/Wales                |
 
 ## Key Dates
 
@@ -118,12 +118,12 @@ Monthly threshold: £2,083
 Repayment: (£2,917 - £2,083) × 9% = £75.06/month
 ```
 
-**Example 3: Combined Plan 2 + Postgrad, £40,000 salary**
+**Example 3: Combined Plan 2 + Postgraduate, £40,000 salary**
 
 ```
 Monthly income: £3,333
 Plan 2: (£3,333 - £2,372) × 9% = £86.49
-Postgrad: (£3,333 - £1,750) × 6% = £94.98
+Postgraduate: (£3,333 - £1,750) × 6% = £94.98
 Total: £181.47/month
 ```
 

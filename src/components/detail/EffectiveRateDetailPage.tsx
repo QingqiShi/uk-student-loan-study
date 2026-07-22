@@ -36,7 +36,7 @@ export function EffectiveRateDetailPage() {
 
   return (
     <DetailPageShell
-      heading="True Cost of Your Loan"
+      heading="The Effective Rate of Your Loan"
       description="Compare your loan's effective annual rate to the Bank of England base rate across different salaries."
     >
       {salaryResult ? (
@@ -84,7 +84,7 @@ export function EffectiveRateDetailPage() {
 
           <p className="max-w-prose text-sm text-muted-foreground">
             The effective rate accounts for write-offs — lower earners pay less
-            because more of their debt is forgiven.
+            because more of their balance is written off.
           </p>
         </div>
       ) : (

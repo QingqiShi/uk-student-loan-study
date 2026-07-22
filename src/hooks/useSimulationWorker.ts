@@ -23,10 +23,10 @@ type ResultFor<P extends WorkerPayload> = Extract<
  * Uses a shared singleton worker (created lazily on first message).
  * Handles request/response lifecycle and ignores stale responses.
  *
- * Two-pronged INP optimization:
+ * Two-pronged INP optimisation:
  * 1. Web Worker: Simulations run off the main thread
  * 2. useTransition: Result state updates are wrapped in startTransition,
- *    marking chart re-renders as non-urgent so React can prioritize
+ *    marking chart re-renders as non-urgent so React can prioritise
  *    user interactions (like slider drags) over rendering
  *
  * @param payload - The payload to send to the worker (changes trigger new computation)

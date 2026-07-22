@@ -34,7 +34,7 @@ export function RepaidHeroStats({
       </MetricCell>
       <MetricCell label="Monthly repayment · start" value={monthlyRepayment} />
       <MetricCell
-        label={writtenOff ? "Written off in" : "Cleared in"}
+        label={writtenOff ? "Written off in" : "Paid off in"}
         value={
           <>
             {payoffYears}
@@ -52,7 +52,7 @@ export function RepaidHeroStats({
               label: "Ahead of schedule",
               variant: "success",
             },
-            { when: true, label: "Paid in full", variant: "success" },
+            { when: true, label: "Paid off", variant: "success" },
           ]}
         />
       </MetricCell>
@@ -65,7 +65,7 @@ export function RepaidHeroStatsSkeleton() {
     <MetricReadout columns={3}>
       <MetricCell label="Total repaid" loading tone="emphasis" />
       <MetricCell label="Monthly repayment · start" loading />
-      <MetricCell label="Cleared in" loading />
+      <MetricCell label="Paid off in" loading />
     </MetricReadout>
   );
 }

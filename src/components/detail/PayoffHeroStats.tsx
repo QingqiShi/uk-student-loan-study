@@ -28,7 +28,7 @@ export function PayoffHeroStats({
   return (
     <MetricReadout columns={3} className="animate-timeline-enter">
       <MetricCell
-        label={writtenOff ? "Written off in" : "Cleared in"}
+        label={writtenOff ? "Written off in" : "Paid off in"}
         value={
           <>
             {payoffYears}
@@ -47,7 +47,7 @@ export function PayoffHeroStats({
               label: "Ahead of schedule",
               variant: "success",
             },
-            { when: true, label: "Paid in full", variant: "success" },
+            { when: true, label: "Paid off", variant: "success" },
           ]}
         />
       </MetricCell>
@@ -74,7 +74,7 @@ export function PayoffHeroStats({
 export function PayoffHeroStatsSkeleton() {
   return (
     <MetricReadout columns={3}>
-      <MetricCell label="Cleared in" loading tone="emphasis" />
+      <MetricCell label="Paid off in" loading tone="emphasis" />
       <MetricCell label="Peak balance" loading tone="cost" />
       <MetricCell label="Total repaid" loading />
     </MetricReadout>

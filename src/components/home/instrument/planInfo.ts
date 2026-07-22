@@ -6,7 +6,7 @@ import type { Loan } from "@/lib/loans/types";
 
 /**
  * Display name for the active configuration's primary plan — the first
- * non-postgraduate loan, falling back to Postgraduate if every loan is a PGL.
+ * non-Postgraduate loan, falling back to Postgraduate if all loans are Postgraduate.
  */
 export function primaryPlanName(loans: Loan[]): string {
   for (const loan of loans) {

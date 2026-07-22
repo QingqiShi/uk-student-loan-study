@@ -89,13 +89,13 @@ const socialSvg = `<svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH
   <!-- Subtle grid overlay - fades towards edges -->
   <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#grid)"/>
 
-  <!-- Abstract chart visualization in background (left side) -->
+  <!-- Abstract chart visualisation in background (left side) -->
   <g opacity="0.4">
     <path d="M0 ${HEIGHT} L0 480 Q100 420 200 450 T400 380 T600 300 L600 ${HEIGHT} Z" fill="url(#chartGradient)"/>
     <path d="M0 480 Q100 420 200 450 T400 380 T600 300" fill="none" stroke="${EMERALD_500}" stroke-width="1.5" opacity="0.3"/>
   </g>
 
-  <!-- Abstract chart visualization (right side, mirrored feel) -->
+  <!-- Abstract chart visualisation (right side, mirrored feel) -->
   <g opacity="0.3">
     <path d="M${WIDTH} ${HEIGHT} L${WIDTH} 500 Q1100 460 1000 420 T800 480 T600 520 L600 ${HEIGHT} Z" fill="url(#chartGradient)"/>
     <path d="M${WIDTH} 500 Q1100 460 1000 420 T800 480 T600 520" fill="none" stroke="${EMERALD_500}" stroke-width="1" opacity="0.25"/>

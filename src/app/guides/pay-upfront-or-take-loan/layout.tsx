@@ -65,7 +65,7 @@ const faqSchema = {
       name: "Is it worth paying university fees upfront?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `It depends on the graduate's earning trajectory, not just their starting salary. Low earners benefit from the loan being partially written off. Middle earners — those who earn enough to keep repaying for decades but not enough to clear the balance — often end up paying more than the upfront cost due to interest compounding. High earners clear the loan quickly and pay close to the upfront amount. Salary growth is the key factor: a £30k starting salary can reach £65k after 20 years at 4% annual growth, pushing many graduates into the middle-earner zone.`,
+        text: `It depends on the graduate's earning trajectory, not just their starting salary. Low earners benefit from the loan being partially written off. Middle earners — those who earn enough to keep repaying for decades but not enough to pay off the balance — often end up paying more than the upfront cost due to interest compounding. High earners pay off the loan quickly and pay close to the upfront amount. Salary growth is the key factor: a £30k starting salary can reach £65k after 20 years at 4% annual growth, pushing many graduates into the middle-earner zone.`,
       },
     },
     {
@@ -73,7 +73,7 @@ const faqSchema = {
       name: "Should parents pay tuition or let their child take a student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `It depends on future earnings. Plan 5 loans are written off after ${String(writeOffYears)} years, so low earners pay less than the upfront cost. However, salary growth means many graduates who start on moderate salaries end up in the middle-earner zone, where total repayments exceed the original ${tuitionFormatted} tuition cost. Paying upfront makes sense if the graduate expects moderate-to-high career earnings and the family can afford it without impacting financial security.`,
+        text: `It depends on future income. Plan 5 loans are written off after ${String(writeOffYears)} years, so low earners pay less than the upfront cost. However, salary growth means many graduates who start on moderate salaries end up in the middle-earner zone, where total repayments exceed the original ${tuitionFormatted} tuition cost. Paying upfront makes sense if the graduate expects a moderate-to-high career income and the family can afford it without impacting financial security.`,
       },
     },
     {

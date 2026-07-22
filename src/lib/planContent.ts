@@ -192,7 +192,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     heroIntro: `Plan 1 is the oldest UK student loan type still being repaid. It covers English and Welsh students who started before September 2012, and every Northern Irish student regardless of start year. You repay ${p1Rate} of everything you earn above ${p1YearGBP} a year, and any balance left after ${p1WriteOff} years is written off.`,
     whatItIs: [
       `A Plan 1 student loan is repaid at ${p1Rate} of your income above the ${p1YearGBP}-a-year (${p1MonthlyGBP} a month) repayment threshold. It has the lowest interest of any plan because the rate is capped at the lower of RPI or the Bank of England base rate plus 1%.`,
-      `Because Plan 1 is the oldest plan, many borrowers are now well into their ${p1WriteOff}-year term. Any remaining balance is cancelled once that write-off period is reached, with nothing left to pay.`,
+      `Because Plan 1 is the oldest plan, many borrowers are now well into their ${p1WriteOff}-year term. Any remaining balance is written off once that period is reached, with nothing left to pay.`,
     ],
     whoItIsFor: [
       "You are on Plan 1 if you are an English or Welsh student who started an undergraduate course before September 2012.",
@@ -203,7 +203,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       `This cap keeps Plan 1 interest low and predictable — it never runs away the way a purely inflation-linked rate can, which makes Plan 1 the cheapest plan to carry pound for pound.`,
     ],
     compareParagraph: `Plan 1 has a lower threshold than Plan 2 (${p2YearGBP}) or Plan 4 (${p4YearGBP}), so you start repaying earlier, but its capped interest and shorter ${p1WriteOff}-year write-off make it far cheaper over a lifetime than the newer ${p5WriteOff}-year Plan 5.`,
-    middleEarner: `Plan 1's low, capped interest means the balance rarely balloons, so the middle-earner trap that hits Plan 2 and Plan 5 borrowers is much weaker here. The people most likely to clear a Plan 1 loan in full are steady middle earners — low earners often reach the ${p1WriteOff}-year write-off first, while high earners clear it quickly. Model your own salary to see where you land.`,
+    middleEarner: `Plan 1's low, capped interest means the balance rarely balloons, so the middle-earner trap that hits Plan 2 and Plan 5 borrowers is much weaker here. The people most likely to pay off a Plan 1 loan in full are steady middle earners — low earners often reach the ${p1WriteOff}-year write-off first, while high earners pay it off quickly. Model your own salary to see where you land.`,
     faqs: [
       {
         question: "What is a Plan 1 student loan?",
@@ -219,7 +219,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "When is a Plan 1 loan written off?",
-        answer: `A Plan 1 loan is written off ${p1WriteOff} years after the April you were first due to repay. Anything still outstanding at that point is cancelled and you stop paying.`,
+        answer: `A Plan 1 loan is written off ${p1WriteOff} years after the April you were first due to repay. Anything still outstanding at that point no longer has to be repaid, and you stop paying.`,
       },
     ],
   },
@@ -234,11 +234,11 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     yearlyThreshold: p2.yearlyThreshold,
     repaymentRate: p2.repaymentRate,
     writeOffYears: p2.writeOffYears,
-    interestShort: "RPI to RPI + 3% (income-based)",
+    interestShort: "RPI to RPI + 3% (sliding scale)",
     interestCurrent: `${plan2LowPct}–${plan2HighPct}`,
     metaTitle:
       "What Is a Plan 2 Student Loan? Threshold, Interest & Write-Off (2026)",
-    metaDescription: `Plan 2 student loans: ${p2YearGBP} threshold, ${p1Rate} rate, income-based interest from ${plan2LowPct} to ${plan2HighPct}, and a ${p2WriteOff}-year write-off. Why middle earners repay the most.`,
+    metaDescription: `Plan 2 student loans: ${p2YearGBP} threshold, ${p1Rate} rate, a sliding scale from ${plan2LowPct} to ${plan2HighPct}, and a ${p2WriteOff}-year write-off. Why middle earners repay the most.`,
     keywords: [
       "what is plan 2 student loan",
       "plan 2 student loan",
@@ -249,7 +249,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     ],
     heroIntro: `Plan 2 covers English and Welsh students who started university between September 2012 and July 2023 — the £9,000-plus tuition fee generation. You repay ${p1Rate} of income above ${p2YearGBP} a year, and interest runs on a sliding scale up to RPI + 3%, which is exactly why Plan 2 middle earners so often repay more than anyone else.`,
     whatItIs: [
-      `A Plan 2 student loan is repaid at ${p1Rate} of your income above ${p2YearGBP} a year (${p2MonthlyGBP} a month). Unlike Plan 1, interest is income-based: it climbs from RPI up to RPI + 3% as your salary rises.`,
+      `A Plan 2 student loan is repaid at ${p1Rate} of your income above ${p2YearGBP} a year (${p2MonthlyGBP} a month). Unlike Plan 1, interest follows a sliding scale: it climbs from RPI up to RPI + 3% as your salary rises.`,
       `Any balance still outstanding ${p2WriteOff} years after you were first due to repay is written off. But because of the high interest, most Plan 2 borrowers never reach a zero balance through minimum repayments alone.`,
     ],
     whoItIsFor: [
@@ -258,10 +258,10 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     ],
     interestParagraphs: [
       `Plan 2 interest is charged on a sliding scale. While you are studying, and on income up to ${p2YearGBP}, you pay RPI (${rpiPct}). Between ${formatGBP(plan2InterestLower)} and ${formatGBP(plan2InterestUpper)} the rate rises linearly, reaching RPI + 3% (${plan2HighPct}) once you earn ${formatGBP(plan2InterestUpper)} or more.`,
-      `That RPI + 3% ceiling is the single biggest reason Plan 2 is so expensive: the balance can grow faster than a typical borrower repays it, so the debt keeps compounding for years.`,
+      `That RPI + 3% ceiling is the single biggest reason Plan 2 is so expensive: the balance can grow faster than a typical borrower repays it, so it keeps compounding for years.`,
     ],
     compareParagraph: `Plan 2 has a higher threshold than Plan 1 (${p1YearGBP}) or Plan 5 (${p5YearGBP}), so you repay less each month at the same salary — but its RPI + 3% interest ceiling makes it the most expensive plan for middle earners, more than offsetting the shorter ${p2WriteOff}-year term versus Plan 5's ${p5WriteOff} years.`,
-    middleEarner: `Plan 2 is the clearest example of the middle-earner trap. Low earners repay little and reach the ${p2WriteOff}-year write-off with plenty forgiven; high earners clear the balance fast before much interest builds. It is the middle — graduates earning enough to make real repayments, but not enough to outrun RPI + 3% interest — who repay the most in total, often far more than they originally borrowed.`,
+    middleEarner: `Plan 2 is the clearest example of the middle-earner trap. Low earners repay little and reach the ${p2WriteOff}-year write-off with plenty written off; high earners pay off the balance fast before much interest builds. It is the middle — graduates earning enough to make real repayments, but not enough to outrun RPI + 3% interest — who repay the most in total, often far more than they originally borrowed.`,
     faqs: [
       {
         question: "What is a Plan 2 student loan?",
@@ -273,11 +273,11 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "What is the Plan 2 interest rate?",
-        answer: `Plan 2 interest is income-based, from RPI (${rpiPct}) at or below ${formatGBP(plan2InterestLower)} up to RPI + 3% (${plan2HighPct}) at ${formatGBP(plan2InterestUpper)} or more, interpolated in between. A separate cap can lower the headline rate when market rates are low.`,
+        answer: `Plan 2 interest follows a sliding scale, from RPI (${rpiPct}) at or below ${formatGBP(plan2InterestLower)} up to RPI + 3% (${plan2HighPct}) at ${formatGBP(plan2InterestUpper)} or more, interpolated in between. A separate cap can lower the headline rate when market rates are low.`,
       },
       {
         question: "Why do Plan 2 middle earners repay the most?",
-        answer: `Because Plan 2 interest reaches RPI + 3%, middle earners repay steadily but not fast enough to stop the balance compounding, and they earn too much for the ${p2WriteOff}-year write-off to help. High earners clear the loan quickly; low earners have it written off — so the middle pays the most in total.`,
+        answer: `Because Plan 2 interest reaches RPI + 3%, middle earners repay steadily but not fast enough to stop the balance compounding, and they earn too much for the ${p2WriteOff}-year write-off to help. High earners pay off the loan quickly; low earners have it written off — so the middle pays the most in total.`,
       },
     ],
   },
@@ -365,7 +365,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     ],
     heroIntro: `Plan 5 is the newest UK student loan, for English students who started university from September 2023 onwards. It has the lowest threshold of the current undergraduate plans — ${p5YearGBP} a year — the simplest interest (RPI only), but the longest write-off of any plan at ${p5WriteOff} years.`,
     whatItIs: [
-      `A Plan 5 student loan is repaid at ${p1Rate} of income above ${p5YearGBP} a year (${p5MonthlyGBP} a month). Interest is charged at RPI only — no income-based add-on — which makes the balance easier to predict than Plan 2.`,
+      `A Plan 5 student loan is repaid at ${p1Rate} of income above ${p5YearGBP} a year (${p5MonthlyGBP} a month). Interest is charged at RPI only — no sliding scale — which makes the balance easier to predict than Plan 2.`,
       `The catch is the term: Plan 5 balances are written off ${p5WriteOff} years after you become due to repay, ten years longer than Plan 2 and fifteen longer than Plan 1. That extra decade of repayments is where the real cost hides.`,
     ],
     whoItIsFor: [
@@ -373,11 +373,11 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       "Welsh, Scottish and Northern Irish students are not on Plan 5 — Plan 5 is England-only. Students who started before August 2023 remain on Plan 2 (or Plan 1).",
     ],
     interestParagraphs: [
-      `Plan 5 interest is charged at RPI only — currently ${rpiPct} — with no income-based addition. That makes it the simplest interest of any plan to understand and forecast.`,
+      `Plan 5 interest is charged at RPI only — currently ${rpiPct} — with no sliding scale. That makes it the simplest interest of any plan to understand and forecast.`,
       `Lower, simpler interest sounds cheaper, but the ${p5WriteOff}-year write-off means most borrowers keep repaying for far longer, so many end up paying more in total than they would have on the shorter Plan 2.`,
     ],
     compareParagraph: `Plan 5's ${p5YearGBP} threshold is lower than Plan 2 (${p2YearGBP}), so you start repaying sooner and pay more each month at the same salary. Its RPI-only interest is gentler than Plan 2's RPI + 3%, but the ${p5WriteOff}-year term (versus ${p2WriteOff} for Plan 2) is longer than any other plan.`,
-    middleEarner: `Plan 5's ${p5WriteOff}-year term turns the middle-earner trap into a marathon. Lower earners can pay for four decades and still have a balance written off; high earners clear it early. Middle earners repay steadily for most of their working life — often paying back far more than they borrowed before the write-off ever arrives.`,
+    middleEarner: `Plan 5's ${p5WriteOff}-year term turns the middle-earner trap into a marathon. Lower earners can pay for four decades and still have a balance written off; high earners pay it off early. Middle earners repay steadily for most of their working life — often paying back far more than they borrowed before the write-off ever arrives.`,
     faqs: [
       {
         question: "What is a Plan 5 student loan?",
@@ -389,7 +389,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "What is the Plan 5 student loan interest rate?",
-        answer: `Plan 5 interest is charged at RPI only, currently ${rpiPct}, with no income-based add-on. That is simpler and lower than Plan 2's RPI + 3% ceiling, but the ${p5WriteOff}-year write-off can make Plan 5 more expensive overall.`,
+        answer: `Plan 5 interest is charged at RPI only, currently ${rpiPct}, with no sliding scale. That is simpler and lower than Plan 2's RPI + 3% ceiling, but the ${p5WriteOff}-year write-off can make Plan 5 more expensive overall.`,
       },
       {
         question: "When is a Plan 5 loan written off?",
@@ -431,7 +431,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       "It sits on top of any undergraduate plan you already have. Your undergraduate loan keeps its own threshold, rate and write-off — the Postgraduate Loan is calculated separately.",
     ],
     interestParagraphs: [
-      `Postgraduate Loan interest is a flat RPI + 3% — currently ${postgradPct} — for everyone, whatever you earn. There is no income-based sliding scale like Plan 2 and no cap like Plan 1 or Plan 4.`,
+      `Postgraduate Loan interest is a flat RPI + 3% — currently ${postgradPct} — for everyone, whatever you earn. There is no sliding scale like Plan 2 and no cap like Plan 1 or Plan 4.`,
       `That makes it one of the higher interest rates in the system, so the balance grows quickly. Combined with the ${pgWriteOff}-year term, many postgraduate borrowers repay well beyond what they originally borrowed.`,
     ],
     compareParagraph: `The Postgraduate Loan has the lowest threshold (${pgYearGBP}) but the lowest repayment rate (${pgRatePct} versus 9%). Its flat RPI + 3% interest matches Plan 2's ceiling, and because it stacks on top of an undergraduate loan, the combined deductions can be heavier than any single plan.`,
@@ -447,7 +447,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "What is the Postgraduate Loan interest rate?",
-        answer: `Postgraduate Loan interest is a flat RPI + 3% for everyone, currently ${postgradPct}. Unlike Plan 2 there is no income-based sliding scale, and unlike Plan 1 and Plan 4 there is no low-rate cap.`,
+        answer: `Postgraduate Loan interest is a flat RPI + 3% for everyone, currently ${postgradPct}. Unlike Plan 2 there is no sliding scale, and unlike Plan 1 and Plan 4 there is no low-rate cap.`,
       },
       {
         question:

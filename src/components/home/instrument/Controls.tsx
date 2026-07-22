@@ -117,7 +117,7 @@ function SalarySlider() {
 interface PresetsProps {
   onPresetApplied: (preset: Preset) => void;
   onPersonalise: () => void;
-  hasPersonalized: boolean;
+  hasPersonalised: boolean;
 }
 
 type ScenFade = "none" | "left" | "right" | "both";
@@ -143,7 +143,7 @@ const SCEN_CHIP =
   "group flex flex-[0_0_auto] flex-col gap-[0.15rem] min-w-[8.5rem] [scroll-snap-align:start] leading-[1.2] text-left border border-border rounded-[9px] px-[0.7rem] py-[0.5rem] bg-card text-muted-foreground [transition:border-color_0.15s,background_0.15s,color_0.15s] [&:not([aria-pressed=true]):hover]:border-muted-foreground @cozy:min-w-0 work:min-w-0 aria-pressed:border-primary aria-pressed:bg-accent-wash";
 
 // "Tailor to you" is a different *kind* of action than the preset chips — an
-// escape hatch into customisation rather than a mutually-exclusive quick-pick.
+// escape hatch into personalisation rather than a mutually-exclusive quick-pick.
 // A dashed primary outline + icon marks it as distinct; it flips to a solid
 // selected treatment (matching the presets) once the config is personalised.
 const TAILOR_CHIP =
@@ -156,21 +156,23 @@ const TAILOR_CHIP =
 function TailorButton({
   variant,
   className,
-  isCustomConfig,
+  isPersonalisedConfig,
   onPersonalise,
 }: {
   variant: "grid" | "bar";
   className: string;
-  isCustomConfig: boolean;
+  isPersonalisedConfig: boolean;
   onPersonalise: () => void;
 }) {
-  const label = isCustomConfig ? "Edit details" : "Tailor to you";
-  const description = isCustomConfig ? "Your configuration" : "Your details";
+  const label = isPersonalisedConfig ? "Edit details" : "Tailor to you";
+  const description = isPersonalisedConfig
+    ? "Your configuration"
+    : "Your details";
   return (
     <button
       className={`${TAILOR_CHIP} ${className}`}
       type="button"
-      aria-pressed={isCustomConfig}
+      aria-pressed={isPersonalisedConfig}
       onClick={onPersonalise}
     >
       {variant === "grid" ? (
@@ -209,13 +211,13 @@ function TailorButton({
 function Presets({
   onPresetApplied,
   onPersonalise,
-  hasPersonalized,
+  hasPersonalised,
 }: PresetsProps) {
   const activePreset = useActivePreset();
   const [optimisticActiveId, setOptimisticActiveId] = useOptimistic(
     activePreset?.id ?? null,
   );
-  const isCustomConfig = hasPersonalized && !optimisticActiveId;
+  const isPersonalisedConfig = hasPersonalised && !optimisticActiveId;
 
   // Drive the horizontal-scroll edge fade from the live scroll position so it
   // only shows on a side that actually has more chips (was a static right fade).
@@ -277,7 +279,7 @@ function Presets({
         <TailorButton
           variant="grid"
           className="hidden flex-col gap-[0.15rem] work:col-span-full work:flex @cozy:col-span-full @cozy:flex @snug:col-auto"
-          isCustomConfig={isCustomConfig}
+          isPersonalisedConfig={isPersonalisedConfig}
           onPersonalise={onPersonalise}
         />
       </div>
@@ -287,7 +289,7 @@ function Presets({
       <TailorButton
         variant="bar"
         className="mt-2 flex w-full items-center gap-2 work:hidden @cozy:hidden"
-        isCustomConfig={isCustomConfig}
+        isPersonalisedConfig={isPersonalisedConfig}
         onPersonalise={onPersonalise}
       />
     </div>
@@ -300,7 +302,7 @@ function Presets({
 
 interface ControlsProps {
   mode: InputMode;
-  hasPersonalized: boolean;
+  hasPersonalised: boolean;
   handlePersonalise: () => void;
   handlePresetApplied: (preset: Preset) => void;
   handleWizardComplete: () => void;
@@ -309,7 +311,7 @@ interface ControlsProps {
 
 export function Controls({
   mode,
-  hasPersonalized,
+  hasPersonalised,
   handlePersonalise,
   handlePresetApplied,
   handleWizardComplete,
@@ -322,12 +324,12 @@ export function Controls({
         <Presets
           onPresetApplied={handlePresetApplied}
           onPersonalise={handlePersonalise}
-          hasPersonalized={hasPersonalized}
+          hasPersonalised={hasPersonalised}
         />
       </div>
       <ConfigOverlay
         mode={mode}
-        hasPersonalized={hasPersonalized}
+        hasPersonalised={hasPersonalised}
         onComplete={handleWizardComplete}
         onClose={handleWizardClose}
       />

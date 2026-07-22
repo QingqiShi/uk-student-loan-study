@@ -59,7 +59,7 @@ export function generateSalaryDataSeries(
  * @param rpiRate - Optional RPI rate override
  * @param salaryGrowthRate - Annual salary growth rate (default 0)
  * @param thresholdGrowthRate - Annual threshold growth rate (default 0)
- * @param boeBaseRate - BOE base rate override
+ * @param boeBaseRate - BoE base rate override
  * @returns Array of [salary, value] data points with PV-adjusted values
  */
 export function generateSalaryDataSeriesPV(

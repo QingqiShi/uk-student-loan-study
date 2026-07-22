@@ -8,7 +8,7 @@ import {
   MetricReadout,
 } from "@/components/instrument/MetricReadout";
 import { Heading } from "@/components/typography/Heading";
-import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
+import { usePersonalisedResults } from "@/context/PersonalisedResultsContext";
 import { DETAIL_PAGES } from "@/lib/detailPages";
 import {
   ProportionViz,
@@ -26,7 +26,7 @@ interface InsightCardsProps {
 const [REPAID, BALANCE, INTEREST, RATE] = DETAIL_PAGES;
 
 export function InsightCards({ excludeHref }: InsightCardsProps) {
-  const { cards: data } = usePersonalizedResults();
+  const { cards: data } = usePersonalisedResults();
 
   const loading = data == null;
 

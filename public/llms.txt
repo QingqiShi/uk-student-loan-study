@@ -4,7 +4,7 @@
 
 ## Purpose
 
-UK student loans are often misunderstood. Middle earners typically repay the most - more than high earners (who pay off quickly) and low earners (who have debt written off). This site visualises this inequity and helps users understand their personal situation.
+UK student loans are often misunderstood. Middle earners typically repay the most - more than high earners (who pay off quickly) and low earners (who have their balance written off). This site visualises this inequity and helps users understand their personal situation.
 
 ## Tools
 
@@ -14,7 +14,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [Total Repayments](https://studentloanstudy.uk/repaid): Track how much you'll repay on your student loan over time
 - [Payoff Timeline](https://studentloanstudy.uk/balance): See when you'll pay off your student loan and how your balance changes over time
 - [Interest Breakdown](https://studentloanstudy.uk/interest): Understand how much of your repayments go to interest vs principal
-- [Effective Rate](https://studentloanstudy.uk/effective-rate): Compare your loan's true effective annual rate to the Bank of England base rate
+- [Effective Rate](https://studentloanstudy.uk/effective-rate): Compare your loan's effective annual rate to the Bank of England base rate
 - [Our Data](https://studentloanstudy.uk/our-data): How we keep figures current — daily automation checks GOV.UK and the Bank of England
 
 ## Guides

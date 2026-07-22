@@ -50,7 +50,7 @@ describe("AssumptionsCallout", () => {
     expect(mockOpenAssumptions).toHaveBeenCalledOnce();
   });
 
-  it("shows BOE base rate when Plan 1 is active", () => {
+  it("shows BoE base rate when Plan 1 is active", () => {
     render(<AssumptionsCallout />, {
       wrapper: ({ children }: { children: ReactNode }) => (
         <LoanProvider
@@ -100,7 +100,7 @@ describe("AssumptionsCallout", () => {
     expect(screen.queryByText(/inflation/)).toBeNull();
   });
 
-  it("hides BOE base rate when only Plan 2 is active", () => {
+  it("hides BoE base rate when only Plan 2 is active", () => {
     render(<AssumptionsCallout />, {
       wrapper: ({ children }: { children: ReactNode }) => (
         <LoanProvider

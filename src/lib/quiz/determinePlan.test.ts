@@ -200,7 +200,7 @@ describe("determineAllLoans", () => {
     direction: "forward",
   };
 
-  it("returns single plan for Scotland without postgrad", () => {
+  it("returns single plan for Scotland without Postgraduate", () => {
     const state: QuizState = {
       ...baseState,
       region: "scotland",
@@ -209,7 +209,7 @@ describe("determineAllLoans", () => {
     expect(determineAllLoans(state)).toEqual(["PLAN_4"]);
   });
 
-  it("returns single plan for Northern Ireland without postgrad", () => {
+  it("returns single plan for Northern Ireland without Postgraduate", () => {
     const state: QuizState = {
       ...baseState,
       region: "northern-ireland",
@@ -298,7 +298,7 @@ describe("determineAllLoans", () => {
     ]);
   });
 
-  it("handles Scotland with postgrad loan", () => {
+  it("handles Scotland with Postgraduate loan", () => {
     const state: QuizState = {
       ...baseState,
       region: "scotland",

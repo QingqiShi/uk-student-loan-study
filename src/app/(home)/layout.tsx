@@ -9,7 +9,7 @@ const faqSchema = {
       name: "Why do middle earners pay the most on UK student loans?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Middle earners often pay the most because high earners pay off their loans quickly (accumulating less interest), while low earners have their remaining debt written off after 25-40 years. Middle earners pay for decades, accumulating significant interest before write-off, often repaying more than the original loan amount.",
+        text: "Middle earners often pay the most because high earners pay off their loans quickly (accumulating less interest), while low earners have their remaining balance written off after 25-40 years. Middle earners pay for decades, accumulating significant interest before write-off, often repaying more than they borrowed.",
       },
     },
     {
