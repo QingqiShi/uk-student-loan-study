@@ -57,6 +57,7 @@ type SectionHeadingElement = React.ReactElement<{
   children?: ReactNode;
   id?: string;
   size?: string;
+  className?: string;
 }>;
 
 const isSectionHeading = (
@@ -90,7 +91,12 @@ function processGuideBody(children: ReactNode): {
     }
     seen.add(id);
     sections.push({ id, label });
-    return cloneElement(heading, { id });
+    // `scroll-mt-22` (5.5rem) clears the sticky header when the contents rail
+    // jumps to this anchor — applied to exactly the headings that receive ids.
+    return cloneElement(heading, {
+      id,
+      className: cn(heading.props.className, "scroll-mt-22"),
+    });
   };
 
   // Recurse through structural wrappers (`<section>` and fragments) so a heading
@@ -128,7 +134,7 @@ function processGuideBody(children: ReactNode): {
  *   - a sticky **contents** rail (an auto-built "On this page" table of contents
  *     plus the freshness meta) anchoring the left edge;
  *   - the **reading column** in the middle — prose held at a ~66ch measure while
- *     charts and data tables (`.guide-breakout`) read wider;
+ *     charts and data tables ({@link guideBreakout}) read wider;
  *   - a sticky **companion** rail (calculator CTA, related guides, tools)
  *     anchoring the right edge — the same block that stacks beneath the article
  *     on narrow screens.
@@ -181,9 +187,18 @@ export function GuideArticle({
           </dl>
         </aside>
 
-        {/* Reading column — header + body share the ~66ch content track; figures
-            marked `guide-breakout` span wider. */}
-        <article className="guide-body mx-auto max-w-200 min-w-0 work:mx-0 work:max-w-none">
+        {/* Reading column — a centred prose measure (~66ch middle track) framed
+            by two flexible margin tracks. Header + body children sit in the
+            content track (`*:col-start-2`); figures marked `guideBreakout`
+            span all three tracks to read wider than the prose. `min-w-0` on
+            every child lets a wide table or chart shrink instead of forcing
+            horizontal overflow. The font-size is a fluid reading base: 16px
+            through laptop widths, easing to 18px only on very wide viewports —
+            because the content track is measured in `ch`, the prose column
+            grows in pixels while characters-per-line stays ~66. Below the `work`
+            breakpoint the tracks collapse to a single centred column with
+            full-width figures, matching the pre-redesign reading experience. */}
+        <article className="mx-auto grid max-w-200 min-w-0 grid-cols-[minmax(0,1fr)_min(66ch,100%)_minmax(0,1fr)] gap-y-[clamp(2.25rem,3.4vw,3.25rem)] text-[clamp(1rem,0.75rem+0.2vw,1.125rem)] *:col-start-2 *:min-w-0 work:mx-0 work:max-w-none">
           <header className="space-y-4">
             <Breadcrumb>
               <BreadcrumbList>
@@ -232,6 +247,16 @@ export function GuideArticle({
 /** Inline prose link: spruce-ink with a hairline underline that thickens on hover. */
 export const guideLink =
   "font-medium text-cta underline decoration-1 underline-offset-4 transition-[text-decoration-color,color] hover:text-cta/80";
+
+/**
+ * Breakout figures (charts, wide tables) span all three tracks of the reading
+ * grid to read wider than the prose that frames them. The `!` overrides the
+ * grid's `*:col-start-2` default — the breakout must always win, mirroring the
+ * specificity boost the old `.guide-body > .guide-breakout` rule relied on.
+ * Column-relative (not viewport-relative) so figures never collide with the
+ * sticky rails on the workspace grid. Apply to a direct child of the article.
+ */
+export const guideBreakout = "col-span-full!";
 
 /* Spec-sheet table cell treatments — engraved sans headers, mono figures. */
 /** Engraved sans header cell (text column). */

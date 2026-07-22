@@ -4,7 +4,7 @@ import { Heading } from "@/components/typography/Heading";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
-import { GuideArticle, guideLink } from "../guide-parts";
+import { GuideArticle, guideBreakout, guideLink } from "../guide-parts";
 import { CurrentRatesTable } from "./CurrentRatesTable";
 import { InterestRateChart } from "./InterestRateChart";
 
@@ -96,7 +96,7 @@ export function InterestGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption="Fig. 1 — Annual interest rate by salary · Plan 2 vs Plan 5"
         figure={`${formatPercent(maxRate)} max`}
         figureTone="cost"
@@ -159,7 +159,7 @@ export function InterestGuide() {
         </div>
       </section>
 
-      <div className="guide-breakout">
+      <div className={guideBreakout}>
         <CurrentRatesTable />
       </div>
 

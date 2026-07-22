@@ -23,6 +23,7 @@ import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { surfaceCard } from "@/lib/surfaces";
 import {
   GuideArticle,
+  guideBreakout,
   guideLink,
   KeyTakeaways,
   SeamCell,
@@ -188,7 +189,7 @@ export function MovingAbroadGuide() {
         </p>
       </section>
 
-      <div className="guide-breakout">
+      <div className={guideBreakout}>
         <ScrollFadeWrapper className={surfaceCard}>
           <Table>
             <TableHeader>

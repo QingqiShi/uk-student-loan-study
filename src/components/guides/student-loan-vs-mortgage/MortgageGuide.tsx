@@ -11,7 +11,12 @@ import { Panel } from "@/components/instrument/Panel";
 import { Heading } from "@/components/typography/Heading";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
-import { GuideArticle, guideLink, KeyTakeaways } from "../guide-parts";
+import {
+  GuideArticle,
+  guideBreakout,
+  guideLink,
+  KeyTakeaways,
+} from "../guide-parts";
 import { RepaymentImpactChart } from "./RepaymentImpactChart";
 
 const plan2Threshold = PLAN_DISPLAY_INFO.PLAN_2.yearlyThreshold;
@@ -156,7 +161,7 @@ export function MortgageGuide() {
       </section>
 
       <ChartFrame
-        className="guide-breakout"
+        className={guideBreakout}
         caption="Fig. 1 — Monthly repayment by salary · Plan 2 vs Plan 5"
         bodyClassName="h-75 sm:h-90"
       >
