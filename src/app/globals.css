@@ -289,6 +289,56 @@
   }
 }
 
+/* ==========================================================================
+   GUIDE READING WORKSPACE — the long-form article body. A centred prose measure
+   (~66ch) with a wider breakout track: charts and data tables opt into
+   `.guide-breakout` to read wider than the prose that frames them, while the
+   sentences stay at a comfortable measure. Works at every width — below the
+   `work` workspace breakpoint the tracks collapse so the body is just a centred
+   column with full-width figures, matching the pre-redesign reading experience.
+   ========================================================================== */
+@layer components {
+  .guide-body {
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(0, 1fr)
+      [content-start] min(66ch, 100%)
+      [content-end] minmax(0, 1fr)
+      [full-end];
+    row-gap: clamp(2.25rem, 3.4vw, 3.25rem);
+    /* Fluid reading size: 16px through laptop widths, easing up to 18px only on
+       very wide viewports (~2000px+). Because the `content` track is measured in
+       `ch`, the prose column grows in pixels while characters-per-line stays
+       ~66 — spending ultrawide space on legibility, not a longer line. Headings
+       and the mono readouts keep their own scales. */
+    font-size: clamp(1rem, 0.75rem + 0.2vw, 1.125rem);
+  }
+  /* Prose sits in the reading measure; every child gets min-width:0 so a wide
+     table or chart can shrink instead of forcing horizontal overflow. */
+  .guide-body > * {
+    grid-column: content;
+    min-width: 0;
+  }
+  /* Figures span the full column — wider than the prose, still column-relative
+     so they never collide with the sticky rails on the workspace grid. */
+  .guide-body > .guide-breakout {
+    grid-column: full;
+  }
+  /* Anchor targets (section headings the contents rail links to) clear the
+     sticky header when jumped to. */
+  .guide-body :is(h2, h3)[id] {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+/* The guide lead paragraph — a step above body, sized in `em` so it rides the
+   fluid reading base (`.guide-body`'s font-size) instead of a fixed rem. Body
+   copy just inherits that base; only the lead needs a ratio of its own. */
+@utility guide-lead {
+  font-size: 1.0625em;
+  line-height: 1.45;
+}
+
 /* Theme transition */
 body {
   transition:

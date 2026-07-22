@@ -49,7 +49,11 @@ export default defineConfig(
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",
       "better-tailwindcss/no-unknown-classes": [
         "error",
-        { ignore: ["dark", "light"] },
+        // `guide-body` / `guide-breakout` drive the guide reading-column grid in
+        // globals.css `@layer components` (`guide-breakout` exists only as the
+        // `.guide-body > .guide-breakout` target), not as Tailwind utilities, so
+        // the resolver can't see them.
+        { ignore: ["dark", "light", "guide-body", "guide-breakout"] },
       ],
     },
   },
@@ -72,6 +76,17 @@ export default defineConfig(
     files: ["src/app/global-error.tsx"],
     rules: {
       "@next/next/no-html-link-for-pages": "off",
+    },
+  },
+  {
+    // guide-parts.tsx deliberately walks the guide body with Children.map +
+    // cloneElement to inject server-rendered section anchor ids (the standard
+    // heading-anchor transform, à la rehype-slug), so the "uncommon React API"
+    // nudges don't apply here.
+    files: ["src/components/guides/guide-parts.tsx"],
+    rules: {
+      "@eslint-react/no-children-map": "off",
+      "@eslint-react/no-clone-element": "off",
     },
   },
   {
