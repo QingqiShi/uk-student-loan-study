@@ -6,6 +6,10 @@ Before any Next.js work, find and read the relevant doc in `node_modules/next/di
 
 <!-- END:nextjs-agent-rules -->
 
+## Domain language
+
+Domain terms are defined in `CONTEXT.md` — use those terms (and their spellings) in code, comments, and copy. If the user's wording is ambiguous or uses an `_Avoid_` synonym, confirm which glossary term they mean before acting.
+
 ## Commands
 
 ```bash
