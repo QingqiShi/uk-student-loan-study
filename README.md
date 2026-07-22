@@ -1,14 +1,14 @@
 # UK Student Loan Study
 
-An interactive calculator to help understand UK student loan repayment under Plan 2/Plan 5 and Postgraduate loan schemes.
+An interactive calculator to help understand UK student loan repayment under Plan 2/Plan 5 and Postgraduate loans.
 
 ## Features
 
 - Calculate total repayment amounts based on salary
-- Visualize repayment timelines and effective interest rates
-- Compare Plan 2 (pre-2023) vs Plan 5 (post-2023) schemes
-- Account for postgraduate loans running concurrently
-- See personalized projections based on your salary
+- Visualise repayment timelines and effective rates
+- Compare Plan 2 (pre-2023) vs Plan 5 (post-2023)
+- Account for Postgraduate loans running concurrently
+- See personalised projections based on your salary
 
 ## Tech Stack
 
@@ -83,7 +83,7 @@ The app is deployed on Vercel. Push to `main` to trigger a deployment.
 
 - Repayment threshold: 2,083/month
 - Repayment rate: 9% above threshold
-- Interest: RPI only (no income-based uplift)
+- Interest: RPI only (no sliding scale)
 - Write-off: 40 years after first repayment
 
 ### Postgraduate Loans

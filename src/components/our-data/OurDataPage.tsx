@@ -124,7 +124,7 @@ const CROSS_CHECK_LINKS = [
   {
     source: "GOV.UK",
     label: "Write-off periods",
-    description: "When your loan gets cancelled",
+    description: "When your loan gets written off",
     href: "https://www.gov.uk/repaying-your-student-loan/when-your-student-loan-gets-written-off-or-cancelled",
   },
   {

@@ -69,7 +69,7 @@ export interface SimulationConfig {
   monthsElapsed?: number;
   /** Annual salary growth rate (default 0) */
   salaryGrowthRate?: number;
-  /** Extra payment per month distributed across loans (default 0) */
+  /** Overpayment per month distributed across loans (default 0) */
   monthlyOverpayment?: number;
   /** Annual threshold growth rate (default 0) */
   thresholdGrowthRate?: number;

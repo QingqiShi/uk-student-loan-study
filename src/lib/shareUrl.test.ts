@@ -130,7 +130,7 @@ describe("decodeParamsToState", () => {
     expect(state.salary).toBe(65000);
   });
 
-  it("decodes legacy format without postgrad", () => {
+  it("decodes legacy format without Postgraduate", () => {
     const params = new URLSearchParams("plan=PLAN_5&ug=50000&sal=40000");
     const state = decodeParamsToState(params);
 
@@ -138,7 +138,7 @@ describe("decodeParamsToState", () => {
     expect(state.salary).toBe(40000);
   });
 
-  it("decodes legacy format with zero postgrad balance", () => {
+  it("decodes legacy format with zero Postgraduate balance", () => {
     const params = new URLSearchParams("plan=PLAN_2&ug=45000&pg=0&sal=40000");
     const state = decodeParamsToState(params);
 

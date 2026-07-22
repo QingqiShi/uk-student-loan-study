@@ -71,7 +71,7 @@ const faqSchema = {
       name: "How do I make an early repayment on my student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "You can make voluntary overpayments at any time by logging into your Student Loans Company account and paying by debit card or bank transfer. There is no penalty for early repayment. Before overpaying, check whether your loan will be written off — if it will, overpaying means you pay more than you need to.",
+        text: "You can make overpayments at any time by logging into your Student Loans Company account and paying by debit card or bank transfer. There is no penalty for early repayment. Before overpaying, check whether your loan will be written off — if it will, overpaying means you pay more than you need to.",
       },
     },
   ],

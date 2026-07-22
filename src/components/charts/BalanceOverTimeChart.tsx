@@ -36,11 +36,11 @@ export function BalanceOverTimeChart() {
       xDataKey="month"
       xLabel="Time"
       xFormatter={formatYearFromMonth}
-      yLabel={showPresentValue ? "Balance (inflation-adjusted)" : "Balance"}
+      yLabel={showPresentValue ? "Balance (present value)" : "Balance"}
       yFormatter={(v) => currencyFormatter.format(v)}
       ariaLabel={
         showPresentValue
-          ? "Student loan repayment chart showing how long to pay off your loan. Inflation-adjusted balance decreases over time as you make repayments."
+          ? "Student loan repayment chart showing how long to pay off your loan. Present-value balance decreases over time as you make repayments."
           : "Student loan repayment chart showing how long to pay off your loan. Balance decreases over time as you make repayments."
       }
       chartConfig={chartConfig}

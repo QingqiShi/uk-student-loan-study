@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Archivo, Martian_Mono } from "next/font/google";
 import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
-import { PersonalizedResultsProvider } from "@/context/PersonalizedResultsContext";
+import { PersonalisedResultsProvider } from "@/context/PersonalisedResultsContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -118,9 +118,9 @@ export default function RootLayout({
         <ThemeProvider>
           <LoanProvider>
             <AssumptionsWizardProvider>
-              <PersonalizedResultsProvider>
+              <PersonalisedResultsProvider>
                 {children}
-              </PersonalizedResultsProvider>
+              </PersonalisedResultsProvider>
             </AssumptionsWizardProvider>
           </LoanProvider>
         </ThemeProvider>

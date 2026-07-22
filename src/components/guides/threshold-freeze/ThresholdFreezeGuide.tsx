@@ -241,7 +241,7 @@ export function ThresholdFreezeGuide() {
           </Heading>
           <div className="space-y-2 text-muted-foreground">
             <p>
-              These are the salary thresholds that apply for the{" "}
+              These are the repayment thresholds that apply for the{" "}
               {currentTaxYear} tax year. Undergraduate borrowers repay{" "}
               {String(REPAYMENT_RATE * 100)}% of everything they earn above
               their plan&apos;s threshold &mdash; which is exactly why the
@@ -300,7 +300,7 @@ export function ThresholdFreezeGuide() {
               </Link>{" "}
               and how the freeze pushes up{" "}
               <Link href="/effective-rate" className={guideLink}>
-                the effective interest rate you pay
+                the effective rate you pay
               </Link>
               .
             </p>

@@ -62,8 +62,8 @@ export function PayUpfrontGuide() {
               Under Plan 5, tuition fee loans are written off{" "}
               <strong className="text-foreground">{writeOffYears} years</strong>{" "}
               after the graduate becomes eligible to repay. Repayments are 9% of
-              earnings above the {threshold} threshold, and interest is charged
-              at RPI only.
+              income above the {threshold} threshold, and interest is charged at
+              RPI only.
             </p>
             <p>
               The total you end up paying depends on your earning trajectory
@@ -80,14 +80,14 @@ export function PayUpfrontGuide() {
               <li>
                 <strong className="text-foreground">Middle earners</strong>{" "}
                 &mdash; this is the trap. You earn enough to keep repaying for
-                decades but not enough to clear the balance before interest
+                decades but not enough to pay off the balance before interest
                 compounds. Total repayments can exceed the upfront cost,
                 sometimes significantly. This is the group that ends up paying
                 the most.
               </li>
               <li>
                 <strong className="text-foreground">High earners</strong>{" "}
-                &mdash; clear the loan relatively quickly, so interest
+                &mdash; pay off the loan relatively quickly, so interest
                 doesn&rsquo;t compound much. Total cost is close to or slightly
                 above the upfront price, and you kept your capital in the
                 meantime.
@@ -143,7 +143,7 @@ export function PayUpfrontGuide() {
             </p>
             <ul className="list-disc space-y-1 pl-6">
               <li>
-                The graduate expects moderate-to-high earnings over their career
+                The graduate expects a moderate-to-high income over their career
                 (the middle-earner zone where total repayments exceed the
                 upfront cost)
               </li>
@@ -174,7 +174,7 @@ export function PayUpfrontGuide() {
                 will be partially written off, costing less than paying upfront
               </li>
               <li>
-                The graduate expects very high earnings &mdash; they clear the
+                The graduate expects a very high income &mdash; they pay off the
                 loan quickly and kept their capital invested in the meantime
               </li>
               <li>
@@ -182,8 +182,8 @@ export function PayUpfrontGuide() {
                 financial safety net
               </li>
               <li>
-                Repayments adjust automatically if earnings drop &mdash;
-                built-in insurance that paying upfront doesn&rsquo;t offer
+                Repayments adjust automatically if income drops &mdash; built-in
+                insurance that paying upfront doesn&rsquo;t offer
               </li>
             </ul>
           </div>

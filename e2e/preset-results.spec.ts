@@ -41,12 +41,12 @@ test.describe("Home page preset selection", () => {
     expect(after.totalText).not.toBe(before.totalText);
   });
 
-  test("clicking UG + Masters preset shows combined results", async ({
+  test("clicking Undergraduate + Masters preset shows combined results", async ({
     page,
   }) => {
     const before = await getResultValues(page);
 
-    await clickPreset(page, "UG + Masters");
+    await clickPreset(page, "Undergraduate + Masters");
     await waitForResultChange(page, before.totalText);
 
     const after = await getResultValues(page);

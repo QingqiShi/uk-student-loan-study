@@ -18,7 +18,7 @@ const TOOLS: ToolLink[] = [
     title: "Overpayment calculator",
     href: "/overpay",
     description:
-      "Test whether paying extra actually saves you money on your plan.",
+      "Test whether overpaying actually saves you money on your plan.",
   },
   {
     title: "Compare plans",

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Total Repayments — Student Loan Total Cost Calculator",
+  title: "Total Repayments — Student Loan Repayment Calculator",
   description:
     "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed — based on your salary and plan type.",
   keywords: [
     "student loan total repayments",
     "how much will I repay student loan",
-    "student loan total cost calculator",
+    "how much does a student loan cost",
     "UK student loan repayment calculator",
     "student loan repayments over time",
     "student loan cumulative repayments",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     canonical: "/repaid",
   },
   openGraph: {
-    title: "Total Repayments — Student Loan Total Cost Calculator",
+    title: "Total Repayments — Student Loan Repayment Calculator",
     description:
       "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed — based on your salary and plan type.",
     url: "https://studentloanstudy.uk/repaid",
@@ -68,7 +68,7 @@ const faqSchema = {
       name: "How are total student loan repayments calculated?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The calculator projects your repayments month by month, deducting 9% of income above the repayment threshold (6% for Postgraduate loans). It accumulates these payments over the full loan term to show your total cost, factoring in salary growth and comparing against the write-off date.",
+        text: "The calculator projects your repayments month by month, deducting 9% of income above the repayment threshold (6% for Postgraduate loans). It accumulates these repayments over the full loan term to show your total repayments, factoring in salary growth and comparing against the write-off date.",
       },
     },
   ],

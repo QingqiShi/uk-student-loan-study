@@ -9,7 +9,7 @@ describe("isPresetConfig", () => {
     }
   });
 
-  it("returns false for a custom loan config", () => {
+  it("returns false for a personalised loan config", () => {
     const customLoans: Loan[] = [{ planType: "PLAN_2", balance: 30_000 }];
     expect(isPresetConfig(customLoans)).toBe(false);
   });

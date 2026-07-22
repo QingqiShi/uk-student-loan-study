@@ -70,7 +70,7 @@ describe("parseMetadataParams", () => {
       expect(result.salary).toBe(65000);
     });
 
-    it("returns Postgraduate as plan name when only PG loans exist", () => {
+    it("returns Postgraduate as plan name when only Postgraduate loans exist", () => {
       const result = parseMetadataParams({
         loans: "POSTGRADUATE:15000",
         sal: "40000",
@@ -120,7 +120,7 @@ describe("parseMetadataParams", () => {
       expect(result.formattedSalary).toBe("£65,000");
     });
 
-    it("formats combined UG + PG balance in formattedBalance", () => {
+    it("formats combined Undergraduate + Postgraduate balance in formattedBalance", () => {
       const result = parseMetadataParams({
         loans: "PLAN_2:45000,POSTGRADUATE:12000",
       });

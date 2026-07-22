@@ -6,7 +6,7 @@
  * duration of the app. A listeners map enables multiplexed message routing.
  *
  * This module MUST live in src/hooks/ so the relative path to the worker file
- * resolves correctly at build time (webpack statically analyzes the URL pattern).
+ * resolves correctly at build time (webpack statically analyses the URL pattern).
  */
 
 import type {

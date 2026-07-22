@@ -23,10 +23,10 @@ export function useInputPanelMode(options?: UseInputPanelModeOptions) {
   );
   const { applyPreset } = useLoanActions();
   const config = useLoanConfigState();
-  const hasPersonalized = !isPresetConfig(config.loans);
+  const hasPersonalised = !isPresetConfig(config.loans);
 
   function handlePersonalise() {
-    if (hasPersonalized) {
+    if (hasPersonalised) {
       trackWizardRestarted("loan");
     } else {
       trackWizardStarted("loan");
@@ -51,7 +51,7 @@ export function useInputPanelMode(options?: UseInputPanelModeOptions) {
 
   return {
     mode,
-    hasPersonalized,
+    hasPersonalised,
     handlePersonalise,
     handleWizardComplete,
     handlePresetApplied,

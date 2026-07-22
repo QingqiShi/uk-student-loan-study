@@ -102,13 +102,13 @@ function SalarySlider() {
 interface ExpandedPresetsProps {
   onPresetApplied: (preset: Preset) => void;
   onPersonalise: () => void;
-  hasPersonalized: boolean;
+  hasPersonalised: boolean;
 }
 
 function ExpandedPresets({
   onPresetApplied,
   onPersonalise,
-  hasPersonalized,
+  hasPersonalised,
 }: ExpandedPresetsProps) {
   const activePreset = useActivePreset();
 
@@ -116,7 +116,7 @@ function ExpandedPresets({
     activePreset?.id ?? null,
   );
 
-  const isCustomConfig = hasPersonalized && !optimisticActiveId;
+  const isPersonalisedConfig = hasPersonalised && !optimisticActiveId;
 
   return (
     <div className="space-y-2">
@@ -181,7 +181,7 @@ function ExpandedPresets({
               "shrink-0 rounded-lg border px-3 py-2 text-left transition-colors",
               "w-40 sm:w-auto",
               "hidden sm:block",
-              isCustomConfig
+              isPersonalisedConfig
                 ? "border-primary bg-accent-wash"
                 : "border-dashed border-primary/40 hover:border-primary hover:bg-primary/5",
             )}
@@ -191,10 +191,10 @@ function ExpandedPresets({
                 icon={PreferenceHorizontalIcon}
                 className="size-4"
               />
-              {isCustomConfig ? "Edit configuration" : "Tailor to you"}
+              {isPersonalisedConfig ? "Edit details" : "Tailor to you"}
             </span>
             <span className="block text-xs text-muted-foreground">
-              {isCustomConfig
+              {isPersonalisedConfig
                 ? "Change your loan details"
                 : "Enter your exact details"}
             </span>
@@ -208,7 +208,7 @@ function ExpandedPresets({
         onClick={onPersonalise}
         className={cn(
           "flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left transition-colors sm:hidden",
-          isCustomConfig
+          isPersonalisedConfig
             ? "border-primary bg-accent-wash"
             : "border-dashed border-primary/40 hover:border-primary hover:bg-primary/5",
         )}
@@ -219,10 +219,10 @@ function ExpandedPresets({
         />
         <span>
           <span className="text-sm font-medium text-primary">
-            {isCustomConfig ? "Edit configuration" : "Tailor to you"}
+            {isPersonalisedConfig ? "Edit details" : "Tailor to you"}
           </span>
           <span className="ml-2 text-xs text-muted-foreground">
-            {isCustomConfig
+            {isPersonalisedConfig
               ? "Change your loan details"
               : "Enter your exact details"}
           </span>
@@ -243,7 +243,7 @@ interface ControlBarProps {
 export function ControlBar({ initialMode }: ControlBarProps) {
   const {
     mode,
-    hasPersonalized,
+    hasPersonalised,
     handlePersonalise,
     handlePresetApplied,
     handleWizardComplete,
@@ -252,18 +252,18 @@ export function ControlBar({ initialMode }: ControlBarProps) {
 
   return (
     <section
-      aria-label="Calculator settings"
+      aria-label="Calculator controls"
       className={cn(surfaceCard, "space-y-3 p-3 sm:p-4")}
     >
       <SalarySlider />
       <ExpandedPresets
         onPresetApplied={handlePresetApplied}
         onPersonalise={handlePersonalise}
-        hasPersonalized={hasPersonalized}
+        hasPersonalised={hasPersonalised}
       />
       <ConfigOverlay
         mode={mode}
-        hasPersonalized={hasPersonalized}
+        hasPersonalised={hasPersonalised}
         onComplete={handleWizardComplete}
         onClose={handleWizardClose}
       />

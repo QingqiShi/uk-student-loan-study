@@ -74,10 +74,10 @@ export function Plan2VsPlan5Guide() {
             Balance over time
           </Heading>
           <p className="text-pretty text-muted-foreground">
-            See how the outstanding balance changes month by month. Toggle
-            between salary levels to see how income affects the repayment
-            trajectory for each plan. The dashed markers show each plan&rsquo;s
-            write-off point &mdash; Plan 2 at 30 years, Plan 5 at 40 years.
+            See how the balance changes month by month. Toggle between salary
+            levels to see how income affects the repayment trajectory for each
+            plan. The dashed markers show each plan&rsquo;s write-off point
+            &mdash; Plan 2 at 30 years, Plan 5 at 40 years.
           </p>
           <ChartFrame
             caption={`Fig. 2 \u2014 Balance over time \u00b7 Plan 2 vs Plan 5`}
@@ -225,7 +225,7 @@ export function Plan2VsPlan5Guide() {
             <Link href="/" className={guideLink}>
               student loan calculator
             </Link>{" "}
-            to see the total cost under each plan.
+            to see the total repayments under each plan.
           </li>
         </KeyTakeaways>
 

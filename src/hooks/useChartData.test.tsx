@@ -283,7 +283,7 @@ describe("useChartData hooks", () => {
     });
   });
 
-  describe("hook memoization", () => {
+  describe("hook memoisation", () => {
     it("useTotalRepaymentData returns equivalent data on rerender", async () => {
       const { result, rerender } = renderHook(() => useTotalRepaymentData(), {
         wrapper: createWrapper(),

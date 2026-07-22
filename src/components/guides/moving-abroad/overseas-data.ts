@@ -52,7 +52,7 @@ export type MovingAbroadFaq = {
 export const movingAbroadFaqs: MovingAbroadFaq[] = [
   {
     question: "Does your student loan get wiped if you move abroad?",
-    answer: `No. Moving abroad does not cancel your student loan or wipe the balance, and there is no rule that writes it off after three years overseas. Your loan is only cleared at the end of your plan's write-off period — typically 25, 30 or 40 years depending on your plan — and that clock keeps ticking wherever you live, whether or not you make repayments. Living abroad changes how much you repay, not whether the debt still exists.`,
+    answer: `No. Moving abroad does not cancel your student loan or wipe the balance, and there is no rule that writes it off after three years overseas. Your loan is only written off at the end of your plan's term — typically 25, 30 or 40 years depending on your plan — and that clock keeps ticking wherever you live, whether or not you make repayments. Living abroad changes how much you repay, not whether the balance still exists.`,
   },
   {
     question:

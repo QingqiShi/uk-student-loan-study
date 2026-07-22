@@ -28,8 +28,7 @@ const SUGGESTED_LINKS = [
   {
     href: "/overpay",
     title: "Overpay calculator",
-    description:
-      "Find out if paying extra towards your student loan is worth it.",
+    description: "Find out if overpaying your student loan is worth it.",
   },
   {
     href: "/which-plan",

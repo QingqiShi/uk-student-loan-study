@@ -6,7 +6,7 @@ import type { InputMode } from "@/hooks/useInputPanelMode";
 
 interface ConfigOverlayProps {
   mode: InputMode;
-  hasPersonalized: boolean;
+  hasPersonalised: boolean;
   onComplete: () => void;
   onClose: () => void;
 }
@@ -14,7 +14,7 @@ interface ConfigOverlayProps {
 /** Full-screen modal dialog wrapping the loan-config panel. */
 export function ConfigOverlay({
   mode,
-  hasPersonalized,
+  hasPersonalised,
   onComplete,
   onClose,
 }: ConfigOverlayProps) {
@@ -27,7 +27,7 @@ export function ConfigOverlay({
       className="flex min-h-dvh flex-col overflow-y-auto bg-background"
     >
       <LoanConfigPanel
-        isEditing={hasPersonalized}
+        isEditing={hasPersonalised}
         initialPlanTypes={mode.initialPlanTypes}
         onComplete={onComplete}
         onClose={onClose}

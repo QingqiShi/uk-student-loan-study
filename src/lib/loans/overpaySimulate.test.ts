@@ -47,7 +47,7 @@ describe("simulateOverpayScenarios", () => {
       expect(result.recommendationReason).toContain(
         "Enter a lump sum or monthly amount",
       );
-      // Chart data should still be generated for baseline visualization
+      // Chart data should still be generated for baseline visualisation
       expect(result.balanceTimeSeries.length).toBeGreaterThan(0);
       expect(result.baseline.totalPaid).toBeGreaterThan(0);
     });
@@ -391,7 +391,7 @@ describe("simulateOverpayScenarios", () => {
       expect(result.baseline.monthsToPayoff).toBeGreaterThan(0);
     });
 
-    it("handles combined undergrad + postgrad loans", () => {
+    it("handles combined undergraduate + Postgraduate loans", () => {
       const result = simulateOverpayScenarios({
         ...defaultInput,
         loans: [

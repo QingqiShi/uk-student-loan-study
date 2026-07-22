@@ -392,7 +392,7 @@ describe("simulate engine", () => {
 
       const firstSnapshot = result.snapshots[0];
 
-      // With 30k and 10k, Plan 2 gets 75% of overpayment, PG gets 25%
+      // With 30k and 10k, Plan 2 gets 75% of overpayment, Postgraduate gets 25%
       // But the exact distribution includes the base repayment too
       // Just verify both loans receive some payment
       expect(firstSnapshot.loans[0].repayment).toBeGreaterThan(0);

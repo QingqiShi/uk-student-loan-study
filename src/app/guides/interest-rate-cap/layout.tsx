@@ -78,7 +78,7 @@ const faqSchema = {
       name: "Does the 6% cap change my monthly student loan repayments?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "No. Monthly repayments are based on your income (9% of earnings above the threshold), not the interest rate. The cap only affects how fast your outstanding balance grows.",
+        text: "No. Monthly repayments are based on your income (9% of income above the threshold), not the interest rate. The cap only affects how fast your balance grows.",
       },
     },
   ],

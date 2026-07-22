@@ -150,7 +150,7 @@ export function InterestGuide() {
               Here are the interest rates in force across every plan for the{" "}
               {currentTaxYear} tax year, based on RPI of {formatPercent(rpi)}.
               Middle earners on Plan 2 feel this most: they sit on the sliding
-              scale, charged above RPI without earning enough to clear the
+              scale, charged above RPI without earning enough to pay off the
               balance before interest compounds.
             </p>
           </div>
@@ -187,7 +187,7 @@ export function InterestGuide() {
               <Link href="/overpay" className={guideLink}>
                 overpaying your loan
               </Link>{" "}
-              could reduce the total cost.
+              could reduce what you repay overall.
             </p>
           </div>
         </section>

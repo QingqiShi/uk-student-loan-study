@@ -298,7 +298,7 @@ export function LoanConfigPanel({
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-          <h2 className="text-lg font-semibold">Customise your loans</h2>
+          <h2 className="text-lg font-semibold">Tailor your loans</h2>
           <div className="flex items-center gap-2">
             {localLoans.length > 0 && (
               <button

@@ -108,10 +108,10 @@ export function useLeverData(): LeverData {
       name: `Overpay ${formatGBP(MONTHLY_OVERPAY)} a month`,
       description:
         overpayDelta === 0
-          ? `For this case, overpaying ${formatGBP(MONTHLY_OVERPAY)} a month wouldn't change your lifetime total.`
+          ? `For this case, overpaying ${formatGBP(MONTHLY_OVERPAY)} a month wouldn't change the total you repay.`
           : yearsEarly > 0
-            ? `Voluntary payments clear the balance about ${String(yearsEarly)} year${yearsEarly === 1 ? "" : "s"} early and cut off the interest that would otherwise keep rolling up.`
-            : `Voluntary payments chip the balance down faster and cut off interest before it compounds further.`,
+            ? `Overpayments pay off the balance about ${String(yearsEarly)} year${yearsEarly === 1 ? "" : "s"} early and cut off the interest that would otherwise keep rolling up.`
+            : `Overpayments chip the balance down faster and cut off interest before it compounds further.`,
       delta: deltaText(overpayDelta),
       direction: dir(overpayDelta),
       barPct: barPct(overpayDelta),
@@ -122,10 +122,10 @@ export function useLeverData(): LeverData {
       name: `Earn ${formatGBP(RAISE)} more a year`,
       description:
         raiseDelta === 0
-          ? `For this case, earning ${formatGBP(RAISE)} more a year wouldn't change your lifetime total.`
+          ? `For this case, earning ${formatGBP(RAISE)} more a year wouldn't change the total you repay.`
           : raiseDelta < 0
-            ? `A higher salary clears the loan before the write-off, so you pay less overall — not more.`
-            : `A higher salary means larger repayments in the years before write-off, so the lifetime total rises.`,
+            ? `A higher salary pays off the loan before the write-off, so you pay less overall — not more.`
+            : `A higher salary means larger repayments in the years before write-off, so the total you repay rises.`,
       delta: deltaText(raiseDelta),
       direction: dir(raiseDelta),
       barPct: barPct(raiseDelta),
@@ -134,7 +134,7 @@ export function useLeverData(): LeverData {
       name: "Take a one-year career break",
       description:
         careerDelta === 0
-          ? `For this case, a one-year career break wouldn't change your lifetime total.`
+          ? `For this case, a one-year career break wouldn't change the total you repay.`
           : careerDelta > 0
             ? `A year at little or no income pauses repayments, so more interest rolls into the years that follow — nudging the total up.`
             : `A year at little or no income pauses repayments; with the balance written off anyway, you simply repay less over the term.`,

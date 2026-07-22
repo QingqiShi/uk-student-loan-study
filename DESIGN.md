@@ -139,7 +139,7 @@ A cool, spruce-biased neutral field with a single green brand voice and a single
 ### Primary
 
 - **Spruce** (`#0C5C44`; dark `#34B08A`): The brand and the only affordance color. Slider fill, selected-preset wash, the brand mark, sparkline strokes, link underlines, focus rings, the "your salary" dot. If something is interactive or on-brand, it is spruce.
-- **Spruce Ink** (`#094A37`; dark `#50C99F`): A stronger spruce for text that must read as a link or an emphasized label against the surface (the "Total repaid" key, inline "change" links, deeplinks). Spruce carries fills; Spruce Ink carries type.
+- **Spruce Ink** (`#094A37`; dark `#50C99F`): A stronger spruce for text that must read as a link or an emphasised label against the surface (the "Total repaid" key, inline "change" links, deeplinks). Spruce carries fills; Spruce Ink carries type.
 
 ### Secondary
 
@@ -234,7 +234,7 @@ Lead with the character, then the spec. Every interactive element resolves to sp
 
 ### Scenario presets (selectable)
 
-- **Character:** Named salary presets plus one "Tailor to you" custom option; a compact selectable button-card.
+- **Character:** Named salary presets plus one "Tailor to you" option; a compact selectable button-card.
 - **Style:** `Surface` fill, 1px `Hair` border, 9px radius, `Soft` text with a bold `Ink` value line. Hover → border to `Soft`.
 - **Selected** (`aria-pressed="true"`): border to spruce, background to `Accent Wash`, value line to spruce-ink.
 - **Responsive:** a container query on the group re-flows the grid 2 → 4 → 5 columns; "Tailor to you" spans full-width until there is room for a single 5-across row.

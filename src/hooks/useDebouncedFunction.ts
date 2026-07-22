@@ -18,7 +18,7 @@ export function useDebouncedFunction<Args extends unknown[]>(
     };
   }, []);
 
-  // No manual memoization — React Compiler handles stable identity.
+  // No manual memoisation — React Compiler handles stable identity.
   return (...args: Args) => {
     if (timerRef.current !== null) {
       clearTimeout(timerRef.current);

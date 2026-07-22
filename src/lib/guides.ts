@@ -49,7 +49,7 @@ export const GUIDES: GuideEntry[] = [
     slug: "student-loan-vs-mortgage",
     title: "Student Loans & Mortgages",
     description:
-      "Does a student loan affect your mortgage? Affordability, income, your credit file, and whether to clear it first.",
+      "Does a student loan affect your mortgage? Affordability, income, your credit file, and whether to pay it off first.",
     topic: "Life & money",
   },
   {

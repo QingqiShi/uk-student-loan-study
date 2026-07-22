@@ -214,7 +214,7 @@ export function PlanDetailPage({ planKey }: PlanDetailPageProps) {
           <p className="max-w-2xl text-muted-foreground">{plan.middleEarner}</p>
           <p className="max-w-2xl text-muted-foreground">
             Middle earners repay the most across every UK plan &mdash; enough to
-            make real repayments, but not enough to clear the balance before
+            make real repayments, but not enough to pay off the balance before
             interest bites. Put your own salary into the{" "}
             <Link href="/" className={PROSE_LINK}>
               student loan repayment calculator

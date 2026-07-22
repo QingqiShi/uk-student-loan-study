@@ -71,7 +71,7 @@ export function useRpiRate(): number {
   return rpiRate;
 }
 
-/** Select BOE base rate for simulation */
+/** Select BoE base rate for simulation */
 export function useBoeBaseRate(): number {
   const { boeBaseRate } = useLoanConfigState();
   return boeBaseRate;

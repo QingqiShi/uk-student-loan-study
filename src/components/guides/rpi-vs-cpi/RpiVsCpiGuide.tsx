@@ -136,7 +136,7 @@ export function RpiVsCpiGuide() {
             Inflation comparison
           </Heading>
           <ChartFrame
-            caption={`Fig. 1 \u2014 Balance in real terms \u00b7 Plan 5, \u00a345,000`}
+            caption={`Fig. 1 \u2014 Balance (present value) \u00b7 Plan 5, \u00a345,000`}
             figure={`RPI ${formatPercent(rpi)}`}
             figureTone="cost"
             bodyClassName="h-85 sm:h-105"

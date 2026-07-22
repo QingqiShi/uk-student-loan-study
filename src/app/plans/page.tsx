@@ -106,10 +106,11 @@ export default function PlansHubPage() {
           <p className="max-w-2xl text-muted-foreground">
             Whichever plan you are on, the total you repay follows the same
             shape. Low earners repay little and reach the write-off with a
-            balance forgiven. High earners clear the loan quickly, before much
-            interest builds. It is the middle &mdash; graduates earning enough
-            to make real repayments, but not enough to outrun the interest
-            &mdash; who repay the most, often far more than they borrowed.
+            balance written off. High earners pay off the loan quickly, before
+            much interest builds. It is the middle &mdash; graduates earning
+            enough to make real repayments, but not enough to outrun the
+            interest &mdash; who repay the most, often far more than they
+            borrowed.
           </p>
           <p className="max-w-2xl text-muted-foreground">
             That is the whole reason this site exists. Put your salary into the{" "}

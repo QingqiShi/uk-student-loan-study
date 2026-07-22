@@ -47,7 +47,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     return createEmptyResult();
   }
 
-  // Initialize loan state tracking
+  // Initialise loan state tracking
   const loanStates = activeLoans.map((loan) => ({
     loan,
     balance: loan.balance,
@@ -57,7 +57,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     writeOffMonth: getWriteOffMonth(loan.planType, monthsElapsed),
   }));
 
-  // Initialize dynamic thresholds per plan type (for threshold growth)
+  // Initialise dynamic thresholds per plan type (for threshold growth)
   const planThresholds = new Map<string, number>();
   for (const loan of activeLoans) {
     if (!planThresholds.has(loan.planType)) {

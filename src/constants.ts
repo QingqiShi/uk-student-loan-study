@@ -70,7 +70,7 @@ export const RPI_OPTIONS: RateOption[] = [
   { value: 5, label: "5%", description: "Prices rising fast" },
 ];
 
-/** BOE base rate options for the assumptions wizard (percentage format, e.g. 3.75 = 3.75%).
+/** BoE base rate options for the assumptions wizard (percentage format, e.g. 3.75 = 3.75%).
  *  The "current rate" option derives from CURRENT_RATES so it stays in sync
  *  with the daily GOV.UK automation.
  */

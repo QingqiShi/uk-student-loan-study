@@ -97,7 +97,7 @@ You're on Plan 2 if:
 
 ### Interest Rate (Sliding Scale)
 
-Plan 2 uses an income-based sliding scale for interest after you finish studying.
+Plan 2 uses a sliding scale for interest after you finish studying.
 
 **While studying:** 6.2% (RPI + 3%)
 
@@ -283,13 +283,13 @@ If you have both undergraduate and postgraduate loans, you repay both simultaneo
 
 ### Interest Rates (Sept 2025 - Aug 2026)
 
-| Plan         | Method                       | Current Rate |
-| ------------ | ---------------------------- | ------------ |
-| Plan 1       | Lower of RPI or BoE+1%       | 3.2%         |
-| Plan 2       | RPI to RPI+3% (income-based) | 3.2% - 6.2%  |
-| Plan 4       | Lower of RPI or BoE+1%       | 3.2%         |
-| Plan 5       | RPI only                     | 3.2%         |
-| Postgraduate | RPI + 3%                     | 6.2%         |
+| Plan         | Method                        | Current Rate |
+| ------------ | ----------------------------- | ------------ |
+| Plan 1       | Lower of RPI or BoE+1%        | 3.2%         |
+| Plan 2       | RPI to RPI+3% (sliding scale) | 3.2% - 6.2%  |
+| Plan 4       | Lower of RPI or BoE+1%        | 3.2%         |
+| Plan 5       | RPI only                      | 3.2%         |
+| Postgraduate | RPI + 3%                      | 6.2%         |
 
 ### Write-Off Periods
 
@@ -390,7 +390,7 @@ Loans are automatically cancelled in these circumstances:
 
 - **Death:** SLC cancels upon receiving death certificate
 - **Permanent disability:** May be cancelled if claiming certain disability benefits (evidence required)
-- **Write-off period reached:** Automatic cancellation regardless of outstanding balance
+- **Write-off period reached:** The remaining balance is written off automatically
 
 ---
 

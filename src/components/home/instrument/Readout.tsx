@@ -4,7 +4,7 @@ import { Sparkline } from "@/components/charts/Sparkline";
 import { MetricCell } from "@/components/instrument/MetricReadout";
 import { Figure } from "@/components/typography/Figure";
 import { percentageFormatter } from "@/constants";
-import { usePersonalizedResults } from "@/context/PersonalizedResultsContext";
+import { usePersonalisedResults } from "@/context/PersonalisedResultsContext";
 import {
   useCurrentSalary,
   useLoanConfig,
@@ -80,7 +80,7 @@ function RateVizSkeleton() {
 }
 
 export function Readout({ onTailor }: { onTailor: () => void }) {
-  const { cards, summary } = usePersonalizedResults();
+  const { cards, summary } = usePersonalisedResults();
   const salary = useCurrentSalary();
   const { loans, underGradBalance, postGradBalance } = useLoanConfig();
   const salaryGrowthRate = useSalaryGrowthRate();

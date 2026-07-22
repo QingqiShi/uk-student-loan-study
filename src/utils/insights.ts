@@ -32,7 +32,7 @@ interface InsightConfig {
 
 /**
  * Gets the write-off years for a loan configuration.
- * Uses the undergraduate loan's write-off period, or postgraduate if no undergrad.
+ * Uses the undergraduate loan's write-off period, or Postgraduate if no undergraduate loan.
  */
 function getWriteOffYears(loans: Loan[]): number {
   const undergradLoan = loans.find((l) => l.planType !== "POSTGRADUATE");
@@ -50,9 +50,9 @@ function willBeWrittenOff(result: SimulationTimeSeries): boolean {
 }
 
 /**
- * Generates a personalized insight based on salary and loan configuration.
+ * Generates a personalised insight based on salary and loan configuration.
  *
- * Categorizes the user into one of three zones:
+ * Categorises the user into one of three zones:
  * - Peak zone: total repayment exceeds 1.7x the principal
  * - Low earner: loan gets written off before paying too much
  * - High earner: pays off quickly without excessive interest
@@ -175,7 +175,7 @@ export function generateInsight(
   return {
     type: "high-earner",
     title: "You'll pay off quickly",
-    description: `You'll clear your loan in about ${yearsToPayoff} years, ${interestDescription}.`,
+    description: `You'll pay off your loan in about ${yearsToPayoff} years, ${interestDescription}.`,
     cta: {
       text: "See how overpaying saves you time",
       href: "/overpay",

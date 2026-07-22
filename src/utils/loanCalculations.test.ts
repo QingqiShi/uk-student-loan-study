@@ -98,7 +98,7 @@ describe("generateSalaryDataSeries: rpiRate and boeBaseRate", () => {
     expect(dataLowRpi[midIndex].value).not.toBe(dataHighRpi[midIndex].value);
   });
 
-  it("different BOE base rates produce different results for Plan 1", () => {
+  it("different BoE base rates produce different results for Plan 1", () => {
     const loans: Loan[] = [{ planType: "PLAN_1", balance: 30000 }];
 
     const dataLowBoe = generateSalaryDataSeries(loans, undefined, 0, 0, 2);

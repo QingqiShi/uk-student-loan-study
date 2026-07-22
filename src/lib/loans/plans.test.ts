@@ -41,7 +41,7 @@ describe("PLAN_CONFIGS", () => {
     );
   });
 
-  it("PLAN_2 has interest scale thresholds with upper > lower", () => {
+  it("PLAN_2 has sliding scale thresholds with upper > lower", () => {
     const { interestLowerThreshold, interestUpperThreshold } =
       PLAN_CONFIGS.PLAN_2;
     expect(interestLowerThreshold).toBeGreaterThan(0);

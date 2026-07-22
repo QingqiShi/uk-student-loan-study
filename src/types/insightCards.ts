@@ -24,7 +24,7 @@ export interface InterestCardData {
 export interface EffectiveRateCardData {
   stat: string;
   label: string;
-  /** Effective annualized cost of the loan (0.035 = 3.5%) */
+  /** Effective annualised cost of the loan (0.035 = 3.5%) */
   effectiveRate: number;
   /** Bank of England base rate for comparison (0.045 = 4.5%) */
   boeRate: number;
