@@ -9,9 +9,18 @@ permissions:
   pull-requests: write
   issues: write
 
+# Serialize runs so an overlapping cron and manual dispatch cannot interleave
+# force-pushes to the shared PR branch or race the auto-merge decision.
+concurrency:
+  group: check-govuk-figures
+  cancel-in-progress: false
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      # The single source of truth for the shared PR branch name.
+      BRANCH: auto/update-govuk-figures
     steps:
       - uses: actions/checkout@v7
         with:
@@ -43,113 +52,169 @@ jobs:
         run: |
           if [ -f scripts/check-govuk-figures/results/check-result.json ]; then
             STATUS=$(jq -r '.status' scripts/check-govuk-figures/results/check-result.json)
-            echo "status=$STATUS" >> $GITHUB_OUTPUT
           elif [ "${{ steps.scrape.outcome }}" == "failure" ]; then
-            echo "status=scrape-error" >> $GITHUB_OUTPUT
+            STATUS="scrape-error"
           else
-            echo "status=unknown" >> $GITHUB_OUTPUT
+            STATUS="unknown"
           fi
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          # A figure change of either kind needs the same build/PR pipeline; only
+          # the merge treatment differs (auto-merge vs human review).
+          case "$STATUS" in
+            mismatch-auto | mismatch-review)
+              echo "is_mismatch=true" >> "$GITHUB_OUTPUT" ;;
+            *)
+              echo "is_mismatch=false" >> "$GITHUB_OUTPUT" ;;
+          esac
 
       - name: Format updated files
-        if: steps.result.outputs.status == 'mismatch'
+        id: format
+        if: steps.result.outputs.is_mismatch == 'true'
         run: pnpm format
 
       - name: Verify build with updated files
         id: verify
-        if: steps.result.outputs.status == 'mismatch'
+        if: steps.result.outputs.is_mismatch == 'true'
         run: pnpm lint && pnpm typecheck && pnpm test --run && pnpm build
 
-      - name: Create Pull Request
-        if: steps.result.outputs.status == 'mismatch' && steps.verify.outcome == 'success'
+      - name: Create or update pull request
+        id: pr
+        if: steps.result.outputs.is_mismatch == 'true' && steps.verify.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.PR_TOKEN }}
+          STATUS: ${{ steps.result.outputs.status }}
         run: |
+          # BRANCH comes from the job-level env (single source of truth).
+          # The PR body (auto vs review, with the change + reason lists) is
+          # rendered by update-files.ts into this file — kept out of the workflow
+          # to avoid brittle shell heredoc/quoting.
+          BODY_FILE=scripts/check-govuk-figures/results/pr-body.md
+
+          # Look up any existing open PR on the shared branch once. A failed
+          # lookup is fatal — we must never proceed blind on a review-required
+          # change. `// empty` yields "" (not "null") when no PR is open.
+          PR_NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty') \
+            || { echo "::error::Could not query the existing PR"; exit 1; }
+
+          # Fail closed: before pushing a review-required change, clear any
+          # auto-merge a prior auto run left enabled on the existing PR. Abort on
+          # any read/disable failure rather than risk it merging unreviewed.
+          if [ "$STATUS" = "mismatch-review" ] && [ -n "$PR_NUMBER" ]; then
+            # gh renders a null autoMergeRequest as an empty string, so test the
+            # boolean directly ("true"/"false") rather than comparing to "null".
+            AUTO=$(gh pr view "$PR_NUMBER" --json autoMergeRequest --jq '.autoMergeRequest != null') \
+              || { echo "::error::Could not read auto-merge state before a review-required push"; exit 1; }
+            if [ "$AUTO" = "true" ]; then
+              gh pr merge "$PR_NUMBER" --disable-auto \
+                || { echo "::error::Could not disable auto-merge before a review-required push"; exit 1; }
+            fi
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B auto/update-govuk-figures
+          git checkout -B "$BRANCH"
           git add -A
           git diff --staged --quiet && echo "No changes to commit" && exit 0
           git commit -m "chore: update student loan figures from GOV.UK"
-          git push --force origin auto/update-govuk-figures
+          git push --force origin "$BRANCH"
 
-          if gh pr list --head auto/update-govuk-figures --state open --json number --jq '.[0].number' | grep -q .; then
-            echo "PR already exists — force-push updated it"
+          if [ -n "$PR_NUMBER" ]; then
+            # The bot owns this description (a note in the body sends reviewers to
+            # comments), so regenerate it every run to reflect the current
+            # classification — a stale auto/review body would mislead a maintainer.
+            echo "PR #$PR_NUMBER already exists — branch updated; refreshing description"
+            gh pr edit "$PR_NUMBER" --body-file "$BODY_FILE"
           else
             gh pr create \
               --title "chore: update student loan figures from GOV.UK" \
               --label "govuk-figures-changed" \
-              --body "## Summary
-
-          The daily GOV.UK figure checker detected updated student loan figures.
-          See the check result artifact for details on what changed.
-
-          ## Review checklist
-          - [ ] Verify threshold values look correct against [GOV.UK](https://www.gov.uk/repaying-your-student-loan/what-you-pay)
-          - [ ] Verify write-off periods against [GOV.UK](https://www.gov.uk/repaying-your-student-loan/when-your-student-loan-gets-written-off-or-cancelled)
-          - [ ] Check if \`src/lib/loans/plans.ts\` CURRENT_RATES period comments need updating
-          - [ ] Verify \`public/llms.txt\` figures are accurate
-
-          > Auto-generated by the GOV.UK figure freshness checker"
+              --body-file "$BODY_FILE"
           fi
 
-      - name: Create issue on scrape error
-        if: steps.result.outputs.status == 'scrape-error' || steps.result.outputs.status == 'unknown'
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const title = 'GOV.UK scraping failed';
-            const label = 'govuk-scrape-error';
-            const { data: issues } = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: label,
-              state: 'open',
-            });
-            const body = `The daily GOV.UK figure checker failed to scrape data.\n\nWorkflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\nPlease check if the GOV.UK page structure has changed.`;
-            if (issues.length > 0) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issues[0].number,
-                body: body,
-              });
-            } else {
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: title,
-                body: body,
-                labels: [label],
-              });
-            }
+      - name: Enable auto-merge
+        if: steps.result.outputs.status == 'mismatch-auto' && steps.verify.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.PR_TOKEN }}
+        run: |
+          # Requires "Allow auto-merge" on the repo plus a branch-protection rule
+          # on main with the CI checks required. If that config is missing this
+          # step fails softly and the PR simply waits for a manual merge.
+          gh pr merge "$BRANCH" --auto --squash \
+            || echo "::warning::Could not enable auto-merge — check that 'Allow auto-merge' and branch protection are configured. The PR was still created for manual merge."
 
-      - name: Create issue on verification failure
-        if: steps.result.outputs.status == 'mismatch' && steps.verify.outcome == 'failure'
+      - name: Report a failed check
+        # One notifier for every failure mode, so a failure is never silently
+        # dropped. The scrape step is continue-on-error (a scrape-only failure
+        # does not fail the job, so it is caught via its outcome); compare/update,
+        # verification, the PR step, and any infra/setup step (checkout, install)
+        # all trip failure(). The message is picked from the step outcomes so the
+        # maintainer is pointed at the real cause, not a mislabelled one.
+        if: ${{ !cancelled() && (failure() || steps.scrape.outcome == 'failure') }}
         uses: actions/github-script@v9
+        env:
+          SCRAPE: ${{ steps.scrape.outcome }}
+          UPDATE: ${{ steps.update.outcome }}
+          FORMAT: ${{ steps.format.outcome }}
+          VERIFY: ${{ steps.verify.outcome }}
+          PR: ${{ steps.pr.outcome }}
+          IS_MISMATCH: ${{ steps.result.outputs.is_mismatch }}
         with:
           script: |
-            const title = 'GOV.UK figures changed but verification failed';
-            const label = 'govuk-figures-changed';
-            const { data: issues } = await github.rest.issues.listForRepo({
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            let label, title, body;
+            if (process.env.SCRAPE === 'failure') {
+              label = 'govuk-scrape-error';
+              title = 'GOV.UK figure scrape failed';
+              body = `The daily checker could not scrape GOV.UK — check whether the page structure changed.\n\nWorkflow run: ${run}`;
+            } else if (process.env.UPDATE === 'failure') {
+              label = 'govuk-scrape-error';
+              title = 'GOV.UK figure compare/update failed';
+              body = `The scrape succeeded, but comparing and regenerating the figures failed — either a Bank of England / ONS fetch, or a code error in the checker. See the run for the cause.\n\nWorkflow run: ${run}`;
+            } else if (process.env.FORMAT === 'failure') {
+              label = 'govuk-figures-changed';
+              title = 'GOV.UK figures changed but the regenerated files could not be formatted';
+              body = `Figures changed on the source, but formatting the regenerated files failed — the code generator likely produced output Prettier could not parse. Manual intervention required.\n\nWorkflow run: ${run}`;
+            } else if (process.env.VERIFY === 'failure') {
+              label = 'govuk-figures-changed';
+              title = 'GOV.UK figures changed but verification failed';
+              body = `Figures changed on the source, but the regenerated files failed verification (lint/typecheck/test/build). Manual intervention required.\n\nWorkflow run: ${run}`;
+            } else if (process.env.PR === 'failure') {
+              label = 'govuk-figures-changed';
+              title = 'GOV.UK figure PR could not be created or updated';
+              body = `Figures changed and passed verification, but creating or updating the pull request failed (a git push or GitHub CLI error). The change has NOT shipped. Manual intervention required.\n\nWorkflow run: ${run}`;
+            } else {
+              // Any other failed step — an infra/setup step (checkout, install),
+              // the parse-result step, or a future addition. Attribute the label
+              // by whether a figure change was detected, and point at the run
+              // rather than guessing a specific cause.
+              const isMismatch = process.env.IS_MISMATCH === 'true';
+              label = isMismatch ? 'govuk-figures-changed' : 'govuk-scrape-error';
+              title = 'Daily GOV.UK figure check failed';
+              body = `The daily figure check failed at a step — see the run for the specific failure (e.g. setup/checkout, dependency install, or parsing the result).${isMismatch ? ' A figure change was detected but has NOT shipped.' : ''}\n\nWorkflow run: ${run}`;
+            }
+            const { data: found } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: label,
               state: 'open',
             });
-            const body = `The daily checker detected changed figures on GOV.UK, but the updated files failed verification (lint/typecheck/test/build).\n\nWorkflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\nManual intervention required.`;
+            // The figure PR shares the figures label; listForRepo returns PRs as
+            // issues, so filter them out and track the failure as a real issue.
+            const issues = found.filter((i) => !i.pull_request);
             if (issues.length > 0) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issues[0].number,
-                body: body,
+                body,
               });
             } else {
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: title,
-                body: body,
+                title,
+                body,
                 labels: [label],
               });
             }
@@ -166,6 +231,9 @@ jobs:
                 labels: label,
                 state: 'open',
               });
+              // Close stale tracking issues AND any open figure PR (they share
+              // this label): once figures match again, an unmerged auto PR is
+              // stale, and closing it cancels any auto-merge left enabled on it.
               for (const issue of issues) {
                 await github.rest.issues.update({
                   owner: context.repo.owner,

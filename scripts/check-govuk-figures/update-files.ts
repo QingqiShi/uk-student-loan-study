@@ -9,6 +9,8 @@ import {
   LAST_UPDATED,
 } from "../../src/lib/loans/plans";
 
+import { classifyChange } from "./classify";
+import { renderPrBody } from "./pr-body";
 import { generateLlmsTxt, generatePlansTs } from "./templates";
 import { findRepaymentRate, findRpi, findWriteOffYears } from "./types";
 import type { CheckResult, Mismatch, ScrapedGovUkData } from "./types";
@@ -262,16 +264,43 @@ async function main(): Promise<void> {
     console.log(`Updated ${file.label}`);
   }
 
+  // 6. Decide whether this change can auto-merge. A change made up entirely of
+  // routine, in-bounds, small figure moves clears the gate; a structural field,
+  // an implausible value, a large jump, or a drift-only change (figures
+  // unchanged but generated content differs) falls back to human review.
+  let status: CheckResult["status"];
+  let reviewReasons: string[] | undefined;
+  if (mismatches.length === 0) {
+    status = "mismatch-review";
+    reviewReasons = ["content or template drift with no figure change"];
+  } else {
+    const classification = classifyChange(mismatches, scraped.thresholds);
+    status =
+      classification.decision === "auto" ? "mismatch-auto" : "mismatch-review";
+    reviewReasons =
+      classification.reviewReasons.length > 0
+        ? classification.reviewReasons
+        : undefined;
+  }
+
   const result: CheckResult = {
-    status: "mismatch",
+    status,
     mismatches,
+    reviewReasons,
     checkedAt: new Date().toISOString(),
   };
   writeFileSync(
     path.join(resultsDir, "check-result.json"),
     JSON.stringify(result, null, 2) + "\n",
   );
-  console.log("Wrote check-result.json with mismatches.");
+  writeFileSync(
+    path.join(resultsDir, "pr-body.md"),
+    renderPrBody(status, mismatches, reviewReasons),
+  );
+  console.log(
+    `Wrote check-result.json (status: ${status}).` +
+      (reviewReasons ? ` Review: ${reviewReasons.join("; ")}` : ""),
+  );
 }
 
 main().catch((error) => {

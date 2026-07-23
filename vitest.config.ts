@@ -40,7 +40,10 @@ export default defineConfig({
     exclude: [
       ...configDefaults.exclude,
       "e2e/**",
-      "scripts/**",
+      // Playwright specs (e.g. the GOV.UK scrape spec) run under Playwright, not
+      // vitest — but plain *.test.ts under scripts/ (e.g. the auto-merge gate)
+      // are vitest unit tests, so exclude only the Playwright specs here.
+      "scripts/**/*.spec.ts",
       "**/.claude/**",
     ],
     coverage: {
