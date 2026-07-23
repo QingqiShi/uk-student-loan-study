@@ -33,7 +33,7 @@ export const PRESETS: Preset[] = [
   {
     id: "ug-pg-combo",
     label: "Undergraduate + Masters",
-    description: "Plan 2 \u00b7 \u00a345k + \u00a312k Postgraduate",
+    description: "Plan 2 \u00b7 \u00a345k + \u00a312k",
     loans: [
       { planType: "PLAN_2", balance: 45_000 },
       { planType: "POSTGRADUATE", balance: 12_000 },
