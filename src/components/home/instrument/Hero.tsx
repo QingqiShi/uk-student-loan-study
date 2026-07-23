@@ -1,12 +1,5 @@
+import { VerifiedAgo } from "@/components/instrument/VerifiedAgo";
 import { Heading } from "@/components/typography/Heading";
-import { LAST_UPDATED } from "@/lib/loans/plans";
-
-// "Updated May 2026" — derived from the automation's LAST_UPDATED so it stays
-// current without hardcoding.
-const UPDATED_LABEL = new Intl.DateTimeFormat("en-GB", {
-  month: "long",
-  year: "numeric",
-}).format(new Date(LAST_UPDATED));
 
 export function Hero() {
   return (
@@ -26,7 +19,7 @@ export function Hero() {
       <p className="flex flex-wrap items-center gap-x-[0.65rem] gap-y-[0.4rem] font-sans text-meta text-muted-foreground">
         <span className="font-bold text-primary">✓</span> Independent{" "}
         <span className="text-faint">·</span> GOV.UK sourced{" "}
-        <span className="text-faint">·</span> Updated {UPDATED_LABEL}
+        <span className="text-faint">·</span> <VerifiedAgo />
       </p>
     </div>
   );

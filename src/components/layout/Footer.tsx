@@ -18,7 +18,7 @@ export function Footer() {
             <BrandLogo size="sm" />
             <p className="max-w-sm text-sm text-muted-foreground">
               Independent UK student loan calculator. Figures sourced from
-              GOV.UK and the Bank of England.
+              GOV.UK and the Bank of England, and verified daily.
             </p>
           </div>
           <Eyebrow marker={false}>studentloanstudy.uk</Eyebrow>

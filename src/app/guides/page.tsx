@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { VerifiedAgo } from "@/components/instrument/VerifiedAgo";
 import { WideLayout } from "@/components/layout/WideLayout";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Heading } from "@/components/typography/Heading";
@@ -12,14 +13,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { GUIDES } from "@/lib/guides";
 import { SHELL_GUTTER } from "@/lib/layout";
-import { LAST_UPDATED } from "@/lib/loans/plans";
-
-// "Updated May 2026" — derived from the automation's LAST_UPDATED so the guides
-// masthead carries the same freshness signal as the homepage hero.
-const UPDATED_LABEL = new Intl.DateTimeFormat("en-GB", {
-  month: "long",
-  year: "numeric",
-}).format(new Date(LAST_UPDATED));
 
 // Aggregate the honest topic taxonomy into counts for the orientation rail's
 // "by topic" ledger — derived from the data (unique topics in first-appearance
@@ -109,7 +102,7 @@ export default function GuidesPage() {
           <p className="flex flex-wrap items-center gap-x-[0.65rem] gap-y-[0.4rem] pt-6 font-sans text-meta text-muted-foreground work:mt-auto">
             <span className="font-bold text-primary">✓</span> Independent{" "}
             <span className="text-faint">·</span> GOV.UK sourced{" "}
-            <span className="text-faint">·</span> Updated {UPDATED_LABEL}
+            <span className="text-faint">·</span> <VerifiedAgo />
           </p>
         </div>
 
