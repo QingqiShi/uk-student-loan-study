@@ -43,8 +43,18 @@ export interface Mismatch {
 }
 
 export interface CheckResult {
-  status: "ok" | "mismatch" | "scrape-error";
+  /**
+   * - `ok` — figures match, nothing to do.
+   * - `mismatch-auto` — routine figure change that cleared the guarded
+   *   auto-merge gate; the workflow opens a PR and enables auto-merge.
+   * - `mismatch-review` — a figure change (or content drift) that needs human
+   *   review before it ships; the workflow opens a plain PR.
+   * - `scrape-error` — the scrape itself failed.
+   */
+  status: "ok" | "mismatch-auto" | "mismatch-review" | "scrape-error";
   mismatches?: Mismatch[];
+  /** Why the batch needs review (only set when status is `mismatch-review`). */
+  reviewReasons?: string[];
   error?: string;
   checkedAt: string;
 }
