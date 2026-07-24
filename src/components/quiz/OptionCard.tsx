@@ -25,17 +25,19 @@ export function OptionCard({
       type="button"
       role={variant}
       aria-checked={isSelected}
+      aria-label={sublabel ? `${label}, ${sublabel}` : label}
       onClick={onClick}
       className={cn(
         "group relative flex size-full min-h-18 items-center gap-4 rounded-xl px-5 py-4 text-left ring-1 transition-colors duration-150",
         "focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-inset",
         isSelected
           ? "bg-accent-wash ring-primary"
-          : "bg-card ring-border hover:bg-muted",
+          : "bg-card ring-input hover:bg-muted",
       )}
     >
       {icon && (
         <div
+          aria-hidden="true"
           className={cn(
             "flex size-10 shrink-0 items-center justify-center rounded-lg text-lg ring-1 transition-colors",
             isSelected
@@ -67,7 +69,7 @@ export function OptionCard({
         <div
           className={cn(
             "size-5 shrink-0 rounded-full ring-2 transition-colors",
-            isSelected ? "bg-primary ring-primary" : "ring-border",
+            isSelected ? "bg-primary ring-primary" : "ring-input",
           )}
         >
           {isSelected && (
@@ -89,7 +91,7 @@ export function OptionCard({
         <div
           className={cn(
             "flex size-5 shrink-0 items-center justify-center rounded-md ring-2 transition-colors",
-            isSelected ? "bg-primary ring-primary" : "ring-border",
+            isSelected ? "bg-primary ring-primary" : "ring-input",
           )}
         >
           {isSelected && (

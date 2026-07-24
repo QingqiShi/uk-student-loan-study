@@ -2,6 +2,7 @@
 
 import type { Region } from "@/lib/quiz/determinePlan";
 import { OptionCard } from "./OptionCard";
+import { OptionGroup } from "./OptionGroup";
 import { QuestionStep } from "./QuestionStep";
 
 interface RegionQuestionProps {
@@ -51,10 +52,9 @@ export function RegionQuestion({
       subtitle="The UK nation where your university was located"
       direction={direction}
     >
-      <div
+      <OptionGroup
+        label="Select where you studied"
         className="grid grid-cols-1 gap-3 xs:grid-cols-2"
-        role="radiogroup"
-        aria-label="Select where you studied"
       >
         {REGION_OPTIONS.map((option) => (
           <OptionCard
@@ -71,7 +71,7 @@ export function RegionQuestion({
             }}
           />
         ))}
-      </div>
+      </OptionGroup>
     </QuestionStep>
   );
 }

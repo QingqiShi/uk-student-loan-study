@@ -3,107 +3,58 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { AllPlansTable } from "@/components/plans/AllPlansTable";
 import { QuizContainer } from "@/components/quiz/QuizContainer";
 import { Heading } from "@/components/typography/Heading";
-import { currencyFormatter } from "@/constants";
-import {
-  PLAN_DISPLAY_INFO,
-  POSTGRADUATE_DISPLAY_INFO,
-} from "@/lib/loans/plans";
-import { PLAN_PAGE_ORDER, PLAN_PAGES } from "@/lib/planContent";
-import { surfaceCardInteractive } from "@/lib/surfaces";
+import { PROSE_LINK } from "@/lib/layout";
 import { cn } from "@/lib/utils";
-
-const DISPLAY_BY_KEY = {
-  PLAN_1: PLAN_DISPLAY_INFO.PLAN_1,
-  PLAN_2: PLAN_DISPLAY_INFO.PLAN_2,
-  PLAN_4: PLAN_DISPLAY_INFO.PLAN_4,
-  PLAN_5: PLAN_DISPLAY_INFO.PLAN_5,
-  POSTGRADUATE: POSTGRADUATE_DISPLAY_INFO,
-} as const;
 
 export default function WhichPlanPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <main id="main-content" className="flex-1">
-        <QuizContainer standalone />
-        <section className="border-t border-border">
-          <div className="mx-auto max-w-4xl px-3 py-12">
-            <div className="mb-8 text-center">
-              <Heading as="h2" size="section">
-                All UK Student Loan Plans
+        {/* Primary task. A dominant hero names the job, then the quiz sits
+            directly beneath as one anchored instrument card — the single focal
+            object on the page. */}
+        <section className="mx-auto w-full max-w-lg px-4 pt-12 pb-16 sm:pt-16 sm:pb-24">
+          <div className="text-center">
+            <Heading as="h1" size="page-hero">
+              Which student loan plan am I on?
+            </Heading>
+            <p className="mx-auto mt-4 max-w-md text-pretty text-muted-foreground">
+              Answer a few quick questions — we&apos;ll match you to Plan 1, 2,
+              4, 5 or Postgraduate and show this year&apos;s repayment figures.
+            </p>
+          </div>
+          <div className="mt-8 sm:mt-10">
+            <QuizContainer standalone />
+          </div>
+        </section>
+
+        {/* Secondary. A quiet at-a-glance reference, clearly subordinate to the
+            finder: sunk band, a small left-aligned heading (not another centered
+            hero), and the compact comparison table instead of five data cards
+            that each read like a mini result screen. */}
+        <section className="border-t border-border bg-muted/30">
+          <div className="mx-auto max-w-4xl px-4 py-14">
+            <div className="mb-6 max-w-prose">
+              <Heading as="h2" size="subsection">
+                All UK student loan plans at a glance
               </Heading>
-              <p className="mt-2 text-muted-foreground">
-                A quick reference for every UK student loan plan type —
-                thresholds, repayment rates, and write-off periods at a glance.
-                Tap any plan for the full breakdown.
+              <p className="mt-1 text-sm text-muted-foreground">
+                Prefer to browse? Thresholds, repayment rates and write-off
+                periods for every plan. Select a plan for the full breakdown.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {PLAN_PAGE_ORDER.map((key) => {
-                const plan = DISPLAY_BY_KEY[key];
-                const slug = PLAN_PAGES[key].slug;
-                return (
-                  <Link
-                    key={key}
-                    href={`/plans/${slug}`}
-                    className="group block h-full"
-                  >
-                    <div
-                      className={cn(
-                        surfaceCardInteractive,
-                        "flex h-full flex-col p-5",
-                      )}
-                    >
-                      <Heading as="h3" size="subsection">
-                        {plan.name}
-                      </Heading>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {plan.description}
-                      </p>
-                      <dl className="mt-4 space-y-2 text-sm">
-                        <div className="flex items-baseline justify-between gap-2">
-                          <dt className="text-muted-foreground">Threshold</dt>
-                          <dd className="font-mono font-semibold tabular-nums">
-                            {currencyFormatter.format(plan.yearlyThreshold)}
-                            <span className="font-sans text-xs font-normal text-muted-foreground">
-                              /yr
-                            </span>
-                          </dd>
-                        </div>
-                        <div className="flex items-baseline justify-between gap-2">
-                          <dt className="text-muted-foreground">Rate</dt>
-                          <dd className="font-mono font-semibold tabular-nums">
-                            {String(plan.repaymentRate * 100)}%
-                          </dd>
-                        </div>
-                        <div className="flex items-baseline justify-between gap-2">
-                          <dt className="text-muted-foreground">Write-off</dt>
-                          <dd className="font-mono font-semibold tabular-nums">
-                            {String(plan.writeOffYears)}
-                            <span className="ml-1 font-sans text-xs font-normal text-muted-foreground">
-                              years
-                            </span>
-                          </dd>
-                        </div>
-                      </dl>
-                      <div className="mt-4 flex items-center gap-1.5 border-t border-border pt-3 text-xs font-semibold tracking-wider text-cta uppercase">
-                        {plan.name} explained
-                        <HugeiconsIcon
-                          icon={ArrowRight01Icon}
-                          className="size-3.5 transition-transform group-hover:translate-x-0.5"
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-            <div className="mt-8 text-center">
+            <p className="mb-2 text-xs text-muted-foreground sm:hidden">
+              Swipe the table sideways to see rate and write-off →
+            </p>
+            <AllPlansTable />
+            <div className="mt-6">
               <Link
                 href="/plans"
-                className="inline-flex items-center gap-1 text-sm font-medium text-cta underline underline-offset-4 hover:text-cta/80"
+                className={cn(PROSE_LINK, "inline-flex items-center gap-1")}
               >
                 Compare all UK student loan plans
                 <HugeiconsIcon icon={ArrowRight01Icon} className="size-4" />

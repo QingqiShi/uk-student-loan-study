@@ -1,9 +1,8 @@
 "use client";
 
-import { PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
-import type { Region, StartYearGroup } from "@/lib/quiz/determinePlan";
-import { getAdditionalCoursePlan } from "@/lib/quiz/determinePlan";
+import type { StartYearGroup } from "@/lib/quiz/determinePlan";
 import { OptionCard } from "./OptionCard";
+import { OptionGroup } from "./OptionGroup";
 import { QuestionStep } from "./QuestionStep";
 
 interface AdditionalCourseQuestionProps {
@@ -11,7 +10,6 @@ interface AdditionalCourseQuestionProps {
   selectedValue: boolean | null;
   direction: "forward" | "backward";
   yearGroup: StartYearGroup;
-  region: Region;
 }
 
 export function AdditionalCourseQuestion({
@@ -19,23 +17,19 @@ export function AdditionalCourseQuestion({
   selectedValue,
   direction,
   yearGroup,
-  region,
 }: AdditionalCourseQuestionProps) {
   const dateLabel =
     yearGroup === "before-2012" ? "September 2012" : "August 2023";
-  const additionalPlanType = getAdditionalCoursePlan(yearGroup, region);
-  const planLabel = PLAN_DISPLAY_INFO[additionalPlanType].name;
 
   return (
     <QuestionStep
       title={`Did you start another course after ${dateLabel}?`}
-      subtitle={`Starting another course after this date means an additional ${planLabel} loan`}
+      subtitle="Only if you began a second, separate course. Most people answer No."
       direction={direction}
     >
-      <div
+      <OptionGroup
+        label="Did you start another course?"
         className="flex flex-col gap-3"
-        role="radiogroup"
-        aria-label="Did you start another course?"
       >
         <OptionCard
           label="Yes"
@@ -53,7 +47,7 @@ export function AdditionalCourseQuestion({
             onSelect(false);
           }}
         />
-      </div>
+      </OptionGroup>
     </QuestionStep>
   );
 }

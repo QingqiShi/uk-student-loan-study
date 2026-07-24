@@ -42,3 +42,6 @@ scripts/check-govuk-figures/results/
 # Claude Code worktrees
 .claude/worktrees/
 .claude/scheduled_tasks.lock
+
+# impeccable design-review snapshots (local tooling artifacts)
+.impeccable/

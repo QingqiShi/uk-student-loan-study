@@ -1,11 +1,12 @@
 "use client";
 
-import { useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import {
   trackQuizStarted,
   trackQuizRegionSelected,
   trackQuizYearSelected,
   trackQuizBackClicked,
+  trackQuizCompleted,
 } from "@/lib/analytics";
 import type { PlanType } from "@/lib/loans/types";
 import type {
@@ -18,7 +19,10 @@ import {
   canSkipStartYear,
   determineAllLoans,
   shouldAskAboutAdditionalCourse,
+  summariseQuizAnswers,
 } from "@/lib/quiz/determinePlan";
+import { surfaceCard } from "@/lib/surfaces";
+import { cn } from "@/lib/utils";
 import { AdditionalCourseQuestion } from "./AdditionalCourseQuestion";
 import { PostgradQuestion } from "./PostgradQuestion";
 import { QuizProgress } from "./QuizProgress";
@@ -32,6 +36,7 @@ type QuizAction =
   | { type: "SET_ADDITIONAL_COURSE"; payload: boolean }
   | { type: "SET_POSTGRAD"; payload: "loan" | "self-funded" | "no" }
   | { type: "GO_BACK" }
+  | { type: "EDIT_ANSWERS" }
   | { type: "RESTART" };
 
 const initialState: QuizState = {
@@ -81,6 +86,12 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
       const nextStep = state.region
         ? getNextStepAfterYear(state.region, yearGroup)
         : ("postgrad" as QuizStep);
+      // Preserve hasAdditionalCourse even when the new path skips that step:
+      // determineAllLoans/summariseQuizAnswers already gate it behind
+      // shouldAskAboutAdditionalCourse (via includesAdditionalCourseLoan), so a
+      // stale "yes" can't leak a phantom loan into the result — and keeping it
+      // means editing the year back restores the earlier answer, as the edit
+      // flow promises.
       return {
         ...state,
         startYearGroup: yearGroup,
@@ -138,6 +149,11 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
           return state;
       }
     }
+    case "EDIT_ANSWERS":
+      // Re-enter the quiz from the first question with every answer preserved,
+      // so the result's "Change your answers" honestly lets the user revise any
+      // of them (the flow has no per-answer jump). Reverse-slide like a back step.
+      return { ...state, currentStep: "region", direction: "backward" };
     case "RESTART":
       return initialState;
     default:
@@ -176,10 +192,10 @@ interface QuizContainerProps {
   /** When provided, shows a close button to exit the quiz from any step */
   onClose?: () => void;
   /**
-   * Rendered inline on the /which-plan page (below the site masthead) rather
-   * than filling a modal: caps the question stage well under the viewport so
-   * the card is not stranded in a full-height void, and lets the masthead be
-   * the sticky element instead of the progress bar.
+   * Rendered inline on the /which-plan page (below the page hero) rather than
+   * filling a modal: the quiz flows in its parent column with no full-height
+   * centering void, the progress rail renders flush to that column instead of
+   * as full-width chrome, and the masthead is the sticky element.
    */
   standalone?: boolean;
 }
@@ -192,6 +208,47 @@ export function QuizContainer({
 }: QuizContainerProps) {
   const [state, dispatch] = useReducer(quizReducer, initialState);
   const hasStartedRef = useRef(false);
+
+  // The loans the current answers resolve to — derived once and shared by the
+  // completion effect, the result render, and the "use these loans" handler.
+  const currentLoans = determineAllLoans(state);
+
+  // Accessibility: on every step change (but not the initial mount), move focus
+  // to the new step's heading. Without this, selecting an option unmounts the
+  // current step and focus falls back to <body>, stranding keyboard/SR users at
+  // the top of the document; landing on the heading also makes the screen reader
+  // announce the new question or result. Plain focus() (no preventScroll) lets
+  // the browser bring the heading into view when it's scrolled off — important on
+  // the standalone page, where the card can sit below the fold.
+  const stepRegionRef = useRef<HTMLDivElement>(null);
+  const prevStepRef = useRef<QuizStep | null>(null);
+  useEffect(() => {
+    const prev = prevStepRef.current;
+    prevStepRef.current = state.currentStep;
+    // Focus only on a real step transition — not the initial mount, and not
+    // StrictMode's dev-only setup→cleanup→setup remount (same step both times),
+    // which would otherwise focus and scroll to the first question on load.
+    if (prev === null || prev === state.currentStep) return;
+    stepRegionRef.current
+      ?.querySelector<HTMLElement>("[data-step-heading]")
+      ?.focus();
+  }, [state.currentStep]);
+
+  // Record a completion whenever the reached result differs from the one last
+  // recorded. A no-op "Change your answers" round-trip that lands on the same
+  // plans doesn't re-count; an edit that changes the outcome records the
+  // corrected plans, so the latest event is always the user's final result.
+  // Toggling between two outcomes re-reports each change — deliberately keeping
+  // attribution correct at the cost of a little over-counting; restart re-arms.
+  const lastCompletedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (state.currentStep !== "result") return;
+    const result = currentLoans.join(",");
+    if (lastCompletedRef.current !== result) {
+      lastCompletedRef.current = result;
+      trackQuizCompleted(result);
+    }
+  }, [state.currentStep, currentLoans]);
 
   const handleRegionSelect = (region: Region) => {
     if (!hasStartedRef.current) {
@@ -222,13 +279,20 @@ export function QuizContainer({
 
   const handleRestart = () => {
     hasStartedRef.current = false;
+    lastCompletedRef.current = null;
     dispatch({ type: "RESTART" });
+  };
+
+  // Distinct from the progress back-arrow: this rewinds all the way to the first
+  // question (keeping answers) rather than one step, and it must not emit the
+  // step-scoped quiz_back_clicked event (the result has no valid step index).
+  const handleEditAnswers = () => {
+    dispatch({ type: "EDIT_ANSWERS" });
   };
 
   const handleUseLoans = () => {
     if (onLoansDiscovered) {
-      const planTypes = determineAllLoans(state);
-      onLoansDiscovered(planTypes);
+      onLoansDiscovered(currentLoans);
     }
   };
 
@@ -238,76 +302,87 @@ export function QuizContainer({
 
   const backHandler = canGoBack ? handleBack : onBack;
 
-  return (
-    <div
-      className={
-        standalone
-          ? "flex flex-col bg-background"
-          : "flex min-h-dvh flex-col bg-background"
-      }
-    >
-      {showProgress && (
-        <QuizProgress
-          currentStep={currentStepIndex}
-          totalSteps={TOTAL_STEPS}
-          onBack={backHandler}
-          onClose={onClose}
-          sticky={!standalone}
+  const progress = showProgress ? (
+    <QuizProgress
+      currentStep={currentStepIndex}
+      totalSteps={TOTAL_STEPS}
+      onBack={backHandler}
+      onClose={onClose}
+      sticky={!standalone}
+      flush={standalone}
+    />
+  ) : null;
+
+  const stepContent = (
+    <>
+      {state.currentStep === "region" && (
+        <RegionQuestion
+          onSelect={handleRegionSelect}
+          selectedValue={state.region}
+          direction={state.direction}
         />
       )}
 
-      <div
-        className={
-          standalone
-            ? "flex min-h-96 flex-col items-center justify-center px-4 py-12"
-            : "flex flex-1 flex-col items-center justify-center px-4 py-8"
-        }
-      >
-        <div className="w-full max-w-lg">
-          {state.currentStep === "region" && (
-            <RegionQuestion
-              onSelect={handleRegionSelect}
-              selectedValue={state.region}
-              direction={state.direction}
-            />
-          )}
+      {state.currentStep === "start-year" && (
+        <StartYearQuestion
+          onSelect={handleStartYearSelect}
+          selectedValue={state.startYearGroup}
+          direction={state.direction}
+        />
+      )}
 
-          {state.currentStep === "start-year" && (
-            <StartYearQuestion
-              onSelect={handleStartYearSelect}
-              selectedValue={state.startYearGroup}
-              direction={state.direction}
-            />
-          )}
+      {state.currentStep === "additional-course" && state.startYearGroup && (
+        <AdditionalCourseQuestion
+          onSelect={handleAdditionalCourseSelect}
+          selectedValue={state.hasAdditionalCourse}
+          direction={state.direction}
+          yearGroup={state.startYearGroup}
+        />
+      )}
 
-          {state.currentStep === "additional-course" &&
-            state.startYearGroup &&
-            state.region && (
-              <AdditionalCourseQuestion
-                onSelect={handleAdditionalCourseSelect}
-                selectedValue={state.hasAdditionalCourse}
-                direction={state.direction}
-                yearGroup={state.startYearGroup}
-                region={state.region}
-              />
-            )}
+      {state.currentStep === "postgrad" && (
+        <PostgradQuestion
+          onSelect={handlePostgradSelect}
+          selectedValue={state.postgradAnswer}
+          direction={state.direction}
+        />
+      )}
 
-          {state.currentStep === "postgrad" && (
-            <PostgradQuestion
-              onSelect={handlePostgradSelect}
-              selectedValue={state.postgradAnswer}
-              direction={state.direction}
-            />
-          )}
+      {state.currentStep === "result" && state.region && (
+        <ResultScreen
+          planTypes={currentLoans}
+          recap={summariseQuizAnswers(state)}
+          onRestart={handleRestart}
+          onEditAnswers={handleEditAnswers}
+          onUseLoans={onLoansDiscovered ? handleUseLoans : undefined}
+        />
+      )}
+    </>
+  );
 
-          {state.currentStep === "result" && state.region && (
-            <ResultScreen
-              planTypes={determineAllLoans(state)}
-              onRestart={handleRestart}
-              direction={state.direction}
-              onUseLoans={onLoansDiscovered ? handleUseLoans : undefined}
-            />
-          )}
+  // Standalone: the quiz is a single anchored instrument — one card holds the
+  // progress rail (a header seam) and the active step, so the whole thing reads
+  // as one focal object with clear internal hierarchy instead of a stack of
+  // free-floating elements.
+  if (standalone) {
+    return (
+      <div className={cn(surfaceCard, "overflow-hidden")}>
+        {progress && (
+          <div className="border-b border-border px-5 sm:px-7">{progress}</div>
+        )}
+        <div ref={stepRegionRef} className="px-5 py-8 sm:px-7 sm:py-10">
+          {stepContent}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex min-h-dvh flex-col bg-background">
+      {progress}
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-8">
+        <div ref={stepRegionRef} className="w-full max-w-lg">
+          {stepContent}
         </div>
       </div>
     </div>

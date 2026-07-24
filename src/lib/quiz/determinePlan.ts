@@ -107,6 +107,54 @@ export interface QuizState {
 export type QuizStep =
   "region" | "start-year" | "additional-course" | "postgrad" | "result";
 
+const REGION_LABELS: Record<Region, string> = {
+  england: "England",
+  wales: "Wales",
+  scotland: "Scotland",
+  "northern-ireland": "Northern Ireland",
+};
+
+const START_YEAR_LABELS: Record<StartYearGroup, string> = {
+  "before-2012": "Started before 2012",
+  "2012-2022": "Started 2012–2022",
+  "2023-or-later": "Started 2023 or later",
+};
+
+/**
+ * Whether the current answers include a *distinct* additional-course loan: the
+ * user said yes AND the current region/year path still asks the question (a
+ * stale "yes" from an edited-away branch doesn't count). Written once and shared
+ * by the loan derivation and the recap so the two can never disagree. Typed as a
+ * guard so callers get non-null `region`/`startYearGroup` narrowing.
+ */
+function includesAdditionalCourseLoan(
+  state: QuizState,
+): state is QuizState & { region: Region; startYearGroup: StartYearGroup } {
+  return Boolean(
+    state.hasAdditionalCourse &&
+    state.region &&
+    state.startYearGroup &&
+    shouldAskAboutAdditionalCourse(state.region, state.startYearGroup),
+  );
+}
+
+/**
+ * Human-readable recap of the answers that produced a result, so the result
+ * screen can show *why* a plan was matched (e.g. "England · Started 2012–2022 ·
+ * Postgraduate loan") rather than an unexplained label. Only answers that were
+ * actually given — and that affect the outcome — appear.
+ */
+export function summariseQuizAnswers(state: QuizState): string[] {
+  const parts: string[] = [];
+  if (state.region) parts.push(REGION_LABELS[state.region]);
+  if (state.startYearGroup) parts.push(START_YEAR_LABELS[state.startYearGroup]);
+  if (includesAdditionalCourseLoan(state)) parts.push("Plus a later course");
+  // Only "loan" adds a postgraduate plan; self-funded/no add none, so — per this
+  // function's contract — they don't appear in the recap of matched plans.
+  if (state.postgradAnswer === "loan") parts.push("Postgraduate loan");
+  return parts;
+}
+
 /**
  * Determine all loan plan types from the full quiz state.
  */
@@ -125,8 +173,9 @@ export function determineAllLoans(state: QuizState): PlanType[] {
     loans.push(determinePlan({ region: state.region }));
   }
 
-  // Additional undergraduate course
-  if (state.hasAdditionalCourse && state.startYearGroup && state.region) {
+  // Additional undergraduate course — only when the current region/year path
+  // actually asks about it (guards a stale "yes" from an edited-away branch).
+  if (includesAdditionalCourseLoan(state)) {
     loans.push(getAdditionalCoursePlan(state.startYearGroup, state.region));
   }
 
@@ -135,5 +184,8 @@ export function determineAllLoans(state: QuizState): PlanType[] {
     loans.push("POSTGRADUATE");
   }
 
-  return loans;
+  // Plan type is the loan's identity downstream (result rows key on it, and so
+  // does balance setup), so collapse duplicates: e.g. a Welsh 2012–2022 student
+  // with a second course maps both undergraduate loans to PLAN_2.
+  return [...new Set(loans)];
 }

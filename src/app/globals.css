@@ -331,14 +331,46 @@ body {
   }
 }
 
-@keyframes quiz-result-enter {
+/* Staggered reveal for the result payoff — each block rises in turn so the
+   answer lands as a considered moment. Drive the cascade with a per-element
+   inline `animation-delay`. Reduced motion collapses to an instant reveal. */
+@keyframes quiz-result-item {
   from {
-    transform: scale(0.95);
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@utility animate-quiz-result-item {
+  animation: quiz-result-item 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+/* The confidence beat: the filled spruce plan badge scales and fades up as the
+   result lands. */
+@keyframes quiz-result-badge {
+  from {
+    transform: scale(0.8);
     opacity: 0;
   }
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+@utility animate-quiz-result-badge {
+  animation: quiz-result-badge 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 }
 
@@ -352,14 +384,6 @@ body {
 
 @utility animate-quiz-slide-in-reverse {
   animation: quiz-slide-in-reverse 200ms ease-out;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-@utility animate-quiz-result-enter {
-  animation: quiz-result-enter 300ms ease-out;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
