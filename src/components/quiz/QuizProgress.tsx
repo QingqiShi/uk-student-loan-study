@@ -16,6 +16,10 @@ interface QuizProgressProps {
   /** Stick to the top of the scroll container (modal). Off on the standalone
    * page, where the site masthead is the sticky element instead. */
   sticky?: boolean;
+  /** Render as an in-column rail rather than full-width page chrome: drops the
+   * full-bleed divider, background and inner measure so the bar aligns to the
+   * quiz column it sits inside. Used on the standalone /which-plan page. */
+  flush?: boolean;
 }
 
 export function QuizProgress({
@@ -26,6 +30,7 @@ export function QuizProgress({
   closeIcon = Cancel01Icon,
   closeLabel = "Exit quiz",
   sticky = true,
+  flush = false,
 }: QuizProgressProps) {
   const stepNumber = Math.min(currentStep + 1, totalSteps);
   const fillPercent = (stepNumber / totalSteps) * 100;
@@ -33,11 +38,16 @@ export function QuizProgress({
   return (
     <div
       className={cn(
-        "z-10 border-b border-border bg-background",
+        !flush && "z-10 border-b border-border bg-background",
         sticky && "sticky top-0",
       )}
     >
-      <div className="mx-auto flex max-w-lg items-center gap-3 px-4 py-3">
+      <div
+        className={cn(
+          "flex items-center gap-3 py-3",
+          flush ? "w-full" : "mx-auto max-w-lg px-4",
+        )}
+      >
         <div className="w-10 shrink-0">
           {onBack && (
             <Button

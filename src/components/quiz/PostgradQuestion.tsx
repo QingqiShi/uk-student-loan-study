@@ -1,6 +1,7 @@
 "use client";
 
 import { OptionCard } from "./OptionCard";
+import { OptionGroup } from "./OptionGroup";
 import { QuestionStep } from "./QuestionStep";
 
 type PostgradAnswer = "loan" | "self-funded" | "no";
@@ -43,11 +44,7 @@ export function PostgradQuestion({
       title="Did you go on to study a Master's or PhD?"
       direction={direction}
     >
-      <div
-        className="flex flex-col gap-3"
-        role="radiogroup"
-        aria-label="Postgraduate study"
-      >
+      <OptionGroup label="Postgraduate study" className="flex flex-col gap-3">
         {OPTIONS.map((option) => (
           <OptionCard
             key={option.value}
@@ -59,7 +56,7 @@ export function PostgradQuestion({
             }}
           />
         ))}
-      </div>
+      </OptionGroup>
     </QuestionStep>
   );
 }

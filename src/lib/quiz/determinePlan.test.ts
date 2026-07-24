@@ -5,6 +5,7 @@ import {
   shouldAskAboutAdditionalCourse,
   getAdditionalCoursePlan,
   determineAllLoans,
+  summariseQuizAnswers,
   type QuizAnswers,
   type QuizState,
 } from "./determinePlan";
@@ -318,11 +319,112 @@ describe("determineAllLoans", () => {
     expect(determineAllLoans(state)).toEqual(["PLAN_4"]);
   });
 
+  it("ignores a stale additional-course answer when the current path skips it (edit-answer regression)", () => {
+    // Reachable by editing 2012–2022 + "another course: yes" down to 2023+:
+    // the current path never asks about a second course, so a carried-over
+    // "yes" must not add a duplicate PLAN_5.
+    const state: QuizState = {
+      ...baseState,
+      region: "england",
+      startYearGroup: "2023-or-later",
+      hasAdditionalCourse: true,
+      postgradAnswer: "no",
+    };
+    expect(determineAllLoans(state)).toEqual(["PLAN_5"]);
+  });
+
+  it("collapses duplicate plan types when the additional course maps to the primary plan (Wales 2012-2022)", () => {
+    // Both the primary and the later Welsh course are Plan 2 (Plan 5 is
+    // England-only), so the result must be a single PLAN_2, not a duplicate.
+    const state: QuizState = {
+      ...baseState,
+      region: "wales",
+      startYearGroup: "2012-2022",
+      hasAdditionalCourse: true,
+      postgradAnswer: "no",
+    };
+    expect(determineAllLoans(state)).toEqual(["PLAN_2"]);
+  });
+
   it("returns empty array when region is null", () => {
     const state: QuizState = {
       ...baseState,
       region: null,
     };
     expect(determineAllLoans(state)).toEqual([]);
+  });
+});
+
+describe("summariseQuizAnswers", () => {
+  const baseState: QuizState = {
+    currentStep: "result",
+    region: null,
+    startYearGroup: null,
+    hasAdditionalCourse: null,
+    postgradAnswer: null,
+    direction: "forward",
+  };
+
+  it("summarises region and start year", () => {
+    expect(
+      summariseQuizAnswers({
+        ...baseState,
+        region: "england",
+        startYearGroup: "before-2012",
+      }),
+    ).toEqual(["England", "Started before 2012"]);
+  });
+
+  it("omits the start year for Scotland/NI (skipped) and includes only answered steps", () => {
+    expect(
+      summariseQuizAnswers({
+        ...baseState,
+        region: "scotland",
+        postgradAnswer: "no",
+      }),
+    ).toEqual(["Scotland"]);
+  });
+
+  it("includes a later course and a postgraduate loan when present", () => {
+    expect(
+      summariseQuizAnswers({
+        ...baseState,
+        region: "england",
+        startYearGroup: "2012-2022",
+        hasAdditionalCourse: true,
+        postgradAnswer: "loan",
+      }),
+    ).toEqual([
+      "England",
+      "Started 2012–2022",
+      "Plus a later course",
+      "Postgraduate loan",
+    ]);
+  });
+
+  it("omits 'Plus a later course' when the current path skips that question (edit-answer regression)", () => {
+    expect(
+      summariseQuizAnswers({
+        ...baseState,
+        region: "england",
+        startYearGroup: "2023-or-later",
+        hasAdditionalCourse: true,
+        postgradAnswer: "no",
+      }),
+    ).toEqual(["England", "Started 2023 or later"]);
+  });
+
+  it("omits the postgraduate answer when it adds no plan (self-funded or no)", () => {
+    // Self-funded (like "no") adds no POSTGRADUATE loan, so it must not appear
+    // in the recap of matched plans.
+    expect(
+      summariseQuizAnswers({
+        ...baseState,
+        region: "wales",
+        startYearGroup: "2023-or-later",
+        hasAdditionalCourse: false,
+        postgradAnswer: "self-funded",
+      }),
+    ).toEqual(["Wales", "Started 2023 or later"]);
   });
 });

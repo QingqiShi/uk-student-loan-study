@@ -28,7 +28,7 @@ test.describe("Quiz flow at /which-plan", () => {
     // Answer "No" to postgrad question
     await page.getByRole("radio", { name: /No postgraduate study/ }).click();
     await expect(
-      page.getByRole("heading", { name: "Plan 2", level: 1 }),
+      page.getByRole("heading", { name: "Plan 2", level: 2 }),
     ).toBeVisible();
   });
 
@@ -44,7 +44,7 @@ test.describe("Quiz flow at /which-plan", () => {
 
     await page.getByRole("radio", { name: /No postgraduate study/ }).click();
     await expect(
-      page.getByRole("heading", { name: "Plan 4", level: 1 }),
+      page.getByRole("heading", { name: "Plan 4", level: 2 }),
     ).toBeVisible();
   });
 
@@ -62,7 +62,7 @@ test.describe("Quiz flow at /which-plan", () => {
 
     await page.getByRole("radio", { name: /No postgraduate study/ }).click();
     await expect(
-      page.getByRole("heading", { name: "Plan 5", level: 1 }),
+      page.getByRole("heading", { name: "Plan 5", level: 2 }),
     ).toBeVisible();
   });
 
@@ -84,7 +84,7 @@ test.describe("Quiz flow at /which-plan", () => {
     await page.getByRole("radio", { name: /No postgraduate study/ }).click();
 
     await expect(
-      page.getByRole("heading", { name: "Plan 4", level: 1 }),
+      page.getByRole("heading", { name: "Plan 4", level: 2 }),
     ).toBeVisible();
 
     // Click "Enter your balances" which navigates to home

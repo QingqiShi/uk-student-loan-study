@@ -2,6 +2,7 @@
 
 import type { StartYearGroup } from "@/lib/quiz/determinePlan";
 import { OptionCard } from "./OptionCard";
+import { OptionGroup } from "./OptionGroup";
 import { QuestionStep } from "./QuestionStep";
 
 interface StartYearQuestionProps {
@@ -43,10 +44,9 @@ export function StartYearQuestion({
       subtitle="The academic year you began, not graduated"
       direction={direction}
     >
-      <div
+      <OptionGroup
+        label="Select when you started your course"
         className="flex flex-col gap-3"
-        role="radiogroup"
-        aria-label="Select when you started your course"
       >
         {YEAR_OPTIONS.map((option) => (
           <OptionCard
@@ -59,7 +59,7 @@ export function StartYearQuestion({
             }}
           />
         ))}
-      </div>
+      </OptionGroup>
     </QuestionStep>
   );
 }
