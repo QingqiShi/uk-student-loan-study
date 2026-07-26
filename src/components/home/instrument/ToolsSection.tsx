@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HomeSection } from "./HomeSection";
+import { InstrumentSection } from "@/components/instrument/InstrumentSection";
 
 interface ToolLink {
   title: string;
@@ -39,7 +39,7 @@ const TOOLS: ToolLink[] = [
 
 export function ToolsSection() {
   return (
-    <HomeSection
+    <InstrumentSection
       id="tools"
       heading="Go deeper on your own numbers"
       intro="Free, independent, and built on the same GOV.UK figures as the calculator above."
@@ -66,6 +66,6 @@ export function ToolsSection() {
           </Link>
         ))}
       </div>
-    </HomeSection>
+    </InstrumentSection>
   );
 }

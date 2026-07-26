@@ -14,16 +14,42 @@ const RELATED_GUIDES: Partial<Record<string, GuideSlug[]>> = {
   "/overpay": ["pay-upfront-or-take-loan", "how-interest-works"],
 };
 
-export function RelatedContent() {
+/**
+ * The guides related to the current route, resolved to full entries. Returns an
+ * empty array when the route has no mapping — callers render nothing.
+ */
+export function useRelatedGuides(): GuideEntry[] {
   const pathname = usePathname();
   const guideSlugs = RELATED_GUIDES[pathname];
-  if (!guideSlugs) return null;
+  if (!guideSlugs) return [];
 
   const guidesBySlug = new Map(GUIDES.map((g) => [g.slug, g]));
-  const guides = guideSlugs
+  return guideSlugs
     .map((slug) => guidesBySlug.get(slug))
     .filter((g): g is GuideEntry => g !== undefined);
+}
 
+/** A bare index of the current route's related guides, without a heading. */
+export function RelatedGuideIndex() {
+  const guides = useRelatedGuides();
+  if (guides.length === 0) return null;
+
+  return (
+    <LinkIndex>
+      {guides.map((guide) => (
+        <LinkIndexRow
+          key={guide.slug}
+          href={`/guides/${guide.slug}`}
+          title={guide.title}
+          description={guide.description}
+        />
+      ))}
+    </LinkIndex>
+  );
+}
+
+export function RelatedContent() {
+  const guides = useRelatedGuides();
   if (guides.length === 0) return null;
 
   return (
@@ -34,16 +60,7 @@ export function RelatedContent() {
       <Heading as="h2" size="section" id="related-guides-h">
         Related guides
       </Heading>
-      <LinkIndex>
-        {guides.map((guide) => (
-          <LinkIndexRow
-            key={guide.slug}
-            href={`/guides/${guide.slug}`}
-            title={guide.title}
-            description={guide.description}
-          />
-        ))}
-      </LinkIndex>
+      <RelatedGuideIndex />
     </section>
   );
 }

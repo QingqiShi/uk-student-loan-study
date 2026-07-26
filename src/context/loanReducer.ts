@@ -53,10 +53,21 @@ export function loanReducer(state: LoanState, action: LoanAction): LoanState {
   switch (action.type) {
     case "UPDATE_FIELD":
       return { ...state, [action.key]: action.value };
-    case "APPLY_PRESET":
+    case "APPLY_PRESET": {
+      // A lump sum entered against the old loans can exceed the new preset's
+      // balance. `simulateOverpayScenarios` already clamps it, so leaving the
+      // stored value out of range makes the input, the share URL and the
+      // analytics event all disagree with the figures on screen — clamp once,
+      // here, and every reader stays consistent.
+      const balance = action.preset.loans.reduce(
+        (total, loan) => total + loan.balance,
+        0,
+      );
       return {
         ...state,
         loans: action.preset.loans,
+        lumpSumPayment: Math.min(state.lumpSumPayment, balance),
       };
+    }
   }
 }

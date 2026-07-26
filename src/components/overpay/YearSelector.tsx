@@ -18,6 +18,8 @@ import {
 interface YearSelectorProps {
   id: string;
   label: string;
+  /** Override the engraved-label treatment (the fold uses the instrument key). */
+  labelClassName?: string;
   helperText?: string;
   value: Date | null;
   onChange: (value: Date | null) => void;
@@ -58,6 +60,7 @@ function getYearsForDecade(decadeStart: number): number[] {
 export function YearSelector({
   id,
   label,
+  labelClassName,
   helperText,
   value,
   onChange,
@@ -102,10 +105,13 @@ export function YearSelector({
   }
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col items-start gap-2">
       <Label
         htmlFor={id}
-        className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+        className={
+          labelClassName ??
+          "text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+        }
       >
         {label}
       </Label>

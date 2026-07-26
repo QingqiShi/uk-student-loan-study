@@ -118,9 +118,13 @@ function CellInner({
   linkLabel,
   children,
 }: MetricCellProps & { chevron: boolean }) {
+  // `leading-none` trails the tone deliberately: a font-size utility overrides
+  // the line-height set before it, so the readout's 1.0 leading has to be the
+  // last word or the figure ramp would reintroduce normal leading.
   const valueClass = cn(
-    "font-mono leading-none font-semibold tracking-tight tabular-nums",
+    "font-mono font-semibold tracking-tight tabular-nums",
     VALUE_TONE[tone],
+    "leading-none",
   );
   return (
     <>

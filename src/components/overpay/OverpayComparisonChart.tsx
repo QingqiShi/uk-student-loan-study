@@ -3,9 +3,10 @@
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
 import type { ChartConfig } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
-import { useShowPresentValue } from "@/hooks/useStoreSelectors";
 import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
+import { isPresentValue } from "./figures";
 
 const chartConfig = {
   baselineBalance: {
@@ -19,23 +20,49 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface OverpayComparisonChartProps {
-  analysis: OverpayAnalysisResult;
+  /** Null while the worker is still resolving — the frame holds its place. */
+  analysis: OverpayAnalysisResult | null;
 }
 
 export function OverpayComparisonChart({
   analysis,
 }: OverpayComparisonChartProps) {
+  // Read off the analysis, not the store: the worker keeps returning the
+  // previous result for a full round-trip after each toggle, so the store's
+  // basis and the curve actually drawn disagree during that window. The ledger
+  // directly beneath uses the same source, so the two panels always agree.
+  const showPresentValue = isPresentValue(analysis);
+
+  const caption = `Fig. 1 — Balance with vs without overpaying${
+    showPresentValue ? " · present value" : ""
+  }`;
+
+  if (!analysis) {
+    return (
+      <ChartFrame
+        className="flex h-full flex-col"
+        caption={caption}
+        // A placeholder in the figure slot, not an empty one: the caption fills
+        // the header's first flex line on a phone, so a figure arriving later
+        // wraps onto a second line and steals height from the chart body.
+        // Reserving the slot now keeps the curve from jumping on load.
+        figure={<Skeleton className="inline-block h-3.5 w-24 align-middle" />}
+        figureTone="cost"
+        bodyClassName="flex min-h-0 flex-1"
+      >
+        {/* No min-height: the fold's slot is only ~224px tall on a phone, and a
+            floor taller than the body is silently clipped by the panel. */}
+        <Skeleton className="size-full" />
+      </ChartFrame>
+    );
+  }
+
   const { balanceTimeSeries } = analysis;
-  const showPresentValue = useShowPresentValue();
 
   // Sample data to reduce chart complexity (every 12 months)
   const sampledData = balanceTimeSeries.filter(
     (_, index) => index % 12 === 0 || index === balanceTimeSeries.length - 1,
   );
-
-  const caption = `Fig. 1 — Balance with vs without overpaying${
-    showPresentValue ? " · real terms" : ""
-  }`;
 
   if (sampledData.length === 0) {
     return (
@@ -58,6 +85,8 @@ export function OverpayComparisonChart({
     0,
   );
 
+  // No legend prop: the ledger sits directly beneath this panel carrying the
+  // same two names against the same two line colours, so it keys the chart.
   return (
     <ChartFrame
       className="flex h-full flex-col"
@@ -65,10 +94,6 @@ export function OverpayComparisonChart({
       figure={`Peak ${currencyFormatter.format(peakBalance)}`}
       figureTone="cost"
       bodyClassName="min-h-0 flex-1"
-      legend={[
-        { label: "Without overpaying", color: "var(--chart-overpay-baseline)" },
-        { label: "With overpaying", color: "var(--chart-1)" },
-      ]}
     >
       <ChartBase
         type="line"
