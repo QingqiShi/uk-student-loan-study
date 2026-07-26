@@ -14,10 +14,17 @@ import { SHELL_MAX } from "@/lib/layout";
  * the guides index) share it so the wide shell lives in exactly one place
  * instead of being re-typed per page.
  */
-export function WideLayout({ children }: { children: ReactNode }) {
+export function WideLayout({
+  children,
+  repaymentYear,
+}: {
+  children: ReactNode;
+  /** Carried into the share link so a shared URL restores the same start year. */
+  repaymentYear?: number;
+}) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <Header />
+      <Header repaymentYear={repaymentYear} />
       <main
         id="main-content"
         className={`mx-auto w-full ${SHELL_MAX} flex-auto`}

@@ -1,59 +1,62 @@
+"use client";
+
 import {
   Alert02Icon,
-  Tick02Icon,
   Cancel01Icon,
   InformationCircleIcon,
+  Tick02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Figure } from "@/components/typography/Figure";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { RecommendationType } from "@/lib/loans/overpayTypes";
+import { currencyFormatter } from "@/constants";
+import { ENGRAVED_LABEL } from "@/lib/layout";
+import type {
+  OverpayAnalysisResult,
+  RecommendationType,
+} from "@/lib/loans/overpayTypes";
 import { cn } from "@/lib/utils";
+import { formatYears, isPresentValue } from "./figures";
 
+/**
+ * The verdict sits flat on the paper: size and colour carry it, not a tinted
+ * box. Ink means the comparison came out level, spruce means overpaying wins,
+ * clay means it costs you — the One-Signal Rule doing the work the old card's
+ * background used to do.
+ */
 const verdictConfig: Record<
   RecommendationType,
-  {
-    title: string;
-    surface: string;
-    accent: string;
-    icon: typeof Alert02Icon;
-  }
+  { title: string; accent: string; icon: typeof Alert02Icon }
 > = {
   "dont-overpay": {
     title: "Overpaying costs more",
-    surface: "bg-signal-wash ring-signal/30",
     accent: "text-signal",
     icon: Cancel01Icon,
   },
   overpay: {
     title: "Overpaying saves money",
-    surface: "bg-accent-wash ring-primary/30",
     accent: "text-cta",
     icon: Tick02Icon,
   },
   marginal: {
     title: "Marginal difference",
-    surface: "bg-muted ring-border",
-    accent: "text-muted-foreground",
+    accent: "text-foreground",
     icon: Alert02Icon,
   },
   idle: {
     title: "Ready to compare",
-    surface: "bg-muted ring-border",
-    accent: "text-muted-foreground",
+    accent: "text-foreground",
     icon: InformationCircleIcon,
   },
 };
 
-const DISCLAIMER =
-  "This is an estimate, not financial advice. Consider speaking to a financial adviser.";
-
 /**
- * Representative copies of the longest verdict reasons, rendered invisibly
- * into the same grid cell as the live card so the row reserves the tallest
- * realistic height at every viewport width. Switching verdicts (or swapping
- * in from the skeleton) then never shifts the content below. The reasons
- * mirror the longest templates in determineRecommendation — keep them in
- * sync if that copy changes.
+ * Representative worst cases, rendered invisibly into the same grid cell as the
+ * live verdict so it reserves its tallest realistic height at every width.
+ * Without this, dragging the slider across a recommendation boundary swings the
+ * reason by two lines and shoves whatever sits after the verdict — the levers at
+ * `wide`, the chart and ledger when stacked. The reasons mirror the longest
+ * templates in determineRecommendation; keep them in sync if that copy changes.
  */
 const sizerVariants = [
   {
@@ -68,12 +71,85 @@ const sizerVariants = [
   },
 ];
 
+/** Below this the two scenarios are level, and a signed figure would be noise. */
+const LEVEL_TOLERANCE_GBP = 1;
+
+/**
+ * The deciding figure — always the *nominal* difference, the same basis
+ * `determineRecommendation` used to pick the title above it. A present-value
+ * difference here would routinely carry the opposite sign to the title, so the
+ * block would assert both conclusions at once; the ledger is where the
+ * discounted totals live, explicitly labelled.
+ */
+function VerdictHeadline({
+  difference,
+  monthsSaved,
+  baselineWrittenOff,
+  recommendation,
+  discloseNominal,
+}: {
+  /** Nominal `paymentDifference`: positive when overpaying repays less. */
+  difference: number;
+  monthsSaved: number;
+  /** When the baseline is written off there is no payoff date to beat. */
+  baselineWrittenOff: boolean;
+  recommendation: RecommendationType;
+  /** True when the ledger beside this is showing present value instead. */
+  discloseNominal: boolean;
+}) {
+  // `marginal` means the engine judged the gap too small to act on (under
+  // £1,000 and under 10%). Setting that gap at `fig-hero` in the clay cost
+  // signal would shout the opposite of the title and the reason either side of
+  // it — the sentence already carries the number.
+  if (recommendation === "marginal") return null;
+
+  // Exact equality would let a sub-pound delta through and render the page's
+  // largest figure as "£0 less repaid" under a title claiming a direction.
+  if (Math.abs(difference) < LEVEL_TOLERANCE_GBP) return null;
+
+  const costsMore = difference < 0;
+
+  return (
+    <p className="mt-3 flex flex-wrap items-baseline gap-x-[0.7rem] gap-y-[0.15rem]">
+      <span
+        className={cn(
+          "font-mono text-fig-hero font-semibold tracking-tight tabular-nums",
+          costsMore ? "text-signal" : "text-cta",
+        )}
+      >
+        <Figure value={currencyFormatter.format(Math.abs(difference))} />
+      </span>
+      <span className="font-sans text-meta text-muted-foreground">
+        {costsMore ? "more repaid" : "less repaid"}
+        {/* Named only when it could be mistaken for the ledger's basis: this
+            figure is always nominal, because the recommendation above it is,
+            and unlabelled it would not reconcile with two totals marked
+            "(present value)". "nominal" is CONTEXT.md's term for that state. */}
+        {discloseNominal && " · nominal"}
+        {/* Only when the baseline genuinely pays the loan off. If it is written
+            off instead, its "payoff" month is the write-off date, and calling
+            that beaten by N years would blur write-off into paid off — the two
+            outcomes CONTEXT.md is explicit are opposites. */}
+        {monthsSaved > 0 && !baselineWrittenOff && (
+          <>
+            {" · paid off "}
+            <span className="font-mono text-foreground tabular-nums">
+              {formatYears(monthsSaved)}
+            </span>
+            {" sooner"}
+          </>
+        )}
+      </span>
+    </p>
+  );
+}
+
 interface VerdictBodyProps {
   icon: typeof Alert02Icon;
   accent: string;
   title: string;
   reason: string;
-  footer: string;
+  headline: React.ReactNode;
 }
 
 function VerdictBody({
@@ -81,26 +157,33 @@ function VerdictBody({
   accent,
   title,
   reason,
-  footer,
+  headline,
 }: VerdictBodyProps) {
   return (
     <>
-      <div className="flex items-start gap-3 pb-3">
+      {/* Engraved key: the one instrument label in the fold, so it reads as the
+          name of this readout rather than as an eyebrow over a heading. */}
+      <p className={cn("flex items-center gap-2", ENGRAVED_LABEL)}>
         <HugeiconsIcon
           icon={icon}
-          className={cn("mt-0.5 size-5 shrink-0", accent)}
+          className={cn("size-4 shrink-0", accent)}
           strokeWidth={2}
         />
-        <div className="min-w-0 flex-1 space-y-1">
-          <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-            Verdict
-          </p>
-          <p className={cn("text-lg font-semibold", accent)}>{title}</p>
-          <p className="max-w-prose text-sm text-muted-foreground">{reason}</p>
-        </div>
-      </div>
-      <p className="mt-auto border-t border-border/60 pt-3 text-xs text-muted-foreground">
-        {footer}
+        Verdict
+      </p>
+      {/* Set above the h1 deliberately: the page's name is a signpost, the
+          verdict is the answer, and it is the thing the levers change. */}
+      <p
+        className={cn(
+          "mt-2 text-page font-bold tracking-heading text-balance",
+          accent,
+        )}
+      >
+        {title}
+      </p>
+      {headline}
+      <p className="mt-3 max-w-[46ch] text-body leading-[1.55] text-pretty text-muted-foreground">
+        {reason}
       </p>
     </>
   );
@@ -113,14 +196,26 @@ function VerdictSizers() {
         <div
           key={key}
           aria-hidden
-          className="invisible col-start-1 row-start-1 flex flex-col p-4 sm:p-5"
+          // At every width. Stacked, the console above the verdict is safe
+          // either way, but the chart and ledger *below* it are the figures the
+          // reader drags the slider to watch — and the reason text swings by
+          // two lines as the recommendation changes, which would shove them.
+          className="invisible col-start-1 row-start-1"
         >
           <VerdictBody
             icon={verdictConfig.overpay.icon}
             accent={verdictConfig.overpay.accent}
             title={verdictConfig.overpay.title}
             reason={reason}
-            footer={DISCLAIMER}
+            headline={
+              <VerdictHeadline
+                difference={123456}
+                monthsSaved={50}
+                baselineWrittenOff={false}
+                recommendation="overpay"
+                discloseNominal
+              />
+            }
           />
         </div>
       ))}
@@ -128,49 +223,72 @@ function VerdictSizers() {
   );
 }
 
-interface OverpayVerdictProps {
-  recommendation: RecommendationType;
-  reason: string;
-}
-
-export function OverpayVerdict({
-  recommendation,
-  reason,
-}: OverpayVerdictProps) {
-  const config = verdictConfig[recommendation];
-  const isIdle = recommendation === "idle";
-
+/**
+ * Sized to a typical loaded verdict — a two-line title, the figure and a
+ * three-line reason — so the swap from skeleton to result lands close to where
+ * the sizers already hold the block.
+ */
+function VerdictSkeleton() {
   return (
-    <div className="grid">
-      <div
-        role="status"
-        aria-live="polite"
-        className={cn(
-          "col-start-1 row-start-1 flex flex-col rounded-xl p-4 ring-1 sm:p-5",
-          config.surface,
-        )}
-      >
-        <VerdictBody
-          icon={config.icon}
-          accent={config.accent}
-          title={config.title}
-          reason={reason}
-          footer={
-            isIdle
-              ? "Adjust the inputs below to explore different scenarios."
-              : DISCLAIMER
-          }
-        />
-      </div>
-      <VerdictSizers />
+    <div
+      aria-hidden
+      className="col-start-1 row-start-1 flex flex-col gap-[0.6rem] self-start"
+    >
+      <Skeleton className="h-3.5 w-16" />
+      <Skeleton className="h-9 w-full max-w-72" />
+      <Skeleton className="h-9 w-48" />
+      <Skeleton className="mt-1 h-4 w-full max-w-[46ch]" />
+      <Skeleton className="h-4 w-full max-w-[46ch]" />
+      <Skeleton className="h-4 w-full max-w-80" />
     </div>
   );
 }
 
-export function OverpayVerdictSkeleton() {
+/**
+ * The answer, and the page's primary display. `self-start` lets the verdict hug
+ * its own copy while the invisible sizers hold the tallest realistic height, so
+ * the slack lands as paper under the verdict rather than shifting whatever
+ * follows it.
+ */
+export function OverpayVerdict({
+  analysis,
+  className,
+}: {
+  /** Null while the simulation worker resolves — the block holds its place. */
+  analysis: OverpayAnalysisResult | null;
+  className?: string;
+}) {
+  const config = analysis
+    ? verdictConfig[analysis.recommendation]
+    : verdictConfig.idle;
+
   return (
-    <div className="grid">
-      <Skeleton className="col-start-1 row-start-1 rounded-xl" />
+    <div className={cn("grid", className)}>
+      {analysis ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="col-start-1 row-start-1 self-start"
+        >
+          <VerdictBody
+            icon={config.icon}
+            accent={config.accent}
+            title={config.title}
+            reason={analysis.recommendationReason}
+            headline={
+              <VerdictHeadline
+                difference={analysis.paymentDifference}
+                monthsSaved={Math.max(0, analysis.monthsSaved)}
+                baselineWrittenOff={analysis.baseline.writtenOff}
+                recommendation={analysis.recommendation}
+                discloseNominal={isPresentValue(analysis)}
+              />
+            }
+          />
+        </div>
+      ) : (
+        <VerdictSkeleton />
+      )}
       <VerdictSizers />
     </div>
   );

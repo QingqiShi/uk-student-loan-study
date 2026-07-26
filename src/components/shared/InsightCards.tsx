@@ -25,29 +25,20 @@ interface InsightCardsProps {
 
 const [REPAID, BALANCE, INTEREST, RATE] = DETAIL_PAGES;
 
-export function InsightCards({ excludeHref }: InsightCardsProps) {
+/**
+ * The four drill-down loan metrics as a bare seamed readout, without the
+ * heading rail. Use this when the surrounding section already provides the
+ * masthead (a full-bleed `InstrumentSection`); use {@link InsightCards} when
+ * the block has to carry its own heading.
+ */
+export function InsightCardsReadout({ excludeHref }: InsightCardsProps) {
   const { cards: data } = usePersonalisedResults();
 
   const loading = data == null;
 
   return (
     // <nav> is correct here — each cell is a link to a detail page
-    <nav aria-label="Loan breakdown" className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
-        <Heading as="h2" size="section">
-          Your Loan Breakdown
-        </Heading>
-        {excludeHref && (
-          <Link
-            href="/"
-            className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <HugeiconsIcon icon={ArrowLeft01Icon} className="size-4" />
-            Repayment Calculator
-          </Link>
-        )}
-      </div>
-
+    <nav aria-label="Loan breakdown">
       <MetricReadout columns={4}>
         {/* Total repaid — the headline number, spruce-ink emphasis */}
         <MetricCell
@@ -108,5 +99,28 @@ export function InsightCards({ excludeHref }: InsightCardsProps) {
         </MetricCell>
       </MetricReadout>
     </nav>
+  );
+}
+
+/** The drill-down readout with its own heading rail, for reading-column pages. */
+export function InsightCards({ excludeHref }: InsightCardsProps) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-4">
+        <Heading as="h2" size="section">
+          Your Loan Breakdown
+        </Heading>
+        {excludeHref && (
+          <Link
+            href="/"
+            className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <HugeiconsIcon icon={ArrowLeft01Icon} className="size-4" />
+            Repayment Calculator
+          </Link>
+        )}
+      </div>
+      <InsightCardsReadout excludeHref={excludeHref} />
+    </div>
   );
 }

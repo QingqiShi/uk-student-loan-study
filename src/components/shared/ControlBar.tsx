@@ -103,12 +103,14 @@ interface ExpandedPresetsProps {
   onPresetApplied: (preset: Preset) => void;
   onPersonalise: () => void;
   hasPersonalised: boolean;
+  bleed: boolean;
 }
 
 function ExpandedPresets({
   onPresetApplied,
   onPersonalise,
   hasPersonalised,
+  bleed,
 }: ExpandedPresetsProps) {
   const activePreset = useActivePreset();
 
@@ -127,13 +129,19 @@ function ExpandedPresets({
         <PresentValueToggle />
       </div>
 
-      {/* Bleed wrapper — breaks out of container padding on mobile */}
-      <div className="relative -mx-3 sm:mx-0">
-        {/* Right fade hint — mobile only */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-linear-to-l from-card to-transparent sm:hidden" />
-
+      {/* Bleed wrapper — breaks out of the panel's padding on mobile so the
+          chips scroll edge to edge. A full-bleed page has no padding to escape,
+          so it opts out and the chips align to the page gutter instead. */}
+      <div className={cn("relative", bleed && "-mx-3 sm:mx-0")}>
         <div
-          className="no-scrollbar flex gap-2 overflow-x-auto pr-8 pb-1 pl-3 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0 sm:pb-0"
+          className={cn(
+            // Background-agnostic scroll affordance: a mask fades the trailing
+            // chip on mobile, so it works on paper and on a panel alike.
+            // `pr-8` matches the 2rem fade — scrolled to the end, that padding
+            // parks under the gradient so the last chip stays fully legible.
+            "no-scrollbar flex gap-2 overflow-x-auto mask-[linear-gradient(to_right,#000_calc(100%-2rem),transparent)] pr-8 pb-1 [-webkit-mask-image:linear-gradient(to_right,#000_calc(100%-2rem),transparent)] sm:grid sm:grid-cols-5 sm:overflow-visible sm:mask-none sm:pr-0 sm:pb-0 sm:[-webkit-mask-image:none]",
+            bleed && "pl-3 sm:pl-0",
+          )}
           role="group"
           aria-label="Preset profiles"
         >
@@ -238,9 +246,19 @@ function ExpandedPresets({
 
 interface ControlBarProps {
   initialMode?: InputMode;
+  /**
+   * `panel` (default) frames the controls in an instrument panel — the reading
+   * column of a detail page needs the surface to separate them from the prose.
+   * `bare` drops the frame for full-bleed pages, where the controls sit flat on
+   * the paper inside a seamed section, the way the homepage fold's do.
+   */
+  variant?: "panel" | "bare";
 }
 
-export function ControlBar({ initialMode }: ControlBarProps) {
+export function ControlBar({
+  initialMode,
+  variant = "panel",
+}: ControlBarProps) {
   const {
     mode,
     hasPersonalised,
@@ -253,13 +271,18 @@ export function ControlBar({ initialMode }: ControlBarProps) {
   return (
     <section
       aria-label="Calculator controls"
-      className={cn(surfaceCard, "space-y-3 p-3 sm:p-4")}
+      className={cn(
+        variant === "panel"
+          ? [surfaceCard, "space-y-3 p-3 sm:p-4"]
+          : "space-y-4",
+      )}
     >
       <SalarySlider />
       <ExpandedPresets
         onPresetApplied={handlePresetApplied}
         onPersonalise={handlePersonalise}
         hasPersonalised={hasPersonalised}
+        bleed={variant === "panel"}
       />
       <ConfigOverlay
         mode={mode}

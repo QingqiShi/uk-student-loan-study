@@ -1,7 +1,7 @@
+import { InstrumentSection } from "@/components/instrument/InstrumentSection";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
-import { HomeSection } from "./HomeSection";
 
 // Live figures from the source-of-truth modules (kept current by the GOV.UK
 // automation) — never hardcode a value that exists in PLAN_CONFIGS.
@@ -13,7 +13,7 @@ const PLAN2_WRITEOFF = PLAN2.writeOffYears;
 
 export function RulesSection() {
   return (
-    <HomeSection
+    <InstrumentSection
       id="rules"
       heading="Four rules decide what you repay"
       intro={
@@ -88,6 +88,6 @@ export function RulesSection() {
           </span>
         </div>
       </div>
-    </HomeSection>
+    </InstrumentSection>
   );
 }

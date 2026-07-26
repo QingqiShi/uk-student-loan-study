@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { HomeSection } from "./HomeSection";
+import { InstrumentSection } from "@/components/instrument/InstrumentSection";
 import { useLeverData } from "./leverData";
 
 export function LeversSection() {
   const { refLabel, levers } = useLeverData();
 
   return (
-    <HomeSection
+    <InstrumentSection
       id="levers"
       heading="What changes your total"
       intro={
@@ -71,6 +71,6 @@ export function LeversSection() {
           );
         })}
       </div>
-    </HomeSection>
+    </InstrumentSection>
   );
 }

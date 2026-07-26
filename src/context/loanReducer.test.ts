@@ -94,6 +94,39 @@ describe("loanReducer", () => {
       ]);
     });
 
+    it("should clamp a lump sum that exceeds the new preset's balance", () => {
+      // The overpay simulation already clamps to the balance, so an out-of-range
+      // stored value would make the input, the share URL and the analytics event
+      // all disagree with the figures actually on screen.
+      const withLumpSum = loanReducer(
+        initialState,
+        updateFieldAction("lumpSumPayment", 45_000),
+      );
+      const smaller = PRESETS.find((p) => p.id === "plan1-legacy");
+      expect(smaller).toBeDefined();
+      const newState = loanReducer(
+        withLumpSum,
+        applyPresetAction(smaller as (typeof PRESETS)[number]),
+      );
+      const balance = newState.loans.reduce((t, l) => t + l.balance, 0);
+      expect(balance).toBeLessThan(45_000);
+      expect(newState.lumpSumPayment).toBe(balance);
+    });
+
+    it("should leave an in-range lump sum untouched when applying preset", () => {
+      const withLumpSum = loanReducer(
+        initialState,
+        updateFieldAction("lumpSumPayment", 5_000),
+      );
+      const preset = PRESETS.find((p) => p.id === "plan5-grad");
+      expect(preset).toBeDefined();
+      const newState = loanReducer(
+        withLumpSum,
+        applyPresetAction(preset as (typeof PRESETS)[number]),
+      );
+      expect(newState.lumpSumPayment).toBe(5_000);
+    });
+
     it("should preserve non-loan fields when applying preset", () => {
       const modified = loanReducer(
         initialState,

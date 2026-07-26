@@ -3,8 +3,9 @@
 import { SALARY_GROWTH_OPTIONS } from "@/constants";
 import { useAssumptionsWizard } from "@/context/AssumptionsWizardContext";
 import { useLoanConfigState } from "@/context/LoanContext";
+import { cn } from "@/lib/utils";
 
-export function AssumptionsCallout() {
+export function AssumptionsCallout({ className }: { className?: string }) {
   const { openAssumptions } = useAssumptionsWizard();
   const config = useLoanConfigState();
 
@@ -38,7 +39,7 @@ export function AssumptionsCallout() {
   const bold = "font-semibold text-foreground";
 
   return (
-    <p className="text-center text-xs text-muted-foreground">
+    <p className={cn("text-center text-xs text-muted-foreground", className)}>
       Based on <span className={bold}>{salaryLabel}</span> salary growth,{" "}
       <span className={bold}>{thresholdLabel}</span> thresholds,
       {hasTrailingItem ? " " : " and "}
