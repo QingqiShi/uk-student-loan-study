@@ -265,18 +265,18 @@ function handleInsight(payload: InsightPayload): {
     balance: { data: [], stat: "\u2014", label: "Duration" },
     interest: {
       stat: "\u2014",
-      label: "Interest Paid",
+      label: "Interest paid",
       interestRatio: 0,
       principalRatio: 0,
       writtenOffRatio: 0,
     },
     effectiveRate: {
       stat: "\u2014",
-      label: "Effective Rate",
+      label: "Effective rate",
       effectiveRate: 0,
       boeRate: payload.boeBaseRate / 100,
     },
-    cumulative: { data: [], stat: "\u2014", label: "Total Repayments" },
+    cumulative: { data: [], stat: "\u2014", label: "Total repaid" },
   };
 
   if (totalBalance <= 0) {
@@ -321,17 +321,11 @@ function handleInsight(payload: InsightPayload): {
   const cumulativeData: { month: number; value: number }[] = [];
   let cumulativePaid = 0;
   let pvCumulativePaid = 0;
-  let insightCumInterest = 0;
   let insightLastBalance = 0;
 
   for (const snap of snapshots) {
     const monthBalance = snap.loans.reduce((s, l) => s + l.closingBalance, 0);
-    const monthInterest = snap.loans.reduce((s, l) => s + l.interestApplied, 0);
-    const interestPortion = Math.min(snap.totalRepayment, monthInterest);
     cumulativePaid += snap.totalRepayment;
-    insightCumInterest += hasPV
-      ? toPresent(interestPortion, dr, snap.month)
-      : interestPortion;
     insightLastBalance = monthBalance;
     if (hasPV) {
       pvCumulativePaid += toPresent(snap.totalRepayment, dr, snap.month);
@@ -360,34 +354,43 @@ function handleInsight(payload: InsightPayload): {
   const totalPaid = hasPV ? pvCumulativePaid : simSummary.totalPaid;
 
   const insightWrittenOff = simSummary.perLoan.some((l) => l.writtenOff);
-  const insightTotalPrincipal = totalPaid - insightCumInterest;
   const insightWrittenOffBalance = insightWrittenOff ? insightLastBalance : 0;
   const insightTotalSettled = totalPaid + insightWrittenOffBalance;
+
+  // Adjusted interest — the same basis as the figure this card reports and as
+  // the `/interest` page's own stats: assume every repayment covered principal
+  // first, so interest is whatever was paid on top of the balance borrowed.
+  //
+  // The split used to be drawn from the interest actually charged month by
+  // month, while the figure above it was adjusted. The two are different
+  // quantities, so the bar never reconciled with the number it sat under — 57%
+  // interest beside a figure that is 64% of the total. One basis for both, and
+  // the reader can add the bar up to the headline.
+  const insightInterest = Math.max(0, totalPaid - totalBalance);
+  const insightPrincipal = totalPaid - insightInterest;
 
   const annualRate = computeEffectiveAnnualRate(totalBalance, snapshots);
   const ratePct = annualRate * 100;
   const rateStat = ratePct < 0.05 ? "0%" : `${ratePct.toFixed(1)}%`;
 
   // Compact figure only — the surfaces that show this stat already label it
-  // ("Total repaid" / "TOTAL REPAYMENTS"), so a trailing " total" is redundant
-  // and, being a second word, wraps to a new line in the narrow readout cell and
-  // shifts the card height on load. Keeping it to one token keeps that fixed.
+  // ("Total repaid"), so a trailing " total" is redundant and, being a second
+  // word, wraps to a new line in the narrow readout cell and shifts the card
+  // height on load. Keeping it to one token keeps that fixed.
   const cumulativeStat = formatCompactCurrency(totalPaid);
 
   const cards: InsightCardsResult = {
     balance: { data: balanceData, stat: balanceStat, label: "Duration" },
     interest: {
-      stat: formatCompactCurrency(Math.max(0, totalPaid - totalBalance)),
+      stat: formatCompactCurrency(insightInterest),
       // Constant label at every width: the "(adj.)" suffix wrapped to a second
       // line on the narrow readout cell and shifted the card height. The
       // write-off is already conveyed by the striped bar and the legend.
-      label: "Interest Paid",
+      label: "Interest paid",
       interestRatio:
-        insightTotalSettled > 0 ? insightCumInterest / insightTotalSettled : 0,
+        insightTotalSettled > 0 ? insightInterest / insightTotalSettled : 0,
       principalRatio:
-        insightTotalSettled > 0
-          ? insightTotalPrincipal / insightTotalSettled
-          : 0,
+        insightTotalSettled > 0 ? insightPrincipal / insightTotalSettled : 0,
       writtenOffRatio:
         insightTotalSettled > 0
           ? insightWrittenOffBalance / insightTotalSettled
@@ -395,14 +398,14 @@ function handleInsight(payload: InsightPayload): {
     },
     effectiveRate: {
       stat: rateStat,
-      label: "Effective Rate",
+      label: "Effective rate",
       effectiveRate: annualRate,
       boeRate: payload.boeBaseRate / 100,
     },
     cumulative: {
       data: cumulativeData,
       stat: cumulativeStat,
-      label: "Total Repayments",
+      label: "Total repaid",
     },
   };
 

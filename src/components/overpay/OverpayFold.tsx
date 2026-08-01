@@ -1,11 +1,17 @@
 "use client";
 
-import { FOLD_PAD, SHELL_GUTTER } from "@/lib/layout";
+import { PageNameplate } from "@/components/instrument/PageNameplate";
+import {
+  FOLD_NOTE,
+  FOLD_PAD,
+  FOLD_SPLIT_CONSOLE,
+  SHELL_GUTTER,
+} from "@/lib/layout";
 import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
+import { cn } from "@/lib/utils";
 import { OverpayComparisonChart } from "./OverpayComparisonChart";
 import { OverpayControls } from "./OverpayControls";
 import { OverpayLedger } from "./OverpayLedger";
-import { OverpayNameplate } from "./OverpayNameplate";
 import { OverpayPremise } from "./OverpayPremise";
 import { OverpayVerdict } from "./OverpayVerdict";
 
@@ -41,12 +47,13 @@ export function OverpayFold({ analysis }: OverpayFoldProps) {
       className={`${SHELL_GUTTER} ${FOLD_PAD}`}
       aria-label="Overpayment comparison"
     >
-      <OverpayNameplate />
+      <PageNameplate
+        title="Student Loan Overpayment Calculator"
+        crumb="Overpay Calculator"
+        dek="Should you overpay or invest? See which leaves you better off."
+      />
 
-      {/* The split waits for `wide`: below it the rail would be too narrow to
-          hold the console at a sensible height, and it would tower over a short
-          evidence column. Stacked, the chart gets the full bleed instead. */}
-      <div className="mt-[clamp(1.2rem,2.6vw,2.4rem)] grid items-start gap-x-[clamp(2rem,3vw,4rem)] gap-y-[clamp(1.8rem,2.8vw,2.6rem)] wide:grid-cols-[minmax(24rem,0.85fr)_minmax(0,1.15fr)] work:grid-cols-[minmax(24rem,0.62fr)_minmax(0,1.38fr)] ultra:grid-cols-[minmax(28rem,0.52fr)_minmax(0,1.48fr)]">
+      <div className={FOLD_SPLIT_CONSOLE}>
         {/* Source order IS the meaningful sequence — scenario, then verdict —
             so a screen reader, a reader mode or a text-only render never meets
             the answer before the figures it was computed from. `order` is only
@@ -67,9 +74,7 @@ export function OverpayFold({ analysis }: OverpayFoldProps) {
 
           <OverpayVerdict analysis={analysis} className="wide:order-1" />
 
-          <p className="max-w-[52ch] font-sans text-meta leading-[1.6] text-muted-foreground wide:order-3">
-            {DISCLAIMER}
-          </p>
+          <p className={cn(FOLD_NOTE, "wide:order-3")}>{DISCLAIMER}</p>
         </div>
 
         <div className="flex min-w-0 flex-col gap-[clamp(1rem,1.6vw,1.4rem)]">

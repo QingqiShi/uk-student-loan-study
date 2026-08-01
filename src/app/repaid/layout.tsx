@@ -37,7 +37,7 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: "Total Repayments",
+      name: "Total repaid",
       item: "https://studentloanstudy.uk/repaid",
     },
   ],

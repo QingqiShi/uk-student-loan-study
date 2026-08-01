@@ -2,9 +2,11 @@
 
 import { PreferenceHorizontalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { startTransition, useOptimistic } from "react";
+import { startTransition, useOptimistic, type ReactNode } from "react";
 import { ConfigOverlay } from "@/components/home/ConfigOverlay";
 import { PresentValueToggle } from "@/components/home/PresentValueToggle";
+import { InstrumentSection } from "@/components/instrument/InstrumentSection";
+import { AssumptionsCallout } from "@/components/shared/AssumptionsCallout";
 import { Slider } from "@/components/ui/slider";
 import {
   MIN_SALARY,
@@ -18,12 +20,11 @@ import {
   useLoanConfigState,
   useLoanFrequentState,
 } from "@/context/LoanContext";
-import type { InputMode } from "@/hooks/useInputPanelMode";
 import { useInputPanelMode } from "@/hooks/useInputPanelMode";
 import { trackSalaryChanged } from "@/lib/analytics";
+import { SECTION_BODY_PAD } from "@/lib/layout";
 import type { Preset } from "@/lib/presets";
 import { PRESETS } from "@/lib/presets";
-import { surfaceCard } from "@/lib/surfaces";
 import { cn } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
@@ -103,14 +104,12 @@ interface ExpandedPresetsProps {
   onPresetApplied: (preset: Preset) => void;
   onPersonalise: () => void;
   hasPersonalised: boolean;
-  bleed: boolean;
 }
 
 function ExpandedPresets({
   onPresetApplied,
   onPersonalise,
   hasPersonalised,
-  bleed,
 }: ExpandedPresetsProps) {
   const activePreset = useActivePreset();
 
@@ -121,101 +120,99 @@ function ExpandedPresets({
   const isPersonalisedConfig = hasPersonalised && !optimisticActiveId;
 
   return (
-    <div className="space-y-2">
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+    <div className="@container space-y-2">
+      <div className="flex flex-col gap-1 @tight:flex-row @tight:items-center @tight:justify-between">
         <p className="text-sm text-muted-foreground">
           Pick a scenario that matches you
         </p>
         <PresentValueToggle />
       </div>
 
-      {/* Bleed wrapper — breaks out of the panel's padding on mobile so the
-          chips scroll edge to edge. A full-bleed page has no padding to escape,
-          so it opts out and the chips align to the page gutter instead. */}
-      <div className={cn("relative", bleed && "-mx-3 sm:mx-0")}>
-        <div
-          className={cn(
-            // Background-agnostic scroll affordance: a mask fades the trailing
-            // chip on mobile, so it works on paper and on a panel alike.
-            // `pr-8` matches the 2rem fade — scrolled to the end, that padding
-            // parks under the gradient so the last chip stays fully legible.
-            "no-scrollbar flex gap-2 overflow-x-auto mask-[linear-gradient(to_right,#000_calc(100%-2rem),transparent)] pr-8 pb-1 [-webkit-mask-image:linear-gradient(to_right,#000_calc(100%-2rem),transparent)] sm:grid sm:grid-cols-5 sm:overflow-visible sm:mask-none sm:pr-0 sm:pb-0 sm:[-webkit-mask-image:none]",
-            bleed && "pl-3 sm:pl-0",
-          )}
-          role="group"
-          aria-label="Preset profiles"
-        >
-          {PRESETS.map((preset) => {
-            const isActive = optimisticActiveId === preset.id;
-            return (
-              <button
-                key={preset.id}
-                type="button"
-                onClick={() => {
-                  startTransition(() => {
-                    setOptimisticActiveId(preset.id);
-                    onPresetApplied(preset);
-                  });
-                }}
-                aria-pressed={isActive}
+      {/* Background-agnostic scroll affordance: a mask fades the trailing chip
+          on mobile rather than a gradient matched to the ground behind it.
+          `pr-8` matches the 2rem fade — scrolled to the end, that padding parks
+          under the gradient so the last chip stays fully legible. The chips
+          start at the page gutter; there is no panel padding to break out of.
+
+          The column count comes from the console's *own* width, not the
+          viewport: this same console now stands in a ~32rem fold rail on a
+          detail page and in a near-full-bleed band on the overpay page, and a
+          viewport breakpoint cannot tell those apart — it put five chips in the
+          rail and squeezed every label onto three lines. */}
+      <div
+        className="no-scrollbar flex gap-2 overflow-x-auto mask-[linear-gradient(to_right,#000_calc(100%-2rem),transparent)] pr-8 pb-1 [-webkit-mask-image:linear-gradient(to_right,#000_calc(100%-2rem),transparent)] @tight:grid @tight:grid-cols-2 @tight:overflow-visible @tight:mask-none @tight:pr-0 @tight:pb-0 @tight:[-webkit-mask-image:none] @cozy:grid-cols-4 @snug:grid-cols-5"
+        role="group"
+        aria-label="Preset profiles"
+      >
+        {PRESETS.map((preset) => {
+          const isActive = optimisticActiveId === preset.id;
+          return (
+            <button
+              key={preset.id}
+              type="button"
+              onClick={() => {
+                startTransition(() => {
+                  setOptimisticActiveId(preset.id);
+                  onPresetApplied(preset);
+                });
+              }}
+              aria-pressed={isActive}
+              className={cn(
+                "shrink-0 rounded-lg border px-3 py-2 text-left transition-colors",
+                "w-40 @tight:w-auto",
+                isActive
+                  ? "border-primary bg-accent-wash"
+                  : "border-border hover:border-primary/50 hover:bg-accent",
+              )}
+            >
+              <span
                 className={cn(
-                  "shrink-0 rounded-lg border px-3 py-2 text-left transition-colors",
-                  "w-40 sm:w-auto",
-                  isActive
-                    ? "border-primary bg-accent-wash"
-                    : "border-border hover:border-primary/50 hover:bg-accent",
+                  "block text-sm font-medium",
+                  isActive && "text-cta",
                 )}
               >
-                <span
-                  className={cn(
-                    "block text-sm font-medium",
-                    isActive && "text-cta",
-                  )}
-                >
-                  {preset.label}
-                </span>
-                <span className="block text-xs text-muted-foreground">
-                  {preset.description}
-                </span>
-              </button>
-            );
-          })}
+                {preset.label}
+              </span>
+              <span className="block text-xs text-muted-foreground">
+                {preset.description}
+              </span>
+            </button>
+          );
+        })}
 
-          {/* CTA card — always visible in grid on sm+ */}
-          <button
-            type="button"
-            onClick={onPersonalise}
-            className={cn(
-              "shrink-0 rounded-lg border px-3 py-2 text-left transition-colors",
-              "w-40 sm:w-auto",
-              "hidden sm:block",
-              isPersonalisedConfig
-                ? "border-primary bg-accent-wash"
-                : "border-dashed border-primary/40 hover:border-primary hover:bg-primary/5",
-            )}
-          >
-            <span className="flex items-center gap-1.5 text-sm font-medium text-primary">
-              <HugeiconsIcon
-                icon={PreferenceHorizontalIcon}
-                className="size-4"
-              />
-              {isPersonalisedConfig ? "Edit details" : "Tailor to you"}
-            </span>
-            <span className="block text-xs text-muted-foreground">
-              {isPersonalisedConfig
-                ? "Change your loan details"
-                : "Enter your exact details"}
-            </span>
-          </button>
-        </div>
+        {/* CTA card — joins the grid as its own row, then takes the fifth
+            column once there is one to take. */}
+        <button
+          type="button"
+          onClick={onPersonalise}
+          className={cn(
+            "shrink-0 rounded-lg border px-3 py-2 text-left transition-colors",
+            "w-40 @tight:w-auto",
+            "hidden @tight:col-span-full @tight:block @snug:col-auto",
+            isPersonalisedConfig
+              ? "border-primary bg-accent-wash"
+              : "border-dashed border-primary/40 hover:border-primary hover:bg-primary/5",
+          )}
+        >
+          <span className="flex items-center gap-1.5 text-sm font-medium text-primary">
+            <HugeiconsIcon icon={PreferenceHorizontalIcon} className="size-4" />
+            {isPersonalisedConfig ? "Edit details" : "Tailor to you"}
+          </span>
+          <span className="block text-xs text-muted-foreground">
+            {isPersonalisedConfig
+              ? "Change your loan details"
+              : "Enter your exact details"}
+          </span>
+        </button>
       </div>
 
-      {/* CTA below scroll on mobile only — always visible */}
+      {/* CTA below the chips while they are a scroller, so it is never the
+          one card the reader has to scroll sideways to find. */}
       <button
         type="button"
         onClick={onPersonalise}
         className={cn(
-          "flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left transition-colors sm:hidden",
+          "flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left transition-colors @tight:hidden",
           isPersonalisedConfig
             ? "border-primary bg-accent-wash"
             : "border-dashed border-primary/40 hover:border-primary hover:bg-primary/5",
@@ -244,21 +241,13 @@ function ExpandedPresets({
 // ControlBar — main export (always expanded)
 // ---------------------------------------------------------------------------
 
-interface ControlBarProps {
-  initialMode?: InputMode;
-  /**
-   * `panel` (default) frames the controls in an instrument panel — the reading
-   * column of a detail page needs the surface to separate them from the prose.
-   * `bare` drops the frame for full-bleed pages, where the controls sit flat on
-   * the paper inside a seamed section, the way the homepage fold's do.
-   */
-  variant?: "panel" | "bare";
-}
-
-export function ControlBar({
-  initialMode,
-  variant = "panel",
-}: ControlBarProps) {
+/**
+ * The salary + scenario console shared by every full-bleed tool page: it sits
+ * flat on the paper inside a seamed `InstrumentSection`, the way the homepage
+ * fold's own controls do. No panel frame — the section's masthead rail and the
+ * hairline seams already place it.
+ */
+export function ControlBar() {
   const {
     mode,
     hasPersonalised,
@@ -266,23 +255,15 @@ export function ControlBar({
     handlePresetApplied,
     handleWizardComplete,
     handleWizardClose,
-  } = useInputPanelMode({ initialMode });
+  } = useInputPanelMode();
 
   return (
-    <section
-      aria-label="Calculator controls"
-      className={cn(
-        variant === "panel"
-          ? [surfaceCard, "space-y-3 p-3 sm:p-4"]
-          : "space-y-4",
-      )}
-    >
+    <section aria-label="Calculator controls" className="space-y-4">
       <SalarySlider />
       <ExpandedPresets
         onPresetApplied={handlePresetApplied}
         onPersonalise={handlePersonalise}
         hasPersonalised={hasPersonalised}
-        bleed={variant === "panel"}
       />
       <ConfigOverlay
         mode={mode}
@@ -291,5 +272,38 @@ export function ControlBar({
         onClose={handleWizardClose}
       />
     </section>
+  );
+}
+
+/**
+ * The band that states whose loan the page is reporting on, and lets the reader
+ * change it. Shared by every full-bleed tool page so the console always sits in
+ * the same place, under the same seam, with the assumptions it runs on beneath it.
+ *
+ * The heading and intro are the caller's because each page feeds the console into
+ * a different question. The intro should say what the section feeds and stop
+ * there: the console already tells the reader to pick a scenario or enter their
+ * own figures, and two copies of that would drift apart.
+ */
+export function SituationSection({
+  heading,
+  intro,
+  children,
+}: {
+  heading: ReactNode;
+  intro: ReactNode;
+  /** Extra facts about the loan, rendered between the console and the assumptions. */
+  children?: ReactNode;
+}) {
+  return (
+    <InstrumentSection id="situation" heading={heading} intro={intro}>
+      <div
+        className={cn(SECTION_BODY_PAD, "space-y-[clamp(1.2rem,1.8vw,1.8rem)]")}
+      >
+        <ControlBar />
+        {children}
+        <AssumptionsCallout className="text-left" />
+      </div>
+    </InstrumentSection>
   );
 }

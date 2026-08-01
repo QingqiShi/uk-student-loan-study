@@ -10,12 +10,9 @@ test.describe("Detail page controls (/repaid)", () => {
   });
 
   function totalRepaid(page: Page) {
-    // The hero readout's first (emphasis) figure is "Total repaid".
-    return page
-      .locator('[data-slot="metric-readout"]')
-      .first()
-      .locator(".font-mono")
-      .first();
+    // The fold's answer — the page's headline figure, above the supporting
+    // readout rather than inside it.
+    return page.locator('[data-slot="fold-answer-figure"]');
   }
 
   test("toggling inflation adjustment changes total repayment", async ({

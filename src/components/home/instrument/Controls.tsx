@@ -307,6 +307,12 @@ interface ControlsProps {
   handlePresetApplied: (preset: Preset) => void;
   handleWizardComplete: () => void;
   handleWizardClose: () => void;
+  /**
+   * An extra control this page needs under the presets — the detail pages put
+   * their present-value toggle here. The homepage passes nothing: its charts
+   * plot by salary, so there is no nominal-vs-present-value choice to make.
+   */
+  footer?: React.ReactNode;
 }
 
 export function Controls({
@@ -316,6 +322,7 @@ export function Controls({
   handlePresetApplied,
   handleWizardComplete,
   handleWizardClose,
+  footer,
 }: ControlsProps) {
   return (
     <div data-slot="controls" className="[grid-area:controls] work:self-start">
@@ -327,6 +334,7 @@ export function Controls({
           hasPersonalised={hasPersonalised}
         />
       </div>
+      {footer && <div className="mt-[1.1rem]">{footer}</div>}
       <ConfigOverlay
         mode={mode}
         hasPersonalised={hasPersonalised}

@@ -3,19 +3,16 @@
 import { primaryPlanName } from "@/components/home/instrument/planInfo";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
 import type { ChartLegendItem } from "@/components/instrument/ChartFrame";
-import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
 import { useLoanConfig } from "@/hooks/useStoreSelectors";
 import { formatGBP } from "@/lib/format";
+import { FOLD_CHART_BODY } from "@/lib/layout";
 import { DetailPageShell } from "./DetailPageShell";
+import { FoldAnswer, FoldAnswerSkeleton } from "./FoldAnswer";
 import { AnnualInterestChart } from "./InterestBreakdownChart";
-import {
-  InterestHeroStats,
-  InterestHeroStatsSkeleton,
-} from "./InterestHeroStats";
 
-function getChartCaption(
+function getClaimText(
   annualBreakdown: { year: number; principalPortion: number }[],
   writtenOff: boolean,
 ): string {
@@ -49,59 +46,50 @@ export function InterestDetailPage() {
 
   return (
     <DetailPageShell
-      heading="Interest Breakdown"
+      heading="Interest paid"
       description="Understand how much of your repayments go towards interest vs reducing your loan balance."
-    >
-      {result ? (
-        <div className="space-y-6">
-          <InterestHeroStats
-            totalInterestPaid={currencyFormatter.format(
-              result.stats.totalInterestPaid,
+      answer={
+        result ? (
+          <FoldAnswer
+            figure={currencyFormatter.format(result.stats.totalInterestPaid)}
+            tone="cost"
+            claim={getClaimText(
+              result.annualBreakdown,
+              result.stats.writtenOff,
             )}
-            principalPaid={
-              result.stats.writtenOff || result.stats.totalPrincipalPaid <= 0
-                ? ""
-                : currencyFormatter.format(result.stats.totalPrincipalPaid)
+            note={
+              result.stats.writtenOff && (
+                <p>
+                  You were charged{" "}
+                  {currencyFormatter.format(
+                    result.stats.attributedInterestPaid,
+                  )}{" "}
+                  in interest. When the loan is written off, the remaining
+                  balance is treated as a final principal repayment, so the
+                  adjusted figure above counts only what you repaid on top of
+                  your original loan.
+                </p>
+              )
             }
-            interestPct={Math.round(result.stats.interestRatio * 100)}
-            writtenOff={result.stats.writtenOff}
-            attributedInterestPaid={currencyFormatter.format(
-              result.stats.attributedInterestPaid,
-            )}
           />
-
+        ) : (
+          <FoldAnswerSkeleton />
+        )
+      }
+      chart={
+        result ? (
           <ChartFrame
+            fill
+            bodyClassName={FOLD_CHART_BODY}
             caption={`Fig. 1 — Interest vs principal each year · ${planName}`}
             figure={`Interest ${formatGBP(Math.round(result.stats.totalInterestPaid))}`}
             figureTone="cost"
             legend={legend}
-            bodyClassName="h-65 sm:h-75 md:h-85"
           >
             <AnnualInterestChart data={result.annualBreakdown} />
           </ChartFrame>
-
-          <div className="max-w-prose space-y-2 text-sm text-muted-foreground">
-            <p>
-              {getChartCaption(result.annualBreakdown, result.stats.writtenOff)}
-            </p>
-            {result.stats.writtenOff && (
-              <p>
-                You were charged{" "}
-                {currencyFormatter.format(result.stats.attributedInterestPaid)}{" "}
-                in interest. When the loan is written off, the remaining balance
-                is treated as a final principal repayment, so the adjusted
-                figure above counts only what you repaid on top of your original
-                loan.
-              </p>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <InterestHeroStatsSkeleton />
-          <Skeleton className="h-65 rounded-xl sm:h-75 md:h-85" />
-        </div>
-      )}
-    </DetailPageShell>
+        ) : null
+      }
+    />
   );
 }

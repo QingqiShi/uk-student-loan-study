@@ -20,21 +20,51 @@ const COLUMN_CLASS: Record<number, string> = {
   4: "grid-cols-2 lg:grid-cols-4",
 };
 
+/**
+ * The `rail` ladder, for a readout standing in a fold's rail rather than running
+ * across the page: the hero figure over a pair on a phone, a row once there is
+ * room, then a single stacked column from `wide`, where the rail is too narrow to
+ * hold a row of figures.
+ *
+ * Held as a whole ladder per column count, not as an override layered over
+ * {@link COLUMN_CLASS}: composing the two would leave one readout's responsive
+ * behaviour assembled from two sources of truth, so retuning a preset's middle
+ * step would silently retune the rail's too.
+ */
+const RAIL_CLASS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 sm:grid-cols-2 wide:grid-cols-1",
+  // Three cells don't divide into the phone's pair, so the first — the hero
+  // figure — takes the full width above the other two rather than leaving a hole
+  // in the grid. Set here so it can never be applied to the wrong cell, or the
+  // ladder applied without it.
+  3: "grid-cols-2 sm:grid-cols-3 wide:grid-cols-1 [&>*:first-child]:col-span-2 sm:[&>*:first-child]:col-span-1",
+  4: "grid-cols-2 sm:grid-cols-4 wide:grid-cols-1",
+};
+
 function MetricReadout({
   columns = 4,
+  rail = false,
   className,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
   /** Cell count across at the widest breakpoint (1–4). Default 4. */
   columns?: 1 | 2 | 3 | 4;
+  /**
+   * Lay the cells out for a fold rail instead of across the page — see
+   * {@link RAIL_CLASS}. The homepage fold's readout keeps a ladder of its own
+   * because it collapses at `work` rather than `wide`: it is the third zone of a
+   * three-zone workspace, not one of two.
+   */
+  rail?: boolean;
 }) {
   return (
     <div
       data-slot="metric-readout"
       className={cn(
         "grid gap-px overflow-hidden rounded-lg border border-border bg-border",
-        COLUMN_CLASS[columns],
+        rail ? RAIL_CLASS[columns] : COLUMN_CLASS[columns],
         className,
       )}
       {...props}
@@ -117,7 +147,8 @@ function CellInner({
   skeleton,
   linkLabel,
   children,
-}: MetricCellProps & { chevron: boolean }) {
+  hasViz,
+}: MetricCellProps & { chevron: boolean; hasViz: boolean }) {
   // `leading-none` trails the tone deliberately: a font-size utility overrides
   // the line-height set before it, so the readout's 1.0 leading has to be the
   // last word or the figure ramp would reintroduce normal leading.
@@ -159,13 +190,15 @@ function CellInner({
         </div>
       )}
 
-      <div className="mt-auto">
-        {loading
-          ? (skeleton ?? (
-              <div className="h-10 w-full animate-pulse rounded-sm bg-muted" />
-            ))
-          : children}
-      </div>
+      {hasViz && (
+        <div className="mt-auto">
+          {loading
+            ? (skeleton ?? (
+                <div className="h-10 w-full animate-pulse rounded-sm bg-muted" />
+              ))
+            : children}
+        </div>
+      )}
 
       {linkLabel && <span className="sr-only"> — {linkLabel}</span>}
     </>
@@ -187,8 +220,18 @@ function MetricCell({
   ...rest
 }: MetricCellProps) {
   const showChevron = chevron ?? (href != null && !active);
-  const base =
-    "group flex min-h-32 flex-col gap-2 bg-card p-4 text-left no-underline transition-colors";
+  // A cell only reserves the baseline viz band when it actually carries one —
+  // `min-h-32` is the height a label, a figure and a sparkline need together,
+  // and on a bare label-and-figure cell it is 70-odd px of empty card. While
+  // loading that means the caller's `skeleton`: with no stand-in there is
+  // nothing to hold the band open for, and a cell that reserves it now and
+  // drops it when the figure lands would jump.
+  const hasViz =
+    rest.children != null || (rest.loading === true && rest.skeleton != null);
+  const base = cn(
+    "group flex flex-col gap-2 bg-card p-4 text-left no-underline transition-colors",
+    hasViz && "min-h-32",
+  );
 
   if (href && !active) {
     return (
@@ -201,7 +244,12 @@ function MetricCell({
           className,
         )}
       >
-        <CellInner {...rest} active={active} chevron={showChevron} />
+        <CellInner
+          {...rest}
+          active={active}
+          chevron={showChevron}
+          hasViz={hasViz}
+        />
       </Link>
     );
   }
@@ -212,9 +260,14 @@ function MetricCell({
       data-slot={dataSlot}
       {...(active ? { "aria-current": "page" as const } : {})}
     >
-      <CellInner {...rest} active={active} chevron={showChevron} />
+      <CellInner
+        {...rest}
+        active={active}
+        chevron={showChevron}
+        hasViz={hasViz}
+      />
     </div>
   );
 }
 
-export { MetricReadout, MetricCell, Chevron };
+export { MetricReadout, MetricCell };

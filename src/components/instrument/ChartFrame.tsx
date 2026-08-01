@@ -51,6 +51,7 @@ function ChartFrame({
   figure,
   figureTone = "spruce",
   legend,
+  fill,
   bodyClassName,
   className,
   children,
@@ -63,6 +64,12 @@ function ChartFrame({
   figureTone?: "spruce" | "cost";
   /** Optional legend rendered beneath the chart. */
   legend?: ChartLegendItem[];
+  /**
+   * Grow to fill the slot the frame is placed in — the caption rail and legend
+   * keep their natural height and the chart body takes the slack. Use it wherever
+   * the slot owns the height (a fold's evidence column) rather than the chart.
+   */
+  fill?: boolean;
   /** Extra classes on the chart body wrapper. */
   bodyClassName?: string;
   className?: string;
@@ -74,9 +81,28 @@ function ChartFrame({
     // + `overflow-hidden` clip recharts' wide SVG so a phone rotating back from
     // landscape to portrait can't leave the chart forcing horizontal overflow —
     // the clipped, shrinkable box lets ResponsiveContainer remeasure narrower.
-    <Panel className={cn("max-w-full min-w-0 overflow-hidden", className)}>
+    <Panel
+      className={cn(
+        "max-w-full min-w-0 overflow-hidden",
+        fill && "flex h-full flex-col",
+        className,
+      )}
+    >
       <PanelHeader caption={caption} figure={figure} tone={figureTone} />
-      <div className={cn("max-w-full min-w-0 overflow-hidden", bodyClassName)}>
+      <div
+        className={cn(
+          "max-w-full min-w-0 overflow-hidden",
+          // `min-h-0` so the body can be shorter than the chart's intrinsic
+          // size — without it a flex item refuses to shrink below its content
+          // and the panel outgrows the slot instead of fitting it.
+          //
+          // `flex-1` zeroes the flex basis, which beats any `height` the caller
+          // sets in `bodyClassName` — a body that needs a fixed height at some
+          // widths has to set `basis-*` there too.
+          fill && "min-h-0 flex-1",
+          bodyClassName,
+        )}
+      >
         {children}
       </div>
       {legend && legend.length > 0 && (

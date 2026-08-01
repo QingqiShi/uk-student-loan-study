@@ -11,10 +11,3 @@
 
 /** Flat instrument panel: card surface on the paper background, hairline, faint lift. */
 export const surfaceCard = "rounded-xl bg-card ring-1 ring-border shadow-card";
-
-/**
- * Interactive panel: same flat surface that lifts subtly on hover — a slightly
- * stronger shadow, a spruce (primary) ring, and a small motion-safe rise.
- */
-export const surfaceCardInteractive =
-  "rounded-xl bg-card ring-1 ring-border shadow-card transition-all duration-200 hover:shadow-card-hover hover:ring-primary/40 motion-safe:hover:-translate-y-0.5";

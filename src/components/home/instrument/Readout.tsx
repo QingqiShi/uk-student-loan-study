@@ -79,7 +79,24 @@ function RateVizSkeleton() {
   );
 }
 
-export function Readout({ onTailor }: { onTailor: () => void }) {
+/**
+ * The four loan metrics, as the fold's right-hand rail.
+ *
+ * Shared by the homepage and the four detail pages rather than reimplemented,
+ * because a reader opens a detail page *from* this rail: the cell they clicked
+ * has to still be there afterwards, in the same place, showing the same figure
+ * in the same format. `activeHref` marks the one they are on — it stops being a
+ * link and takes the current-page treatment, and the other three keep working
+ * as the way across to a sibling metric.
+ */
+export function Readout({
+  onTailor,
+  activeHref,
+}: {
+  onTailor: () => void;
+  /** Route of the page this rail is standing on, if any. */
+  activeHref?: string;
+}) {
   const { cards, summary } = usePersonalisedResults();
   const salary = useCurrentSalary();
   const { loans, underGradBalance, postGradBalance } = useLoanConfig();
@@ -103,6 +120,11 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
     interestRatio,
     writtenOffRatio,
   ]);
+
+  // A cell is either a drill-down link or the page you are already on; the
+  // sr-only "open the ..." suffix goes with the link, not with the marker.
+  const nav = (href: string, linkLabel: string) =>
+    activeHref === href ? { active: true as const } : { href, linkLabel };
 
   const effRate = rate?.effectiveRate ?? 0;
   const boeRate = rate?.boeRate ?? 0;
@@ -140,14 +162,13 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
             The exact figure, not the compact card stat: this is the instrument's
             headline number and the whole trust thesis. */}
         <MetricCell
-          href="/repaid"
+          {...nav("/repaid", "open the full repayment breakdown")}
           dataSlot="metric-total"
           tone="emphasis"
           label="Total repaid"
           value={summary ? formatGBP(Math.round(summary.totalPaid)) : undefined}
           loading={!summary || !cards}
           skeleton={<VizSkeleton />}
-          linkLabel="open the full repayment breakdown"
         >
           {cards && (
             <Sparkline
@@ -160,12 +181,11 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
 
         {/* Payoff timeline */}
         <MetricCell
-          href="/balance"
+          {...nav("/balance", "open the full payoff timeline")}
           label="Payoff timeline"
           value={cards?.balance.stat}
           loading={!cards}
           skeleton={<VizSkeleton />}
-          linkLabel="open the full payoff timeline"
         >
           {cards && (
             <Sparkline
@@ -178,13 +198,12 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
 
         {/* Interest paid — the cost figure (clay signal) + split-bar */}
         <MetricCell
-          href="/interest"
+          {...nav("/interest", "open the interest breakdown")}
           tone="cost"
           label={interest?.label ?? "Interest paid"}
           value={interest?.stat}
           loading={!interest}
           skeleton={<InterestVizSkeleton />}
-          linkLabel="open the interest breakdown"
         >
           {interest && (
             <>
@@ -242,12 +261,14 @@ export function Readout({ onTailor }: { onTailor: () => void }) {
 
         {/* Effective rate */}
         <MetricCell
-          href="/effective-rate"
+          {...nav(
+            "/effective-rate",
+            "see how the effective rate is worked out",
+          )}
           label="Effective rate"
           value={rate?.stat}
           loading={!rate}
           skeleton={<RateVizSkeleton />}
-          linkLabel="see how the effective rate is worked out"
         >
           {rate && (
             <div

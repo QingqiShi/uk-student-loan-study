@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Heading } from "@/components/typography/Heading";
-import { SECTION_PAD, SHELL_GUTTER } from "@/lib/layout";
+import { SECTION_PAD, SHELL_GUTTER, WORKSPACE_MAX } from "@/lib/layout";
 
 /**
  * The shared index-page section shell: a full-bleed `<section>` with the
@@ -29,7 +29,7 @@ export function InstrumentSection({
       // `id` + `scroll-mt-22` make every section a jump target that clears the
       // sticky nameplate — the fold links down to them.
       id={id}
-      className={`scroll-mt-22 border-t border-border ${SHELL_GUTTER} ${SECTION_PAD} work:grid work:grid-cols-[34ch_minmax(0,1fr)] work:items-start work:gap-x-[clamp(2.4rem,3vw,4rem)] ultra:max-w-[2160px]`}
+      className={`scroll-mt-22 border-t border-border ${SHELL_GUTTER} ${SECTION_PAD} ${WORKSPACE_MAX} work:grid work:grid-cols-[34ch_minmax(0,1fr)] work:items-start work:gap-x-[clamp(2.4rem,3vw,4rem)]`}
       aria-labelledby={`${id}-h`}
     >
       <div className="work:col-start-1">

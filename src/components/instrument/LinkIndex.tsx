@@ -16,16 +16,35 @@ import { cn } from "@/lib/utils";
  * the same instrument.
  */
 
+/**
+ * Two columns from `work`, seamed vertically instead of horizontally — for a
+ * short index standing in a section cell wide enough that one stacked column
+ * would leave most of the band empty. Below `work` it is the ordinary list.
+ */
+const TWO_UP =
+  "work:grid work:grid-cols-2 work:divide-x work:divide-y-0 work:divide-border work:[&>*]:py-0 work:[&>*:not(:first-child)]:pl-[clamp(1.5rem,2.5vw,3rem)] work:[&>*:not(:last-child)]:pr-[clamp(1.5rem,2.5vw,3rem)]";
+
 /** A flat, borderless linked index wrapping {@link LinkIndexRow}s. */
 export function LinkIndex({
+  columns = 1,
   children,
   className,
 }: {
+  /** Lay the rows out in two columns from `work`. Defaults to one. */
+  columns?: 1 | 2;
   children: React.ReactNode;
   className?: string;
 }) {
   return (
-    <div className={cn("divide-y divide-border", className)}>{children}</div>
+    <div
+      className={cn(
+        "divide-y divide-border",
+        columns === 2 && TWO_UP,
+        className,
+      )}
+    >
+      {children}
+    </div>
   );
 }
 
