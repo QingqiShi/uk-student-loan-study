@@ -75,6 +75,9 @@ function useIsSmallScreen() {
 // mid-glyph; 48 clears half of "£150,000", the widest the formatters produce.
 const DEFAULT_CHART_MARGIN = { top: 25, right: 48, bottom: 25, left: 25 };
 
+/** Breathing room on a small screen, where no axis band is drawn to hold. */
+const SMALL_SCREEN_MARGIN = 10;
+
 /**
  * Where the rotated y-axis label is centred, measured from the SVG's left edge
  * rather than from the axis viewBox: the viewBox recharts hands the label
@@ -92,26 +95,49 @@ const Y_LABEL_X = 12;
 const Y_LABEL_GUTTER = 22;
 
 /**
- * On small screens keep the top/right margins from the caller (they hold the
- * annotation value label and near-edge readouts) but pull the tick-side margins
- * in — the ticks themselves are hidden and their reserved band zeroed by the
- * axis props below. The label is hidden there too, so it asks for no gutter.
+ * On small screens the ticks are hidden and their reserved bands zeroed by the
+ * axis props below, so the margins that exist to clear a tick are holding open
+ * a gutter around nothing — the default's 48 on the right left a 390px phone
+ * with an eighth of its chart blank, against a 10px margin on the left.
+ *
+ * A right margin the caller names by hand survives: only a chart that draws
+ * something out there — a benchmark label, an annotation tag that can ride the
+ * last x value — asks for one, and none of those go away with the ticks.
  */
 function resolveChartMargin(
   marginProp: ChartBaseProps["margin"],
   isSmallScreen: boolean,
   hasYLabel = false,
 ) {
-  const base = marginProp ?? DEFAULT_CHART_MARGIN;
+  const base = { ...DEFAULT_CHART_MARGIN, ...marginProp };
   if (isSmallScreen)
     return {
-      top: base.top ?? 25,
-      right: base.right ?? 25,
-      bottom: 10,
-      left: 10,
+      ...base,
+      right: marginProp?.right ?? SMALL_SCREEN_MARGIN,
+      bottom: SMALL_SCREEN_MARGIN,
+      left: SMALL_SCREEN_MARGIN,
     };
   if (!hasYLabel) return base;
-  return { ...base, left: (base.left ?? 25) + Y_LABEL_GUTTER };
+  return { ...base, left: base.left + Y_LABEL_GUTTER };
+}
+
+/**
+ * Martian Mono's advance width at the 11px the readouts are set in. A
+ * monospace face, so a label's character count is its width.
+ */
+const MONO_CHAR_WIDTH = 7.7;
+
+/**
+ * Slides a centred label back inside the chart, which clips at its own edge.
+ * Recharts hands a label only its own reference line's rect, so the measured
+ * chart width is the only thing there is to clamp the line's x against.
+ */
+function clampLabelX(x: number, lines: string[], chartWidth: number) {
+  if (chartWidth === 0) return x;
+  const half =
+    (Math.max(...lines.map((line) => line.length)) * MONO_CHAR_WIDTH) / 2 + 2;
+  if (half * 2 > chartWidth) return chartWidth / 2;
+  return Math.min(Math.max(x, half), chartWidth - half);
 }
 
 export interface ChartSeriesConfig {
@@ -184,6 +210,9 @@ export function ChartBase({
 }: ChartBaseProps) {
   const gradientId = useId();
   const [isActive, setIsActive] = useState(false);
+  // Only the crosshair readout needs this, and it only renders while the chart
+  // is active — so reading the width on the way in is both enough and current.
+  const [chartWidth, setChartWidth] = useState(0);
   const [crosshairPoint, setCrosshairPoint] = useState<CrosshairPoint | null>(
     null,
   );
@@ -350,14 +379,16 @@ export function ChartBase({
       className="size-full overflow-hidden select-none"
       {...(isCrosshair
         ? {
-            onMouseEnter: () => {
+            onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => {
               setIsActive(true);
+              setChartWidth(event.currentTarget.clientWidth);
             },
             onMouseLeave: () => {
               setIsActive(false);
             },
-            onTouchStart: () => {
+            onTouchStart: (event: React.TouchEvent<HTMLDivElement>) => {
               setIsActive(true);
+              setChartWidth(event.currentTarget.clientWidth);
             },
             onTouchEnd: () => {
               setIsActive(false);
@@ -525,9 +556,12 @@ export function ChartBase({
                     ? `${yText} at ${xText} ${seriesName}`
                     : `${yText} at ${xText}`;
                 });
+                // "£122,319 at Year 30" is wider than any margin could hold,
+                // so at the ends of the series it slides off the line instead.
+                const x = clampLabelX(viewBox.x, lines, chartWidth);
                 return (
                   <text
-                    x={viewBox.x}
+                    x={x}
                     y={viewBox.y}
                     textAnchor="middle"
                     fontFamily="var(--font-mono)"
@@ -542,7 +576,7 @@ export function ChartBase({
                       return (
                         <tspan
                           key={v.dataKey}
-                          x={viewBox.x}
+                          x={x}
                           dy={i === 0 ? -10 - (isMulti ? 14 : 0) : 14}
                           fill={`var(--color-${v.dataKey})`}
                         >

@@ -66,7 +66,15 @@ export function TotalRepaymentChart() {
       interactionMode="none"
       annotations={annotations}
       xDomain={[MIN_SALARY, MAX_SALARY]}
-      margin={{ top: 25, right: 16, bottom: 8, left: 25 }}
+      margin={{
+        // Named rather than inherited: the salary tag rides the annotation all
+        // the way to £150,000, so this chart still needs the gutter on a phone,
+        // where the default one goes away with the ticks. At 16 the tag and the
+        // end tick were both sliced — "£150,00".
+        right: 48,
+        // The x-axis carries no label here, so it needs less room under the ticks.
+        bottom: 8,
+      }}
     />
   );
 }
