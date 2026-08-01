@@ -29,6 +29,22 @@ test.describe("Accessibility", () => {
     expect(results.violations).toEqual([]);
   });
 
+  test("detail page has no WCAG 2.1 AA violations", async ({ page }) => {
+    // The readout fades in on load, and axe reads whatever opacity it catches —
+    // a half-faded label fails contrast against the surface behind it. Reduced
+    // motion drops the animation, so the scan sees the resting state, which is
+    // the state the contrast requirement is actually about.
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/repaid?loans=PLAN_2:45000&sal=50000");
+    // Wait for the fold's readout to resolve so the loaded page is what is scanned
+    await expect(page.getByText(/Your repayments start at/)).toBeVisible({
+      timeout: 15_000,
+    });
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
   test("overpay page has no WCAG 2.1 AA violations", async ({ page }) => {
     await page.goto("/overpay");
     // Wait for verdict to load

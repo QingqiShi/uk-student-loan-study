@@ -9,7 +9,6 @@
   /* Flat-by-default: surfaces separate by tonal step + hairline, not elevation.
      The panel "shadow" is a barely-there lift, defined per-theme via --elev-*. */
   --shadow-card: var(--elev-1);
-  --shadow-card-hover: var(--elev-2);
   /* Instrument radii: chip 6, button 8, readout 12, panel 14 */
   --radius-sm: 6px;
   --radius-md: 8px;
@@ -107,6 +106,7 @@
   --breakpoint-ultra: 150rem; /* 2400 — ultra-wide cap */
   /* Container-query sizes — the presets scroller reflows on its own width
      inside the workspace rail (@container), not the viewport. */
+  --container-tight: 26rem; /* 416 — presets 2-col (a fold rail) */
   --container-cozy: 35rem; /* 560 — presets 4-col */
   --container-snug: 45rem; /* 720 — presets 5-col */
 }
@@ -158,8 +158,6 @@
 
   --elev-1:
     0 1px 0 rgba(19, 27, 24, 0.03), 0 14px 34px -30px rgba(19, 27, 24, 0.16);
-  --elev-2:
-    0 1px 0 rgba(19, 27, 24, 0.04), 0 18px 40px -28px rgba(19, 27, 24, 0.24);
 
   /* Control-thumb shadow — tight, ink-tinted to match --elev (not raw black). */
   --thumb-shadow: 0 1px 3px rgba(19, 27, 24, 0.25);
@@ -240,7 +238,6 @@
   --signal-wash: color-mix(in oklab, var(--signal) 15%, var(--card));
 
   --elev-1: 0 1px 0 rgba(0, 0, 0, 0.3), 0 22px 46px -34px rgba(0, 0, 0, 0.6);
-  --elev-2: 0 1px 0 rgba(0, 0, 0, 0.35), 0 26px 52px -30px rgba(0, 0, 0, 0.72);
 
   /* Control-thumb shadow — black reads fine on the dark surface. */
   --thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);

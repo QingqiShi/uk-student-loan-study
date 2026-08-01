@@ -3,14 +3,14 @@
 import { primaryPlanName } from "@/components/home/instrument/planInfo";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
 import type { ChartLegendItem } from "@/components/instrument/ChartFrame";
-import { Skeleton } from "@/components/ui/skeleton";
-import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
 import { useLoanConfig } from "@/hooks/useStoreSelectors";
 import { formatGBP } from "@/lib/format";
+import { FOLD_CHART_BODY } from "@/lib/layout";
 import { BalanceDetailChart } from "./BalanceDetailChart";
 import { DetailPageShell } from "./DetailPageShell";
-import { PayoffHeroStats, PayoffHeroStatsSkeleton } from "./PayoffHeroStats";
+import { FoldAnswer, FoldAnswerSkeleton } from "./FoldAnswer";
+import { OutcomeBadge } from "./OutcomeBadge";
 
 export function BalanceDetailPage() {
   const result = useDetailSeriesData();
@@ -19,7 +19,7 @@ export function BalanceDetailPage() {
 
   const payoffYears = result ? Math.round(result.stats.monthsToPayoff / 12) : 0;
 
-  function getInsightText() {
+  function getClaimText() {
     if (!result) return null;
     const { peakBalanceMonth, writtenOff, peakBalance, initialBalance } =
       result.stats;
@@ -69,34 +69,44 @@ export function BalanceDetailPage() {
 
   return (
     <DetailPageShell
-      heading="Payoff Timeline"
+      heading="Payoff timeline"
       description="See when you'll pay off your student loan and how your balance changes over time."
-    >
-      {result ? (
-        <div className="space-y-6">
-          <PayoffHeroStats
-            payoffYears={payoffYears}
-            peakBalance={formatGBP(Math.round(result.stats.peakBalance))}
-            totalRepaid={currencyFormatter.format(result.stats.totalPaid)}
-            writtenOff={result.stats.writtenOff}
-            totalWrittenOffAmount={
-              result.stats.writtenOff
-                ? currencyFormatter.format(result.stats.totalWrittenOff)
-                : undefined
+      answer={
+        result ? (
+          <FoldAnswer
+            figure={`${String(payoffYears)} years`}
+            badge={
+              <OutcomeBadge
+                conditions={[
+                  {
+                    when: result.stats.writtenOff,
+                    label: "Written off",
+                    variant: "warning",
+                  },
+                  {
+                    when: payoffYears <= 15,
+                    label: "Ahead of schedule",
+                    variant: "success",
+                  },
+                  { when: true, label: "Paid off", variant: "success" },
+                ]}
+              />
             }
-            aheadOfSchedule={payoffYears <= 15 && !result.stats.writtenOff}
-            sparkline={result.balanceSeries.map((d) => ({
-              month: d.month,
-              value: d.balance,
-            }))}
+            claim={getClaimText()}
           />
-
+        ) : (
+          <FoldAnswerSkeleton />
+        )
+      }
+      chart={
+        result ? (
           <ChartFrame
+            fill
+            bodyClassName={FOLD_CHART_BODY}
             caption={`Fig. 1 — Balance over time · ${planName}`}
             figure={`Peak ${formatGBP(Math.round(result.stats.peakBalance))}`}
             figureTone="cost"
             legend={legend}
-            bodyClassName="h-65 sm:h-75 md:h-85"
           >
             <BalanceDetailChart
               data={result.balanceSeries}
@@ -105,17 +115,8 @@ export function BalanceDetailPage() {
               writeOffMonth={result.stats.writeOffMonth}
             />
           </ChartFrame>
-
-          <p className="max-w-prose text-sm text-muted-foreground">
-            {getInsightText()}
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <PayoffHeroStatsSkeleton />
-          <Skeleton className="h-65 rounded-xl sm:h-75 md:h-85" />
-        </div>
-      )}
-    </DetailPageShell>
+        ) : null
+      }
+    />
   );
 }

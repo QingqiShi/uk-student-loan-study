@@ -40,7 +40,7 @@ export function OverpayComparisonChart({
   if (!analysis) {
     return (
       <ChartFrame
-        className="flex h-full flex-col"
+        fill
         caption={caption}
         // A placeholder in the figure slot, not an empty one: the caption fills
         // the header's first flex line on a phone, so a figure arriving later
@@ -48,7 +48,7 @@ export function OverpayComparisonChart({
         // Reserving the slot now keeps the curve from jumping on load.
         figure={<Skeleton className="inline-block h-3.5 w-24 align-middle" />}
         figureTone="cost"
-        bodyClassName="flex min-h-0 flex-1"
+        bodyClassName="flex"
       >
         {/* No min-height: the fold's slot is only ~224px tall on a phone, and a
             floor taller than the body is silently clipped by the panel. */}
@@ -67,9 +67,9 @@ export function OverpayComparisonChart({
   if (sampledData.length === 0) {
     return (
       <ChartFrame
-        className="flex h-full flex-col"
+        fill
         caption={caption}
-        bodyClassName="flex min-h-0 flex-1 items-center justify-center text-muted-foreground"
+        bodyClassName="flex items-center justify-center text-muted-foreground"
       >
         <span>Enter an overpayment amount to see the comparison</span>
       </ChartFrame>
@@ -89,11 +89,10 @@ export function OverpayComparisonChart({
   // same two names against the same two line colours, so it keys the chart.
   return (
     <ChartFrame
-      className="flex h-full flex-col"
+      fill
       caption={caption}
       figure={`Peak ${currencyFormatter.format(peakBalance)}`}
       figureTone="cost"
-      bodyClassName="min-h-0 flex-1"
     >
       <ChartBase
         type="line"

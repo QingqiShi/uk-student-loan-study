@@ -35,7 +35,7 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: "Effective Rate",
+      name: "Effective rate",
       item: "https://studentloanstudy.uk/effective-rate",
     },
   ],

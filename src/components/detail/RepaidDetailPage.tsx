@@ -2,14 +2,18 @@
 
 import { primaryPlanName } from "@/components/home/instrument/planInfo";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
-import { Skeleton } from "@/components/ui/skeleton";
 import { currencyFormatter } from "@/constants";
 import { useDetailSeriesData } from "@/hooks/useDetailData";
 import { useLoanConfig } from "@/hooks/useStoreSelectors";
 import { formatGBP } from "@/lib/format";
+import { FOLD_CHART_BODY } from "@/lib/layout";
 import { CumulativeRepaidChart } from "./CumulativeRepaidChart";
 import { DetailPageShell } from "./DetailPageShell";
-import { RepaidHeroStats, RepaidHeroStatsSkeleton } from "./RepaidHeroStats";
+import { FoldAnswer, FoldAnswerSkeleton } from "./FoldAnswer";
+import { OutcomeBadge } from "./OutcomeBadge";
+
+/** Below this the two are the same number to the reader, and a signed difference would be noise. */
+const LEVEL_TOLERANCE_GBP = 1;
 
 export function RepaidDetailPage() {
   const result = useDetailSeriesData();
@@ -18,7 +22,32 @@ export function RepaidDetailPage() {
 
   const payoffYears = result ? Math.round(result.stats.monthsToPayoff / 12) : 0;
 
-  function getInsightText() {
+  /**
+   * The page's claim, and the site's thesis in one line: what you repay measured
+   * against what you borrowed.
+   *
+   * Stated as a comparison only, with no cause attached to a shortfall. Present
+   * value discounts the total but not the balance it is compared against, so an
+   * "adjust for inflation" reader can land below what they borrowed on a loan
+   * that was paid off in full — a sentence blaming the write-off would be wrong
+   * for them.
+   */
+  function getClaim() {
+    if (!result) return null;
+    const borrowed = result.stats.initialBalance;
+    const difference = result.stats.totalPaid - borrowed;
+    const formattedBorrowed = currencyFormatter.format(borrowed);
+
+    if (Math.abs(difference) < LEVEL_TOLERANCE_GBP) {
+      return `That's almost exactly the ${formattedBorrowed} you borrowed.`;
+    }
+
+    return `That's ${currencyFormatter.format(Math.abs(difference))} ${
+      difference > 0 ? "more" : "less"
+    } than the ${formattedBorrowed} you borrowed.`;
+  }
+
+  function getNoteText() {
     if (!result) return null;
     const { monthlyRepayment, writtenOff } = result.stats;
     const monthly = currencyFormatter.format(monthlyRepayment);
@@ -32,26 +61,41 @@ export function RepaidDetailPage() {
 
   return (
     <DetailPageShell
-      heading="Total Repayments"
+      heading="Total repaid"
       description="Track how much you'll repay on your student loan over time."
-    >
-      {result ? (
-        <div className="space-y-6">
-          <RepaidHeroStats
-            totalRepaid={currencyFormatter.format(result.stats.totalPaid)}
-            monthlyRepayment={currencyFormatter.format(
-              result.stats.monthlyRepayment,
-            )}
-            writtenOff={result.stats.writtenOff}
-            payoffYears={payoffYears}
-            aheadOfSchedule={payoffYears <= 15 && !result.stats.writtenOff}
-            sparkline={result.cumulativeRepaid.map((d) => ({
-              month: d.month,
-              value: d.cumulative,
-            }))}
+      answer={
+        result ? (
+          <FoldAnswer
+            figure={currencyFormatter.format(result.stats.totalPaid)}
+            badge={
+              <OutcomeBadge
+                conditions={[
+                  {
+                    when: result.stats.writtenOff,
+                    label: "Written off",
+                    variant: "warning",
+                  },
+                  {
+                    when: payoffYears <= 15,
+                    label: "Ahead of schedule",
+                    variant: "success",
+                  },
+                  { when: true, label: "Paid off", variant: "success" },
+                ]}
+              />
+            }
+            claim={getClaim()}
+            note={<p>{getNoteText()}</p>}
           />
-
+        ) : (
+          <FoldAnswerSkeleton />
+        )
+      }
+      chart={
+        result ? (
           <ChartFrame
+            fill
+            bodyClassName={FOLD_CHART_BODY}
             caption={`Fig. 1 — Lifetime repaid · ${planName}`}
             figure={`Total ${formatGBP(Math.round(result.stats.totalPaid))}`}
             legend={[
@@ -66,24 +110,14 @@ export function RepaidDetailPage() {
                   ]
                 : []),
             ]}
-            bodyClassName="h-65 sm:h-75 md:h-85"
           >
             <CumulativeRepaidChart
               data={result.cumulativeRepaid}
               writeOffMonth={result.stats.writeOffMonth}
             />
           </ChartFrame>
-
-          <p className="max-w-prose text-sm text-muted-foreground">
-            {getInsightText()}
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <RepaidHeroStatsSkeleton />
-          <Skeleton className="h-65 rounded-xl sm:h-75 md:h-85" />
-        </div>
-      )}
-    </DetailPageShell>
+        ) : null
+      }
+    />
   );
 }

@@ -69,21 +69,49 @@ function useIsSmallScreen() {
   );
 }
 
-const DEFAULT_CHART_MARGIN = { top: 25, right: 25, bottom: 25, left: 25 };
+// The right margin has to clear *half* the last x-axis tick, which recharts
+// centres on the final data point at the very edge of the plot area. At 25 the
+// widest of them — "Year 30", "£150,000" — overhung the SVG and were clipped
+// mid-glyph; 48 clears half of "£150,000", the widest the formatters produce.
+const DEFAULT_CHART_MARGIN = { top: 25, right: 48, bottom: 25, left: 25 };
+
+/**
+ * Where the rotated y-axis label is centred, measured from the SVG's left edge
+ * rather than from the axis viewBox: the viewBox recharts hands the label
+ * renderer is the axis band's, and the band is exactly what the label has to
+ * stay out of, so measuring from it is measuring from the wrong thing.
+ */
+const Y_LABEL_X = 12;
+
+/**
+ * Extra left margin a chart needs to seat that label. Without it the label and
+ * the widest tick ("£140,000", ~62px) both want the same 25px, and the two
+ * overlap by ~9px — visibly, at plot heights where the label's vertical centre
+ * lands on a gridline.
+ */
+const Y_LABEL_GUTTER = 22;
 
 /**
  * On small screens keep the top/right margins from the caller (they hold the
  * annotation value label and near-edge readouts) but pull the tick-side margins
  * in — the ticks themselves are hidden and their reserved band zeroed by the
- * axis props below.
+ * axis props below. The label is hidden there too, so it asks for no gutter.
  */
 function resolveChartMargin(
   marginProp: ChartBaseProps["margin"],
   isSmallScreen: boolean,
+  hasYLabel = false,
 ) {
   const base = marginProp ?? DEFAULT_CHART_MARGIN;
-  if (!isSmallScreen) return base;
-  return { top: base.top ?? 25, right: base.right ?? 25, bottom: 10, left: 10 };
+  if (isSmallScreen)
+    return {
+      top: base.top ?? 25,
+      right: base.right ?? 25,
+      bottom: 10,
+      left: 10,
+    };
+  if (!hasYLabel) return base;
+  return { ...base, left: (base.left ?? 25) + Y_LABEL_GUTTER };
 }
 
 export interface ChartSeriesConfig {
@@ -264,6 +292,10 @@ export function ChartBase({
                 strokeDasharray={ha.strokeDasharray ?? "6 4"}
                 label={{
                   value: ha.label,
+                  // Out in the margin, unlike the line charts below. A bar
+                  // chart's columns run to the right edge of the plot, so an
+                  // inside label lands on top of the last bar; the margin is
+                  // wide enough for the short labels bars carry ("6% cap").
                   position: "right" as const,
                   fill: ha.color ?? "var(--muted-foreground)",
                   fontSize: 11,
@@ -337,7 +369,7 @@ export function ChartBase({
         <ChartComponent
           data={data}
           accessibilityLayer
-          margin={resolveChartMargin(marginProp, isSmallScreen)}
+          margin={resolveChartMargin(marginProp, isSmallScreen, yLabel != null)}
           onMouseMove={isCrosshair ? handleChartMouseMove : undefined}
           onMouseLeave={isCrosshair ? handleChartMouseLeave : undefined}
         >
@@ -406,17 +438,24 @@ export function ChartBase({
                       y: number;
                       height: number;
                     };
-                  }) => (
-                    <text
-                      x={viewBox.x - 10}
-                      y={viewBox.y + viewBox.height / 2}
-                      transform={`rotate(-90, ${String(viewBox.x - 10)}, ${String(viewBox.y + viewBox.height / 2)})`}
-                      textAnchor="middle"
-                      className="fill-muted-foreground text-xs"
-                    >
-                      {yLabel}
-                    </text>
-                  ),
+                  }) => {
+                    // Only the vertical centre comes from the viewBox; the
+                    // horizontal seat is {@link Y_LABEL_X}, in the gutter the
+                    // margin reserves for it.
+                    const x = Y_LABEL_X;
+                    const y = viewBox.y + viewBox.height / 2;
+                    return (
+                      <text
+                        x={x}
+                        y={y}
+                        transform={`rotate(-90, ${String(x)}, ${String(y)})`}
+                        textAnchor="middle"
+                        className="fill-muted-foreground text-xs"
+                      >
+                        {yLabel}
+                      </text>
+                    );
+                  },
                 }
               : {})}
           />
@@ -624,7 +663,12 @@ export function ChartBase({
               strokeDasharray={ha.strokeDasharray ?? "6 4"}
               label={{
                 value: ha.label,
-                position: "right" as const,
+                // Inside the plot: these labels name a benchmark in full
+                // ("BoE base 3.8%"), which needs ~85px of margin to survive out
+                // there and was being sliced to its first word without it. A
+                // line chart has the room — the curve is one stroke, not a wall
+                // of columns.
+                position: "insideTopRight" as const,
                 fill: ha.color ?? "var(--muted-foreground)",
                 fontFamily: "var(--font-mono)",
                 fontSize: 11,
