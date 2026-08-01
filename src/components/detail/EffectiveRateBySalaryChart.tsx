@@ -85,14 +85,12 @@ export function EffectiveRateBySalaryChart({
       horizontalAnnotations={horizontalAnnotations}
       xDomain={[MIN_SALARY, MAX_SALARY]}
       margin={{
-        top: 25,
-        // Matches the default: sized to clear half of the "£150,000" end tick,
-        // which this chart's x-axis is the one that produces.
+        // Named rather than inherited: the salary tag rides the annotation all
+        // the way to £150,000, so this chart still needs the gutter on a phone,
+        // where the default one goes away with the ticks.
         right: 48,
-        // Only this differs — the x-axis carries no label here, so it needs
-        // less room under the ticks.
+        // The x-axis carries no label here, so it needs less room under the ticks.
         bottom: 8,
-        left: 25,
       }}
     />
   );

@@ -57,6 +57,11 @@ export function HistoricalRatesChart() {
             strokeDasharray: "6 4",
           },
         ]}
+        // Named rather than inherited: a bar chart hangs its benchmark label
+        // out in the right margin — an inside label would land on the last
+        // bar — so this one still needs the gutter on a phone, where the
+        // default goes away with the ticks.
+        margin={{ right: 48 }}
         showLegend
       />
     </div>
