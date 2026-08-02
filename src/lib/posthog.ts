@@ -19,6 +19,9 @@ export function initPostHog() {
 
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN ?? "", {
     api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    // The host above is a reverse proxy, so links into PostHog need the real
+    // dashboard URL. Without this the toolbar and its links go to the proxy.
+    ui_host: "https://eu.posthog.com",
     // No cookies and no browser storage, so the site needs no consent banner.
     // PostHog counts visitors with a hash it computes server-side instead.
     // Needs "Cookieless server hash mode" enabled in the PostHog project.
