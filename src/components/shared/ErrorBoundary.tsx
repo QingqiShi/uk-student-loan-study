@@ -6,6 +6,7 @@ import {
 } from "react-error-boundary";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { captureException } from "@/lib/posthog";
 
 function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const errorMessage =
@@ -33,6 +34,7 @@ export function AppErrorBoundary({ children }: AppErrorBoundaryProps) {
   return (
     <ReactErrorBoundary
       FallbackComponent={ErrorFallback}
+      onError={captureException}
       onReset={() => {
         // Reset application state if needed
         window.location.reload();

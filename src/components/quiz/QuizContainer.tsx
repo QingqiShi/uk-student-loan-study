@@ -234,7 +234,21 @@ export function QuizContainer({
       ?.focus();
   }, [state.currentStep]);
 
+  // Record a completion whenever the reached result differs from the one last
+  // recorded. A no-op "Change your answers" round-trip that lands on the same
+  // plans doesn't re-count; an edit that changes the outcome records the
+  // corrected plans, so the latest event is always the user's final result.
+  // Toggling between two outcomes re-reports each change — deliberately keeping
+  // attribution correct at the cost of a little over-counting; restart re-arms.
   const lastCompletedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (state.currentStep !== "result") return;
+    const result = currentLoans.join(",");
+    if (lastCompletedRef.current !== result) {
+      lastCompletedRef.current = result;
+      trackQuizCompleted(result);
+    }
+  }, [state.currentStep, currentLoans]);
 
   const handleRegionSelect = (region: Region) => {
     if (!hasStartedRef.current) {
@@ -255,13 +269,6 @@ export function QuizContainer({
   };
 
   const handlePostgradSelect = (answer: "loan" | "self-funded" | "no") => {
-    const result = determineAllLoans({ ...state, postgradAnswer: answer }).join(
-      ",",
-    );
-    if (lastCompletedRef.current !== result) {
-      lastCompletedRef.current = result;
-      trackQuizCompleted(result);
-    }
     dispatch({ type: "SET_POSTGRAD", payload: answer });
   };
 

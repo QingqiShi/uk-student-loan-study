@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Archivo, Martian_Mono } from "next/font/google";
+import { CookieBanner } from "@/components/shared/CookieBanner";
 import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
 import { PersonalisedResultsProvider } from "@/context/PersonalisedResultsContext";
@@ -124,8 +124,8 @@ export default function RootLayout({
             </AssumptionsWizardProvider>
           </LoanProvider>
         </ThemeProvider>
+        <CookieBanner />
         <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

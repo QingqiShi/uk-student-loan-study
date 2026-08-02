@@ -1,12 +1,9 @@
 import posthog from "posthog-js";
+import { posthogEnabled } from "@/lib/posthog";
 
 function track(event: string, properties: Record<string, unknown> = {}) {
-  if (
-    process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
-    process.env.NEXT_PUBLIC_POSTHOG_HOST
-  ) {
-    posthog.capture(event, properties);
-  }
+  if (!posthogEnabled) return;
+  posthog.capture(event, properties);
 }
 
 // =============================================================================
