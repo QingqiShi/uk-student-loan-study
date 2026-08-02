@@ -16,6 +16,7 @@ overrides:
 # 10 and the app builds fine without them); pnpm 11 requires an explicit choice.
 allowBuilds:
   "@parcel/watcher": false
+  core-js: false
   esbuild: false
   msw: false
   sharp: false

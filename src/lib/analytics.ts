@@ -1,4 +1,13 @@
-import { track } from "@vercel/analytics";
+import posthog from "posthog-js";
+
+function track(event: string, properties: Record<string, unknown> = {}) {
+  if (
+    process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+    process.env.NEXT_PUBLIC_POSTHOG_HOST
+  ) {
+    posthog.capture(event, properties);
+  }
+}
 
 // =============================================================================
 // Home Page Events
