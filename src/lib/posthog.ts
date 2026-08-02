@@ -22,6 +22,9 @@ export function initPostHog() {
     // The host above is a reverse proxy, so links into PostHog need the real
     // dashboard URL. Without this the toolbar and its links go to the proxy.
     ui_host: "https://eu.posthog.com",
+    // The app navigates on the client. The default captures the first page
+    // view only, which hides every move between pages.
+    capture_pageview: "history_change",
     // No cookies and no browser storage, so the site needs no consent banner.
     // PostHog counts visitors with a hash it computes server-side instead.
     // Needs "Cookieless server hash mode" enabled in the PostHog project.
