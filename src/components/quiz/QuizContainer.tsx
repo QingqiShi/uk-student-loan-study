@@ -255,7 +255,9 @@ export function QuizContainer({
   };
 
   const handlePostgradSelect = (answer: "loan" | "self-funded" | "no") => {
-    const result = determineAllLoans({ ...state, postgradAnswer: answer }).join(",");
+    const result = determineAllLoans({ ...state, postgradAnswer: answer }).join(
+      ",",
+    );
     if (lastCompletedRef.current !== result) {
       lastCompletedRef.current = result;
       trackQuizCompleted(result);
