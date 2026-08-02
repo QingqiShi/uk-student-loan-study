@@ -21,5 +21,11 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // Exercise the real PostHog init path in e2e. The host never resolves, so
+    // nothing leaves the machine; a crash in init still fails the suite.
+    env: {
+      NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: "phc_e2e_placeholder",
+      NEXT_PUBLIC_POSTHOG_HOST: "https://posthog.invalid",
+    },
   },
 });

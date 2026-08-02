@@ -1,4 +1,10 @@
-import { track } from "@vercel/analytics";
+import posthog from "posthog-js";
+import { posthogEnabled } from "@/lib/posthog";
+
+function track(event: string, properties: Record<string, unknown> = {}) {
+  if (!posthogEnabled) return;
+  posthog.capture(event, properties);
+}
 
 // =============================================================================
 // Home Page Events
