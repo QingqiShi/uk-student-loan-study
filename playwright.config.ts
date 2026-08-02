@@ -12,16 +12,8 @@ export default defineConfig({
   },
   projects: [
     {
-      name: "setup",
-      testMatch: /.*\.setup\.ts/,
-    },
-    {
       name: "chromium",
-      use: {
-        ...devices["Desktop Chrome"],
-        storageState: "e2e/.storage/consent.json",
-      },
-      dependencies: ["setup"],
+      use: { ...devices["Desktop Chrome"] },
     },
   ],
   webServer: {
@@ -29,9 +21,8 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-    // Locally `pnpm dev` inlines these per request, so the cookie banner
-    // renders without a .env.local. In CI the same values are set on the
-    // build step instead. The host never resolves; specs abort calls to it.
+    // Exercise the real PostHog init path in e2e. The host never resolves, so
+    // nothing leaves the machine; a crash in init still fails the suite.
     env: {
       NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: "phc_e2e_placeholder",
       NEXT_PUBLIC_POSTHOG_HOST: "https://posthog.invalid",

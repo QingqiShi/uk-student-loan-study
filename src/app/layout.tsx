@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Archivo, Martian_Mono } from "next/font/google";
-import { CookieBanner } from "@/components/shared/CookieBanner";
+import { PostHogInit } from "@/components/shared/PostHogInit";
 import { AssumptionsWizardProvider } from "@/context/AssumptionsWizardContext";
 import { LoanProvider } from "@/context/LoanContext";
 import { PersonalisedResultsProvider } from "@/context/PersonalisedResultsContext";
@@ -124,7 +124,7 @@ export default function RootLayout({
             </AssumptionsWizardProvider>
           </LoanProvider>
         </ThemeProvider>
-        <CookieBanner />
+        <PostHogInit />
         <Analytics />
       </body>
     </html>

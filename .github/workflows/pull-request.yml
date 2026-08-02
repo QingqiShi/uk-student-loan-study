@@ -70,9 +70,9 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
       - name: Build app
-        # NEXT_PUBLIC_* values are inlined at build time, so the cookie banner
-        # only renders if they are set here. The host is deliberately
-        # unresolvable and the specs abort any request to it.
+        # NEXT_PUBLIC_* values are inlined at build time, so PostHog only
+        # initialises if they are set here. The host is deliberately
+        # unresolvable, so nothing leaves the runner.
         env:
           NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: phc_e2e_placeholder
           NEXT_PUBLIC_POSTHOG_HOST: https://posthog.invalid
