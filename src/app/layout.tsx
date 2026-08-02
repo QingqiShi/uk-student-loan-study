@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Archivo, Martian_Mono } from "next/font/google";
 import { PostHogInit } from "@/components/shared/PostHogInit";
@@ -125,7 +124,6 @@ export default function RootLayout({
           </LoanProvider>
         </ThemeProvider>
         <PostHogInit />
-        <Analytics />
       </body>
     </html>
   );
