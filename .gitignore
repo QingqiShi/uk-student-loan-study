@@ -39,9 +39,13 @@ playwright-report/
 # GOV.UK checker results
 scripts/check-govuk-figures/results/
 
-# Claude Code worktrees
+# Claude Code
 .claude/worktrees/
 .claude/scheduled_tasks.lock
+.claude/settings.local.json
+
+# Agent skills installed on demand (posthog-cli api skill install)
+.agents/
 
 # impeccable design-review snapshots (local tooling artifacts)
 .impeccable/
