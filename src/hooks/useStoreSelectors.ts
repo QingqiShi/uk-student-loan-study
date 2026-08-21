@@ -57,6 +57,12 @@ export function useThresholdGrowthRate(): number {
   return thresholdGrowthRate;
 }
 
+/** Select whether the Plan 2 threshold freeze is applied */
+export function useApplyPlan2Freeze(): boolean {
+  const { applyPlan2Freeze } = useLoanConfigState();
+  return applyPlan2Freeze;
+}
+
 /** Compute Plan 2 freeze schedule from the toggle state. Returns undefined when off. */
 export function usePlan2ThresholdSchedule(): number[] | undefined {
   const { applyPlan2Freeze, loans } = useLoanConfigState();
