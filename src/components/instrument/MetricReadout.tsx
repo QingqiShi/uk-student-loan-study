@@ -97,11 +97,29 @@ function Chevron() {
 // the headline steps up to `fig-hero`, cost figures take the clay signal. Emphasis
 // keeps the value in ink and flips the *label* to spruce-ink (see CellInner) — the
 // homepage readout's headline treatment, now the shared standard.
-const VALUE_TONE: Record<"default" | "emphasis" | "cost", string> = {
+export type MetricTone = "default" | "emphasis" | "cost";
+
+const VALUE_TONE: Record<MetricTone, string> = {
   default: "text-fig-lg text-foreground",
   emphasis: "text-fig-hero text-foreground",
   cost: "text-fig-lg text-signal",
 };
+
+/**
+ * The readout figure treatment on its own, for surfaces that lay out their own
+ * cells (a guide's `SeamGrid`, say) but must set their figures the same way.
+ *
+ * `leading-none` trails the tone deliberately: a font-size utility overrides the
+ * line-height set before it, so the readout's 1.0 leading has to be the last
+ * word or the figure ramp would reintroduce normal leading.
+ */
+function metricValueClass(tone: MetricTone = "default"): string {
+  return cn(
+    "font-mono font-semibold tracking-tight tabular-nums",
+    VALUE_TONE[tone],
+    "leading-none",
+  );
+}
 
 type MetricCellProps = {
   /** Engraved sans label (the metric key). */
@@ -113,7 +131,7 @@ type MetricCellProps = {
    * and flips the label to spruce-ink, for the headline number) or `cost` (clay
    * signal, for interest/cost figures).
    */
-  tone?: "default" | "emphasis" | "cost";
+  tone?: MetricTone;
   /** Turns the whole cell into a drill-down link with hover + focus states. */
   href?: string;
   /** Marks the cell as the current page: no link, no chevron, spruce-ink label. */
@@ -149,14 +167,7 @@ function CellInner({
   children,
   hasViz,
 }: MetricCellProps & { chevron: boolean; hasViz: boolean }) {
-  // `leading-none` trails the tone deliberately: a font-size utility overrides
-  // the line-height set before it, so the readout's 1.0 leading has to be the
-  // last word or the figure ramp would reintroduce normal leading.
-  const valueClass = cn(
-    "font-mono font-semibold tracking-tight tabular-nums",
-    VALUE_TONE[tone],
-    "leading-none",
-  );
+  const valueClass = metricValueClass(tone);
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -270,4 +281,4 @@ function MetricCell({
   );
 }
 
-export { MetricReadout, MetricCell };
+export { MetricReadout, MetricCell, metricValueClass };

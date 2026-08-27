@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { movingAbroadFaqs } from "@/components/guides/moving-abroad/overseas-data";
 
 const description =
-  "Yes — you still repay your UK student loan abroad, and moving doesn't wipe it. See how SLC thresholds shift in Australia, Canada, the USA, Dubai and Spain, plus what to do before you go.";
+  "Yes — you still repay your UK student loan abroad; moving doesn't wipe it. Estimate your repayment in any country. Student loans never touch your credit score.";
 
 export const metadata: Metadata = {
   title: "What Happens to Your Student Loan If You Move Abroad? (UK)",
@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "student loan Dubai UAE",
     "student loan Spain",
     "student loan wiped moving abroad",
+    "student loan abroad calculator",
+    "student loan overseas threshold",
+    "student loan credit score abroad",
   ],
   alternates: {
     canonical: "/guides/moving-abroad",
@@ -86,7 +89,7 @@ const articleSchema = {
     url: "https://studentloanstudy.uk",
   },
   datePublished: "2026-02-14",
-  dateModified: "2026-07-10",
+  dateModified: "2026-08-28",
 };
 
 // Note: JSON-LD scripts render in body for nested layouts (Next.js limitation).

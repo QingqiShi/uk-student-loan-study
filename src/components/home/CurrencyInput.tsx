@@ -43,7 +43,11 @@ export function CurrencyInput({
   );
 }
 
-function CustomInput({
+/**
+ * `react-number-format`'s `customInput` slot: it owns the value and the ref, so
+ * the app's `<Input>` is wrapped rather than rendered directly.
+ */
+export function CustomInput({
   ref,
   ...props
 }: React.ComponentProps<"input"> & { ref?: React.Ref<HTMLInputElement> }) {

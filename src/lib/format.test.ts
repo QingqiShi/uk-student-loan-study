@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatExchangeRate,
   formatGBP,
+  formatGBPPence,
+  formatMultiplier,
   formatPercent,
   formatYearFromMonth,
   percentagesSummingTo100,
@@ -97,5 +100,35 @@ describe("percentagesSummingTo100", () => {
     expect(percentagesSummingTo100([1, 1, 2]).reduce((a, b) => a + b, 0)).toBe(
       100,
     );
+  });
+});
+
+describe("formatGBPPence", () => {
+  it("always shows two decimal places", () => {
+    expect(formatGBPPence(327.2)).toBe("£327.20");
+    expect(formatGBPPence(409)).toBe("£409.00");
+  });
+
+  it("keeps the thousands separator", () => {
+    expect(formatGBPPence(1234.5)).toBe("£1,234.50");
+  });
+});
+
+describe("formatMultiplier", () => {
+  it("shows one decimal place and the times sign", () => {
+    expect(formatMultiplier(0.8)).toBe("0.8×");
+    expect(formatMultiplier(1)).toBe("1.0×");
+  });
+});
+
+describe("formatExchangeRate", () => {
+  it("keeps the six decimal places HMRC publishes", () => {
+    expect(formatExchangeRate(0.489572)).toBe("£0.489572");
+    expect(formatExchangeRate(0.000029)).toBe("£0.000029");
+  });
+
+  it("drops trailing zeros, including the whole fraction", () => {
+    expect(formatExchangeRate(0.85)).toBe("£0.85");
+    expect(formatExchangeRate(1)).toBe("£1");
   });
 });

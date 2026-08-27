@@ -7,7 +7,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
-import { GuideArticle, guideBreakout, guideLink } from "../guide-parts";
+import { GuideArticle, guideBreakout } from "../guide-parts";
+import { guideLink } from "../guide-primitives";
 import { CurrentThresholdsTable } from "./CurrentThresholdsTable";
 import { ThresholdComparisonChart } from "./ThresholdComparisonChart";
 

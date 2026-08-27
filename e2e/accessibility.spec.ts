@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { type Page, test, expect } from "@playwright/test";
+import { ESTIMATOR_ANCHOR_ID } from "../src/components/guides/moving-abroad/overseas-data";
 import { openConfigWizard, waitForResults } from "./helpers";
 
 function axeScan(page: Page) {
@@ -50,6 +51,19 @@ test.describe("Accessibility", () => {
     // Wait for verdict to load
     const verdict = page.locator("[role='status'][aria-live='polite']").first();
     await expect(verdict).toBeVisible({ timeout: 15_000 });
+
+    const results = await axeScan(page).analyze();
+    expect(results.violations).toEqual([]);
+  });
+
+  test("moving abroad guide has no WCAG 2.1 AA violations", async ({
+    page,
+  }) => {
+    await page.goto("/guides/moving-abroad");
+    // The estimator is the guide's one client component; once its readout has
+    // hydrated, the scan covers the interactive controls as well as the prose.
+    await expect(page.locator(`#${ESTIMATOR_ANCHOR_ID}`)).toBeVisible();
+    await expect(page.getByLabel("Destination")).toHaveValue("Australia");
 
     const results = await axeScan(page).analyze();
     expect(results.violations).toEqual([]);

@@ -4,7 +4,8 @@ import { Heading } from "@/components/typography/Heading";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
-import { GuideArticle, guideBreakout, guideLink } from "../guide-parts";
+import { GuideArticle, guideBreakout } from "../guide-parts";
+import { guideLink } from "../guide-primitives";
 import { CurrentRatesTable } from "./CurrentRatesTable";
 import { InterestRateChart } from "./InterestRateChart";
 

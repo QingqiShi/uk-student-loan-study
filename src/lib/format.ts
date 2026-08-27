@@ -1,9 +1,17 @@
+// Reused formatters — building one per call costs ~25x more, and the overseas
+// estimator formats a dozen figures on every keystroke.
+const POUNDS = new Intl.NumberFormat("en-GB");
+const POUNDS_AND_PENCE = new Intl.NumberFormat("en-GB", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 /**
  * Format a number as a GBP currency string with thousands separators.
  * @example formatGBP(28470) → "£28,470"
  */
 export function formatGBP(value: number): string {
-  return `£${value.toLocaleString("en-GB")}`;
+  return `£${POUNDS.format(value)}`;
 }
 
 /**
@@ -45,4 +53,30 @@ export function percentagesSummingTo100(ratios: number[]): number[] {
     result[byFraction[k].index]++;
   }
   return result;
+}
+
+/**
+ * Format a number as a GBP currency string to the penny.
+ * @example formatGBPPence(327.2) → "£327.20"
+ */
+export function formatGBPPence(value: number): string {
+  return `£${POUNDS_AND_PENCE.format(value)}`;
+}
+
+/**
+ * Format a band multiplier against the UK threshold.
+ * @example formatMultiplier(0.8) → "0.8×"
+ */
+export function formatMultiplier(value: number): string {
+  return `${value.toFixed(1)}×`;
+}
+
+/**
+ * Format an HMRC exchange rate: what one unit of a currency is worth in GBP,
+ * to the six decimal places HMRC publishes, trailing zeros dropped.
+ * @example formatExchangeRate(0.489572) → "£0.489572"
+ * @example formatExchangeRate(1) → "£1"
+ */
+export function formatExchangeRate(rateToGBP: number): string {
+  return `£${rateToGBP.toFixed(6).replace(/\.?0+$/, "")}`;
 }

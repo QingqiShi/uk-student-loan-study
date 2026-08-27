@@ -3,12 +3,8 @@ import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
 import { formatPercent } from "@/lib/format";
 import { CURRENT_RATES } from "@/lib/loans/plans";
-import {
-  GuideArticle,
-  guideBreakout,
-  guideLink,
-  KeyTakeaways,
-} from "../guide-parts";
+import { GuideArticle, guideBreakout, KeyTakeaways } from "../guide-parts";
+import { guideLink } from "../guide-primitives";
 import { InflationComparisonChart } from "./InflationComparisonChart";
 
 const rpi = CURRENT_RATES.rpi;

@@ -10,9 +10,11 @@ import type { Mismatch, ScrapedPlanThreshold } from "./types";
  * plausible and whose move is small. Anything else falls back to a human-
  * reviewed PR: a structural field (repayment rate, write-off period, the Plan 2
  * sliding-scale interest thresholds), an out-of-bounds value, a large jump, a
- * non-positive rate, or a repayment threshold whose monthly and annual figures
- * disagree. This catches a mis-scrape — e.g. an annual repayment threshold of
- * £26,760 read as £2,676 — before it can reach production.
+ * non-positive rate, a repayment threshold whose monthly and annual figures
+ * disagree, or any repayment-threshold move at all (see
+ * {@link OVERSEAS_REFRESH_REASON}). This catches a mis-scrape — e.g. an annual
+ * repayment threshold of £26,760 read as £2,676 — before it can reach
+ * production.
  */
 
 interface FieldBound {
@@ -29,10 +31,12 @@ interface FieldBound {
   increaseOnly?: boolean;
 }
 
-// Only these routine fields are eligible for auto-merge. Every other field —
+// Bounds for the fields the scrape can move routinely. Every other field —
 // repayment rate, write-off period, the Plan 2 interest thresholds — is
 // structural and legislative: a change there is rare and always deserves human
 // review, so it is deliberately absent from this map (an unknown field reviews).
+// A monthly threshold still carries bounds, for a precise diagnosis, even though
+// it can never auto-merge (see needsOverseasRefresh).
 const AUTO_MERGE_BOUNDS: Record<string, FieldBound> = {
   // Monthly repayment thresholds (the annual value / 12). Annual thresholds sit
   // around £15k–£40k, so monthly ~£1,250–£3,333; annual upratings move a few
@@ -125,6 +129,19 @@ function unsafeReason(m: Mismatch): string | null {
 }
 
 /**
+ * The overseas dataset in src/lib/loans/overseasThresholds.ts is copied by hand
+ * from the five GOV.UK country tables, and every band there is a multiple of the
+ * UK threshold. A UK threshold move therefore leaves that dataset stale, so the
+ * automation must never merge one unattended.
+ */
+const OVERSEAS_REFRESH_REASON =
+  "a UK repayment threshold moved — refresh src/lib/loans/overseasThresholds.ts from the 6 April GOV.UK overseas tables (Plan 1/2/4/5/Postgraduate)";
+
+function needsOverseasRefresh(field: string): boolean {
+  return field.endsWith(".monthlyThreshold");
+}
+
+/**
  * Every scraped threshold row must be internally consistent, whether or not its
  * monthly value changed — a bad annual figure still flows into the generated
  * files (llms.txt, comments). GOV.UK floors the monthly from the annual, so
@@ -153,9 +170,10 @@ export interface Classification {
 
 /**
  * Classify a change for the guarded auto-merge. The decision is `auto` only
- * when *every* mismatch is a routine, in-bounds, small move **and** every
- * scraped threshold row is internally consistent; a single disqualifying field
- * or row sends the whole batch to `review`. `thresholds` are all scraped rows,
+ * when *every* mismatch is a routine, in-bounds, small move that leaves no
+ * hand-maintained dataset stale **and** every scraped threshold row is
+ * internally consistent; a single disqualifying field or row sends the whole
+ * batch to `review`. `thresholds` are all scraped rows,
  * checked independently so a bad annual on an unchanged monthly can't ride
  * along with an otherwise-safe rate move.
  */
@@ -168,6 +186,9 @@ export function classifyChange(
     const reason = unsafeReason(m);
     if (reason) {
       reviewReasons.push(`${m.field}: ${reason}`);
+    }
+    if (needsOverseasRefresh(m.field)) {
+      reviewReasons.push(`${m.field}: ${OVERSEAS_REFRESH_REASON}`);
     }
   }
   reviewReasons.push(...thresholdRowIssues(thresholds));

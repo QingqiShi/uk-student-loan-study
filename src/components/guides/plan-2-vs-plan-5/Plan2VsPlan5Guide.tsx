@@ -3,12 +3,8 @@ import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
 import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
-import {
-  GuideArticle,
-  guideBreakout,
-  guideLink,
-  KeyTakeaways,
-} from "../guide-parts";
+import { GuideArticle, guideBreakout, KeyTakeaways } from "../guide-parts";
+import { guideLink } from "../guide-primitives";
 import { BalanceComparisonChart } from "./BalanceComparisonChart";
 import { ComparisonTable } from "./ComparisonTable";
 import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";

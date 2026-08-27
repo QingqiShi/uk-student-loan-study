@@ -244,10 +244,6 @@ export function GuideArticle({
   );
 }
 
-/** Inline prose link: spruce-ink with a hairline underline that thickens on hover. */
-export const guideLink =
-  "font-medium text-cta underline decoration-1 underline-offset-4 transition-[text-decoration-color,color] hover:text-cta/80";
-
 /**
  * Breakout figures (charts, wide tables) span all three tracks of the reading
  * grid to read wider than the prose that frames them. The `!` overrides the
@@ -281,65 +277,6 @@ export function KeyTakeaways({ children }: { children: React.ReactNode }) {
         {children}
       </ul>
     </Panel>
-  );
-}
-
-const SEAM_COLS: Record<number, string> = {
-  1: "grid-cols-1",
-  2: "grid-cols-1 sm:grid-cols-2",
-  3: "grid-cols-1 sm:grid-cols-3",
-};
-
-/**
- * A spec-sheet grid: cells joined by 1px hairline seams (gap-px over the border
- * ground), the same etched-divider language as the homepage readout. Use it for
- * feature groups that were previously floating icon cards.
- */
-export function SeamGrid({
-  columns = 2,
-  className,
-  children,
-}: {
-  columns?: 1 | 2 | 3;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      className={cn(
-        "grid gap-px overflow-hidden rounded-xl bg-border ring-1 ring-border",
-        SEAM_COLS[columns],
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
-}
-
-/** One cell of a {@link SeamGrid}: optional spruce icon, engraved label, prose. */
-export function SeamCell({
-  icon,
-  eyebrow,
-  title,
-  children,
-  className,
-}: {
-  icon?: React.ReactNode;
-  eyebrow?: React.ReactNode;
-  title?: React.ReactNode;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("flex flex-col gap-2 bg-card p-4 sm:p-5", className)}>
-      {icon != null && <div>{icon}</div>}
-      {eyebrow != null && <Eyebrow marker={false}>{eyebrow}</Eyebrow>}
-      {title != null && (
-        <p className="font-semibold text-foreground">{title}</p>
-      )}
-      <div className="text-sm text-muted-foreground">{children}</div>
-    </div>
   );
 }
 
