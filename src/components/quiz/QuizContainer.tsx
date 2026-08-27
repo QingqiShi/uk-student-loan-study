@@ -273,7 +273,7 @@ export function QuizContainer({
   };
 
   const handleBack = () => {
-    trackQuizBackClicked(currentStepIndex);
+    trackQuizBackClicked(state.currentStep);
     dispatch({ type: "GO_BACK" });
   };
 
@@ -284,8 +284,8 @@ export function QuizContainer({
   };
 
   // Distinct from the progress back-arrow: this rewinds all the way to the first
-  // question (keeping answers) rather than one step, and it must not emit the
-  // step-scoped quiz_back_clicked event (the result has no valid step index).
+  // question (keeping answers) rather than one step, so it must not emit the
+  // step-scoped quiz_back_clicked event.
   const handleEditAnswers = () => {
     dispatch({ type: "EDIT_ANSWERS" });
   };
