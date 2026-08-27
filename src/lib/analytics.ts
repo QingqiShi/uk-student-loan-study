@@ -1,5 +1,6 @@
 import posthog from "posthog-js";
 import { posthogEnabled } from "@/lib/posthog";
+import type { QuizStep } from "@/lib/quiz/determinePlan";
 
 function track(event: string, properties: Record<string, unknown> = {}) {
   if (!posthogEnabled) return;
@@ -99,7 +100,7 @@ export function trackQuizYearSelected(yearGroup: string) {
   track("quiz_year_selected", { yearGroup });
 }
 
-export function trackQuizBackClicked(fromStep: number) {
+export function trackQuizBackClicked(fromStep: QuizStep) {
   track("quiz_back_clicked", { fromStep });
 }
 
