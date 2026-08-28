@@ -7,12 +7,8 @@ import {
   PLAN_DISPLAY_INFO,
   TUITION_FEE_CAP,
 } from "@/lib/loans/plans";
-import {
-  GuideArticle,
-  guideBreakout,
-  guideLink,
-  KeyTakeaways,
-} from "../guide-parts";
+import { GuideArticle, guideBreakout, KeyTakeaways } from "../guide-parts";
+import { guideLink } from "../guide-primitives";
 import { CostComparisonChart } from "./CostComparisonChart";
 
 const tuitionTotal = TUITION_FEE_CAP * 3;

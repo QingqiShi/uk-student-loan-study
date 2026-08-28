@@ -18,25 +18,54 @@ describe("classifyChange", () => {
     ).toEqual({ decision: "auto", reviewReasons: [] });
   });
 
-  it("auto-merges a routine repayment-threshold uprating", () => {
-    // ~4% annual uprating, with a consistent annual/monthly row.
-    expect(
-      classifyChange(
-        [{ field: "PLAN_5.monthlyThreshold", current: 2083, scraped: 2166 }],
-        [row("PLAN_5", 2166)],
-      ).decision,
-    ).toBe("auto");
-  });
-
-  it("auto-merges when every field in the batch is routine and in bounds", () => {
+  it("auto-merges when every field in the batch is a routine market rate", () => {
     const mismatches: Mismatch[] = [
       { field: "CURRENT_RATES.rpi", current: 3.2, scraped: 4.1 },
       { field: "CURRENT_RATES.cpi", current: 2.8, scraped: 3.0 },
-      { field: "PLAN_2.monthlyThreshold", current: 2274, scraped: 2350 },
     ];
     expect(classifyChange(mismatches, [row("PLAN_2", 2350)]).decision).toBe(
       "auto",
     );
+  });
+
+  it("reviews a routine repayment-threshold uprating so the overseas dataset is refreshed", () => {
+    // ~4% annual uprating, in bounds and internally consistent — but every
+    // overseas band multiplies the UK threshold, and that dataset is hand-copied.
+    const result = classifyChange(
+      [{ field: "PLAN_5.monthlyThreshold", current: 2083, scraped: 2166 }],
+      [row("PLAN_5", 2166)],
+    );
+    expect(result.decision).toBe("review");
+    expect(result.reviewReasons).toEqual([
+      "PLAN_5.monthlyThreshold: a UK repayment threshold moved — refresh src/lib/loans/overseasThresholds.ts from the 6 April GOV.UK overseas tables (Plan 1/2/4/5/Postgraduate)",
+    ]);
+  });
+
+  it("names the overseas refresh for every plan's threshold", () => {
+    for (const plan of [
+      "PLAN_1",
+      "PLAN_2",
+      "PLAN_4",
+      "PLAN_5",
+      "POSTGRADUATE",
+    ]) {
+      const result = classifyChange(
+        [{ field: `${plan}.monthlyThreshold`, current: 2200, scraped: 2300 }],
+        [row(plan, 2300)],
+      );
+      expect(result.decision).toBe("review");
+      expect(
+        result.reviewReasons.some((r) => r.includes("overseasThresholds")),
+      ).toBe(true);
+    }
+  });
+
+  it("leaves a market-rate move clear of the overseas refresh reason", () => {
+    const result = classifyChange(
+      [{ field: "CURRENT_RATES.rpi", current: 3.2, scraped: 4.1 }],
+      [],
+    );
+    expect(result.reviewReasons).toEqual([]);
   });
 
   it("reviews a structural field (repayment rate) even if plausible", () => {
@@ -129,7 +158,9 @@ describe("classifyChange", () => {
       [{ plan: "PLAN_1", monthlyThreshold: 2448, yearlyThreshold: 26900 }],
     );
     expect(result.decision).toBe("review");
-    expect(result.reviewReasons[0]).toContain("inconsistent");
+    expect(result.reviewReasons.some((r) => r.includes("inconsistent"))).toBe(
+      true,
+    );
   });
 
   it("reviews an inconsistent threshold row even when its monthly value is unchanged", () => {

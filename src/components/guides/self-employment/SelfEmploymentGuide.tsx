@@ -9,18 +9,16 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { Heading } from "@/components/typography/Heading";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import { GuideArticle, KeyTakeaways } from "../guide-parts";
 import {
-  GuideArticle,
+  ExternalLink,
   guideLink,
-  KeyTakeaways,
   SeamCell,
   SeamGrid,
-} from "../guide-parts";
+} from "../guide-primitives";
 
 const undergradRate = `${String(PLAN_CONFIGS.PLAN_2.repaymentRate * 100)}%`;
 const postgradRate = `${String(PLAN_CONFIGS.POSTGRADUATE.repaymentRate * 100)}%`;
-
-const linkClasses = guideLink;
 
 export function SelfEmploymentGuide() {
   return (
@@ -32,14 +30,9 @@ export function SelfEmploymentGuide() {
           If you&rsquo;re self-employed, your student loan repayments work
           differently from PAYE. Instead of automatic monthly deductions from
           your payslip, you repay through your annual{" "}
-          <a
-            href="https://www.gov.uk/self-assessment-tax-returns"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClasses}
-          >
+          <ExternalLink href="https://www.gov.uk/self-assessment-tax-returns">
             Self Assessment tax return
-          </a>{" "}
+          </ExternalLink>{" "}
           — and that changes how you need to plan your finances.
         </>
       }
@@ -83,28 +76,18 @@ export function SelfEmploymentGuide() {
             repayments from your salary each month via PAYE. When you&rsquo;re
             self-employed, there is no employer to do this — HMRC calculates
             your repayment based on your{" "}
-            <a
-              href="https://www.gov.uk/self-assessment-tax-returns"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClasses}
-            >
+            <ExternalLink href="https://www.gov.uk/self-assessment-tax-returns">
               Self Assessment tax return
-            </a>{" "}
+            </ExternalLink>{" "}
             instead.
           </p>
           <p>
             This means your repayments are <strong>annual</strong>, not monthly.
             You typically pay in two lump sums: one in January and one in July
             (as part of HMRC&rsquo;s{" "}
-            <a
-              href="https://www.gov.uk/understand-self-assessment-bill/payments-on-account"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClasses}
-            >
+            <ExternalLink href="https://www.gov.uk/understand-self-assessment-bill/payments-on-account">
               payment on account
-            </a>{" "}
+            </ExternalLink>{" "}
             system). The repayment is {undergradRate} of your net profit above
             the repayment threshold for Plan 2 and Plan 5, or {postgradRate} for
             Postgraduate Loans.
@@ -256,14 +239,9 @@ export function SelfEmploymentGuide() {
               description: (
                 <>
                   You must{" "}
-                  <a
-                    href="https://www.gov.uk/register-for-self-assessment"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={linkClasses}
-                  >
+                  <ExternalLink href="https://www.gov.uk/register-for-self-assessment">
                     register with HMRC by 5 October
-                  </a>{" "}
+                  </ExternalLink>{" "}
                   following the end of the tax year in which you became
                   self-employed. Registering late can result in penalties.
                 </>

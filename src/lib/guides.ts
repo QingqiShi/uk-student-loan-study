@@ -77,7 +77,7 @@ export const GUIDES: GuideEntry[] = [
     slug: "moving-abroad",
     title: "Moving Abroad",
     description:
-      "Country-specific thresholds, SLC obligations, and what happens if you don’t comply.",
+      "Estimate your repayment in any country, what to tell SLC before you leave, and what happens if you don’t.",
     topic: "Rules",
   },
   {

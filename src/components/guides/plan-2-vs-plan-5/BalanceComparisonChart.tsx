@@ -6,6 +6,7 @@ import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
 import { simulate } from "@/lib/loans/engine";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
+import { segmentToggle } from "../guide-primitives";
 
 const SALARY_OPTIONS = [30000, 50000, 70000] as const;
 type SalaryOption = (typeof SALARY_OPTIONS)[number];
@@ -110,11 +111,7 @@ export function BalanceComparisonChart() {
               onClick={() => {
                 setSalary(option);
               }}
-              className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-                salary === option
-                  ? "bg-foreground text-background"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
+              className={segmentToggle(salary === option)}
             >
               {formatSalaryLabel(option)}
             </button>

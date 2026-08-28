@@ -6,6 +6,7 @@ import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
 import { getAnnualInterestRate } from "@/lib/loans/interest";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
+import { segmentToggle } from "../guide-primitives";
 import { INTEREST_CAP } from "./historical-rates";
 
 const RPI_OPTIONS = [
@@ -127,11 +128,7 @@ export function BalanceWithCapChart() {
               onClick={() => {
                 setRpi(option.value);
               }}
-              className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-                rpi === option.value
-                  ? "bg-foreground text-background"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
+              className={segmentToggle(rpi === option.value)}
             >
               {option.label}
             </button>

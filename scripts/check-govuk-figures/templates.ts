@@ -236,7 +236,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - [RPI vs CPI](https://studentloanstudy.uk/guides/rpi-vs-cpi): Why student loan interest uses RPI while general inflation is measured by CPI, and what that gap means
 - [Student Loan & Mortgage](https://studentloanstudy.uk/guides/student-loan-vs-mortgage): Whether a student loan affects your mortgage — affordability, whether it counts as income, your credit file, and paying it off first
 - [Pay Upfront or Take Loan?](https://studentloanstudy.uk/guides/pay-upfront-or-take-loan): Should parents pay tuition upfront or let their child take the loan?
-- [Moving Abroad](https://studentloanstudy.uk/guides/moving-abroad): What happens to your student loan if you leave the UK
+- [Moving Abroad](https://studentloanstudy.uk/guides/moving-abroad): What happens to your student loan if you leave the UK — SLC's country thresholds for every plan and an estimator for your monthly repayment in any country
 - [Self-Employment](https://studentloanstudy.uk/guides/self-employment): How repayments work through Self Assessment for freelancers
 - [Threshold Freeze Explained](https://studentloanstudy.uk/guides/threshold-freeze): How the Plan 2 threshold freeze from 2027-2030 increases monthly repayments and what the parliamentary inquiry means
 
