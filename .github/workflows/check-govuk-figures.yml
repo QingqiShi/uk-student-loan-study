@@ -21,10 +21,54 @@ jobs:
     env:
       # The single source of truth for the shared PR branch name.
       BRANCH: auto/update-govuk-figures
+      # Shown in every token annotation and issue, so the fix is one copy-paste
+      # away from whoever reads it.
+      ROTATE_PR_TOKEN: >-
+        To rotate it, create a fine-grained token at
+        https://github.com/settings/personal-access-tokens/new scoped to this
+        repository with Contents and Pull requests set to "Read and write",
+        then run `gh secret set PR_TOKEN` from a checkout of this repository.
     steps:
+      - name: Verify PR_TOKEN
+        id: token
+        # The push and PR calls below need the PR_TOKEN fine-grained PAT (the
+        # default token cannot trigger CI on the PR), but the figure check
+        # itself does not. A PAT expires silently, so prove it works up front,
+        # flag it two weeks ahead so it can be rotated in time, and let the
+        # check carry on read-only when it fails rather than going blind.
+        continue-on-error: true
+        uses: actions/github-script@v9
+        with:
+          github-token: ${{ secrets.PR_TOKEN }}
+          script: |
+            const rotate = process.env.ROTATE_PR_TOKEN;
+            let headers;
+            try {
+              ({ headers } = await github.rest.repos.get(context.repo));
+            } catch (error) {
+              core.setFailed(`GitHub rejected PR_TOKEN (${error.message}) — it has most likely expired. ${rotate}`);
+              return;
+            }
+            // A token that never expires sends no expiry header.
+            const expiry = headers['github-authentication-token-expiration'];
+            const daysLeft = expiry ? Math.floor((new Date(expiry) - Date.now()) / 86_400_000) : Infinity;
+            const status = daysLeft <= 14 ? 'expiring' : 'ok';
+            core.setOutput('status', status);
+            if (expiry) {
+              core.setOutput('expiry', expiry);
+              core.setOutput('days_left', String(daysLeft));
+            }
+            if (status === 'expiring') {
+              core.warning(`PR_TOKEN expires in ${daysLeft} days (${expiry}). ${rotate}`);
+            } else {
+              core.info(expiry ? `PR_TOKEN is valid; it expires in ${daysLeft} days (${expiry})` : 'PR_TOKEN is valid and does not expire');
+            }
+
       - uses: actions/checkout@v7
         with:
-          token: ${{ secrets.PR_TOKEN }}
+          # The PAT's credentials persist into the push below. Without a
+          # working PAT the check still runs, read-only, on the default token.
+          token: ${{ steps.token.outcome == 'success' && secrets.PR_TOKEN || github.token }}
 
       - uses: pnpm/action-setup@v6.0.10
       - uses: actions/setup-node@v7
@@ -79,7 +123,7 @@ jobs:
 
       - name: Create or update pull request
         id: pr
-        if: steps.result.outputs.is_mismatch == 'true' && steps.verify.outcome == 'success'
+        if: steps.result.outputs.is_mismatch == 'true' && steps.verify.outcome == 'success' && steps.token.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.PR_TOKEN }}
           STATUS: ${{ steps.result.outputs.status }}
@@ -132,7 +176,7 @@ jobs:
           fi
 
       - name: Enable auto-merge
-        if: steps.result.outputs.status == 'mismatch-auto' && steps.verify.outcome == 'success'
+        if: steps.result.outputs.status == 'mismatch-auto' && steps.pr.outcome == 'success'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.PR_TOKEN }}
@@ -145,14 +189,20 @@ jobs:
 
       - name: Report a failed check
         # One notifier for every failure mode, so a failure is never silently
-        # dropped. The scrape step is continue-on-error (a scrape-only failure
-        # does not fail the job, so it is caught via its outcome); compare/update,
-        # verification, the PR step, and any infra/setup step (checkout, install)
-        # all trip failure(). The message is picked from the step outcomes so the
-        # maintainer is pointed at the real cause, not a mislabelled one.
-        if: ${{ !cancelled() && (failure() || steps.scrape.outcome == 'failure') }}
+        # dropped. The token and scrape steps are continue-on-error (their
+        # failure does not fail the job, so each is caught via its outcome);
+        # compare/update, verification, the PR step, and any infra/setup step
+        # (checkout, install) all trip failure(). A token that is about to
+        # expire is not a failure, but it is reported the same way so it gets
+        # rotated before it becomes one.
+        if: ${{ !cancelled() && (failure() || steps.token.outcome == 'failure' || steps.scrape.outcome == 'failure' || steps.token.outputs.status == 'expiring') }}
         uses: actions/github-script@v9
         env:
+          JOB_STATUS: ${{ job.status }}
+          TOKEN: ${{ steps.token.outcome }}
+          TOKEN_STATUS: ${{ steps.token.outputs.status }}
+          TOKEN_EXPIRY: ${{ steps.token.outputs.expiry }}
+          TOKEN_DAYS_LEFT: ${{ steps.token.outputs.days_left }}
           SCRAPE: ${{ steps.scrape.outcome }}
           UPDATE: ${{ steps.update.outcome }}
           FORMAT: ${{ steps.format.outcome }}
@@ -162,69 +212,116 @@ jobs:
         with:
           script: |
             const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            let label, title, body;
+            const rotate = process.env.ROTATE_PR_TOKEN;
+            const notShipped = process.env.IS_MISMATCH === 'true' ? ' A figure change was detected but has NOT shipped.' : '';
+            const reports = [];
+            // The token is independent of the figure check, so it is reported
+            // on its own. A pre-expiry warning needs one open issue, not a
+            // reminder every day.
+            if (process.env.TOKEN === 'failure') {
+              reports.push({
+                label: 'govuk-token',
+                title: 'PR_TOKEN for the GOV.UK figure check is missing or expired',
+                body: `The \`PR_TOKEN\` secret is missing or GitHub rejected it, most likely because it expired. The daily figure check still runs, but no figure change can be published until the token is rotated.${notShipped}\n\n${rotate}`,
+              });
+            } else if (process.env.TOKEN_STATUS === 'expiring') {
+              reports.push({
+                label: 'govuk-token',
+                title: 'PR_TOKEN for the GOV.UK figure check expires soon',
+                body: `\`PR_TOKEN\` expires in ${process.env.TOKEN_DAYS_LEFT} days (${process.env.TOKEN_EXPIRY}). Rotate it before then, or figure changes will stop being published.\n\n${rotate}`,
+                remind: false,
+              });
+            }
+            // The message is picked from the step outcomes so the maintainer is
+            // pointed at the real cause, not a mislabelled one.
             if (process.env.SCRAPE === 'failure') {
-              label = 'govuk-scrape-error';
-              title = 'GOV.UK figure scrape failed';
-              body = `The daily checker could not scrape GOV.UK — check whether the page structure changed.\n\nWorkflow run: ${run}`;
+              reports.push({
+                label: 'govuk-scrape-error',
+                title: 'GOV.UK figure scrape failed',
+                body: 'The daily checker could not scrape GOV.UK — check whether the page structure changed.',
+              });
             } else if (process.env.UPDATE === 'failure') {
-              label = 'govuk-scrape-error';
-              title = 'GOV.UK figure compare/update failed';
-              body = `The scrape succeeded, but comparing and regenerating the figures failed — either a Bank of England / ONS fetch, or a code error in the checker. See the run for the cause.\n\nWorkflow run: ${run}`;
+              reports.push({
+                label: 'govuk-scrape-error',
+                title: 'GOV.UK figure compare/update failed',
+                body: 'The scrape succeeded, but comparing and regenerating the figures failed — either a Bank of England / ONS fetch, or a code error in the checker. See the run for the cause.',
+              });
             } else if (process.env.FORMAT === 'failure') {
-              label = 'govuk-figures-changed';
-              title = 'GOV.UK figures changed but the regenerated files could not be formatted';
-              body = `Figures changed on the source, but formatting the regenerated files failed — the code generator likely produced output Prettier could not parse. Manual intervention required.\n\nWorkflow run: ${run}`;
+              reports.push({
+                label: 'govuk-figures-changed',
+                title: 'GOV.UK figures changed but the regenerated files could not be formatted',
+                body: 'Figures changed on the source, but formatting the regenerated files failed — the code generator likely produced output Prettier could not parse. Manual intervention required.',
+              });
             } else if (process.env.VERIFY === 'failure') {
-              label = 'govuk-figures-changed';
-              title = 'GOV.UK figures changed but verification failed';
-              body = `Figures changed on the source, but the regenerated files failed verification (lint/typecheck/test/build). Manual intervention required.\n\nWorkflow run: ${run}`;
+              reports.push({
+                label: 'govuk-figures-changed',
+                title: 'GOV.UK figures changed but verification failed',
+                body: 'Figures changed on the source, but the regenerated files failed verification (lint/typecheck/test/build). Manual intervention required.',
+              });
             } else if (process.env.PR === 'failure') {
-              label = 'govuk-figures-changed';
-              title = 'GOV.UK figure PR could not be created or updated';
-              body = `Figures changed and passed verification, but creating or updating the pull request failed (a git push or GitHub CLI error). The change has NOT shipped. Manual intervention required.\n\nWorkflow run: ${run}`;
-            } else {
+              reports.push({
+                label: 'govuk-figures-changed',
+                title: 'GOV.UK figure PR could not be created or updated',
+                body: 'Figures changed and passed verification, but creating or updating the pull request failed (a git push or GitHub CLI error). The change has NOT shipped. Manual intervention required.',
+              });
+            } else if (process.env.JOB_STATUS === 'failure') {
               // Any other failed step — an infra/setup step (checkout, install),
               // the parse-result step, or a future addition. Attribute the label
               // by whether a figure change was detected, and point at the run
               // rather than guessing a specific cause.
-              const isMismatch = process.env.IS_MISMATCH === 'true';
-              label = isMismatch ? 'govuk-figures-changed' : 'govuk-scrape-error';
-              title = 'Daily GOV.UK figure check failed';
-              body = `The daily figure check failed at a step — see the run for the specific failure (e.g. setup/checkout, dependency install, or parsing the result).${isMismatch ? ' A figure change was detected but has NOT shipped.' : ''}\n\nWorkflow run: ${run}`;
+              reports.push({
+                label: process.env.IS_MISMATCH === 'true' ? 'govuk-figures-changed' : 'govuk-scrape-error',
+                title: 'Daily GOV.UK figure check failed',
+                body: `The daily figure check failed at a step — see the run for the specific failure (e.g. setup/checkout, dependency install, or parsing the result).${notShipped}`,
+              });
             }
-            const { data: found } = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: label,
-              state: 'open',
-            });
-            // The figure PR shares the figures label; listForRepo returns PRs as
-            // issues, so filter them out and track the failure as a real issue.
-            const issues = found.filter((i) => !i.pull_request);
-            if (issues.length > 0) {
-              await github.rest.issues.createComment({
+            for (const { label, title, body, remind = true } of reports) {
+              const text = `${body}\n\nWorkflow run: ${run}`;
+              const { data: found } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issues[0].number,
-                body,
+                labels: label,
+                state: 'open',
               });
-            } else {
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title,
-                body,
-                labels: [label],
-              });
+              // The figure PR shares the figures label; listForRepo returns PRs as
+              // issues, so filter them out and track the failure as a real issue.
+              const issues = found.filter((i) => !i.pull_request);
+              if (issues.length === 0) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title,
+                  body: text,
+                  labels: [label],
+                });
+              } else if (remind) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issues[0].number,
+                  body: text,
+                });
+              }
             }
 
       - name: Close stale issues
-        if: steps.result.outputs.status == 'ok'
+        if: ${{ !cancelled() }}
         uses: actions/github-script@v9
+        env:
+          STATUS: ${{ steps.result.outputs.status }}
+          TOKEN_STATUS: ${{ steps.token.outputs.status }}
         with:
           script: |
-            for (const label of ['govuk-scrape-error', 'govuk-figures-changed']) {
+            // Each label is stale once the signal that raised it is healthy again.
+            const figuresMatch = 'Auto-closed: GOV.UK figures now match the codebase.';
+            const stale = [];
+            if (process.env.STATUS === 'ok') {
+              stale.push(['govuk-scrape-error', figuresMatch], ['govuk-figures-changed', figuresMatch]);
+            }
+            if (process.env.TOKEN_STATUS === 'ok') {
+              stale.push(['govuk-token', 'Auto-closed: PR_TOKEN is valid again.']);
+            }
+            for (const [label, comment] of stale) {
               const { data: issues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -246,7 +343,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  body: 'Auto-closed: GOV.UK figures now match the codebase.',
+                  body: comment,
                 });
               }
             }
