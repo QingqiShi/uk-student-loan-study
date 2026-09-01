@@ -196,14 +196,14 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     ],
     whoItIsFor: [
       "You are on Plan 1 if you are an English or Welsh student who started an undergraduate course before September 2012.",
-      "You are also on Plan 1 if you are a Northern Irish student, whenever you started — Northern Ireland kept Plan 1 rather than moving to Plan 2 or Plan 5.",
+      "You are also on Plan 1 if you are a Northern Irish student, whenever you started. Northern Ireland kept Plan 1 rather than moving to Plan 2 or Plan 5.",
     ],
     interestParagraphs: [
       `Plan 1 interest is charged at the lower of RPI (${rpiPct}) or the Bank of England base rate plus 1% (${basePlusOnePct}). Right now that works out at ${cappedPct}.`,
-      `This cap keeps Plan 1 interest low and predictable — it never runs away the way a purely inflation-linked rate can, which makes Plan 1 the cheapest plan to carry pound for pound.`,
+      `This cap keeps Plan 1 interest low and predictable. It never runs away the way a purely inflation-linked rate can, which makes Plan 1 the cheapest plan to carry pound for pound.`,
     ],
     compareParagraph: `Plan 1 has a lower threshold than Plan 2 (${p2YearGBP}) or Plan 4 (${p4YearGBP}), so you start repaying earlier, but its capped interest and shorter ${p1WriteOff}-year write-off make it far cheaper over a lifetime than the newer ${p5WriteOff}-year Plan 5.`,
-    middleEarner: `Plan 1's low, capped interest means the balance rarely balloons, so the middle-earner trap that hits Plan 2 and Plan 5 borrowers is much weaker here. The people most likely to pay off a Plan 1 loan in full are steady middle earners — low earners often reach the ${p1WriteOff}-year write-off first, while high earners pay it off quickly. Model your own salary to see where you land.`,
+    middleEarner: `Plan 1's low, capped interest means the balance rarely balloons, so the middle-earner trap that hits Plan 2 and Plan 5 borrowers is much weaker here. The people most likely to pay off a Plan 1 loan in full are steady middle earners: low earners often reach the ${p1WriteOff}-year write-off first, while high earners pay it off quickly. Model your own salary to see where you land.`,
     faqs: [
       {
         question: "What is a Plan 1 student loan?",
@@ -247,7 +247,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       "plan 2 repayment threshold",
       "plan 2 write off",
     ],
-    heroIntro: `Plan 2 covers English and Welsh students who started university between September 2012 and July 2023 — the £9,000-plus tuition fee generation. You repay ${p1Rate} of income above ${p2YearGBP} a year, and interest runs on a sliding scale up to RPI + 3%, which is exactly why Plan 2 middle earners so often repay more than anyone else.`,
+    heroIntro: `Plan 2 covers English and Welsh students who started university between September 2012 and July 2023, the £9,000-plus tuition fee generation. You repay ${p1Rate} of income above ${p2YearGBP} a year, and interest runs on a sliding scale up to RPI + 3%, which is exactly why Plan 2 middle earners so often repay more than anyone else.`,
     whatItIs: [
       `A Plan 2 student loan is repaid at ${p1Rate} of your income above ${p2YearGBP} a year (${p2MonthlyGBP} a month). Unlike Plan 1, interest follows a sliding scale: it climbs from RPI up to RPI + 3% as your salary rises.`,
       `Any balance still outstanding ${p2WriteOff} years after you were first due to repay is written off. But because of the high interest, most Plan 2 borrowers never reach a zero balance through minimum repayments alone.`,
@@ -260,8 +260,8 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       `Plan 2 interest is charged on a sliding scale. While you are studying, and on income up to ${p2YearGBP}, you pay RPI (${rpiPct}). Between ${formatGBP(plan2InterestLower)} and ${formatGBP(plan2InterestUpper)} the rate rises linearly, reaching RPI + 3% (${plan2HighPct}) once you earn ${formatGBP(plan2InterestUpper)} or more.`,
       `That RPI + 3% ceiling is the single biggest reason Plan 2 is so expensive: the balance can grow faster than a typical borrower repays it, so it keeps compounding for years.`,
     ],
-    compareParagraph: `Plan 2 has a higher threshold than Plan 1 (${p1YearGBP}) or Plan 5 (${p5YearGBP}), so you repay less each month at the same salary — but its RPI + 3% interest ceiling makes it the most expensive plan for middle earners, more than offsetting the shorter ${p2WriteOff}-year term versus Plan 5's ${p5WriteOff} years.`,
-    middleEarner: `Plan 2 is the clearest example of the middle-earner trap. Low earners repay little and reach the ${p2WriteOff}-year write-off with plenty written off; high earners pay off the balance fast before much interest builds. It is the middle — graduates earning enough to make real repayments, but not enough to outrun RPI + 3% interest — who repay the most in total, often far more than they originally borrowed.`,
+    compareParagraph: `Plan 2 has a higher threshold than Plan 1 (${p1YearGBP}) or Plan 5 (${p5YearGBP}), so you repay less each month at the same salary. But its RPI + 3% interest ceiling makes it the most expensive plan for middle earners, more than offsetting the shorter ${p2WriteOff}-year term versus Plan 5's ${p5WriteOff} years.`,
+    middleEarner: `Plan 2 is the clearest example of the middle-earner trap. Low earners repay little and reach the ${p2WriteOff}-year write-off with plenty written off; high earners pay off the balance fast before much interest builds. It is the middle (graduates earning enough to make real repayments, but not enough to outrun RPI + 3% interest) who repay the most in total, often far more than they originally borrowed.`,
     faqs: [
       {
         question: "What is a Plan 2 student loan?",
@@ -269,7 +269,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "What is the Plan 2 repayment threshold?",
-        answer: `The Plan 2 threshold is ${p2YearGBP} a year (${p2MonthlyGBP} a month) — the highest of the England/Wales undergraduate plans. You repay ${p1Rate} of everything above it.`,
+        answer: `The Plan 2 threshold is ${p2YearGBP} a year (${p2MonthlyGBP} a month), the highest of the England/Wales undergraduate plans. You repay ${p1Rate} of everything above it.`,
       },
       {
         question: "What is the Plan 2 interest rate?",
@@ -277,7 +277,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "Why do Plan 2 middle earners repay the most?",
-        answer: `Because Plan 2 interest reaches RPI + 3%, middle earners repay steadily but not fast enough to stop the balance compounding, and they earn too much for the ${p2WriteOff}-year write-off to help. High earners pay off the loan quickly; low earners have it written off — so the middle pays the most in total.`,
+        answer: `Because Plan 2 interest reaches RPI + 3%, middle earners repay steadily but not fast enough to stop the balance compounding, and they earn too much for the ${p2WriteOff}-year write-off to help. High earners pay off the loan quickly; low earners have it written off. The middle pays the most in total.`,
       },
     ],
   },
@@ -296,7 +296,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     interestCurrent: cappedPct,
     metaTitle:
       "What Is a Plan 4 Student Loan? Threshold, Interest & Write-Off (2026)",
-    metaDescription: `Plan 4 is the Scottish student loan: ${p4YearGBP} threshold — the highest of any plan — ${p1Rate} rate, capped interest (${cappedPct} now) and a ${p4WriteOff}-year write-off.`,
+    metaDescription: `Plan 4 is the Scottish student loan: a ${p4YearGBP} threshold (the highest of any plan), a ${p1Rate} rate, capped interest (${cappedPct} now) and a ${p4WriteOff}-year write-off.`,
     keywords: [
       "what is plan 4 student loan",
       "plan 4 student loan",
@@ -305,17 +305,17 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       "plan 4 student loan interest rate",
       "plan 4 write off",
     ],
-    heroIntro: `Plan 4 is the loan for Scottish students. It has the highest repayment threshold of any UK plan — ${p4YearGBP} a year — so you keep more of your salary before repayments start. Interest is capped at the lower of RPI or base rate + 1%, and any balance is written off after ${p4WriteOff} years.`,
+    heroIntro: `Plan 4 is the loan for Scottish students. It has the highest repayment threshold of any UK plan, ${p4YearGBP} a year, so you keep more of your salary before repayments start. Interest is capped at the lower of RPI or base rate + 1%, and any balance is written off after ${p4WriteOff} years.`,
     whatItIs: [
       `A Plan 4 student loan is repaid at ${p1Rate} of income above ${p4YearGBP} a year (${p4MonthlyGBP} a month), the highest threshold of any plan. Interest is capped at the lower of RPI or the Bank of England base rate plus 1%.`,
       `Plan 4 replaced the old Scottish "Plan 1" arrangement in 2021, but it applies to Scottish students across all start years. Any balance is written off ${p4WriteOff} years after you became due to repay.`,
     ],
     whoItIsFor: [
       "You are on Plan 4 if you took out an undergraduate student loan from the Student Awards Agency Scotland (SAAS) as a Scottish student.",
-      "Plan 4 applies regardless of when you studied — Scotland moved existing Scottish borrowers onto Plan 4 terms, including its higher repayment threshold.",
+      "Plan 4 applies regardless of when you studied. Scotland moved existing Scottish borrowers onto Plan 4 terms, including its higher repayment threshold.",
     ],
     interestParagraphs: [
-      `Plan 4 interest is charged at the lower of RPI (${rpiPct}) or the Bank of England base rate plus 1% (${basePlusOnePct}), currently ${cappedPct} — the same low, capped approach as Plan 1.`,
+      `Plan 4 interest is charged at the lower of RPI (${rpiPct}) or the Bank of England base rate plus 1% (${basePlusOnePct}), currently ${cappedPct}, the same low, capped approach as Plan 1.`,
       `Combined with the highest threshold of any plan, this makes Plan 4 one of the gentler loans to repay: you start later and the balance grows slowly.`,
     ],
     compareParagraph: `Plan 4's ${p4YearGBP} threshold is higher than Plan 1 (${p1YearGBP}), Plan 2 (${p2YearGBP}) or Plan 5 (${p5YearGBP}), so at the same salary you repay the least each month. Its capped interest also keeps it far cheaper over time than Plan 5's ${p5WriteOff}-year RPI-linked loan.`,
@@ -323,7 +323,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     faqs: [
       {
         question: "What is a Plan 4 student loan?",
-        answer: `Plan 4 is the UK student loan plan for Scottish students. You repay ${p1Rate} of income above ${p4YearGBP} a year — the highest threshold of any plan — interest is capped at the lower of RPI or base rate + 1% (currently ${cappedPct}), and any balance is written off after ${p4WriteOff} years.`,
+        answer: `Plan 4 is the UK student loan plan for Scottish students. You repay ${p1Rate} of income above ${p4YearGBP} a year, the highest threshold of any plan. Interest is capped at the lower of RPI or base rate + 1% (currently ${cappedPct}), and any balance is written off after ${p4WriteOff} years.`,
       },
       {
         question: "What is the Plan 4 repayment threshold?",
@@ -331,7 +331,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "What is the Plan 4 interest rate?",
-        answer: `Plan 4 interest is the lower of RPI (${rpiPct}) or the Bank of England base rate plus 1% (${basePlusOnePct}), currently ${cappedPct} — the same capped rate as Plan 1.`,
+        answer: `Plan 4 interest is the lower of RPI (${rpiPct}) or the Bank of England base rate plus 1% (${basePlusOnePct}), currently ${cappedPct}, the same capped rate as Plan 1.`,
       },
       {
         question: "Who is on Plan 4?",
@@ -363,25 +363,25 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       "plan 5 repayment threshold",
       "plan 5 write off",
     ],
-    heroIntro: `Plan 5 is the newest UK student loan, for English students who started university from September 2023 onwards. It has the lowest threshold of the current undergraduate plans — ${p5YearGBP} a year — the simplest interest (RPI only), but the longest write-off of any plan at ${p5WriteOff} years.`,
+    heroIntro: `Plan 5 is the newest UK student loan, for English students who started university from September 2023 onwards. It has the lowest threshold of the current undergraduate plans (${p5YearGBP} a year) and the simplest interest (RPI only), but the longest write-off of any plan at ${p5WriteOff} years.`,
     whatItIs: [
-      `A Plan 5 student loan is repaid at ${p1Rate} of income above ${p5YearGBP} a year (${p5MonthlyGBP} a month). Interest is charged at RPI only — no sliding scale — which makes the balance easier to predict than Plan 2.`,
+      `A Plan 5 student loan is repaid at ${p1Rate} of income above ${p5YearGBP} a year (${p5MonthlyGBP} a month). Interest is charged at RPI only, with no sliding scale, which makes the balance easier to predict than Plan 2.`,
       `The catch is the term: Plan 5 balances are written off ${p5WriteOff} years after you become due to repay, ten years longer than Plan 2 and fifteen longer than Plan 1. That extra decade of repayments is where the real cost hides.`,
     ],
     whoItIsFor: [
       "You are on Plan 5 if you are an English student who started an undergraduate course on or after 1 August 2023.",
-      "Welsh, Scottish and Northern Irish students are not on Plan 5 — Plan 5 is England-only. Students who started before August 2023 remain on Plan 2 (or Plan 1).",
+      "Welsh, Scottish and Northern Irish students are not on Plan 5, which is England-only. Students who started before August 2023 remain on Plan 2 (or Plan 1).",
     ],
     interestParagraphs: [
-      `Plan 5 interest is charged at RPI only — currently ${rpiPct} — with no sliding scale. That makes it the simplest interest of any plan to understand and forecast.`,
+      `Plan 5 interest is charged at RPI only, currently ${rpiPct}, with no sliding scale. That makes it the simplest interest of any plan to understand and forecast.`,
       `Lower, simpler interest sounds cheaper, but the ${p5WriteOff}-year write-off means most borrowers keep repaying for far longer, so many end up paying more in total than they would have on the shorter Plan 2.`,
     ],
     compareParagraph: `Plan 5's ${p5YearGBP} threshold is lower than Plan 2 (${p2YearGBP}), so you start repaying sooner and pay more each month at the same salary. Its RPI-only interest is gentler than Plan 2's RPI + 3%, but the ${p5WriteOff}-year term (versus ${p2WriteOff} for Plan 2) is longer than any other plan.`,
-    middleEarner: `Plan 5's ${p5WriteOff}-year term turns the middle-earner trap into a marathon. Lower earners can pay for four decades and still have a balance written off; high earners pay it off early. Middle earners repay steadily for most of their working life — often paying back far more than they borrowed before the write-off ever arrives.`,
+    middleEarner: `Plan 5's ${p5WriteOff}-year term turns the middle-earner trap into a marathon. Lower earners can pay for four decades and still have a balance written off; high earners pay it off early. Middle earners repay steadily for most of their working life, often paying back far more than they borrowed before the write-off ever arrives.`,
     faqs: [
       {
         question: "What is a Plan 5 student loan?",
-        answer: `Plan 5 is the newest UK student loan, for English students who started from September 2023. You repay ${p1Rate} of income above ${p5YearGBP} a year, interest is RPI only (currently ${rpiPct}), and any balance is written off after ${p5WriteOff} years — the longest term of any plan.`,
+        answer: `Plan 5 is the newest UK student loan, for English students who started from September 2023. You repay ${p1Rate} of income above ${p5YearGBP} a year, interest is RPI only (currently ${rpiPct}), and any balance is written off after ${p5WriteOff} years, the longest term of any plan.`,
       },
       {
         question: "What is the Plan 5 repayment threshold?",
@@ -393,7 +393,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "When is a Plan 5 loan written off?",
-        answer: `A Plan 5 loan is written off ${p5WriteOff} years after the April you were first due to repay — ten years longer than Plan 2 and fifteen longer than Plan 1. That long term is the main driver of Plan 5's lifetime cost.`,
+        answer: `A Plan 5 loan is written off ${p5WriteOff} years after the April you were first due to repay, ten years longer than Plan 2 and fifteen longer than Plan 1. That long term is the main driver of Plan 5's lifetime cost.`,
       },
     ],
   },
@@ -424,14 +424,14 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
     heroIntro: `The Postgraduate Loan funds Master's and Doctoral study across the UK. It works differently from the undergraduate plans: you repay ${pgRatePct} (not 9%) of income above ${pgYearGBP} a year, interest is a flat RPI + 3%, and the balance is written off after ${pgWriteOff} years.`,
     whatItIs: [
       `A Postgraduate Loan is repaid at ${pgRatePct} of income above ${pgYearGBP} a year (${pgMonthlyGBP} a month). The threshold is the lowest of any plan, and interest is a flat RPI + 3% regardless of your salary.`,
-      `Crucially, a Postgraduate Loan is repaid alongside — not instead of — any undergraduate loan. If you hold both, the deductions stack, so a graduate on Plan 2 plus a Postgraduate Loan can face two repayments at once.`,
+      `A Postgraduate Loan is repaid alongside any undergraduate loan, not instead of it. If you hold both, the deductions stack, so a graduate on Plan 2 plus a Postgraduate Loan can face two repayments at once.`,
     ],
     whoItIsFor: [
       "You are on a Postgraduate Loan if you borrowed for a Master's or Doctoral course from Student Finance anywhere in the UK from 2016 onwards.",
-      "It sits on top of any undergraduate plan you already have. Your undergraduate loan keeps its own threshold, rate and write-off — the Postgraduate Loan is calculated separately.",
+      "It sits on top of any undergraduate plan you already have. Your undergraduate loan keeps its own threshold, rate and write-off, and the Postgraduate Loan is calculated separately.",
     ],
     interestParagraphs: [
-      `Postgraduate Loan interest is a flat RPI + 3% — currently ${postgradPct} — for everyone, whatever you earn. There is no sliding scale like Plan 2 and no cap like Plan 1 or Plan 4.`,
+      `Postgraduate Loan interest is a flat RPI + 3%, currently ${postgradPct}, for everyone, whatever you earn. There is no sliding scale like Plan 2 and no cap like Plan 1 or Plan 4.`,
       `That makes it one of the higher interest rates in the system, so the balance grows quickly. Combined with the ${pgWriteOff}-year term, many postgraduate borrowers repay well beyond what they originally borrowed.`,
     ],
     compareParagraph: `The Postgraduate Loan has the lowest threshold (${pgYearGBP}) but the lowest repayment rate (${pgRatePct} versus 9%). Its flat RPI + 3% interest matches Plan 2's ceiling, and because it stacks on top of an undergraduate loan, the combined deductions can be heavier than any single plan.`,
@@ -443,7 +443,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       },
       {
         question: "What is the Postgraduate Loan threshold?",
-        answer: `The Postgraduate Loan threshold is ${pgYearGBP} a year (${pgMonthlyGBP} a month), the lowest of any plan. You repay ${pgRatePct} of everything above it — a lower rate than the 9% charged on undergraduate plans.`,
+        answer: `The Postgraduate Loan threshold is ${pgYearGBP} a year (${pgMonthlyGBP} a month), the lowest of any plan. You repay ${pgRatePct} of everything above it, a lower rate than the 9% charged on undergraduate plans.`,
       },
       {
         question: "What is the Postgraduate Loan interest rate?",
@@ -452,7 +452,7 @@ export const PLAN_PAGES: Record<PlanPageKey, PlanPageContent> = {
       {
         question:
           "Do I repay a Postgraduate Loan and an undergraduate loan at the same time?",
-        answer: `Yes. A Postgraduate Loan is repaid on top of any undergraduate plan, not instead of it. Each has its own threshold and rate, so if you hold both you make two separate deductions — ${pgRatePct} above ${pgYearGBP} for the postgraduate loan plus 9% above your undergraduate threshold.`,
+        answer: `Yes. A Postgraduate Loan is repaid on top of any undergraduate plan, not instead of it. Each has its own threshold and rate, so if you hold both you make two separate deductions: ${pgRatePct} above ${pgYearGBP} for the postgraduate loan, plus 9% above your undergraduate threshold.`,
       },
     ],
   },

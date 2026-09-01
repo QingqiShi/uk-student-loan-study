@@ -1,9 +1,5 @@
-import {
-  ArrowRight01Icon,
-  ArrowUpRight01Icon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import { cn } from "@/lib/utils";
 
 /**
@@ -73,12 +69,11 @@ function RowInner({
             {badge}
           </span>
         )}
-        <HugeiconsIcon
-          icon={external ? ArrowUpRight01Icon : ArrowRight01Icon}
+        <LinkArrow
+          external={external}
           className={cn(
-            "ml-auto size-4 shrink-0 text-faint transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-primary group-focus-visible:translate-x-0.5 group-focus-visible:text-primary",
-            external &&
-              "group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5",
+            "ml-auto text-faint transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-primary group-focus-visible:translate-x-0.5 group-focus-visible:text-primary",
+            external && "group-focus-visible:-translate-y-0.5",
           )}
         />
         {external && <span className="sr-only"> (opens in a new tab)</span>}

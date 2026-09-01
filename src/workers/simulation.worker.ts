@@ -12,6 +12,7 @@
  */
 
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "@/constants";
+import { EMPTY_VALUE } from "@/lib/format";
 import { simulate } from "@/lib/loans/engine";
 import { simulateOverpayScenarios } from "@/lib/loans/overpaySimulate";
 import type {
@@ -262,21 +263,21 @@ function handleInsight(payload: InsightPayload): {
   });
 
   const emptyCards: InsightCardsResult = {
-    balance: { data: [], stat: "\u2014", label: "Duration" },
+    balance: { data: [], stat: EMPTY_VALUE, label: "Duration" },
     interest: {
-      stat: "\u2014",
+      stat: EMPTY_VALUE,
       label: "Interest paid",
       interestRatio: 0,
       principalRatio: 0,
       writtenOffRatio: 0,
     },
     effectiveRate: {
-      stat: "\u2014",
+      stat: EMPTY_VALUE,
       label: "Effective rate",
       effectiveRate: 0,
       boeRate: payload.boeBaseRate / 100,
     },
-    cumulative: { data: [], stat: "\u2014", label: "Total repaid" },
+    cumulative: { data: [], stat: EMPTY_VALUE, label: "Total repaid" },
   };
 
   if (totalBalance <= 0) {

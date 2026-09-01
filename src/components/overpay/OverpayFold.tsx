@@ -50,7 +50,7 @@ export function OverpayFold({ analysis }: OverpayFoldProps) {
       <PageNameplate
         title="Student Loan Overpayment Calculator"
         crumb="Overpay Calculator"
-        dek="Should you overpay or invest? See which leaves you better off."
+        dek="Overpay or invest the same money: see which leaves you better off."
       />
 
       <div className={FOLD_SPLIT_CONSOLE}>

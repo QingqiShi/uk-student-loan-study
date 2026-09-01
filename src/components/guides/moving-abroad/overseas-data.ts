@@ -120,7 +120,7 @@ const usaPlan2 = formatGBP(featured.usa.plan2Threshold);
 export const movingAbroadFaqs = [
   {
     question: "Does your student loan get wiped if you move abroad?",
-    answer: `No. Moving abroad does not cancel your student loan or wipe the balance, and there is no rule that writes it off after three years overseas. Your loan is only written off at the end of your plan's term — 25, 30 or 40 years depending on your plan — and that clock keeps running wherever you live. Write-off may not apply if you are in breach of your repayment obligations, and SLC can still recover repayments that were due before the write-off date.`,
+    answer: `No. Moving abroad does not cancel your student loan or wipe the balance, and there is no rule that writes it off after three years overseas. Your loan is only written off at the end of your plan's term (25, 30 or 40 years depending on your plan), and that clock keeps running wherever you live. Write-off may not apply if you are in breach of your repayment obligations, and SLC can still recover repayments that were due before the write-off date.`,
   },
   {
     question:
@@ -130,7 +130,7 @@ export const movingAbroadFaqs = [
   {
     question:
       "Do I still repay my student loan in Dubai if there's no income tax?",
-    answer: `Yes. UK student loan repayments are separate from local income tax, so a tax-free income in the UAE does not exempt you. The UAE sits in a lower band than the UK — ${formatGBP(featured.uae.plan2Threshold)} versus ${ukPlan2} for Plan 2 in ${year} — so the same income starts repayments earlier than it would at home. If you do not update your details, SLC charges the UAE's fixed monthly repayment of ${formatGBPPence(featured.uae.plan2FixedMonthly)} instead.`,
+    answer: `Yes. UK student loan repayments are separate from local income tax, so a tax-free income in the UAE does not exempt you. The UAE sits in a lower band than the UK (${formatGBP(featured.uae.plan2Threshold)} versus ${ukPlan2} for Plan 2 in ${year}), so the same income starts repayments earlier than it would at home. If you do not update your details, SLC charges the UAE's fixed monthly repayment of ${formatGBPPence(featured.uae.plan2FixedMonthly)} instead.`,
   },
   {
     question: "Which countries have a lower student loan repayment threshold?",
@@ -142,7 +142,7 @@ export const movingAbroadFaqs = [
   },
   {
     question: "What happens if I don't tell SLC I've moved abroad?",
-    answer: `SLC charges the fixed monthly repayment for your country — ${formatGBPPence(featured.spain.plan2FixedMonthly)} a month in Spain or ${formatGBPPence(featured.australia.plan2FixedMonthly)} in Australia for Plan 2 in ${year} — which may be higher than an income-based amount. Unpaid amounts become arrears, Plan 2 interest goes to the highest rate (RPI + 3%), and SLC can charge a penalty, demand the whole loan in one lump sum, and take court action. Student loans still do not appear on your credit report.`,
+    answer: `SLC charges the fixed monthly repayment for your country: ${formatGBPPence(featured.spain.plan2FixedMonthly)} a month in Spain, or ${formatGBPPence(featured.australia.plan2FixedMonthly)} in Australia for Plan 2 in ${year}. That can be higher than an income-based amount. Unpaid amounts become arrears, Plan 2 interest goes to the highest rate (RPI + 3%), and SLC can charge a penalty, demand the whole loan in one lump sum, and take court action. Student loans still do not appear on your credit report.`,
   },
   {
     question:
@@ -156,27 +156,27 @@ export const movingAbroadFaqs = [
   {
     question:
       "Do the overseas thresholds apply to Plan 5 and Postgraduate loans?",
-    answer: `Yes. SLC publishes a separate overseas table for every plan, and each uses the same country bands. For ${year}, Spain's threshold is ${formatGBP(featured.spain.plan5Threshold)} for Plan 5 and ${formatGBP(featured.spain.postgraduateThreshold)} for a Postgraduate loan, against ${formatGBP(featured.uk.plan5Threshold)} and ${formatGBP(featured.uk.postgraduateThreshold)} in the UK; the United States is ${formatGBP(featured.usa.plan5Threshold)} and ${formatGBP(featured.usa.postgraduateThreshold)}. You repay 9% above the Plan 5 threshold and 6% above the Postgraduate one — both at once if you hold both loans.`,
+    answer: `Yes. SLC publishes a separate overseas table for every plan, and each uses the same country bands. For ${year}, Spain's threshold is ${formatGBP(featured.spain.plan5Threshold)} for Plan 5 and ${formatGBP(featured.spain.postgraduateThreshold)} for a Postgraduate loan, against ${formatGBP(featured.uk.plan5Threshold)} and ${formatGBP(featured.uk.postgraduateThreshold)} in the UK; the United States is ${formatGBP(featured.usa.plan5Threshold)} and ${formatGBP(featured.usa.postgraduateThreshold)}. You repay 9% above the Plan 5 threshold and 6% above the Postgraduate one, both at once if you hold both loans.`,
   },
   {
     question:
       "Do I have to repay my student loan if I'm travelling or not working abroad?",
-    answer: `You still have to tell SLC before you leave if you will be away for more than 3 months, even if you are not earning. Update your employment details online — you can record that you are unemployed — and give proof such as a recent bank statement. If your income is below your country's threshold, SLC defers repayments for 12 months. If you say nothing, your country's fixed monthly repayment applies instead.`,
+    answer: `You still have to tell SLC before you leave if you will be away for more than 3 months, even if you are not earning. Update your employment details online, where you can record that you are unemployed, and give proof such as a recent bank statement. If your income is below your country's threshold, SLC defers repayments for 12 months. If you say nothing, your country's fixed monthly repayment applies instead.`,
   },
   {
     question: "Does moving abroad affect my credit score?",
-    answer: `No. GOV.UK states that student loans do not appear on credit reports and do not affect your credit score, and moving abroad does not change that. The consequences of ignoring SLC are different: arrears on your loan account, the highest interest rate, a penalty charge and, ultimately, a court order — and only a court judgment could reach your credit file. Lenders may still consider your student loan in affordability checks for other borrowing.`,
+    answer: `No. GOV.UK states that student loans do not appear on credit reports and do not affect your credit score, and moving abroad does not change that. The consequences of ignoring SLC are different: arrears on your loan account, the highest interest rate, a penalty charge and, in the end, a court order. Only a court judgment could reach your credit file. Lenders may still consider your student loan in affordability checks for other borrowing.`,
   },
   {
     question: "What happens to my student loan if I emigrate from the UK?",
-    answer: `Your loan remains active regardless of where you live. Before you leave, tell the Student Loans Company and update your employment details; SLC then sets a repayment schedule from your country's threshold for up to 12 months at a time, reassessed each year. The write-off date stays the same — emigrating does not reset or extend it — although write-off may not apply if you are in breach of your repayment obligations.`,
+    answer: `Your loan remains active regardless of where you live. Before you leave, tell the Student Loans Company and update your employment details; SLC then sets a repayment schedule from your country's threshold for up to 12 months at a time, reassessed each year. The write-off date stays the same, because emigrating does not reset or extend it, although write-off may not apply if you are in breach of your repayment obligations.`,
   },
   {
     question: "What happens to my student loan when I come back to the UK?",
-    answer: `Update your employment details as soon as you return after more than 3 months away. If you do not, SLC keeps charging you at the rate for the country you left, possibly at a higher interest rate, while PAYE deductions restart once you are employed. PAYE repayments do not clear any overseas arrears — arrange those separately with SLC's arrears line on ${SLC_ARREARS_PHONE}. Visits under 3 months do not change your status.`,
+    answer: `Update your employment details as soon as you return after more than 3 months away. If you do not, SLC keeps charging you at the rate for the country you left, possibly at a higher interest rate, while PAYE deductions restart once you are employed. PAYE repayments do not clear any overseas arrears; arrange those separately with SLC's arrears line on ${SLC_ARREARS_PHONE}. Visits under 3 months do not change your status.`,
   },
   {
     question: "Can I avoid paying my student loan by moving abroad?",
-    answer: `No. SLC can recover the debt through the courts as a civil debt whether you are in the UK or abroad, and can add the cost of tracing your address and income to your loan. If you do not respond to income requests, SLC charges your country's fixed monthly repayment — from ${formatGBPPence(lowestBand.plan2FixedMonthly)} to ${formatGBPPence(highestBand.plan2FixedMonthly)} a month for Plan 2 in ${year} — applies the highest interest rate to a Plan 2 loan, and can demand the whole loan in one lump sum.`,
+    answer: `No. SLC can recover the debt through the courts as a civil debt, in the UK or abroad, and can add the cost of tracing your address and income to your loan. If you do not respond to income requests, SLC charges your country's fixed monthly repayment (from ${formatGBPPence(lowestBand.plan2FixedMonthly)} to ${formatGBPPence(highestBand.plan2FixedMonthly)} a month for Plan 2 in ${year}), applies the highest interest rate to a Plan 2 loan, and can demand the whole loan in one lump sum.`,
   },
 ];

@@ -4,7 +4,7 @@ import { PLAN_PAGE_ORDER, PLAN_PAGES } from "@/lib/planContent";
 const title =
   "UK Student Loan Plans Explained: Plan 1, 2, 4, 5 & Postgraduate (2026)";
 const description =
-  "Every UK student loan plan compared at a glance — Plan 1, 2, 4, 5 and Postgraduate thresholds, repayment rates, interest and write-off periods. Find your plan and see why middle earners repay the most.";
+  "Every UK student loan plan compared at a glance: Plan 1, 2, 4, 5 and Postgraduate thresholds, repayment rates, interest and write-off periods. Find your plan and see why middle earners repay the most.";
 const SITE = "https://studentloanstudy.uk";
 
 export const metadata: Metadata = {

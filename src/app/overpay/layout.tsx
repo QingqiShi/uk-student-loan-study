@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Student Loan Overpayment Calculator — Should You Overpay or Invest?",
+  title: "Student Loan Overpayment Calculator: Overpay or Invest?",
   description:
-    "Free UK student loan overpayment calculator. Compare overpaying your loan vs investing in an index fund — see which strategy leaves you better off based on your salary, balance, and plan type.",
+    "Free UK student loan overpayment calculator. Compare overpaying your loan against investing in an index fund to see which leaves you better off, based on your salary, balance, and plan type.",
   keywords: [
     "student loan overpayment calculator",
     "should I overpay student loan",
@@ -18,10 +18,9 @@ export const metadata: Metadata = {
     canonical: "/overpay",
   },
   openGraph: {
-    title:
-      "Student Loan Overpayment Calculator — Should You Overpay or Invest?",
+    title: "Student Loan Overpayment Calculator: Overpay or Invest?",
     description:
-      "Free UK student loan overpayment calculator. Compare overpaying your loan vs investing in an index fund — see which strategy leaves you better off based on your salary, balance, and plan type.",
+      "Free UK student loan overpayment calculator. Compare overpaying your loan against investing in an index fund to see which leaves you better off, based on your salary, balance, and plan type.",
     url: "https://studentloanstudy.uk/overpay",
     type: "website",
   },
@@ -71,7 +70,7 @@ const faqSchema = {
       name: "How do I make an early repayment on my student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "You can make overpayments at any time by logging into your Student Loans Company account and paying by debit card or bank transfer. There is no penalty for early repayment. Before overpaying, check whether your loan will be written off — if it will, overpaying means you pay more than you need to.",
+        text: "You can make overpayments at any time by logging into your Student Loans Company account and paying by debit card or bank transfer. There is no penalty for early repayment. Before overpaying, check whether your loan will be written off. If it will, overpaying means you pay more than you need to.",
       },
     },
   ],

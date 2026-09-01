@@ -32,8 +32,8 @@ export function SelfEmploymentGuide() {
           your payslip, you repay through your annual{" "}
           <ExternalLink href="https://www.gov.uk/self-assessment-tax-returns">
             Self Assessment tax return
-          </ExternalLink>{" "}
-          — and that changes how you need to plan your finances.
+          </ExternalLink>
+          , and that changes how you need to plan your finances.
         </>
       }
       related={{
@@ -57,7 +57,7 @@ export function SelfEmploymentGuide() {
           <SeamCell eyebrow="PAYE (employed)">
             <ul className="list-disc space-y-1.5 pl-5 marker:text-primary">
               <li>Monthly deductions from payslip</li>
-              <li>Automatic — employer handles it</li>
+              <li>Your employer handles it automatically</li>
               <li>Based on salary each pay period</li>
             </ul>
           </SeamCell>
@@ -74,17 +74,16 @@ export function SelfEmploymentGuide() {
           <p>
             When you&rsquo;re employed, your employer deducts student loan
             repayments from your salary each month via PAYE. When you&rsquo;re
-            self-employed, there is no employer to do this — HMRC calculates
-            your repayment based on your{" "}
+            self-employed, there is no employer to do this, so HMRC works out
+            your repayment from your{" "}
             <ExternalLink href="https://www.gov.uk/self-assessment-tax-returns">
               Self Assessment tax return
             </ExternalLink>{" "}
             instead.
           </p>
           <p>
-            This means your repayments are <strong>annual</strong>, not monthly.
-            You typically pay in two lump sums: one in January and one in July
-            (as part of HMRC&rsquo;s{" "}
+            This means your repayments are annual. You typically pay in two lump
+            sums: one in January and one in July (as part of HMRC&rsquo;s{" "}
             <ExternalLink href="https://www.gov.uk/understand-self-assessment-bill/payments-on-account">
               payment on account
             </ExternalLink>{" "}
@@ -93,9 +92,9 @@ export function SelfEmploymentGuide() {
             Postgraduate Loans.
           </p>
           <p>
-            Because payments are based on your <strong>profit</strong> — not
-            your total revenue — business expenses you claim directly reduce
-            your student loan repayment as well as your tax bill.
+            Repayments are based on your profit rather than your total revenue,
+            so the business expenses you claim reduce your student loan
+            repayment as well as your tax bill.
           </p>
         </div>
       </section>
@@ -175,7 +174,7 @@ export function SelfEmploymentGuide() {
             combined income (salary + freelance profit) is above it,
             you&rsquo;ll owe the full repayment through Self Assessment. If your
             PAYE income alone exceeds the threshold, your employer already
-            deducts repayments — and Self Assessment adds further repayments on
+            deducts repayments, and Self Assessment adds further repayments on
             your self-employment profit.
           </p>
         </div>
@@ -195,7 +194,7 @@ export function SelfEmploymentGuide() {
             {
               title: "Late filing penalties",
               description:
-                "Missing the 31 January Self Assessment deadline means a \u00A3100 penalty \u2014 plus your student loan repayment is delayed, which can lead to estimated charges from HMRC.",
+                "Missing the 31 January Self Assessment deadline means a \u00A3100 penalty, and your student loan repayment is delayed, which can lead to estimated charges from HMRC.",
             },
             {
               title: "Underestimating income",
@@ -205,7 +204,7 @@ export function SelfEmploymentGuide() {
             {
               title: "Not claiming legitimate expenses",
               description:
-                "Every pound of allowable business expense you miss increases your net profit \u2014 and therefore your student loan repayment. Common overlooked expenses include home office costs, professional subscriptions, and travel.",
+                "Every pound of allowable business expense you miss increases your net profit, and therefore your student loan repayment. Common overlooked expenses include home office costs, professional subscriptions, and travel.",
             },
           ].map((mistake) => (
             <SeamCell
@@ -276,12 +275,12 @@ export function SelfEmploymentGuide() {
 
       <KeyTakeaways>
         <li>
-          Self-employed borrowers repay through Self Assessment, not PAYE —
-          expect annual lump-sum payments, not monthly deductions.
+          Self-employed borrowers repay through Self Assessment, so expect
+          annual lump sums instead of monthly PAYE deductions.
         </li>
         <li>
-          Repayments are based on <strong>net profit</strong>, so claiming all
-          legitimate business expenses directly reduces what you owe.
+          Repayments are based on net profit, so claiming all legitimate
+          business expenses directly reduces what you owe.
         </li>
         <li>
           If you have mixed income (PAYE + freelance), HMRC collects through

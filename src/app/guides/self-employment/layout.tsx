@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 
 export const metadata: Metadata = {
-  title: "Self-Employed? Your Student Loan Repayments Work Differently",
+  title: "Self-Employed Student Loan Repayments Through Self Assessment",
   description:
     "No employer deducting it from your payslip means you handle repayments through Self Assessment. Get the timing, thresholds, and mixed-income rules straight before your next tax return.",
   keywords: [
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     canonical: "/guides/self-employment",
   },
   openGraph: {
-    title: "Self-Employed? Your Student Loan Repayments Work Differently",
+    title: "Self-Employed Student Loan Repayments Through Self Assessment",
     description:
       "No employer deducting it from your payslip means you handle repayments through Self Assessment. Get the timing, thresholds, and mixed-income rules straight before your next tax return.",
     url: "https://studentloanstudy.uk/guides/self-employment",
@@ -59,7 +59,7 @@ const faqSchema = {
       name: "How do I repay my student loan if I'm self-employed?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "If you're self-employed, you repay your student loan through your annual Self Assessment tax return rather than automatic PAYE deductions. HMRC calculates what you owe based on your net profit, and you pay it as part of your tax bill — typically in two lump-sum payments in January and July.",
+        text: "If you're self-employed, you repay your student loan through your annual Self Assessment tax return rather than automatic PAYE deductions. HMRC calculates what you owe based on your net profit, and you pay it as part of your tax bill, typically in two lump sums in January and July.",
       },
     },
     {
@@ -84,7 +84,7 @@ const faqSchema = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Self-Employed? Your Student Loan Repayments Work Differently",
+  headline: "Self-Employed Student Loan Repayments Through Self Assessment",
   description:
     "No employer deducting it from your payslip means you handle repayments through Self Assessment. Get the timing, thresholds, and mixed-income rules straight before your next tax return.",
   url: "https://studentloanstudy.uk/guides/self-employment",

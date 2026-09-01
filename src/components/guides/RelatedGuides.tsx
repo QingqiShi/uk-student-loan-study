@@ -1,6 +1,5 @@
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import { LinkIndex, LinkIndexRow } from "@/components/instrument/LinkIndex";
 import { Eyebrow } from "@/components/typography/Eyebrow";
 import type { GuideEntry, GuideSlug } from "@/lib/guides";
@@ -132,10 +131,7 @@ export function RelatedGuides({
           className="mt-2 flex items-center gap-1.5 font-semibold text-foreground transition-colors group-hover:text-cta"
         >
           Open the calculator
-          <HugeiconsIcon
-            icon={ArrowRight01Icon}
-            className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-[3px]"
-          />
+          <LinkArrow className="text-primary" />
         </span>
         <span className="mt-1 block text-sm text-muted-foreground">
           See what you will actually repay at your salary.

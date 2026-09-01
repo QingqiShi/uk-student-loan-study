@@ -115,8 +115,8 @@ export function MovingAbroadGuide() {
             title="When to tell SLC"
           >
             Before you leave, if you&rsquo;ll be outside the UK for more than 3
-            months &mdash; even if you won&rsquo;t be earning. The Republic of
-            Ireland counts as overseas.
+            months, even if you won&rsquo;t be earning. The Republic of Ireland
+            counts as overseas.
           </SeamCell>
           <SeamCell
             icon={
@@ -140,10 +140,10 @@ export function MovingAbroadGuide() {
             }
             title="If you don't respond"
           >
-            A fixed monthly amount for your country &mdash;{" "}
+            A fixed monthly amount for your country:{" "}
             {formatGBPPence(featured.australia.plan2FixedMonthly)} in Australia,{" "}
             {formatGBPPence(featured.spain.plan2FixedMonthly)} in Spain for Plan
-            2 &mdash; and, on a Plan 2 loan, interest at the highest rate.
+            2. On a Plan 2 loan, interest also goes to the highest rate.
           </SeamCell>
         </SeamGrid>
       </section>
@@ -153,22 +153,21 @@ export function MovingAbroadGuide() {
           You must tell SLC before you leave
         </Heading>
         <p className="text-muted-foreground">
-          If you&rsquo;ll be outside the UK for more than 3 months &mdash; for
-          work, travel or any other reason &mdash; you must tell SLC before you
-          go. The duty is triggered by the length of the absence, not by whether
-          you&rsquo;ll be earning, and the Republic of Ireland counts as
-          overseas. Under 3 months away you don&rsquo;t need to tell SLC before
-          you go: you stay a UK taxpayer, and repayments carry on through PAYE
-          if you&rsquo;re employed or Self Assessment if you&rsquo;re
-          self-employed.
+          If you&rsquo;ll be outside the UK for more than 3 months, for work,
+          travel or any other reason, you must tell SLC before you go. The duty
+          is triggered by the length of the absence, not by whether you&rsquo;ll
+          be earning, and the Republic of Ireland counts as overseas. Under 3
+          months away you don&rsquo;t need to tell SLC before you go: you stay a
+          UK taxpayer, and repayments carry on through PAYE if you&rsquo;re
+          employed or Self Assessment if you&rsquo;re self-employed.
         </p>
         <ul className="list-inside list-disc space-y-2 text-muted-foreground">
           <li>
             <ExternalLink href={govUkUpdateEmploymentDetailsLink}>
               Update your employment details online
-            </ExternalLink>{" "}
-            &mdash; the service tells you exactly what SLC needs, and you can
-            record that you&rsquo;re unemployed.
+            </ExternalLink>
+            . The service tells you exactly what SLC needs, and you can record
+            that you&rsquo;re unemployed.
           </li>
           <li>
             Give evidence of your income: usually your last three months&rsquo;
@@ -181,8 +180,8 @@ export function MovingAbroadGuide() {
             your country&rsquo;s threshold.
           </li>
           <li>
-            Update your details every year &mdash; SLC reassesses your income
-            annually, and you must tell it if your income changes in between.
+            Update your details every year. SLC reassesses your income annually,
+            and you must tell it if your income changes in between.
           </li>
         </ul>
       </section>
@@ -195,8 +194,8 @@ export function MovingAbroadGuide() {
           Pick a destination, your plan and your salary. The estimator applies
           SLC&rsquo;s {OVERSEAS_TAX_YEAR} threshold for that country, converts
           at the HMRC rate SLC uses, and shows what you&rsquo;d repay each month
-          against the UK &mdash; and what SLC charges instead if you don&rsquo;t
-          update your details.
+          next to the UK figure, plus what SLC charges instead if you
+          don&rsquo;t update your details.
         </p>
       </section>
 
@@ -213,13 +212,12 @@ export function MovingAbroadGuide() {
           placed into one of {String(bandCount)} bands, from{" "}
           {formatMultiplier(lowestBand.multiplier)} to{" "}
           {formatMultiplier(highestBand.multiplier)} the UK threshold, using the
-          World Bank&rsquo;s Price Level Index &mdash; a measure of local costs
-          such as food, housing and transport. The bands are reset every 6
-          April, so your repayments can change even if your income hasn&rsquo;t.
-          This is where <strong>middle earners abroad feel it most</strong>{" "}
-          &mdash; in a lower-band country, a mid-range income that would barely
-          trigger repayments at home pulls a much bigger slice into the{" "}
-          {undergradRate} repayment band.
+          World Bank&rsquo;s Price Level Index, a measure of local costs such as
+          food, housing and transport. The bands are reset every 6 April, so
+          your repayments can change even if your income hasn&rsquo;t. Middle
+          earners abroad feel this most: in a lower-band country, a mid-range
+          income that would barely trigger repayments at home pulls a much
+          bigger slice into the {undergradRate} repayment band.
         </p>
         <p className="text-muted-foreground">
           The process is the same wherever you go: tell SLC before you leave,
@@ -243,9 +241,9 @@ export function MovingAbroadGuide() {
         <p className="text-xs text-muted-foreground sm:text-sm">
           Figures are SLC&rsquo;s overseas thresholds for {OVERSEAS_TAX_YEAR},
           set against the UK Plan 2 threshold of{" "}
-          {formatGBP(featured.uk.plan2Threshold)}. The band letters are ours
-          &mdash; GOV.UK lists one row per territory. Every plan has its own
-          table, and SLC revises every country each 6 April &mdash; always{" "}
+          {formatGBP(featured.uk.plan2Threshold)}. The band letters are ours;
+          GOV.UK lists one row per territory. Every plan has its own table, and
+          SLC revises every country each 6 April, so always{" "}
           <ExternalLink href={govUkOverseasThresholdsLink}>
             check the latest figures on GOV.UK
           </ExternalLink>
@@ -258,7 +256,7 @@ export function MovingAbroadGuide() {
             </strong>{" "}
             sit in the same band as the UK (
             {formatMultiplier(featured.australia.multiplier)}), so the threshold
-            is identical to the home figure &mdash;{" "}
+            is identical to the home figure:{" "}
             {formatGBP(featured.australia.plan2Threshold)} for Plan 2. The
             difference is mechanical: you pay SLC directly each month on a
             schedule built from your payslips, converted at HMRC&rsquo;s annual
@@ -266,10 +264,10 @@ export function MovingAbroadGuide() {
           </li>
           <li>
             <strong className="text-foreground">Spain &amp; the UAE:</strong>{" "}
-            both sit at {formatMultiplier(featured.spain.multiplier)} &mdash;
-            band {featured.spain.territory.band} of {String(bandCount)},{" "}
-            {formatGBP(featured.spain.plan2Threshold)} for Plan 2 &mdash; so
-            repayments start{" "}
+            both sit at {formatMultiplier(featured.spain.multiplier)}, band{" "}
+            {featured.spain.territory.band} of {String(bandCount)}, which is{" "}
+            {formatGBP(featured.spain.plan2Threshold)} for Plan 2. Repayments
+            start{" "}
             {formatGBP(
               featured.uk.plan2Threshold - featured.spain.plan2Threshold,
             )}{" "}
@@ -290,8 +288,8 @@ export function MovingAbroadGuide() {
             {String(territoriesBelowSpain)} territories sit below Spain&rsquo;s
             band, down to {formatMultiplier(lowestBand.multiplier)} (
             {formatGBP(lowestBand.plan2Threshold)}) in countries such as India,
-            Pakistan and Nigeria &mdash; where even a modest local income
-            converted to pounds can clear the threshold.
+            Pakistan and Nigeria, where even a modest local income converted to
+            pounds can clear the threshold.
           </li>
         </ul>
       </div>
@@ -346,9 +344,9 @@ export function MovingAbroadGuide() {
           <Link href="/guides/how-interest-works" className={guideLink}>
             sliding scale
           </Link>{" "}
-          is the same shape as at home &mdash; RPI at the lower threshold, RPI +
-          3% at the upper &mdash; but the thresholds move with the band:
-          Spain&rsquo;s run from {formatGBP(featured.spain.plan2Threshold)} to{" "}
+          is the same shape as at home (RPI at the lower threshold, RPI + 3% at
+          the upper), but the thresholds move with the band: Spain&rsquo;s run
+          from {formatGBP(featured.spain.plan2Threshold)} to{" "}
           {formatGBP(featured.spain.plan2UpperThreshold)}, the United
           States&rsquo; from {formatGBP(featured.usa.plan2Threshold)} to{" "}
           {formatGBP(featured.usa.plan2UpperThreshold)}, against{" "}
@@ -361,10 +359,10 @@ export function MovingAbroadGuide() {
         </p>
         <p className="text-muted-foreground">
           If you don&rsquo;t keep your employment details up to date, Plan 2
-          interest goes to the highest rate &mdash; RPI + 3% &mdash; whatever
-          your income, for as long as your details are out of date. Plan 1, Plan
-          4, Plan 5 and Postgraduate interest rates are not income-based, so an
-          overseas assessment does not change them.
+          interest goes to the highest rate, RPI + 3%, whatever your income, for
+          as long as your details are out of date. Plan 1, Plan 4, Plan 5 and
+          Postgraduate interest rates are not income-based, so an overseas
+          assessment does not change them.
         </p>
       </section>
 
@@ -374,10 +372,9 @@ export function MovingAbroadGuide() {
           <AlertTitle>What if you don&rsquo;t update your details?</AlertTitle>
           <AlertDescription className="text-signal">
             <p>
-              SLC doesn&rsquo;t stop collecting. It charges the{" "}
-              <strong>fixed monthly repayment</strong> for your country instead
-              of an income-based figure &mdash; for Plan 2 in{" "}
-              {OVERSEAS_TAX_YEAR} that is{" "}
+              SLC doesn&rsquo;t stop collecting. It charges the fixed monthly
+              repayment for your country instead of an income-based figure. For
+              Plan 2 in {OVERSEAS_TAX_YEAR} that is{" "}
               {formatGBPPence(featured.spain.plan2FixedMonthly)} in Spain and
               the UAE, {formatGBPPence(featured.australia.plan2FixedMonthly)} in
               Australia, Canada and New Zealand, and{" "}
@@ -386,9 +383,9 @@ export function MovingAbroadGuide() {
             </p>
             <ul className="mt-2 list-inside list-disc space-y-1 marker:text-signal">
               <li>
-                The fixed amount <strong>may be higher</strong> than an
-                income-based repayment &mdash; it is set from twice the median
-                graduate salary, not from your income.
+                The fixed amount may be higher than an income-based repayment,
+                because it is set from twice the median graduate salary rather
+                than from your income.
               </li>
               <li>
                 It is not an additional charge: every pound paid still reduces
@@ -399,19 +396,18 @@ export function MovingAbroadGuide() {
                 .
               </li>
               <li>
-                Plan 2 interest moves to the <strong>highest rate</strong>, RPI
-                + 3%, for as long as your details are out of date.
+                Plan 2 interest moves to the highest rate, RPI + 3%, for as long
+                as your details are out of date.
               </li>
               <li>
-                SLC can charge a <strong>penalty</strong>, demand the whole loan
-                plus interest and penalties in <strong>one lump sum</strong>,
-                and add the cost of tracing you and recovering the debt to your
-                loan.
+                SLC can charge a penalty, demand the whole loan plus interest
+                and penalties in one lump sum, and add the cost of tracing you
+                and recovering the debt to your loan.
               </li>
               <li>
-                SLC can take <strong>court action</strong> to recover the debt.
-                A court order is enforced as a civil debt whether you&rsquo;re
-                in the UK or abroad, and you bear the legal costs.
+                SLC can take court action to recover the debt. A court order is
+                enforced as a civil debt in the UK and abroad, and you bear the
+                legal costs.
               </li>
             </ul>
           </AlertDescription>
@@ -420,10 +416,10 @@ export function MovingAbroadGuide() {
           <strong className="text-foreground">
             Student loans do not appear on credit reports or affect your credit
             score
-          </strong>{" "}
-          &mdash; GOV.UK says so in plain words, and that stays true abroad.
-          Only a court judgment obtained after legal action could reach your
-          credit file.
+          </strong>
+          . GOV.UK says so in plain words, and that stays true abroad. Only a
+          court judgment obtained after legal action could reach your credit
+          file.
         </p>
       </section>
 
@@ -434,15 +430,15 @@ export function MovingAbroadGuide() {
         <p className="text-muted-foreground">
           Update your employment details as soon as you&rsquo;re back after more
           than 3 months away. If you don&rsquo;t, SLC keeps charging you at the
-          rate for the country you&rsquo;ve left &mdash; which can mean paying
-          more than you need to, or a higher interest rate &mdash; and once
-          you&rsquo;re in UK employment, PAYE deductions restart on top.
+          rate for the country you&rsquo;ve left, which can mean paying more
+          than you need to, or a higher interest rate. Once you&rsquo;re in UK
+          employment, PAYE deductions restart on top.
         </p>
         <Panel>
           <ul className="list-disc space-y-2 pl-5 text-muted-foreground marker:text-primary">
             <li>
-              PAYE deductions <strong>do not clear overseas arrears</strong>.
-              Arrange any arrears separately with SLC&rsquo;s arrears line on{" "}
+              PAYE deductions do not clear overseas arrears. Arrange any arrears
+              separately with SLC&rsquo;s arrears line on{" "}
               <span className="font-mono text-foreground tabular-nums">
                 {SLC_ARREARS_PHONE}
               </span>
@@ -450,7 +446,7 @@ export function MovingAbroadGuide() {
             </li>
             <li>
               Short visits home of under 3 months don&rsquo;t change your
-              overseas status &mdash; your overseas schedule carries on.
+              overseas status: your overseas schedule carries on.
             </li>
             <li>
               Interest reverts to the standard UK calculation from the date you
@@ -474,10 +470,10 @@ export function MovingAbroadGuide() {
             won&rsquo;t be earning. The Republic of Ireland counts as overseas.
           </Step>
           <Step index={2} title="Update your employment details online">
-            Give the evidence the service asks for &mdash; usually three
-            months&rsquo; payslips, or a bank statement if you&rsquo;re not
-            earning &mdash; so SLC sets an income-based schedule or defers your
-            repayments for 12 months.
+            Give the evidence the service asks for (usually three months&rsquo;
+            payslips, or a bank statement if you&rsquo;re not earning) so SLC
+            sets an income-based schedule or defers your repayments for 12
+            months.
           </Step>
           <Step index={3} title="Check your country's threshold">
             Use the{" "}
@@ -522,14 +518,13 @@ export function MovingAbroadGuide() {
 
       <KeyTakeaways>
         <li>
-          Moving abroad does <strong>not</strong> cancel or pause your student
-          loan. Write-off still comes only at the end of your plan&rsquo;s term,
-          and may not apply if you&rsquo;re in breach.
+          Moving abroad does not cancel or pause your student loan. Write-off
+          still comes only at the end of your plan&rsquo;s term, and may not
+          apply if you&rsquo;re in breach.
         </li>
         <li>
-          Tell SLC <strong>before you leave</strong> for more than 3 months, and
-          update your employment details every year &mdash; even if you&rsquo;re
-          not earning.
+          Tell SLC before you leave for more than 3 months, and update your
+          employment details every year, even if you&rsquo;re not earning.
         </li>
         <li>
           Your threshold depends on your country: {String(bandCount)} bands from{" "}
@@ -544,7 +539,7 @@ export function MovingAbroadGuide() {
         </li>
         <li>
           Student loans don&rsquo;t appear on credit reports or affect your
-          credit score &mdash; abroad or at home.
+          credit score, abroad or at home.
         </li>
         <li>
           Before you move, check your remaining balance and repayment timeline

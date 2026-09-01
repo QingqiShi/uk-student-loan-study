@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { InstrumentSection } from "@/components/instrument/InstrumentSection";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import { useLeverData } from "./leverData";
 
 export function LeversSection() {
@@ -14,7 +15,7 @@ export function LeversSection() {
       intro={
         <>
           Each figure is the change to lifetime repayment for your selection
-          above ({refLabel}) — everything else held constant.
+          above ({refLabel}), with everything else held constant.
         </>
       }
     >
@@ -58,13 +59,7 @@ export function LeversSection() {
                   className="group mt-3 inline-flex items-baseline gap-[0.35rem] text-sm font-semibold text-cta no-underline transition-colors duration-150 ease-[ease] hover:text-primary"
                   href={lever.href}
                 >
-                  {lever.cta}{" "}
-                  <span
-                    className="text-primary transition-transform duration-150 ease-[ease] group-hover:translate-x-[3px]"
-                    aria-hidden="true"
-                  >
-                    →
-                  </span>
+                  {lever.cta} <LinkArrow className="self-center text-primary" />
                 </Link>
               )}
             </div>

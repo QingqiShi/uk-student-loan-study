@@ -17,7 +17,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary} — Interest Breakdown`;
+  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary}: Interest Breakdown`;
   const description = `See how much interest you pay on a ${meta.planName} UK student loan with ${meta.formattedBalance} balance and ${meta.formattedSalary} annual salary.`;
 
   return {

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Effective Rate — What Your Student Loan Really Costs",
+  title: "Effective Rate: What Your Student Loan Costs",
   description:
-    "Discover the effective annual rate of your UK student loan and compare it to the Bank of England base rate. See how your rate changes with different salaries.",
+    "Compare the effective annual rate of your UK student loan with the Bank of England base rate, and see how that rate changes as your salary changes.",
   keywords: [
     "student loan effective rate",
     "cost of a UK student loan",
@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     canonical: "/effective-rate",
   },
   openGraph: {
-    title: "Effective Rate — What Your Student Loan Really Costs",
+    title: "Effective Rate: What Your Student Loan Costs",
     description:
-      "Discover the effective annual rate of your UK student loan and compare it to the Bank of England base rate. See how your rate changes with different salaries.",
+      "Compare the effective annual rate of your UK student loan with the Bank of England base rate, and see how that rate changes as your salary changes.",
     url: "https://studentloanstudy.uk/effective-rate",
     type: "website",
   },
@@ -50,7 +50,7 @@ const faqSchema = {
       name: "What is the effective rate on a student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The effective rate is the true annualised cost of your student loan, calculated as an internal rate of return (IRR). Unlike the headline interest rate, it accounts for write-offs — if your loan is partially written off, your effective cost is lower than the stated interest rate.",
+        text: "The effective rate is the true annualised cost of your student loan, calculated as an internal rate of return (IRR). Unlike the headline interest rate, it accounts for write-offs: if your loan is partially written off, your effective cost is lower than the stated interest rate.",
       },
     },
     {

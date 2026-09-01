@@ -63,15 +63,9 @@ export function ThresholdFreezeGuide() {
           <p>
             After four years frozen at {formatGBP(SECOND_FREEZE_THRESHOLD)}, the
             Plan 2 threshold is finally moving again. It rose to{" "}
-            <strong className="text-foreground">
-              {formatGBP(THRESHOLD_2025_26)}
-            </strong>{" "}
-            in April 2025, and rises again to{" "}
-            <strong className="text-foreground">
-              {formatGBP(FREEZE_THRESHOLD)}
-            </strong>{" "}
-            in April 2026 &mdash; two consecutive years of RPI-linked increases
-            that push the threshold up by over £2,000.
+            {formatGBP(THRESHOLD_2025_26)} in April 2025, and rises again to{" "}
+            {formatGBP(FREEZE_THRESHOLD)} in April 2026: two consecutive years
+            of RPI-linked increases that push the threshold up by over £2,000.
           </p>
           <p>
             That&apos;s genuinely positive. A higher threshold means you keep
@@ -88,31 +82,22 @@ export function ThresholdFreezeGuide() {
         <div className="space-y-2 text-muted-foreground">
           <p>
             In the Autumn Budget on 30 October 2025, Chancellor Rachel Reeves
-            announced that the Plan 2 threshold will{" "}
-            <strong className="text-foreground">
-              freeze at {formatGBP(FREEZE_THRESHOLD)} for three years
-            </strong>{" "}
-            from April 2027 to April 2030. Inflation-linked rises won&apos;t
-            resume until 2030/31.
+            announced that the Plan 2 threshold will freeze at{" "}
+            {formatGBP(FREEZE_THRESHOLD)} for three years, from April 2027 to
+            April 2030. Inflation-linked rises won&apos;t resume until 2030/31.
           </p>
           <p>
             The effect is straightforward: if your salary rises but the
             threshold doesn&apos;t, a bigger slice of your income sits above the
             line each year. Every pay rise becomes a slightly larger student
-            loan bill &mdash; without any change to the 9% rate on your payslip.
+            loan bill, without any change to the 9% rate on your payslip.
           </p>
           <p>
             By 2029/30, an inflation-linked threshold would be roughly{" "}
             {formatGBP(PROJECTED_INFLATION_LINKED)}. Instead it&apos;ll be{" "}
-            {formatGBP(FREEZE_THRESHOLD)} &mdash; a gap of{" "}
-            <strong className="text-foreground">
-              {formatGBP(THRESHOLD_GAP)}
-            </strong>
-            . At {formatGBP(EXAMPLE_SALARY)}, that gap costs you about{" "}
-            <strong className="text-foreground">
-              {formatGBP(EXTRA_ANNUAL)} extra per year
-            </strong>{" "}
-            in repayments.
+            {formatGBP(FREEZE_THRESHOLD)}, a gap of {formatGBP(THRESHOLD_GAP)}.
+            At {formatGBP(EXAMPLE_SALARY)}, that gap costs you about{" "}
+            {formatGBP(EXTRA_ANNUAL)} extra per year in repayments.
           </p>
         </div>
       </section>
@@ -180,19 +165,19 @@ export function ThresholdFreezeGuide() {
           </p>
           <ul className="list-disc space-y-1 pl-6">
             <li>
-              <strong className="text-foreground">Inflation-linked</strong>{" "}
-              &mdash; if the threshold had always kept pace with RPI.
+              <strong className="text-foreground">Inflation-linked</strong>: if
+              the threshold had always kept pace with RPI.
             </li>
             <li>
-              <strong className="text-foreground">Old policy</strong> &mdash;
-              what was in place before the Budget (frozen at{" "}
+              <strong className="text-foreground">Old policy</strong>: what was
+              in place before the Budget (frozen at{" "}
               {formatGBP(THRESHOLD_2025_26)} through April 2027, then resuming
               RPI).
             </li>
             <li>
-              <strong className="text-foreground">New policy</strong> &mdash;
-              bumped to {formatGBP(FREEZE_THRESHOLD)} in April 2026, then frozen
-              again through 2029/30.
+              <strong className="text-foreground">New policy</strong>: bumped to{" "}
+              {formatGBP(FREEZE_THRESHOLD)} in April 2026, then frozen again
+              through 2029/30.
             </li>
           </ul>
           <p>
@@ -205,7 +190,7 @@ export function ThresholdFreezeGuide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 1 — Plan 2 threshold trajectories · 2025/26–2030/31"
+        caption="Fig. 1: Plan 2 threshold trajectories · 2025/26–2030/31"
         figure={`Gap ${formatGBP(THRESHOLD_GAP)}`}
         figureTone="cost"
       >
@@ -218,10 +203,8 @@ export function ThresholdFreezeGuide() {
         </Heading>
         <div className="space-y-2 text-muted-foreground">
           <p>
-            The freeze only applies to{" "}
-            <strong className="text-foreground">Plan 2</strong> (2012&ndash;23
-            borrowers in England and Wales) &mdash; the largest cohort. Other
-            plans are unaffected:
+            The freeze only applies to Plan 2 (2012&ndash;23 borrowers in
+            England and Wales), the largest cohort. Other plans are unaffected:
           </p>
           <ul className="list-disc space-y-1 pl-6">
             <li>
@@ -252,9 +235,9 @@ export function ThresholdFreezeGuide() {
             These are the repayment thresholds that apply for the{" "}
             {currentTaxYear} tax year. Undergraduate borrowers repay{" "}
             {String(REPAYMENT_RATE * 100)}% of everything they earn above their
-            plan&apos;s threshold &mdash; which is exactly why the freeze bites
-            hardest for middle earners, whose pay rises push more of their
-            salary above a line that isn&apos;t moving.
+            plan&apos;s threshold, which is exactly why the freeze bites hardest
+            for middle earners: their pay rises push more of their salary above
+            a line that isn&apos;t moving.
           </p>
         </div>
       </section>
@@ -270,24 +253,21 @@ export function ThresholdFreezeGuide() {
         <div className="space-y-2 text-muted-foreground">
           <p>
             On 12 March 2026, the Treasury Committee launched an inquiry into{" "}
-            <strong className="text-foreground">
-              &ldquo;Student Loans and Taxation of Graduates&rdquo;
-            </strong>
-            . Chair Dame Meg Hillier framed it directly: &ldquo;What we&apos;re
-            asking is, have the goalposts been moved in a way which is unfair to
+            &ldquo;Student Loans and Taxation of Graduates&rdquo;. Chair Dame
+            Meg Hillier framed it directly: &ldquo;What we&apos;re asking is,
+            have the goalposts been moved in a way which is unfair to
             graduates?&rdquo;
           </p>
           <p>
-            The inquiry focuses on whether the repeated freezes &mdash; combined
-            with Plan 2&apos;s complex interest rules &mdash; mean graduates are
-            repaying far more than they were led to expect. The average Plan 2
-            balance is £43,645, compared to £10,252 for Plan 1 borrowers.
+            The inquiry focuses on whether the repeated freezes, combined with
+            Plan 2&apos;s complex interest rules, mean graduates are repaying
+            far more than they were led to expect. The average Plan 2 balance is
+            £43,645, compared to £10,252 for Plan 1 borrowers.
           </p>
           <p>
-            The evidence deadline is{" "}
-            <strong className="text-foreground">14 April 2026</strong>, and
-            anyone over 16 can submit their experience. The outcome could shape
-            future threshold policy.
+            The evidence deadline is 14 April 2026, and anyone over 16 can
+            submit their experience. The outcome could shape future threshold
+            policy.
           </p>
         </div>
       </section>
@@ -303,7 +283,7 @@ export function ThresholdFreezeGuide() {
             <Link href="/" className={guideLink}>
               repayment calculator
             </Link>{" "}
-            &mdash; set threshold growth to 0% to model the freeze, or 3% for
+            and set threshold growth to 0% to model the freeze, or 3% for
             inflation-linked growth. You can also check{" "}
             <Link href="/repaid" className={guideLink}>
               when your loan will be paid off

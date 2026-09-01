@@ -17,7 +17,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary} — Payoff Timeline`;
+  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary}: Payoff Timeline`;
   const description = `See how long it takes to pay off a ${meta.planName} UK student loan with ${meta.formattedBalance} balance and ${meta.formattedSalary} annual salary.`;
 
   return {

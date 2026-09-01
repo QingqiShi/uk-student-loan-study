@@ -25,8 +25,7 @@ export function PayUpfrontGuide() {
       intro={
         <>
           The answer depends on how much the graduate will earn over their
-          career &mdash; and starting salary alone doesn&rsquo;t tell the whole
-          story.
+          career, and starting salary alone doesn&rsquo;t tell the whole story.
         </>
       }
       related={{
@@ -42,16 +41,15 @@ export function PayUpfrontGuide() {
         <div className="space-y-2 text-muted-foreground">
           <p>
             At the current maximum tuition fee of {feeCapFormatted} per year, a
-            standard three-year undergraduate degree costs{" "}
-            <strong className="text-foreground">{tuitionFormatted}</strong> in
+            standard three-year undergraduate degree costs {tuitionFormatted} in
             tuition fees alone. Paying this upfront means handing over that sum
             before the student even starts, with no possibility of getting any
             of it back.
           </p>
           <p>
-            That money is gone regardless of what happens next &mdash; whether
-            the graduate earns &pound;25,000 or &pound;100,000 a year, the cost
-            is fixed at {tuitionFormatted}.
+            That money is gone regardless of what happens next. Whether the
+            graduate earns &pound;25,000 or &pound;100,000 a year, the cost is
+            fixed at {tuitionFormatted}.
           </p>
         </div>
       </section>
@@ -62,11 +60,10 @@ export function PayUpfrontGuide() {
         </Heading>
         <div className="space-y-2 text-muted-foreground">
           <p>
-            Under Plan 5, tuition fee loans are written off{" "}
-            <strong className="text-foreground">{writeOffYears} years</strong>{" "}
-            after the graduate becomes eligible to repay. Repayments are 9% of
-            income above the {threshold} threshold, and interest is charged at
-            RPI only.
+            Under Plan 5, tuition fee loans are written off {writeOffYears}{" "}
+            years after the graduate becomes eligible to repay. Repayments are
+            9% of income above the {threshold} threshold, and interest is
+            charged at RPI only.
           </p>
           <p>
             The total you end up paying depends on your earning trajectory over
@@ -75,21 +72,21 @@ export function PayUpfrontGuide() {
           </p>
           <ul className="list-disc space-y-2 pl-6">
             <li>
-              <strong className="text-foreground">Low earners</strong> &mdash;
+              <strong className="text-foreground">Low earners</strong>:
               repayments stay small and the loan is partially written off. Total
               cost ends up well below {tuitionFormatted}. The loan is clearly
               cheaper than paying upfront.
             </li>
             <li>
-              <strong className="text-foreground">Middle earners</strong>{" "}
-              &mdash; this is the trap. You earn enough to keep repaying for
-              decades but not enough to pay off the balance before interest
-              compounds. Total repayments can exceed the upfront cost, sometimes
-              significantly. This is the group that ends up paying the most.
+              <strong className="text-foreground">Middle earners</strong>: this
+              is the trap. You earn enough to keep repaying for decades but not
+              enough to pay off the balance before interest compounds. Total
+              repayments can exceed the upfront cost, sometimes significantly.
+              This is the group that ends up paying the most.
             </li>
             <li>
-              <strong className="text-foreground">High earners</strong> &mdash;
-              pay off the loan relatively quickly, so interest doesn&rsquo;t
+              <strong className="text-foreground">High earners</strong>: you pay
+              off the loan relatively quickly, so interest doesn&rsquo;t
               compound much. Total cost is close to or slightly above the
               upfront price, and you kept your capital in the meantime.
             </li>
@@ -105,9 +102,8 @@ export function PayUpfrontGuide() {
           <p>
             A graduate starting on &pound;30,000 might think &ldquo;at this
             salary I&rsquo;ll barely repay anything.&rdquo; But salaries grow.
-            At 4% annual growth &mdash; a typical career progression &mdash; a
-            &pound;30k starting salary reaches roughly &pound;65k after 20
-            years.
+            At 4% annual growth, a typical career progression, a &pound;30k
+            starting salary reaches roughly &pound;65k after 20 years.
           </p>
           <p>
             As salary grows, repayments increase, and many graduates who
@@ -117,8 +113,8 @@ export function PayUpfrontGuide() {
           </p>
           <p>
             The chart below shows how this plays out. Notice the gap between the
-            flat-salary line and the growing-salary line &mdash; that gap is the
-            hidden cost of salary growth that a snapshot of your starting salary
+            flat-salary line and the growing-salary line: that gap is the hidden
+            cost of salary growth, which a snapshot of your starting salary
             won&rsquo;t reveal.
           </p>
         </div>
@@ -126,7 +122,7 @@ export function PayUpfrontGuide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 1 — Total cost: loan vs upfront by salary · Plan 5"
+        caption="Fig. 1: Total cost of loan vs upfront by salary · Plan 5"
         figure={`Upfront ${tuitionFormatted}`}
         figureTone="cost"
         bodyClassName="h-75 sm:h-90"
@@ -141,7 +137,7 @@ export function PayUpfrontGuide() {
         <div className="space-y-2 text-muted-foreground">
           <p>
             Paying upfront can save money for graduates who will land in the
-            middle-earner zone &mdash; not just the highest earners.
+            middle-earner zone, a much wider group than the highest earners.
           </p>
           <ul className="list-disc space-y-1 pl-6">
             <li>
@@ -172,19 +168,19 @@ export function PayUpfrontGuide() {
           </p>
           <ul className="list-disc space-y-1 pl-6">
             <li>
-              The graduate expects to stay on a lower salary &mdash; the loan
-              will be partially written off, costing less than paying upfront
+              The graduate expects to stay on a lower salary, so the loan will
+              be partially written off, costing less than paying upfront
             </li>
             <li>
-              The graduate expects a very high income &mdash; they pay off the
-              loan quickly and kept their capital invested in the meantime
+              The graduate expects a very high income, so they pay off the loan
+              quickly and keep their capital invested in the meantime
             </li>
             <li>
               The family would rather keep the {tuitionFormatted} as a financial
               safety net
             </li>
             <li>
-              Repayments adjust automatically if income drops &mdash; built-in
+              Repayments adjust automatically if income drops, built-in
               insurance that paying upfront doesn&rsquo;t offer
             </li>
           </ul>
@@ -193,8 +189,8 @@ export function PayUpfrontGuide() {
 
       <KeyTakeaways>
         <li>
-          The loan is not universally cheaper than paying upfront &mdash; it
-          depends on earning trajectory.
+          The loan is not universally cheaper than paying upfront; it depends on
+          earning trajectory.
         </li>
         <li>
           Starting salary is misleading; salary growth pushes many graduates

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { movingAbroadFaqs } from "@/components/guides/moving-abroad/overseas-data";
 
 const description =
-  "Yes — you still repay your UK student loan abroad; moving doesn't wipe it. Estimate your repayment in any country. Student loans never touch your credit score.";
+  "You still repay your UK student loan abroad; moving doesn't wipe it. Estimate your repayment in any country. Student loans never touch your credit score.";
 
 export const metadata: Metadata = {
   title: "What Happens to Your Student Loan If You Move Abroad? (UK)",

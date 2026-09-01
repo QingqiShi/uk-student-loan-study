@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Student Loan Guides — The Stuff They Don't Tell You",
+  title: "UK Student Loan Guides: Interest, Thresholds, Mortgages",
   description:
-    "The real questions graduates ask: Will my loan affect my mortgage? Should I overpay? What if I move abroad? Clear answers with interactive charts, not jargon.",
+    "The questions graduates actually ask: Will my loan affect my mortgage? Should I overpay? What if I move abroad? Each guide answers one, with interactive charts.",
   keywords: [
     "UK student loan guides",
     "student loan repayment guide",
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     canonical: "/guides",
   },
   openGraph: {
-    title: "Student Loan Guides — The Stuff They Don't Tell You",
+    title: "UK Student Loan Guides: Interest, Thresholds, Mortgages",
     description:
-      "The real questions graduates ask: Will my loan affect my mortgage? Should I overpay? What if I move abroad? Clear answers with interactive charts, not jargon.",
+      "The questions graduates actually ask: Will my loan affect my mortgage? Should I overpay? What if I move abroad? Each guide answers one, with interactive charts.",
     url: "https://studentloanstudy.uk/guides",
     type: "website",
   },

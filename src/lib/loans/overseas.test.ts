@@ -80,7 +80,7 @@ describe("Plan 2 thresholds and fixed monthly repayments for the named countries
     ["Canada", 29_385, 409],
     ["New Zealand", 29_385, 409],
     ["United States of America", 35_260, 490.8],
-  ])("%s → £%i threshold, £%s fixed monthly", (name, threshold, fixed) => {
+  ])("%s: £%i threshold, £%s fixed monthly", (name, threshold, fixed) => {
     const estimate = estimateOverseasRepayment({
       plan: "PLAN_2",
       territory: territory(name),

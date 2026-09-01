@@ -21,7 +21,7 @@ test.describe("Config wizard dialog", () => {
     await expect(page.getByText("Tailor your loans")).toBeVisible();
   });
 
-  test("toggle plan checkbox + enter balance → Done becomes enabled", async ({
+  test("toggle plan checkbox + enter balance, then Done becomes enabled", async ({
     page,
   }) => {
     await openConfigWizard(page);
@@ -83,21 +83,17 @@ test.describe("Config wizard dialog", () => {
     expect(after.totalText).toBe(before.totalText);
   });
 
-  test("Not sure? Take the quiz button switches to quiz view", async ({
-    page,
-  }) => {
+  test("Take the plan quiz button switches to quiz view", async ({ page }) => {
     await openConfigWizard(page);
     const dialog = page.getByRole("dialog", { name: "Configure your loans" });
 
-    await dialog
-      .getByRole("button", { name: /Not sure\? Take the quiz/ })
-      .click();
+    await dialog.getByRole("button", { name: /Take the plan quiz/ }).click();
 
     // Quiz region question should appear inside the dialog
     await expect(page.getByText("Where did you study?")).toBeVisible();
   });
 
-  test("selecting multiple plans + Done → combined results on home page", async ({
+  test("selecting multiple plans + Done shows combined results on home page", async ({
     page,
   }) => {
     await openConfigWizard(page);

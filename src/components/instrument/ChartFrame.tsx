@@ -56,7 +56,7 @@ function ChartFrame({
   className,
   children,
 }: {
-  /** Left rail caption, e.g. "Fig. 1 — Lifetime repaid · Plan 2". */
+  /** Left rail caption, e.g. "Fig. 1: Lifetime repaid · Plan 2". */
   caption: React.ReactNode;
   /** Optional right-rail key figure (mono), e.g. "Peak £124,361". */
   figure?: React.ReactNode;

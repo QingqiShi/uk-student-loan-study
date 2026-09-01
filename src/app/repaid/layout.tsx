@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Total Repayments — Student Loan Repayment Calculator",
+  title: "Total Repayments: Student Loan Repayment Calculator",
   description:
-    "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed — based on your salary and plan type.",
+    "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed, based on your salary and plan type.",
   keywords: [
     "student loan total repayments",
     "how much will I repay student loan",
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     canonical: "/repaid",
   },
   openGraph: {
-    title: "Total Repayments — Student Loan Repayment Calculator",
+    title: "Total Repayments: Student Loan Repayment Calculator",
     description:
-      "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed — based on your salary and plan type.",
+      "Find out how much you'll repay on your UK student loan in total. See cumulative repayments over time, monthly costs, and whether you'll pay more or less than you borrowed, based on your salary and plan type.",
     url: "https://studentloanstudy.uk/repaid",
     type: "website",
   },

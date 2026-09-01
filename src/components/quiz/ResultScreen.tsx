@@ -1,6 +1,10 @@
 "use client";
 
-import { ArrowLeft01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import {
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { useId } from "react";
@@ -177,7 +181,8 @@ export function ResultScreen({
       >
         {onUseLoans ? (
           <Button size="lg" className="min-h-11 w-full" onClick={onUseLoans}>
-            Use these loans →
+            Use these loans
+            <HugeiconsIcon icon={ArrowRight01Icon} data-icon="inline-end" />
           </Button>
         ) : (
           <Button
@@ -187,7 +192,8 @@ export function ResultScreen({
             nativeButton={false}
             onClick={handleStandaloneClick}
           >
-            Enter your balances →
+            Enter your balances
+            <HugeiconsIcon icon={ArrowRight01Icon} data-icon="inline-end" />
           </Button>
         )}
 

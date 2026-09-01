@@ -251,7 +251,7 @@ export function OurDataPage() {
           </div>
           <Panel padding={false} className="overflow-hidden">
             <PanelHeader
-              caption={`Fig. 1 — Plan parameters · ${TAX_YEAR}`}
+              caption={`Fig. 1: Plan parameters · ${TAX_YEAR}`}
               className="mb-0 border-b border-border p-4 sm:p-5"
             />
             <Table>

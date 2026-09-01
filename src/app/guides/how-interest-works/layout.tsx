@@ -5,7 +5,7 @@ import { PLAN_CONFIGS } from "@/lib/loans/plans";
 export const metadata: Metadata = {
   title: "Why Your Student Loan Balance Keeps Growing",
   description:
-    "You're making repayments but your balance goes up? That's not a bug — it's how the interest works. See exactly how much interest you're being charged and why it matters less than you think.",
+    "Your balance can rise even while you make repayments, because interest is charged on the whole balance from day one. See exactly how much interest you're being charged, and why it matters less than you think.",
   keywords: [
     "UK student loan interest",
     "student loan interest rate",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Why Your Student Loan Balance Keeps Growing",
     description:
-      "You're making repayments but your balance goes up? That's not a bug — it's how the interest works. See exactly how much interest you're being charged and why it matters less than you think.",
+      "Your balance can rise even while you make repayments, because interest is charged on the whole balance from day one. See exactly how much interest you're being charged, and why it matters less than you think.",
     url: "https://studentloanstudy.uk/guides/how-interest-works",
     type: "article",
   },
@@ -87,7 +87,7 @@ const articleSchema = {
   "@type": "Article",
   headline: "Why Your Student Loan Balance Keeps Growing",
   description:
-    "You're making repayments but your balance goes up? That's not a bug — it's how the interest works. See exactly how much interest you're being charged and why it matters less than you think.",
+    "Your balance can rise even while you make repayments, because interest is charged on the whole balance from day one. See exactly how much interest you're being charged, and why it matters less than you think.",
   url: "https://studentloanstudy.uk/guides/how-interest-works",
   author: {
     "@type": "Organization",

@@ -144,7 +144,7 @@ export function DetailPageShell({
           </div>
         </div>
 
-        <RelatedGuidesSection intro="Background on the rules these figures come out of — how interest accrues, and what the thresholds do." />
+        <RelatedGuidesSection intro="Background on the rules these figures come out of: how interest accrues, and what the thresholds do." />
       </WideLayout>
     </>
   );

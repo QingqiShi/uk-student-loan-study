@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import { usePersonalisedResults } from "@/context/PersonalisedResultsContext";
 import type { Insight } from "@/utils/insights";
 
@@ -28,7 +29,7 @@ export function ChartInsight() {
 
   return (
     <div
-      className="group mt-3.5 flex items-start gap-3.5 border-t border-border pt-3.5"
+      className="group/insight mt-3.5 flex items-start gap-3.5 border-t border-border pt-3.5"
       data-tone={tone}
       role="status"
       aria-live="polite"
@@ -37,7 +38,7 @@ export function ChartInsight() {
           dot centres on the first line of the title and stays there however the
           content below it wraps. */}
       <span className="flex h-5 flex-none items-center" aria-hidden="true">
-        <span className="size-2 rounded-full bg-chart-principal group-data-[tone=cost]:bg-chart-interest" />
+        <span className="size-2 rounded-full bg-chart-principal group-data-[tone=cost]/insight:bg-chart-interest" />
       </span>
       <div className="flex min-w-0 flex-1 flex-wrap items-baseline justify-between gap-x-3.5 gap-y-1.5">
         <p className="m-0 font-sans text-sm font-semibold text-foreground">
@@ -45,16 +46,11 @@ export function ChartInsight() {
         </p>
         {insight.cta && (
           <Link
-            className="group/cta inline-flex items-baseline gap-1 font-sans text-sm font-semibold whitespace-nowrap text-cta no-underline transition-colors"
+            className="group inline-flex items-baseline gap-1 font-sans text-sm font-semibold whitespace-nowrap text-cta no-underline transition-colors"
             href={insight.cta.href}
           >
             {insight.cta.text}
-            <span
-              className="text-primary transition-transform group-hover/cta:translate-x-0.5 motion-reduce:transition-none"
-              aria-hidden="true"
-            >
-              →
-            </span>
+            <LinkArrow className="self-center text-primary" />
           </Link>
         )}
       </div>

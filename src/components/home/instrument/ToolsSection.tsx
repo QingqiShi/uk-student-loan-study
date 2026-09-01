@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { InstrumentSection } from "@/components/instrument/InstrumentSection";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 
 interface ToolLink {
   title: string;
@@ -54,12 +55,7 @@ export function ToolsSection() {
             <span className="text-lead font-semibold tracking-[-0.011em] transition-colors duration-150 ease-[ease] group-hover:text-primary">
               {tool.title}
             </span>
-            <span
-              className="text-primary transition-transform duration-150 ease-[ease] group-hover:translate-x-[3px]"
-              aria-hidden="true"
-            >
-              →
-            </span>
+            <LinkArrow className="self-center text-primary" />
             <span className="col-span-full mt-1 text-sm/normal text-pretty text-muted-foreground">
               {tool.description}
             </span>

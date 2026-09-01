@@ -14,9 +14,9 @@ export async function generateMetadata({
   const meta = parseMetadataParams(params);
 
   if (!meta.hasShareParams) {
-    const defaultTitle = "Student Loan Effective Rate — What It Really Costs";
+    const defaultTitle = "Student Loan Effective Rate: What It Costs";
     const defaultDescription =
-      "See the effective rate on your UK student loan versus the Bank of England base rate. Middle earners pay the most — high earners pay off quickly, while low earners have more written off.";
+      "See the effective rate on your UK student loan versus the Bank of England base rate. Middle earners pay the most: high earners pay off quickly, while low earners have more written off.";
 
     return {
       title: defaultTitle,
@@ -31,7 +31,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary} — Effective Rate`;
+  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary}: Effective Rate`;
   const description = `See the effective annual rate of a ${meta.planName} UK student loan with ${meta.formattedBalance} balance and ${meta.formattedSalary} annual salary.`;
 
   return {

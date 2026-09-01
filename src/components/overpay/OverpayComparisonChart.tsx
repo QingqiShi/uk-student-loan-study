@@ -33,7 +33,7 @@ export function OverpayComparisonChart({
   // directly beneath uses the same source, so the two panels always agree.
   const showPresentValue = isPresentValue(analysis);
 
-  const caption = `Fig. 1 — Balance with vs without overpaying${
+  const caption = `Fig. 1: Balance with vs without overpaying${
     showPresentValue ? " · present value" : ""
   }`;
 

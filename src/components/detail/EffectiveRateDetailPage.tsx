@@ -37,7 +37,7 @@ export function EffectiveRateDetailPage() {
         salaryResult ? (
           <FoldAnswer
             figure={percentageFormatter(effectiveRate)}
-            claim="The effective rate accounts for write-offs — lower earners pay less because more of their balance is written off."
+            claim="The effective rate accounts for write-offs. Lower earners pay less because more of their balance is written off."
           />
         ) : (
           <FoldAnswerSkeleton />
@@ -48,7 +48,7 @@ export function EffectiveRateDetailPage() {
           <ChartFrame
             fill
             bodyClassName={FOLD_CHART_BODY}
-            caption={`Fig. 1 — Effective rate by salary · ${planName}`}
+            caption={`Fig. 1: Effective rate by salary · ${planName}`}
             figure={`You ${percentageFormatter(effectiveRate)}`}
             legend={[
               { label: "Effective rate", color: "var(--chart-4)" },

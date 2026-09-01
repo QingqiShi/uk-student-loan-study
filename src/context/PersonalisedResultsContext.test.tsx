@@ -2,6 +2,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { type ReactNode } from "react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { MIN_SALARY } from "@/constants";
+import { EMPTY_VALUE } from "@/lib/format";
 import type { LoanState } from "@/types/store";
 import { LoanProvider } from "./LoanContext";
 import {
@@ -324,17 +325,17 @@ describe("usePersonalisedResults (cards)", () => {
 
     // Balance + cumulative have sparkline data
     expect(cards.balance.data.length).toBeGreaterThan(0);
-    expect(cards.balance.stat).not.toBe("\u2014");
+    expect(cards.balance.stat).not.toBe(EMPTY_VALUE);
     expect(cards.cumulative.data.length).toBeGreaterThan(0);
-    expect(cards.cumulative.stat).not.toBe("\u2014");
+    expect(cards.cumulative.stat).not.toBe(EMPTY_VALUE);
 
     // Interest has proportion data
     expect(cards.interest.interestRatio).toBeGreaterThan(0);
     expect(cards.interest.interestRatio).toBeLessThanOrEqual(1);
-    expect(cards.interest.stat).not.toBe("\u2014");
+    expect(cards.interest.stat).not.toBe(EMPTY_VALUE);
 
     // Effective rate has rate data
-    expect(cards.effectiveRate.stat).not.toBe("\u2014");
+    expect(cards.effectiveRate.stat).not.toBe(EMPTY_VALUE);
     expect(cards.effectiveRate.effectiveRate).toBeGreaterThan(0);
     expect(cards.effectiveRate.boeRate).toBeGreaterThan(0);
   });
@@ -414,12 +415,12 @@ describe("usePersonalisedResults (cards)", () => {
     if (cards === null) return;
 
     expect(cards.balance.data).toHaveLength(0);
-    expect(cards.balance.stat).toBe("\u2014");
+    expect(cards.balance.stat).toBe(EMPTY_VALUE);
     expect(cards.cumulative.data).toHaveLength(0);
-    expect(cards.cumulative.stat).toBe("\u2014");
-    expect(cards.interest.stat).toBe("\u2014");
+    expect(cards.cumulative.stat).toBe(EMPTY_VALUE);
+    expect(cards.interest.stat).toBe(EMPTY_VALUE);
     expect(cards.interest.interestRatio).toBe(0);
-    expect(cards.effectiveRate.stat).toBe("\u2014");
+    expect(cards.effectiveRate.stat).toBe(EMPTY_VALUE);
     expect(cards.effectiveRate.effectiveRate).toBe(0);
   });
 });

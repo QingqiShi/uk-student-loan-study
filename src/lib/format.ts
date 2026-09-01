@@ -1,3 +1,6 @@
+/** An en dash marks a readout with no value yet. */
+export const EMPTY_VALUE = "–";
+
 // Reused formatters — building one per call costs ~25x more, and the overseas
 // estimator formats a dozen figures on every keystroke.
 const POUNDS = new Intl.NumberFormat("en-GB");

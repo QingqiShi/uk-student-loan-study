@@ -75,9 +75,8 @@ export function MortgageGuide() {
         <>
           A UK student loan won&rsquo;t stop you getting a mortgage, and it
           isn&rsquo;t treated as normal debt. But the monthly repayment does
-          quietly shrink how much a lender will let you borrow &mdash; and, as
-          ever, it&rsquo;s middle earners who feel the squeeze most.
-          Here&rsquo;s exactly what lenders look at.
+          quietly shrink how much a lender will let you borrow. As ever,
+          it&rsquo;s middle earners who feel the squeeze most.
         </>
       }
       related={{
@@ -120,13 +119,13 @@ export function MortgageGuide() {
         </Heading>
         <div className="space-y-3 text-muted-foreground">
           <p>
-            Yes &mdash; this is the one real way a student loan touches your
-            mortgage. When you apply, a lender doesn&rsquo;t just look at your
-            salary; they run an affordability assessment. They start from your
-            income and subtract your committed monthly outgoings &mdash; tax,
-            National Insurance, pension contributions, childcare, existing
-            credit, and your student loan repayment &mdash; to see what&rsquo;s
-            genuinely left to cover a mortgage.
+            Yes. This is the one real way a student loan touches your mortgage.
+            When you apply, a lender runs an affordability assessment rather
+            than reading a figure off your payslip. They start from your income
+            and subtract your committed monthly outgoings (tax, National
+            Insurance, pension contributions, childcare, existing credit, and
+            your student loan repayment) to see what&rsquo;s genuinely left to
+            cover a mortgage.
           </p>
           <p>
             Your student loan repayment is one of those committed deductions.
@@ -139,7 +138,7 @@ export function MortgageGuide() {
             The repayment behaves like an extra slice of income tax: you pay{" "}
             {repaymentRateDisplay} of everything you earn above your
             plan&rsquo;s threshold. The more you earn, the larger the monthly
-            deduction &mdash; and the bigger the dent in your borrowing power.
+            deduction, and the bigger the dent in your borrowing power.
           </p>
         </div>
       </section>
@@ -158,7 +157,7 @@ export function MortgageGuide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 1 — Monthly repayment by salary · Plan 2 vs Plan 5"
+        caption="Fig. 1: Monthly repayment by salary · Plan 2 vs Plan 5"
         bodyClassName="h-75 sm:h-90"
       >
         <RepaymentImpactChart />
@@ -171,8 +170,8 @@ export function MortgageGuide() {
         <div className="space-y-3 text-muted-foreground">
           <p>
             Most lenders offer roughly 4 to 4.5 times income as a mortgage, but
-            they apply that multiple after committed expenditure &mdash;
-            including your student loan repayment.
+            they apply that multiple after committed expenditure, including your
+            student loan repayment.
           </p>
           <p>
             Someone earning &pound;40,000 on Plan 2 repays about{" "}
@@ -185,9 +184,8 @@ export function MortgageGuide() {
             the same multiplier.
           </p>
           <p>
-            These are illustrative &mdash; every lender assesses affordability
-            slightly differently &mdash; but they show the direction of travel.
-            Use the{" "}
+            These are illustrative, because every lender assesses affordability
+            slightly differently, but they show the direction of travel. Use the{" "}
             <Link href="/" className={linkClasses}>
               student loan repayment calculator
             </Link>{" "}
@@ -202,21 +200,19 @@ export function MortgageGuide() {
         </Heading>
         <div className="space-y-3 text-muted-foreground">
           <p>
-            No &mdash; and this trips people up in two ways, both with the same
-            answer.
+            No. This trips people up in two ways, both with the same answer.
           </p>
           <p>
             A student loan is money you borrowed, not money you earn, so a
             lender will never count your maintenance loan or tuition loan as
-            income to boost how much you can borrow. Only earned income &mdash;
-            and sometimes guaranteed bonuses or overtime &mdash; counts towards
-            affordability.
+            income to boost how much you can borrow. Only earned income counts
+            towards affordability, though some lenders also count guaranteed
+            bonuses or overtime.
           </p>
           <p>
             The repayment isn&rsquo;t income either; it&rsquo;s a deduction. It
             only ever reduces the income figure a lender uses, and never adds to
-            it. In short, a student loan can lower your affordability but can
-            never raise it.
+            it.
           </p>
         </div>
       </section>
@@ -227,9 +223,9 @@ export function MortgageGuide() {
         </Heading>
         <div className="space-y-3 text-muted-foreground">
           <p>
-            Yes &mdash; be upfront about it. A mortgage application asks you to
-            set out your income and regular outgoings honestly, and your student
-            loan repayment is one of those outgoings.
+            Yes. Be upfront about it. A mortgage application asks you to set out
+            your income and regular outgoings honestly, and your student loan
+            repayment is one of those outgoings.
           </p>
           <p>
             If you&rsquo;re employed, the repayment already shows on your
@@ -242,8 +238,8 @@ export function MortgageGuide() {
             student loan repayments directly, others fold them into
             &ldquo;regular commitments&rdquo;. A mortgage broker can tell you
             how a particular lender treats it. The key point is to declare the
-            monthly amount honestly &mdash; it&rsquo;s a deduction from income,
-            not a conventional debt like a credit card.
+            monthly amount honestly. It is a deduction from income rather than a
+            conventional debt like a credit card.
           </p>
         </div>
       </section>
@@ -264,13 +260,13 @@ export function MortgageGuide() {
             That&rsquo;s good news for a mortgage: however large your balance,
             it can&rsquo;t drag down the credit score a lender checks, and it
             can&rsquo;t trigger a credit-based rejection. The only way it
-            touches your mortgage is through affordability &mdash; the monthly
+            touches your mortgage is through affordability: the monthly
             repayment described above.
           </p>
           <p>
-            It&rsquo;s still worth keeping the rest of your credit file healthy
-            &mdash; on-time bills and low card balances &mdash; because that is
-            what lenders actually score.
+            It&rsquo;s still worth keeping the rest of your credit file healthy,
+            with on-time bills and low card balances, because that is what
+            lenders actually score.
           </p>
         </div>
       </section>
@@ -281,7 +277,7 @@ export function MortgageGuide() {
         </Heading>
         <div className="space-y-3 text-muted-foreground">
           <p>
-            It&rsquo;s tempting to think clearing the loan will unlock a bigger
+            It&rsquo;s tempting to think clearing the loan will get you a bigger
             mortgage. Occasionally it does: if you&rsquo;re a small amount short
             of the borrowing you need and close to the end of your loan term,
             removing the monthly repayment can tip an application over the line.
@@ -289,19 +285,19 @@ export function MortgageGuide() {
           <p>
             For most people, though, the maths doesn&rsquo;t favour it. Cash you
             throw at the loan is cash that isn&rsquo;t in your deposit, and a
-            bigger deposit usually does far more for a mortgage &mdash; a lower
-            loan-to-value ratio unlocks better interest rates and more lenders.
+            bigger deposit usually does far more for a mortgage: a lower
+            loan-to-value ratio means better interest rates and more lenders.
             The affordability you gain by clearing the repayment is often modest
             next to that.
           </p>
           <p>
             This is where the middle-earner squeeze bites hardest. Low earners
             repay little, so the affordability hit is small; the highest earners
-            can absorb the repayment easily. It&rsquo;s middle earners &mdash;
-            comfortably over the threshold but nowhere near clearing the balance
-            &mdash; who lose the most borrowing power now and go on to repay the
-            most over the life of the loan. The student loan works against them
-            at exactly the moment they&rsquo;re trying to buy.
+            can absorb the repayment easily. Middle earners, comfortably over
+            the threshold but nowhere near clearing the balance, lose the most
+            borrowing power now and go on to repay the most over the life of the
+            loan. The student loan works against them at exactly the moment
+            they&rsquo;re trying to buy.
           </p>
           <p>
             Before overpaying to boost a mortgage, model it. The{" "}
@@ -317,28 +313,28 @@ export function MortgageGuide() {
 
       <KeyTakeaways>
         <li>
-          A UK student loan <strong>won&rsquo;t stop</strong> you getting a
-          mortgage and isn&rsquo;t treated as conventional debt.
+          A UK student loan won&rsquo;t stop you getting a mortgage, and
+          isn&rsquo;t treated as conventional debt.
         </li>
         <li>
-          It <strong>does</strong> affect affordability: lenders deduct your
-          monthly repayment from income, reducing how much you can borrow.
+          It does affect affordability: lenders deduct your monthly repayment
+          from income, reducing how much you can borrow.
         </li>
         <li>
-          It <strong>doesn&rsquo;t count as income</strong> &mdash; it can only
-          lower the figure a lender uses, never raise it.
+          It doesn&rsquo;t count as income, so it can only lower the figure a
+          lender uses, never raise it.
         </li>
         <li>
-          <strong>Declare</strong> the monthly repayment honestly; on PAYE it
-          shows on your payslips anyway.
+          Declare the monthly repayment honestly; on PAYE it shows on your
+          payslips anyway.
         </li>
         <li>
-          It <strong>doesn&rsquo;t appear</strong> on your credit file or affect
-          your credit score.
+          It doesn&rsquo;t appear on your credit file or affect your credit
+          score.
         </li>
         <li>
-          Paying it off to boost borrowing rarely beats a bigger deposit &mdash;
-          middle earners feel the squeeze most, so model it with the{" "}
+          Paying it off to boost borrowing rarely beats a bigger deposit. Middle
+          earners feel the squeeze most, so model it with the{" "}
           <Link href="/overpay" className={linkClasses}>
             overpay calculator
           </Link>

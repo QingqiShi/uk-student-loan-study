@@ -6,7 +6,7 @@ test.describe("Quiz flow at /which-plan", () => {
     await expect(page.getByText("Where did you study?")).toBeVisible();
   });
 
-  test("England → 2012-2022 → no additional course → no postgrad → shows Plan 2", async ({
+  test("England, 2012-2022, no additional course, no postgrad, shows Plan 2", async ({
     page,
   }) => {
     await page.getByRole("radio", { name: "England" }).click();
@@ -32,7 +32,7 @@ test.describe("Quiz flow at /which-plan", () => {
     ).toBeVisible();
   });
 
-  test("Scotland → skips start year → no postgrad → shows Plan 4", async ({
+  test("Scotland, skips start year, no postgrad, shows Plan 4", async ({
     page,
   }) => {
     await page.getByRole("radio", { name: "Scotland" }).click();
@@ -48,7 +48,7 @@ test.describe("Quiz flow at /which-plan", () => {
     ).toBeVisible();
   });
 
-  test("England → 2023+ → no postgrad → shows Plan 5", async ({ page }) => {
+  test("England, 2023+, no postgrad, shows Plan 5", async ({ page }) => {
     await page.getByRole("radio", { name: "England" }).click();
     await expect(
       page.getByText("When did you start your course?"),
@@ -76,7 +76,7 @@ test.describe("Quiz flow at /which-plan", () => {
     await expect(page.getByText("Where did you study?")).toBeVisible();
   });
 
-  test("Enter your balances button navigates to home with wizard", async ({
+  test("Enter your balances button opens the home page with the wizard", async ({
     page,
   }) => {
     // Complete the quiz via Scotland (shorter path)

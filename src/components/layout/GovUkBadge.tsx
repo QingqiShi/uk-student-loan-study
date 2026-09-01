@@ -1,6 +1,7 @@
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import { VerifiedAgo } from "@/components/instrument/VerifiedAgo";
 import { badgeVariants } from "@/components/ui/badge";
 import {
@@ -42,7 +43,7 @@ export function GovUkBadge({ className }: { className?: string }) {
                 when it opens. */}
             <time dateTime={LAST_UPDATED} className="sr-only">
               {" "}
-              — figures last changed {formattedDate}
+              (figures last changed {formattedDate})
             </time>
           </button>
         }
@@ -57,9 +58,10 @@ export function GovUkBadge({ className }: { className?: string }) {
         </p>
         <Link
           href="/our-data"
-          className="text-sm text-cta underline underline-offset-4 hover:text-cta/80"
+          className="group inline-flex items-center gap-1 text-sm text-cta underline underline-offset-4 hover:text-cta/80"
         >
-          How we stay current&nbsp;&rarr;
+          How we stay current
+          <LinkArrow />
         </Link>
       </PopoverContent>
     </Popover>

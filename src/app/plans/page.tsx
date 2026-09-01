@@ -82,17 +82,17 @@ export default function PlansHubPage() {
           </Heading>
           <div className="max-w-2xl space-y-3 text-muted-foreground">
             <p>
-              You cannot choose your plan &mdash; it is set by when and where
-              you started studying. English students who began before September
-              2012 are on Plan 1; those who started between 2012 and 2023 are on
-              Plan 2; and those from September 2023 are on Plan 5. Scottish
-              students are on Plan 4, and Northern Irish students are on Plan 1.
-              A Postgraduate Loan sits on top of any of these.
+              You cannot choose your plan. It is set by when and where you
+              started studying. English students who began before September 2012
+              are on Plan 1; those who started between 2012 and 2023 are on Plan
+              2; and those from September 2023 are on Plan 5. Scottish students
+              are on Plan 4, and Northern Irish students are on Plan 1. A
+              Postgraduate Loan sits on top of any of these.
             </p>
             <p>
-              Not sure?{" "}
+              If you are not sure,{" "}
               <Link href="/which-plan" className={PROSE_LINK}>
-                Take the 3-question which plan quiz
+                take the 3-question which plan quiz
               </Link>{" "}
               to find out in under a minute.
             </p>
@@ -107,10 +107,9 @@ export default function PlansHubPage() {
             Whichever plan you are on, the total you repay follows the same
             shape. Low earners repay little and reach the write-off with a
             balance written off. High earners pay off the loan quickly, before
-            much interest builds. It is the middle &mdash; graduates earning
-            enough to make real repayments, but not enough to outrun the
-            interest &mdash; who repay the most, often far more than they
-            borrowed.
+            much interest builds. It is the middle (graduates earning enough to
+            make real repayments, but not enough to outrun the interest) who
+            repay the most, often far more than they borrowed.
           </p>
           <p className="max-w-2xl text-muted-foreground">
             That is the whole reason this site exists. Put your salary into the{" "}

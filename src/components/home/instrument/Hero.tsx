@@ -1,4 +1,4 @@
-import { VerifiedAgo } from "@/components/instrument/VerifiedAgo";
+import { TrustLine } from "@/components/instrument/TrustLine";
 import { Heading } from "@/components/typography/Heading";
 
 export function Hero() {
@@ -14,13 +14,9 @@ export function Hero() {
       </Heading>
       <p className="mb-[1.1rem] max-w-[48ch] text-[clamp(1.02rem,1.15vw,1.2rem)] leading-[1.55] text-pretty text-muted-foreground md:mb-[1.4rem]">
         The UK student loan is sold as a fair deal. On a middle income it’s a
-        real, expensive debt — see where you land on the curve.
+        real, expensive debt. See where you land on the curve.
       </p>
-      <p className="flex flex-wrap items-center gap-x-[0.65rem] gap-y-[0.4rem] font-sans text-meta text-muted-foreground">
-        <span className="font-bold text-primary">✓</span> Independent{" "}
-        <span className="text-faint">·</span> GOV.UK sourced{" "}
-        <span className="text-faint">·</span> <VerifiedAgo />
-      </p>
+      <TrustLine />
     </div>
   );
 }

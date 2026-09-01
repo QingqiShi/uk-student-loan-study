@@ -1,3 +1,5 @@
+import { Tick02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import {
   Children,
@@ -178,9 +180,11 @@ export function GuideArticle({
             <div className="flex items-center gap-1.5">
               <dt className="sr-only">Source</dt>
               <dd className="flex items-center gap-1.5">
-                <span aria-hidden="true" className="font-bold text-primary">
-                  ✓
-                </span>
+                <HugeiconsIcon
+                  icon={Tick02Icon}
+                  className="size-3 shrink-0 text-primary"
+                  aria-hidden="true"
+                />
                 GOV.UK sourced
               </dd>
             </div>

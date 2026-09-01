@@ -86,8 +86,8 @@ function BalanceHelper() {
           <li>Your current balance is shown under each plan type</li>
         </ol>
         <p className="mt-2 text-xs text-muted-foreground">
-          Don&apos;t have access? Check your latest payslip or annual statement
-          from SLC for an estimate.
+          If you can&apos;t log in, your latest payslip or annual statement from
+          SLC gives an estimate.
         </p>
       </PopoverContent>
     </Popover>
@@ -358,7 +358,7 @@ export function LoanConfigPanel({
                 className="size-4 text-primary"
                 data-icon="inline-start"
               />
-              Not sure? Take the quiz
+              Take the plan quiz
             </Button>
           </div>
         </div>

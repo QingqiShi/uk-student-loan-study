@@ -57,7 +57,7 @@ describe("computePlan2FreezeSchedule", () => {
     expect(schedule).toEqual([expectedMonthlyThreshold]);
   });
 
-  it("returns empty array when current tax year is 2029 (2029/30 — last freeze year)", () => {
+  it("returns empty array when current tax year is 2029 (2029/30, the last freeze year)", () => {
     // 15 June 2029 → tax year 2029/30
     // Next tax year = 2030/31, freeze ends 2030 → 2030 - 2030 = 0
     vi.setSystemTime(new Date("2029-06-15"));

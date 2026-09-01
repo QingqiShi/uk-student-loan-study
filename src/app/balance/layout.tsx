@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How Long to Pay Off Your Student Loan — Payoff Timeline Calculator",
+  title: "How Long to Pay Off Your Student Loan: Payoff Timeline",
   description:
-    "Find out how long it takes to pay off your UK student loan. See your payoff timeline, balance trajectory, and whether your loan will be paid off or written off — based on your salary and plan type.",
+    "Find out how long it takes to pay off your UK student loan. See your payoff timeline, balance trajectory, and whether your loan will be paid off or written off, based on your salary and plan type.",
   keywords: [
     "how long to pay off student loan",
     "student loan payoff calculator",
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     canonical: "/balance",
   },
   openGraph: {
-    title: "How Long to Pay Off Your Student Loan — Payoff Timeline Calculator",
+    title: "How Long to Pay Off Your Student Loan: Payoff Timeline",
     description:
-      "Find out how long it takes to pay off your UK student loan. See your payoff timeline, balance trajectory, and whether your loan will be paid off or written off — based on your salary and plan type.",
+      "Find out how long it takes to pay off your UK student loan. See your payoff timeline, balance trajectory, and whether your loan will be paid off or written off, based on your salary and plan type.",
     url: "https://studentloanstudy.uk/balance",
     type: "website",
   },
@@ -52,7 +52,7 @@ const faqSchema = {
       name: "When will I finish paying off my student loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "It depends on your salary, loan balance, and plan type. High earners on Plan 2 might pay off in 10–15 years, while most graduates repay for the full term before the loan is written off — 25 years for Plan 1, 30 years for Plans 2 and 4, 40 years for Plan 5, and 30 years for Postgraduate loans. Use our payoff timeline calculator to see a year-by-year projection for your situation.",
+        text: "It depends on your salary, loan balance, and plan type. High earners on Plan 2 might pay off in 10–15 years, while most graduates repay for the full term before the loan is written off: 25 years for Plan 1, 30 years for Plans 2 and 4, 40 years for Plan 5, and 30 years for Postgraduate loans. Use our payoff timeline calculator to see a year-by-year projection for your situation.",
       },
     },
     {

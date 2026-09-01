@@ -6,12 +6,43 @@ import tailwindcss from "eslint-plugin-better-tailwindcss";
 import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 import importOrderPlugin from "./eslint-rules/import-order.js";
+import slopPlugin from "./eslint-rules/slop.js";
+
+const custom = {
+  rules: { ...importOrderPlugin.rules, ...slopPlugin.rules },
+};
+
+const slopRuleNames = Object.keys(slopPlugin.rules).map(
+  (name) => `custom/${name}`,
+);
+const slopRules = Object.fromEntries(
+  slopRuleNames.map((name) => [name, "error"]),
+);
 
 export default defineConfig(
   reactHooks.configs.flat["recommended-latest"],
   tailwindcss.configs.recommended,
   {
+    // The slop rules need no type information, so they run over every TS file
+    // from an untyped block — including scripts/, which the type-checked block
+    // below cannot take.
     files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tseslint.parser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    plugins: { custom },
+    rules: slopRules,
+  },
+  {
+    files: ["**/*.{ts,tsx}"],
+    // scripts/ carries ~68 pre-existing strictTypeChecked violations
+    // (restrict-template-expressions, no-unnecessary-condition) and was ignored
+    // before the slop rules existed, so it stays out of the typed block and
+    // takes the slop rules from the untyped block above.
+    ignores: ["scripts/**"],
     extends: [
       eslintJs.configs.recommended,
       tseslint.configs.strictTypeChecked,
@@ -26,7 +57,7 @@ export default defineConfig(
     },
     plugins: {
       "@next/next": nextPlugin,
-      custom: importOrderPlugin,
+      custom,
     },
     settings: {
       "better-tailwindcss": {
@@ -55,6 +86,12 @@ export default defineConfig(
         { ignore: ["dark", "light"] },
       ],
     },
+  },
+  {
+    // The rule fixtures are deliberately full of slop, so the slop rules must
+    // not run on them.
+    files: ["eslint-rules/__tests__/**"],
+    rules: Object.fromEntries(slopRuleNames.map((name) => [name, "off"])),
   },
   {
     // JSON-LD structured data (the shared JsonLd component and layouts), shadcn
@@ -98,7 +135,7 @@ export default defineConfig(
       "dist",
       "playwright-report",
       "test-results",
-      "scripts",
+      "next-env.d.ts",
       "**/*.{js,mjs}",
     ],
   },
