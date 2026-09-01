@@ -3,7 +3,7 @@ import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, TUITION_FEE_CAP } from "@/lib/loans/plans";
 
 export const metadata: Metadata = {
-  title: "Pay Tuition Upfront or Take the Loan? It's Not Obvious",
+  title: "Pay Tuition Upfront or Take the Student Loan?",
   description:
     "The loan feels free until you realise middle earners can repay more than the original tuition. See where the break-even point is for your expected career path.",
   keywords: [
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     canonical: "/guides/pay-upfront-or-take-loan",
   },
   openGraph: {
-    title: "Pay Tuition Upfront or Take the Loan? It's Not Obvious",
+    title: "Pay Tuition Upfront or Take the Student Loan?",
     description:
       "The loan feels free until you realise middle earners can repay more than the original tuition. See where the break-even point is for your expected career path.",
     url: "https://studentloanstudy.uk/guides/pay-upfront-or-take-loan",
@@ -65,7 +65,7 @@ const faqSchema = {
       name: "Is it worth paying university fees upfront?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `It depends on the graduate's earning trajectory, not just their starting salary. Low earners benefit from the loan being partially written off. Middle earners — those who earn enough to keep repaying for decades but not enough to pay off the balance — often end up paying more than the upfront cost due to interest compounding. High earners pay off the loan quickly and pay close to the upfront amount. Salary growth is the key factor: a £30k starting salary can reach £65k after 20 years at 4% annual growth, pushing many graduates into the middle-earner zone.`,
+        text: `It depends on the graduate's earning trajectory across a career, not their starting salary alone. Low earners benefit from the loan being partially written off. Middle earners (those who earn enough to keep repaying for decades but not enough to pay off the balance) often end up paying more than the upfront cost due to interest compounding. High earners pay off the loan quickly and pay close to the upfront amount. Salary growth is the key factor: a £30k starting salary can reach £65k after 20 years at 4% annual growth, pushing many graduates into the middle-earner zone.`,
       },
     },
     {
@@ -90,7 +90,7 @@ const faqSchema = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Pay Tuition Upfront or Take the Loan? It's Not Obvious",
+  headline: "Pay Tuition Upfront or Take the Student Loan?",
   description:
     "The loan feels free until you realise middle earners can repay more than the original tuition. See where the break-even point is for your expected career path.",
   url: "https://studentloanstudy.uk/guides/pay-upfront-or-take-loan",

@@ -143,11 +143,10 @@ export function PlanDetailPage({ planKey }: PlanDetailPageProps) {
               <p key={para}>{para}</p>
             ))}
             <p>
-              Not sure this is you?{" "}
               <Link href="/which-plan" className={PROSE_LINK}>
                 Take the 3-question which plan quiz
               </Link>{" "}
-              to confirm.
+              to confirm you are on this plan.
             </p>
           </div>
         </section>
@@ -163,7 +162,7 @@ export function PlanDetailPage({ planKey }: PlanDetailPageProps) {
             {planKey === "PLAN_2" && (
               <p>
                 From September 2026 the government is capping Plan 2 interest at
-                6% &mdash; see our{" "}
+                6%. See our{" "}
                 <Link href="/guides/interest-rate-cap" className={PROSE_LINK}>
                   Plan 2 interest rate cap guide
                 </Link>{" "}
@@ -213,8 +212,8 @@ export function PlanDetailPage({ planKey }: PlanDetailPageProps) {
           </Heading>
           <p className="max-w-2xl text-muted-foreground">{plan.middleEarner}</p>
           <p className="max-w-2xl text-muted-foreground">
-            Middle earners repay the most across every UK plan &mdash; enough to
-            make real repayments, but not enough to pay off the balance before
+            Middle earners repay the most across every UK plan: enough to make
+            real repayments, but not enough to pay off the balance before
             interest bites. Put your own salary into the{" "}
             <Link href="/" className={PROSE_LINK}>
               student loan repayment calculator

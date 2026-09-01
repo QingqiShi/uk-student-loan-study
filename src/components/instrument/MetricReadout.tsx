@@ -211,7 +211,7 @@ function CellInner({
         </div>
       )}
 
-      {linkLabel && <span className="sr-only"> — {linkLabel}</span>}
+      {linkLabel && <span className="sr-only">, {linkLabel}</span>}
     </>
   );
 }

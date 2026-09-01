@@ -37,7 +37,7 @@ describe("classifyChange", () => {
     );
     expect(result.decision).toBe("review");
     expect(result.reviewReasons).toEqual([
-      "PLAN_5.monthlyThreshold: a UK repayment threshold moved — refresh src/lib/loans/overseasThresholds.ts from the 6 April GOV.UK overseas tables (Plan 1/2/4/5/Postgraduate)",
+      "PLAN_5.monthlyThreshold: a UK repayment threshold moved: refresh src/lib/loans/overseasThresholds.ts from the 6 April GOV.UK overseas tables (Plan 1/2/4/5/Postgraduate)",
     ]);
   });
 

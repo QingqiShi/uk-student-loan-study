@@ -39,7 +39,7 @@ function Panel({
 
 /**
  * The Fig caption rail that sits at the top of a Panel: a small sans, muted
- * caption on the left (e.g. `Fig. 1 — Lifetime repaid · Plan 2`) and an optional
+ * caption on the left (e.g. `Fig. 1: Lifetime repaid · Plan 2`) and an optional
  * mono key figure on the right (spruce-ink by default, brick for a cost/peak).
  *
  * The caption is language, so it stays sans. The figure is a numeric readout, so
@@ -52,7 +52,7 @@ function PanelHeader({
   className,
   ...props
 }: Omit<React.ComponentProps<"div">, "children"> & {
-  /** Left rail: small sans muted caption, e.g. "Fig. 1 — Lifetime repaid · Plan 2". */
+  /** Left rail: small sans muted caption, e.g. "Fig. 1: Lifetime repaid · Plan 2". */
   caption: React.ReactNode;
   /** Optional right rail: the key figure, rendered mono/tabular. */
   figure?: React.ReactNode;

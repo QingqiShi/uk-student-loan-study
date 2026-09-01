@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Interest Paid — Student Loan Interest Breakdown",
+  title: "Interest Paid: Student Loan Interest Breakdown",
   description:
-    "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the overall cost.",
+    "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Find out if you are reducing your balance, and how write-off affects the overall cost.",
   keywords: [
     "student loan interest breakdown",
     "student loan interest vs principal",
@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     canonical: "/interest",
   },
   openGraph: {
-    title: "Interest Paid — Student Loan Interest Breakdown",
+    title: "Interest Paid: Student Loan Interest Breakdown",
     description:
-      "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Understand whether you're reducing your balance — and how write-off affects the overall cost.",
+      "See a year-by-year breakdown of how your UK student loan repayments split between interest and principal. Find out if you are reducing your balance, and how write-off affects the overall cost.",
     url: "https://studentloanstudy.uk/interest",
     type: "website",
   },
@@ -58,7 +58,7 @@ const faqSchema = {
       name: "Why do I pay more in interest than my original loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Student loan interest accrues from the day your loan is paid out, including while you study. For Plan 2 borrowers, interest can be RPI + up to 3%, meaning your balance can grow faster than your repayments reduce it — especially in the early years when your salary is lower.",
+        text: "Student loan interest accrues from the day your loan is paid out, including while you study. For Plan 2 borrowers, interest can be RPI + up to 3%, meaning your balance can grow faster than your repayments reduce it, especially in the early years when your salary is lower.",
       },
     },
     {

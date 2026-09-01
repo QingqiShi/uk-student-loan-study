@@ -251,7 +251,7 @@ describe("decodeParamsToState", () => {
   });
 
   it.each(ASSUMPTION_PARAMS)(
-    "does not clamp $urlParam — accepts negative values",
+    "does not clamp $urlParam: accepts negative values",
     (field) => {
       const params = new URLSearchParams(`${field.urlParam}=-5`);
       const state = decodeParamsToState(params);
@@ -261,7 +261,7 @@ describe("decodeParamsToState", () => {
   );
 
   it.each(ASSUMPTION_PARAMS)(
-    "does not clamp $urlParam — accepts large values",
+    "does not clamp $urlParam: accepts large values",
     (field) => {
       const params = new URLSearchParams(`${field.urlParam}=999`);
       const state = decodeParamsToState(params);

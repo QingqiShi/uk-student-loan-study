@@ -21,10 +21,10 @@ function getClaimText(
   )?.year;
 
   if (!firstGreenYear) {
-    return "Your repayments never exceeded the monthly interest — the remaining balance is written off.";
+    return "Your repayments never exceeded the monthly interest, so the remaining balance is written off.";
   }
   if (firstGreenYear === 1) {
-    return "Your repayments covered the interest every year — you were always reducing your balance.";
+    return "Your repayments covered the interest every year, so you were always reducing your balance.";
   }
   if (writtenOff) {
     return `You start reducing your balance in year ${String(firstGreenYear)}, but the loan is written off before it's fully repaid.`;
@@ -47,7 +47,7 @@ export function InterestDetailPage() {
   return (
     <DetailPageShell
       heading="Interest paid"
-      description="Understand how much of your repayments go towards interest vs reducing your loan balance."
+      description="See how much of your repayments go on interest instead of reducing your balance."
       answer={
         result ? (
           <FoldAnswer
@@ -81,7 +81,7 @@ export function InterestDetailPage() {
           <ChartFrame
             fill
             bodyClassName={FOLD_CHART_BODY}
-            caption={`Fig. 1 — Interest vs principal each year · ${planName}`}
+            caption={`Fig. 1: Interest vs principal each year · ${planName}`}
             figure={`Interest ${formatGBP(Math.round(result.stats.totalInterestPaid))}`}
             figureTone="cost"
             legend={legend}

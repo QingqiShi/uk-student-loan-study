@@ -52,17 +52,13 @@ export function InterestGuide() {
           <ul className="list-disc space-y-1 pl-6">
             <li>
               Earning below the lower threshold of{" "}
-              <strong className="text-foreground">
-                {formatGBP(PLAN_CONFIGS.PLAN_2.interestLowerThreshold)}
-              </strong>
-              : you pay RPI only ({formatPercent(rpi)})
+              {formatGBP(PLAN_CONFIGS.PLAN_2.interestLowerThreshold)}: you pay
+              RPI only ({formatPercent(rpi)})
             </li>
             <li>
               Earning above the upper threshold of{" "}
-              <strong className="text-foreground">
-                {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}
-              </strong>
-              : you pay the maximum of RPI + 3% ({formatPercent(maxRate)})
+              {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}: you pay
+              the maximum of RPI + 3% ({formatPercent(maxRate)})
             </li>
             <li>
               Earning between the two: the rate scales linearly from{" "}
@@ -85,7 +81,7 @@ export function InterestGuide() {
           <p>
             Plan 5, introduced for students starting from September 2023, has a
             much simpler formula. Regardless of how much you earn, the interest
-            rate is just RPI &mdash; currently {formatPercent(rpi)}.
+            rate is just RPI, currently {formatPercent(rpi)}.
           </p>
           <p>
             This is a significant change from Plan 2. A high earner on Plan 2
@@ -98,7 +94,7 @@ export function InterestGuide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 1 — Annual interest rate by salary · Plan 2 vs Plan 5"
+        caption="Fig. 1: Annual interest rate by salary · Plan 2 vs Plan 5"
         figure={`${formatPercent(maxRate)} max`}
         figureTone="cost"
       >
@@ -118,11 +114,8 @@ export function InterestGuide() {
           <p>
             With RPI at {formatPercent(rpi)} and the base rate at{" "}
             {formatPercent(CURRENT_RATES.boeBaseRate)}, the current interest
-            rate for these plans is{" "}
-            <strong className="text-foreground">
-              {formatPercent(plan1Rate)}
-            </strong>{" "}
-            (the lower of {formatPercent(rpi)} and {formatPercent(boeRatePlus1)}
+            rate for these plans is {formatPercent(plan1Rate)} (the lower of{" "}
+            {formatPercent(rpi)} and {formatPercent(boeRatePlus1)}
             ).
           </p>
         </div>
@@ -136,11 +129,8 @@ export function InterestGuide() {
           <p>
             Postgraduate (Master&apos;s and Doctoral) loans always charge RPI +
             3%, regardless of your income. At current rates, that means{" "}
-            <strong className="text-foreground">
-              {formatPercent(maxRate)}
-            </strong>{" "}
-            interest per year &mdash; the highest rate of any UK student loan
-            plan.
+            {formatPercent(maxRate)} interest per year, the highest rate of any
+            UK student loan plan.
           </p>
         </div>
       </section>

@@ -3,7 +3,7 @@ import { formatGBP } from "@/lib/format";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const description =
-  "Plan 2 charges more interest but writes off in 30 years; Plan 5 is cheaper but runs 40 years. See which costs you more in 2026 — middle earners lose most.";
+  "Plan 2 charges more interest but writes off in 30 years; Plan 5 is cheaper but runs 40 years. See which costs you more in 2026. Middle earners lose most.";
 
 export const metadata: Metadata = {
   title: "Plan 2 vs Plan 5 Student Loans: Which Costs You More? (2026)",
@@ -99,7 +99,7 @@ const faqSchema = {
       name: "What if I started university right before Plan 5 was introduced?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The cutoff is August 2023. Students who started before this date are on Plan 2. Students starting from September 2023 onwards are on Plan 5. Also note Plan 5 is England-only — Welsh students who started after August 2023 remain on Plan 2.",
+        text: "The cutoff is August 2023. Students who started before this date are on Plan 2. Students starting from September 2023 onwards are on Plan 5. Also note Plan 5 is England-only: Welsh students who started after August 2023 remain on Plan 2.",
       },
     },
   ],

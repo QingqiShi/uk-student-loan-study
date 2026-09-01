@@ -77,8 +77,8 @@ export function RpiVsCpiGuide() {
           <p>
             Plan 2 was introduced in 2012 when RPI was still widely used across
             government policy. The government has since acknowledged that RPI
-            overstates inflation due to the &ldquo;formula effect&rdquo; &mdash;
-            it uses an arithmetic mean rather than a geometric mean, which
+            overstates inflation due to the &ldquo;formula effect&rdquo;: it
+            uses an arithmetic mean rather than a geometric mean, which
             systematically produces higher figures.
           </p>
           <p>
@@ -146,7 +146,7 @@ export function RpiVsCpiGuide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption={`Fig. 1 \u2014 Balance (present value) \u00b7 Plan 5, \u00a345,000`}
+        caption={`Fig. 1: Balance (present value) \u00b7 Plan 5, \u00a345,000`}
         figure={`RPI ${formatPercent(rpi)}`}
         figureTone="cost"
         bodyClassName="h-85 sm:h-105"
@@ -166,7 +166,7 @@ export function RpiVsCpiGuide() {
             </li>
             <li>
               <strong className="text-foreground">CPI-adjusted</strong>:
-              discounted by CPI &mdash; this is what the calculator&apos;s
+              discounted by CPI. This is what the calculator&apos;s
               &ldquo;Adjust for inflation&rdquo; toggle shows. It tells you what
               the balance is worth in today&apos;s money.
             </li>
@@ -178,8 +178,8 @@ export function RpiVsCpiGuide() {
             </li>
           </ul>
           <p>
-            The key insight: the gap between the CPI-adjusted and RPI-adjusted
-            lines is the real above-inflation cost of the loan.
+            The gap between those last two lines is the real above-inflation
+            cost of the loan.
           </p>
         </div>
       </section>
@@ -222,7 +222,7 @@ export function RpiVsCpiGuide() {
 
       <KeyTakeaways>
         <li>
-          RPI typically runs 0.5&ndash;1% higher than CPI &mdash; your loan
+          RPI typically runs 0.5&ndash;1% higher than CPI, and your loan
           interest is tied to the higher measure.
         </li>
         <li>

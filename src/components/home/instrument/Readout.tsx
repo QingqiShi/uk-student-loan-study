@@ -1,6 +1,7 @@
 "use client";
 
 import { Sparkline } from "@/components/charts/Sparkline";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import { MetricCell } from "@/components/instrument/MetricReadout";
 import { Figure } from "@/components/typography/Figure";
 import { percentageFormatter } from "@/constants";
@@ -319,10 +320,11 @@ export function Readout({
         RPI.{" "}
         <button
           type="button"
-          className="m-0 cursor-pointer appearance-none [border-width:0_0_1px] border-solid border-b-[color-mix(in_oklab,var(--primary)_38%,transparent)] p-0 whitespace-nowrap text-cta no-underline [background:none] [font:inherit] hover:[border-bottom-color:var(--primary)] focus-visible:rounded-[4px] focus-visible:[outline:2px_solid_var(--ring)] focus-visible:outline-offset-2"
+          className="group m-0 inline-flex cursor-pointer appearance-none items-center gap-1 [border-width:0_0_1px] border-solid border-b-[color-mix(in_oklab,var(--primary)_38%,transparent)] p-0 whitespace-nowrap text-cta no-underline [background:none] [font:inherit] hover:[border-bottom-color:var(--primary)] focus-visible:rounded-[4px] focus-visible:[outline:2px_solid_var(--ring)] focus-visible:outline-offset-2"
           onClick={onTailor}
         >
-          Tailor to you →
+          Tailor to you
+          <LinkArrow className="text-primary" />
         </button>
       </p>
     </div>

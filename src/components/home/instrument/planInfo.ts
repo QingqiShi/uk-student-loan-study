@@ -1,3 +1,4 @@
+import { EMPTY_VALUE } from "@/lib/format";
 import {
   PLAN_DISPLAY_INFO,
   POSTGRADUATE_DISPLAY_INFO,
@@ -15,5 +16,5 @@ export function primaryPlanName(loans: Loan[]): string {
     }
   }
   if (loans.length > 0) return POSTGRADUATE_DISPLAY_INFO.name;
-  return "—";
+  return EMPTY_VALUE;
 }

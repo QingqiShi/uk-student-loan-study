@@ -147,8 +147,8 @@ export function generateInsight(
         principal > 0 ? (displayTotalPaid / principal) * 100 : 0;
       const description =
         displayOverpaymentRatio > 0
-          ? `You'll pay ${(displayOverpaymentRatio * 100).toFixed(0)}% more than you borrowed, but it's written off after ${String(writeOffYears)} years — reasonable given inflation. Treat repayments as a graduate tax, not a debt.`
-          : `You'll only repay ${displayPaidPercent.toFixed(0)}% of what you borrowed before the rest is written off after ${String(writeOffYears)} years. Treat repayments as a graduate tax, not a debt.`;
+          ? `You'll pay ${(displayOverpaymentRatio * 100).toFixed(0)}% more than you borrowed, but it's written off after ${String(writeOffYears)} years, which is reasonable given inflation. Treat the repayments as a graduate tax rather than a debt.`
+          : `You'll only repay ${displayPaidPercent.toFixed(0)}% of what you borrowed before the rest is written off after ${String(writeOffYears)} years. Treat the repayments as a graduate tax rather than a debt.`;
 
       return {
         type: "low-earner",

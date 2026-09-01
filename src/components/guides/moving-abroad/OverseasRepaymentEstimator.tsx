@@ -1,11 +1,12 @@
 "use client";
 
-import { ArrowDown01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { useId, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { CustomInput } from "@/components/home/CurrencyInput";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import {
   metricValueClass,
   type MetricTone,
@@ -136,8 +137,8 @@ function RepaymentNote({ estimate }: { estimate: OverseasRepaymentEstimate }) {
     <>
       {formatPercent(estimate.repaymentRate * 100)} of the{" "}
       {formatGBP(Math.round(estimate.incomeAboveThreshold))} above your
-      threshold &mdash; {formatGBP(Math.round(estimate.annualRepayment))} a
-      year, rounded down to whole pounds each month.{" "}
+      threshold: {formatGBP(Math.round(estimate.annualRepayment))} a year,
+      rounded down to whole pounds each month.{" "}
       {delta === 0 ? (
         <span className="font-medium text-foreground">
           The same as in the UK.
@@ -165,11 +166,11 @@ function FixedNote({ estimate }: { estimate: OverseasRepaymentEstimate }) {
   if (monthlyRepayment === 0) {
     comparison = "a month, whatever your income";
   } else if (delta === 0) {
-    comparison = "a month — the same as your income-based figure";
+    comparison = "a month, the same as your income-based figure";
   } else if (delta > 0) {
-    comparison = `a month — ${formatGBPPence(delta)} more than your income-based figure`;
+    comparison = `a month, ${formatGBPPence(delta)} more than your income-based figure`;
   } else {
-    comparison = `a month — ${formatGBPPence(-delta)} less than your income-based figure`;
+    comparison = `a month, ${formatGBPPence(-delta)} less than your income-based figure`;
   }
   // Only Plan 2 interest tracks income, so only Plan 2 has a highest rate.
   const interest =
@@ -209,7 +210,7 @@ function interestReadout(estimate: OverseasRepaymentEstimate): {
     case "PLAN_4":
       return {
         figure: "RPI",
-        note: "Or the BoE base rate + 1% if that is lower — the same rule as in the UK.",
+        note: "Or the BoE base rate + 1% if that is lower, the same rule as in the UK.",
       };
     case "PLAN_5":
       return {
@@ -284,7 +285,7 @@ export function OverseasRepaymentEstimator() {
   return (
     <Panel data-slot="overseas-estimator" className="space-y-5">
       <PanelHeader
-        caption={`Fig. 1 — Overseas repayment estimator · ${OVERSEAS_TAX_YEAR} SLC thresholds`}
+        caption={`Fig. 1: Overseas repayment estimator · ${OVERSEAS_TAX_YEAR} SLC thresholds`}
         figure={`Band ${estimate.band.id} · ${formatMultiplier(estimate.band.multiplier)}`}
       />
 
@@ -454,8 +455,7 @@ export function OverseasRepaymentEstimator() {
                 </span>
                 {localCurrency && (
                   <>
-                    {" "}
-                    &mdash; your salary is{" "}
+                    , which makes your salary{" "}
                     <span className="font-mono text-foreground tabular-nums">
                       {formatGBP(Math.round(income))}
                     </span>
@@ -477,11 +477,7 @@ export function OverseasRepaymentEstimator() {
           className="group inline-flex shrink-0 items-center gap-1.5 font-semibold text-foreground no-underline transition-colors hover:text-cta"
         >
           Model the rest of your loan at this salary
-          <HugeiconsIcon
-            icon={ArrowRight01Icon}
-            aria-hidden="true"
-            className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5"
-          />
+          <LinkArrow className="text-primary" />
         </Link>
       </div>
     </Panel>

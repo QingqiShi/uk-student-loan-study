@@ -96,7 +96,7 @@ export function RepaidDetailPage() {
           <ChartFrame
             fill
             bodyClassName={FOLD_CHART_BODY}
-            caption={`Fig. 1 — Lifetime repaid · ${planName}`}
+            caption={`Fig. 1: Lifetime repaid · ${planName}`}
             figure={`Total ${formatGBP(Math.round(result.stats.totalPaid))}`}
             legend={[
               { label: "Cumulative repaid", color: "var(--chart-1)" },

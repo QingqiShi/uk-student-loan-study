@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Student Loan Threshold Freeze Explained — What It Costs You",
+  title: "Student Loan Threshold Freeze: What It Costs You",
   description:
     "The Plan 2 repayment threshold freeze means you start repaying sooner and pay more each month. See exactly how much extra the freeze costs, and what the 2026 parliamentary inquiry means.",
   keywords: [
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     canonical: "/guides/threshold-freeze",
   },
   openGraph: {
-    title: "Student Loan Threshold Freeze Explained — What It Costs You",
+    title: "Student Loan Threshold Freeze: What It Costs You",
     description:
       "The Plan 2 repayment threshold freeze means you start repaying sooner and pay more each month. See exactly how much extra the freeze costs, and what the 2026 parliamentary inquiry means.",
     url: "https://studentloanstudy.uk/guides/threshold-freeze",
@@ -65,7 +65,7 @@ const faqSchema = {
       name: "Which student loan plans are affected by the threshold freeze?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Plan 2 (2012-2023 borrowers) is directly affected with a 3-year freeze from 2027-28 to 2029-30. Plan 5 (2023+ borrowers) is not frozen — its £25,000 threshold starts rising with RPI from April 2027. Plan 1 and Plan 4 continue annual adjustments.",
+        text: "Plan 2 (2012-2023 borrowers) is directly affected with a 3-year freeze from 2027-28 to 2029-30. Plan 5 (2023+ borrowers) is not frozen: its £25,000 threshold starts rising with RPI from April 2027. Plan 1 and Plan 4 continue annual adjustments.",
       },
     },
     {
@@ -90,7 +90,7 @@ const faqSchema = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Student Loan Threshold Freeze Explained — What It Costs You",
+  headline: "Student Loan Threshold Freeze: What It Costs You",
   description:
     "The Plan 2 repayment threshold freeze means you start repaying sooner and pay more each month. See exactly how much extra the freeze costs, and what the 2026 parliamentary inquiry means.",
   url: "https://studentloanstudy.uk/guides/threshold-freeze",

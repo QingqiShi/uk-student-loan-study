@@ -23,12 +23,11 @@ const martianMono = Martian_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://studentloanstudy.uk"),
   title: {
-    default:
-      "UK Student Loan Repayment Calculator — Are You Paying More Than You Should?",
+    default: "UK Student Loan Repayment Calculator: Middle Earners Pay Most",
     template: "%s | UK Student Loan Study",
   },
   description:
-    "Free UK student loan repayment calculator for Plan 1, 2, 4, 5 and Postgraduate loans. See how long to pay off your student loan, total repayments, and monthly costs. Middle earners pay the most — find out where you fall.",
+    "Free UK student loan repayment calculator for Plan 1, 2, 4, 5 and Postgraduate loans. See how long to pay off your student loan, total repayments, and monthly costs. Middle earners pay the most. See where you fall.",
   keywords: [
     "student loan repayment calculator",
     "UK student loan calculator",

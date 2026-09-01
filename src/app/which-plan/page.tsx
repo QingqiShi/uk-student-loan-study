@@ -1,6 +1,5 @@
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AllPlansTable } from "@/components/plans/AllPlansTable";
@@ -23,7 +22,7 @@ export default function WhichPlanPage() {
               Which student loan plan am I on?
             </Heading>
             <p className="mx-auto mt-4 max-w-md text-pretty text-muted-foreground">
-              Answer a few quick questions — we&apos;ll match you to Plan 1, 2,
+              Answer a few quick questions. We&apos;ll match you to Plan 1, 2,
               4, 5 or Postgraduate and show this year&apos;s repayment figures.
             </p>
           </div>
@@ -43,12 +42,13 @@ export default function WhichPlanPage() {
                 All UK student loan plans at a glance
               </Heading>
               <p className="mt-1 text-sm text-muted-foreground">
-                Prefer to browse? Thresholds, repayment rates and write-off
-                periods for every plan. Select a plan for the full breakdown.
+                Thresholds, repayment rates and write-off periods for every
+                plan. Select a plan for the full breakdown.
               </p>
             </div>
-            <p className="mb-2 text-xs text-muted-foreground sm:hidden">
-              Swipe the table sideways to see rate and write-off →
+            <p className="mb-2 flex items-center gap-1 text-xs text-muted-foreground sm:hidden">
+              Swipe the table sideways to see rate and write-off
+              <LinkArrow className="size-3.5" />
             </p>
             <AllPlansTable />
             <div className="mt-6">
@@ -57,7 +57,7 @@ export default function WhichPlanPage() {
                 className={cn(PROSE_LINK, "inline-flex items-center gap-1")}
               >
                 Compare all UK student loan plans
-                <HugeiconsIcon icon={ArrowRight01Icon} className="size-4" />
+                <LinkArrow />
               </Link>
             </div>
           </div>

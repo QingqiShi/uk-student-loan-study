@@ -31,7 +31,7 @@ export function Plan2VsPlan5Guide() {
           Plan 2 and Plan 5 are the two loan types most English university
           students will encounter. Plan 2 covers those who started between 2012
           and 2023, while Plan 5 applies from 2023 onwards. They differ in
-          repayment threshold, interest rate, and write-off period — and these
+          repayment threshold, interest rate, and write-off period, and those
           differences can mean tens of thousands of pounds more or less repaid
           over your career.
         </>
@@ -71,7 +71,7 @@ export function Plan2VsPlan5Guide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption={`Fig. 1 — Lifetime repaid by salary · ${formatGBP(EXAMPLE_BALANCE)} balance`}
+        caption={`Fig. 1: Lifetime repaid by salary · ${formatGBP(EXAMPLE_BALANCE)} balance`}
         bodyClassName="h-75 sm:h-95"
       >
         <TotalRepaymentBySalaryChart />
@@ -84,14 +84,14 @@ export function Plan2VsPlan5Guide() {
         <p className="text-pretty text-muted-foreground">
           See how the balance changes month by month. Toggle between salary
           levels to see how income affects the repayment trajectory for each
-          plan. The dashed markers show each plan&rsquo;s write-off point
-          &mdash; Plan 2 at 30 years, Plan 5 at 40 years.
+          plan. The dashed markers show each plan&rsquo;s write-off point: Plan
+          2 at 30 years, Plan 5 at 40 years.
         </p>
       </section>
 
       <ChartFrame
         className={guideBreakout}
-        caption={`Fig. 2 — Balance over time · Plan 2 vs Plan 5`}
+        caption={`Fig. 2: Balance over time · Plan 2 vs Plan 5`}
         bodyClassName="h-85 sm:h-105"
       >
         <BalanceComparisonChart />
@@ -103,25 +103,23 @@ export function Plan2VsPlan5Guide() {
         </Heading>
         <div className="space-y-2 text-muted-foreground">
           <p>
-            You cannot choose between Plan 2 and Plan 5 &mdash; your plan is
-            determined by when and where you started your course. Plan 2 covers
-            English and Welsh students who started university between September
-            2012 and July 2023. Plan 5 applies to English students who started
-            from September 2023 onwards.
+            You cannot choose between Plan 2 and Plan 5. Your plan is determined
+            by when and where you started your course. Plan 2 covers English and
+            Welsh students who started university between September 2012 and
+            July 2023. Plan 5 applies to English students who started from
+            September 2023 onwards.
           </p>
           <p>
             The cutoff is August 2023. If you started in the 2022&ndash;23
             academic year, you are on Plan 2. If you started in September 2023
-            or later, you are on Plan 5. Note that Plan 5 is England-only
-            &mdash; Welsh students who started after August 2023 remain on Plan
-            2.
+            or later, you are on Plan 5. Note that Plan 5 is England-only: Welsh
+            students who started after August 2023 remain on Plan 2.
           </p>
           <p>
-            Not sure?{" "}
             <Link href="/which-plan" className={guideLink}>
               Take the which plan quiz
             </Link>{" "}
-            to find out, or read the full breakdowns for{" "}
+            if you are not sure, or read the full breakdowns for{" "}
             <Link href="/plans/plan-2" className={guideLink}>
               Plan 2
             </Link>{" "}
@@ -149,10 +147,10 @@ export function Plan2VsPlan5Guide() {
           <p>
             For example, at a {formatGBP(EXAMPLE_SALARY)} salary, a Plan 2
             borrower repays just {formatGBP(plan2Annual)} per year, while a Plan
-            5 borrower repays {formatGBP(plan5Annual)} per year &mdash; over
-            three times as much. This gap narrows at higher salaries where both
-            plans collect substantial repayments, but at lower salaries the
-            threshold difference is the dominant factor.
+            5 borrower repays {formatGBP(plan5Annual)} per year, over three
+            times as much. This gap narrows at higher salaries where both plans
+            collect substantial repayments, but at lower salaries the threshold
+            difference is the dominant factor.
           </p>
         </div>
       </section>
@@ -180,9 +178,9 @@ export function Plan2VsPlan5Guide() {
         </Heading>
         <div className="space-y-2 text-muted-foreground">
           <p>
-            For most borrowers, repayments are automatic through PAYE &mdash;
-            you do not need to do anything. The real question is whether it
-            makes sense to{" "}
+            For most borrowers, repayments are automatic through PAYE, so you do
+            not need to do anything. The real question is whether it makes sense
+            to{" "}
             <Link href="/overpay" className={guideLink}>
               overpay your loan
             </Link>
@@ -211,13 +209,13 @@ export function Plan2VsPlan5Guide() {
 
       <KeyTakeaways>
         <li>
-          Lower earners often pay <strong>more</strong> on Plan 5 because the
-          40-year term and lower threshold mean more months of repayments.
+          Lower earners often pay more on Plan 5 because the 40-year term and
+          lower threshold mean more months of repayments.
         </li>
         <li>
-          Middle earners may pay <strong>more</strong> on Plan 2 because
-          interest can reach RPI + 3%, and they earn too much for write-off to
-          help but not enough to pay off the balance quickly.
+          Middle earners may pay more on Plan 2 because interest can reach RPI +
+          3%, and they earn too much for write-off to help but not enough to pay
+          off the balance quickly.
         </li>
         <li>
           Plan 5&rsquo;s simpler interest (RPI only) makes the balance more

@@ -5,7 +5,7 @@ import {
 } from "@/components/guides/interest-rate-cap/historical-rates";
 
 export const metadata: Metadata = {
-  title: "Plan 2 Interest Rate Capped at 6% — What It Means for You",
+  title: "Plan 2 Interest Rate Capped at 6%: What It Means for You",
   description:
     "The government is capping Plan 2 student loan interest at 6% from September 2026. See how this affects your balance, who benefits most, and how often rates have exceeded 6% historically.",
   keywords: [
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     canonical: "/guides/interest-rate-cap",
   },
   openGraph: {
-    title: "Plan 2 Interest Rate Capped at 6% — What It Means for You",
+    title: "Plan 2 Interest Rate Capped at 6%: What It Means for You",
     description:
       "The government is capping Plan 2 student loan interest at 6% from September 2026. See how this affects your balance, who benefits most, and how often rates have exceeded 6% historically.",
     url: "https://studentloanstudy.uk/guides/interest-rate-cap",
@@ -87,7 +87,7 @@ const faqSchema = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Plan 2 Interest Rate Capped at 6% — What It Means for You",
+  headline: "Plan 2 Interest Rate Capped at 6%: What It Means for You",
   description:
     "The government is capping Plan 2 student loan interest at 6% from September 2026. See how this affects your balance, who benefits most, and how often rates have exceeded 6% historically.",
   url: "https://studentloanstudy.uk/guides/interest-rate-cap",

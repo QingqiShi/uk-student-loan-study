@@ -33,7 +33,7 @@ describe("renderPrBody", () => {
       undefined,
     );
     expect(body).toContain("merges automatically");
-    expect(body).toContain("CURRENT_RATES.rpi: 3.2% → 4.1%");
+    expect(body).toContain("CURRENT_RATES.rpi: 3.2% to 4.1%");
     expect(body).toContain("gov.uk/repaying-your-student-loan");
   });
 
@@ -46,7 +46,7 @@ describe("renderPrBody", () => {
     expect(body).toContain("needs a human");
     expect(body).toContain("Review checklist");
     expect(body).toContain("decreased from 2274 to 2200");
-    expect(body).toContain("PLAN_2.monthlyThreshold: £2,274 → £2,200");
+    expect(body).toContain("PLAN_2.monthlyThreshold: £2,274 to £2,200");
   });
 
   it("handles a drift-only change with no figure move", () => {

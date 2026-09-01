@@ -21,7 +21,7 @@ const SEMANTIC = [
   {
     name: "Spruce",
     token: "--primary",
-    role: "Brand, affordance, and every positive reading — links, actions, the paid-down curve.",
+    role: "Brand, affordance, and every positive reading: links, actions, the paid-down curve.",
   },
   {
     name: "Clay",
@@ -89,10 +89,10 @@ const CHART_TOKENS = [
 ];
 
 const LOGO_ANATOMY = [
-  "Icon: a mint square carrying a deep-spruce wave — the peak repayment zone lifted straight from the calculator chart.",
-  '"StudentLoan" is set in ink — the context, telling you what the site is about.',
-  '"Study" is set in spruce, the single brand colour — the emphasised, memorable word.',
-  '".uk" is set in soft grey — the domain, deliberately subordinate to the name.',
+  "Icon: a mint square carrying a deep-spruce wave, the peak repayment zone lifted straight from the calculator chart.",
+  '"StudentLoan" is set in ink. It is the context, telling you what the site is about.',
+  '"Study" is set in spruce, the single brand colour: the emphasised, memorable word.',
+  '".uk" is set in soft grey, deliberately subordinate to the name.',
 ];
 
 export function BrandGuidelinesPage() {
@@ -202,7 +202,7 @@ export function BrandGuidelinesPage() {
         {/* Colours */}
         <Section
           title="Colour tokens"
-          lede="The full token set behind the two-colour system — neutrals, semantic status, and the per-series chart ramp."
+          lede="The full token set behind the two-colour system: neutrals, semantic status, and the per-series chart ramp."
         >
           <div className="space-y-10">
             {/* Brand marks */}
@@ -240,7 +240,7 @@ export function BrandGuidelinesPage() {
             <div>
               <SubgroupLabel>Status</SubgroupLabel>
               <p className="mt-1 mb-4 max-w-[60ch] text-sm text-muted-foreground">
-                Non-brand utility tokens for system messaging — deliberately
+                Non-brand utility tokens for system messaging, deliberately
                 outside the two-colour thesis.
               </p>
               <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -296,7 +296,7 @@ export function BrandGuidelinesPage() {
             />
             <FontShowcase
               name="Martian Mono"
-              usage="Numeric readouts — figures only"
+              usage="Numeric readouts: figures only"
               weights="400 · 500 · 600"
               fontFamily="var(--font-mono), 'Martian Mono', ui-monospace, monospace"
               sampleWeight={600}

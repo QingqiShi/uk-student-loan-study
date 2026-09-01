@@ -44,7 +44,7 @@ const verdictConfig: Record<
     icon: Alert02Icon,
   },
   idle: {
-    title: "Ready to compare",
+    title: "No overpayment yet",
     accent: "text-foreground",
     icon: InformationCircleIcon,
   },

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { VerifiedAgo } from "@/components/instrument/VerifiedAgo";
+import { LinkArrow } from "@/components/instrument/LinkArrow";
+import { TrustLine } from "@/components/instrument/TrustLine";
 import { WideLayout } from "@/components/layout/WideLayout";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Heading } from "@/components/typography/Heading";
@@ -95,15 +96,11 @@ export default function GuidesPage() {
             Student loan guides
           </Heading>
           <p className="mb-[1.1rem] max-w-[46ch] text-lead text-pretty text-muted-foreground">
-            In-depth guides to the questions graduates actually ask — how
+            In-depth guides to the questions graduates actually ask: how
             repayment, interest, and write-off work, and how the loan fits into
             your wider finances.
           </p>
-          <p className="flex flex-wrap items-center gap-x-[0.65rem] gap-y-[0.4rem] pt-6 font-sans text-meta text-muted-foreground work:mt-auto">
-            <span className="font-bold text-primary">✓</span> Independent{" "}
-            <span className="text-faint">·</span> GOV.UK sourced{" "}
-            <span className="text-faint">·</span> <VerifiedAgo />
-          </p>
+          <TrustLine className="pt-6 work:mt-auto" />
         </div>
 
         {/* Index ledger: one column, scanned top to bottom, at every width —
@@ -135,12 +132,7 @@ export default function GuidesPage() {
                     {guide.description}
                   </span>
                 </span>
-                <span
-                  className="text-lead text-primary transition-transform duration-150 ease-[ease] group-hover:translate-x-[3px]"
-                  aria-hidden="true"
-                >
-                  →
-                </span>
+                <LinkArrow className="size-5 text-primary" />
               </Link>
             );
           })}
@@ -163,7 +155,7 @@ export default function GuidesPage() {
                 Where to start
               </p>
               <p className="mt-3 text-body text-pretty text-muted-foreground">
-                These guides unpack the figures the calculator produces — the
+                These guides explain the figures the calculator produces: the
                 interest, the frozen thresholds, and the 2026 rule changes that
                 set what you actually repay.
               </p>
@@ -174,12 +166,7 @@ export default function GuidesPage() {
                 <span className="text-body font-medium">
                   Open the calculator
                 </span>
-                <span
-                  aria-hidden="true"
-                  className="transition-transform duration-150 ease-[ease] group-hover:translate-x-[3px]"
-                >
-                  →
-                </span>
+                <LinkArrow className="self-center" />
               </Link>
             </div>
 

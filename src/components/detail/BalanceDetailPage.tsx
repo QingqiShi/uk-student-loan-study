@@ -103,7 +103,7 @@ export function BalanceDetailPage() {
           <ChartFrame
             fill
             bodyClassName={FOLD_CHART_BODY}
-            caption={`Fig. 1 — Balance over time · ${planName}`}
+            caption={`Fig. 1: Balance over time · ${planName}`}
             figure={`Peak ${formatGBP(Math.round(result.stats.peakBalance))}`}
             figureTone="cost"
             legend={legend}

@@ -5,6 +5,7 @@ import {
   MetricReadout,
 } from "@/components/instrument/MetricReadout";
 import { currencyFormatter } from "@/constants";
+import { EMPTY_VALUE } from "@/lib/format";
 import type { OverpayAnalysisResult } from "@/lib/loans/overpayTypes";
 import type { ScenarioResult } from "@/lib/loans/overpayTypes";
 import { cn } from "@/lib/utils";
@@ -80,7 +81,7 @@ function ScenarioDetail({
       ) : (
         <DetailRow
           label="Status"
-          value={ran ? "Paid off" : "—"}
+          value={ran ? "Paid off" : EMPTY_VALUE}
           tone={ran && isWin ? "outcome" : "muted"}
         />
       )}

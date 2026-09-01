@@ -99,16 +99,16 @@ const AUTO_MERGE_BOUNDS: Record<string, FieldBound> = {
 function unsafeReason(m: Mismatch): string | null {
   const bound = AUTO_MERGE_BOUNDS[m.field];
   if (!bound) {
-    return "structural field — always reviewed";
+    return "structural field, always reviewed";
   }
   if (bound.rejectNonPositive && m.scraped <= 0) {
-    return `non-positive value ${String(m.scraped)} — likely a parse failure`;
+    return `non-positive value ${String(m.scraped)}, likely a parse failure`;
   }
   if (m.scraped < bound.min || m.scraped > bound.max) {
     return `value ${String(m.scraped)} outside the plausible range ${String(bound.min)}–${String(bound.max)}`;
   }
   if (bound.increaseOnly && m.scraped < m.current) {
-    return `decreased from ${String(m.current)} to ${String(m.scraped)} — repayment thresholds only rise or freeze`;
+    return `decreased from ${String(m.current)} to ${String(m.scraped)}; repayment thresholds only rise or freeze`;
   }
   if (bound.maxAbsDelta !== undefined) {
     const delta = Math.abs(m.scraped - m.current);
@@ -118,7 +118,7 @@ function unsafeReason(m: Mismatch): string | null {
   }
   if (bound.maxRelDelta !== undefined) {
     if (m.current === 0) {
-      return "current value is zero — cannot bound the move";
+      return "current value is zero, cannot bound the move";
     }
     const rel = Math.abs(m.scraped - m.current) / m.current;
     if (rel > bound.maxRelDelta) {
@@ -135,7 +135,7 @@ function unsafeReason(m: Mismatch): string | null {
  * automation must never merge one unattended.
  */
 const OVERSEAS_REFRESH_REASON =
-  "a UK repayment threshold moved — refresh src/lib/loans/overseasThresholds.ts from the 6 April GOV.UK overseas tables (Plan 1/2/4/5/Postgraduate)";
+  "a UK repayment threshold moved: refresh src/lib/loans/overseasThresholds.ts from the 6 April GOV.UK overseas tables (Plan 1/2/4/5/Postgraduate)";
 
 function needsOverseasRefresh(field: string): boolean {
   return field.endsWith(".monthlyThreshold");

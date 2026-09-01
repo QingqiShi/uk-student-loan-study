@@ -33,8 +33,7 @@ const SUGGESTED_LINKS = [
   {
     href: "/which-plan",
     title: "Which plan quiz",
-    description:
-      "Not sure which loan plan you're on? Answer 3 quick questions.",
+    description: "Answer 3 quick questions to find which plan you are on.",
   },
   {
     href: "/guides",

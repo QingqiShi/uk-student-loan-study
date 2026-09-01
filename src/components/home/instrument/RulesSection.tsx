@@ -18,7 +18,7 @@ export function RulesSection() {
       heading="Four rules decide what you repay"
       intro={
         <>
-          No estimates or averages hidden in the model — these are the published
+          No estimates or averages hidden in the model. These are the published
           figures for the {TAX_YEAR} tax year, applied plainly.
         </>
       }
@@ -49,7 +49,7 @@ export function RulesSection() {
           </h3>
           <p className="col-start-2 text-body leading-[1.55] text-pretty text-muted-foreground">
             The balance grows with inflation. Interest runs from RPI up to RPI +
-            3%, set by how much you earn — not by a fixed headline rate.
+            3%, and how much you earn sets where you land on that sliding scale.
           </p>
           <span className="col-start-2 mt-[0.55rem] font-sans text-meta text-muted-foreground">
             RPI to RPI + 3%

@@ -24,8 +24,9 @@ export function InterestRateCapGuide() {
       intro={
         <>
           On 7 April 2026, the government announced a 6% cap on Plan 2 and Plan
-          3 student loan interest rates from September 2026. Here is what that
-          means in practice and how much it could save you.
+          3 student loan interest rates from September 2026. At today&rsquo;s
+          RPI it changes almost nothing. Its value is in what it prevents if
+          inflation spikes again.
         </>
       }
       related={{
@@ -43,20 +44,16 @@ export function InterestRateCapGuide() {
             Plan 2 loans charge interest on a sliding scale: from RPI (currently{" "}
             {formatPercent(rpi)}) for lower earners up to RPI + 3% (currently{" "}
             {formatPercent(currentMaxRate)}) for those earning above{" "}
-            <strong className="text-foreground">
-              {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}
-            </strong>
-            . While studying, borrowers are charged the full RPI + 3%.
+            {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}. While
+            studying, borrowers are charged the full RPI + 3%.
           </p>
           <p>
             From 1 September 2026, the maximum interest rate on Plan 2 and Plan
-            3 loans will be capped at{" "}
-            <strong className="text-foreground">6%</strong>, regardless of what
-            the RPI + 3% formula produces. This cap applies for the 2026/27
-            academic year.
+            3 loans will be capped at 6%, regardless of what the RPI + 3%
+            formula produces. This cap applies for the 2026/27 academic year.
           </p>
           <p>
-            At current rates, this barely bites &mdash; the maximum is{" "}
+            At current rates, this barely bites: the maximum is{" "}
             {formatPercent(currentMaxRate)}, only{" "}
             {formatPercent(Math.round((currentMaxRate - 6) * 100) / 100)} above
             the cap. But the cap is designed as insurance: if inflation surges
@@ -89,8 +86,8 @@ export function InterestRateCapGuide() {
           <p>
             Skills Minister Jacqui Smith cited the risk of inflation pressures
             from Middle East conflicts and global instability. When RPI spikes,
-            the RPI + 3% formula can push interest rates well into double digits
-            &mdash; exactly what happened in 2022&ndash;2024.
+            the RPI + 3% formula can push interest rates well into double
+            digits, exactly what happened in 2022&ndash;2024.
           </p>
           <p>
             The government had previously used the &ldquo;prevailing market
@@ -107,14 +104,10 @@ export function InterestRateCapGuide() {
         </Heading>
         <p className="text-muted-foreground">
           The maximum Plan 2 interest rate has exceeded 6% in{" "}
-          <strong className="text-foreground">
-            {String(YEARS_ABOVE_CAP)} out of {String(TOTAL_YEARS)} academic
-            years
-          </strong>{" "}
+          {String(YEARS_ABOVE_CAP)} out of {String(TOTAL_YEARS)} academic years{" "}
           since Plan 2 was introduced in 2012. During the inflation crisis of
-          2022&ndash;2024, rates hit 7.7% even after the PMR cap was applied
-          &mdash; without that intervention, the formula rate would have reached
-          16.5%.
+          2022&ndash;2024, rates hit 7.7% even after the PMR cap was applied.
+          Without that intervention, the formula rate would have reached 16.5%.
         </p>
         <p className="text-sm text-muted-foreground">
           The bars show the maximum rate actually charged each year (after any
@@ -124,7 +117,7 @@ export function InterestRateCapGuide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 1 — Maximum Plan 2 rate charged by year"
+        caption="Fig. 1: Maximum Plan 2 rate charged by year"
         figure="Cap 6%"
         figureTone="cost"
       >
@@ -145,22 +138,22 @@ export function InterestRateCapGuide() {
           <p>
             The chart below starts at today&apos;s RPI ({formatPercent(rpi)}),
             where the two lines nearly overlap. Try selecting 7% or 9% to see
-            why the cap was introduced &mdash; at those levels the gap between
-            capped and uncapped balances becomes dramatic. The scenario assumes
-            a {formatGBP(45_000)} loan, a {formatGBP(35_000)} starting salary,
-            and 3% annual growth.
+            why the cap was introduced: at those levels the gap between capped
+            and uncapped balances becomes dramatic. The scenario assumes a{" "}
+            {formatGBP(45_000)} loan, a {formatGBP(35_000)} starting salary, and
+            3% annual growth.
           </p>
         </div>
         <p className="text-sm text-muted-foreground">
           At higher RPI values, the gap between the capped and uncapped balance
-          widens significantly. At 7% RPI, the uncapped rate would be 10%
-          &mdash; the cap saves borrowers from this compounding effect.
+          widens significantly. At 7% RPI, the uncapped rate would be 10%, and
+          the cap saves borrowers from that compounding.
         </p>
       </section>
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 2 — Balance with and without the 6% cap"
+        caption="Fig. 2: Balance with and without the 6% cap"
         figure="Cap 6%"
         figureTone="cost"
         bodyClassName="h-80 sm:h-100"
@@ -176,8 +169,8 @@ export function InterestRateCapGuide() {
           <p>
             Because Plan 2 loans are written off after 30 years regardless of
             the remaining balance, most borrowers will not repay in full. The
-            cap matters most for middle-to-high earners who do repay everything
-            &mdash; they accumulate less interest, so their total bill is lower.
+            cap matters most for middle-to-high earners who do repay everything:
+            they accumulate less interest, so their total bill is lower.
           </p>
           <p>
             The chart below compares total repayment across salary levels,
@@ -190,7 +183,7 @@ export function InterestRateCapGuide() {
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 3 — Total repaid by salary · sustained 7% RPI"
+        caption="Fig. 3: Total repaid by salary · sustained 7% RPI"
       >
         <TotalCostComparisonChart />
       </ChartFrame>
@@ -204,16 +197,16 @@ export function InterestRateCapGuide() {
             <li>
               <strong className="text-foreground">
                 Current students on Plan 2 or Plan 3
-              </strong>{" "}
-              &mdash; while studying, you are charged the maximum rate (RPI +
-              3%). The cap means this will not exceed 6%, slowing the growth of
-              your balance before you even start repaying.
+              </strong>
+              : while studying, you are charged the maximum rate (RPI + 3%). The
+              cap means this will not exceed 6%, slowing the growth of your
+              balance before you even start repaying.
             </li>
             <li>
               <strong className="text-foreground">
                 Higher earners with large balances
-              </strong>{" "}
-              &mdash; if you earn above{" "}
+              </strong>
+              : if you earn above{" "}
               {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}, you are
               on the maximum rate. The cap gives you the biggest absolute
               reduction in interest.
@@ -221,17 +214,16 @@ export function InterestRateCapGuide() {
             <li>
               <strong className="text-foreground">
                 Graduates who will repay in full
-              </strong>{" "}
-              &mdash; if your salary is high enough to pay off the loan before
-              the 30-year write-off, lower interest means you repay less
-              overall.
+              </strong>
+              : if your salary is high enough to pay off the loan before the
+              30-year write-off, lower interest means you repay less overall.
             </li>
           </ul>
           <p>
             Lower earners who will never repay in full are less directly
-            affected &mdash; the cap reduces the balance that eventually gets
-            written off, but does not change their monthly repayments (which are
-            based purely on income).
+            affected. The cap reduces the balance that eventually gets written
+            off, but does not change their monthly repayments, which are based
+            purely on income.
           </p>
         </div>
       </section>
@@ -245,25 +237,25 @@ export function InterestRateCapGuide() {
             <li>
               <strong className="text-foreground">
                 Monthly repayments are unchanged
-              </strong>{" "}
-              &mdash; you still repay 9% of income above the threshold (
+              </strong>
+              : you still repay 9% of income above the threshold (
               {formatGBP(PLAN_CONFIGS.PLAN_2.monthlyThreshold * 12)}/year). The
               cap only affects how fast your balance grows.
             </li>
             <li>
               <strong className="text-foreground">
                 Plan 1, 4, and 5 are not affected
-              </strong>{" "}
-              &mdash; Plan 1 and 4 rates are already capped at the lower of RPI
-              or Bank of England base rate + 1%. Plan 5 charges RPI only, with
-              no +3% component.
+              </strong>
+              : Plan 1 and 4 rates are already capped at the lower of RPI or
+              Bank of England base rate + 1%. Plan 5 charges RPI only, with no
+              +3% component.
             </li>
             <li>
               <strong className="text-foreground">
                 The cap is for 2026/27 only
-              </strong>{" "}
-              &mdash; it has been announced for one academic year. Whether it
-              becomes permanent depends on future policy decisions.
+              </strong>
+              : it has been announced for one academic year. Whether it becomes
+              permanent depends on future policy decisions.
             </li>
           </ul>
         </div>
@@ -282,8 +274,7 @@ export function InterestRateCapGuide() {
           especially if inflation rises again.
         </li>
         <li>
-          Monthly repayments do not change &mdash; the cap only slows balance
-          growth.
+          Monthly repayments do not change; the cap only slows balance growth.
         </li>
         <li>
           The cap is announced for one year only (2026/27), though it may be

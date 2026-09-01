@@ -124,7 +124,7 @@ export function useLeverData(): LeverData {
         raiseDelta === 0
           ? `For this case, earning ${formatGBP(RAISE)} more a year wouldn't change the total you repay.`
           : raiseDelta < 0
-            ? `A higher salary pays off the loan before the write-off, so you pay less overall — not more.`
+            ? `A higher salary clears the loan before the write-off, so the total you repay falls.`
             : `A higher salary means larger repayments in the years before write-off, so the total you repay rises.`,
       delta: deltaText(raiseDelta),
       direction: dir(raiseDelta),
@@ -136,8 +136,8 @@ export function useLeverData(): LeverData {
         careerDelta === 0
           ? `For this case, a one-year career break wouldn't change the total you repay.`
           : careerDelta > 0
-            ? `A year at little or no income pauses repayments, so more interest rolls into the years that follow — nudging the total up.`
-            : `A year at little or no income pauses repayments; with the balance written off anyway, you simply repay less over the term.`,
+            ? `A year at little or no income pauses repayments, so more interest rolls into the years that follow and the total creeps up.`
+            : `A year at little or no income pauses repayments; with the balance written off anyway, you repay less over the term.`,
       delta: deltaText(careerDelta),
       direction: dir(careerDelta),
       barPct: barPct(careerDelta),

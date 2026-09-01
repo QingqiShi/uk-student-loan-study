@@ -16,7 +16,7 @@ export async function generateMetadata({
   if (!meta.hasShareParams) {
     const defaultTitle = "When Will My Student Loan Be Paid Off?";
     const defaultDescription =
-      "Find out when your UK student loan will be paid off — or written off — and what it will cost in total. Enter your salary, balance and plan (1, 2, 4, 5 or Postgraduate) to see your payoff year and total repayments.";
+      "Find out when your UK student loan will be paid off, or written off, and what it will cost in total. Enter your salary, balance and plan (1, 2, 4, 5 or Postgraduate) to see your payoff year and total repayments.";
 
     return {
       title: defaultTitle,
@@ -31,7 +31,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary} — Total Repayments`;
+  const title = `${meta.planName} loan of ${meta.formattedBalance} at ${meta.formattedSalary}: Total Repayments`;
   const description = `See the total repayment cost for a ${meta.planName} UK student loan with ${meta.formattedBalance} balance and ${meta.formattedSalary} annual salary.`;
 
   return {

@@ -58,6 +58,17 @@ Local steps:
 - `dark` / `light` classes on containers scope CSS variables for that subtree
 - **Headings**: Use `<Heading>` from `@/components/typography/Heading` for content headings — do not use raw `<h1>`–`<h6>` with inline classes. Sizes: `page-hero` | `page` (default) | `section` | `subsection`. Polymorphic `as` prop sets the HTML element.
 
+## Copy
+
+User-facing copy follows "The Field Guide to AI Slop" (ignorance.ai). The lintable parts are enforced by the local rules in `eslint-rules/slop.js` (`custom/no-slop-characters`, `custom/no-slop-phrases`, `custom/no-fragment-questions`) on every string, template literal and JSX text in `src/`, `e2e/` and `scripts/`:
+
+- No em dashes (use a full stop, comma, colon or brackets), text arrows, tick marks, emoji or Unicode bold/italic letters. A `–` en dash is fine for ranges and as an empty-value placeholder.
+- No "It's not X, it's Y" parallelism, vapid openers ("In today's..."), unearned profundity ("Here's the thing") or slop vocabulary (delve, unlock, journey, seamless...).
+- No fragment-question hooks ("Not sure? Take the quiz"). Real questions as headings are fine.
+- Not lintable, still expected: no snappy triads, no "X, not Y" contrast tics, no filler that restates the previous sentence, vary sentence length, use contractions.
+
+Figure captions read `Fig. N: Title · Subtitle`.
+
 ## Code Quality
 
 - **Do not modify ShadCN components** (`src/components/ui/`) — exceptions: auto-formatting and bug fixes (bug fixes require an explicit comment explaining the fix)

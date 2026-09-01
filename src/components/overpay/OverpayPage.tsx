@@ -53,7 +53,7 @@ export function OverpayPage() {
           intro="The same figures the repayment calculator reports for this loan, before any overpayment. Open any one for the full working."
         />
 
-        <RelatedGuidesSection intro="Background on the rules behind the comparison — how interest accrues, and when paying upfront beats borrowing." />
+        <RelatedGuidesSection intro="Background on the rules behind the comparison: how interest accrues, and when paying upfront beats borrowing." />
       </WideLayout>
     </>
   );
