@@ -4,10 +4,12 @@ import { useState } from "react";
 import type { ChartSeriesConfig } from "@/components/charts/ChartBase";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
-import { getAnnualInterestRate } from "@/lib/loans/interest";
+import { formatPercent } from "@/lib/format";
+import { getAnnualInterestRate, NO_INTEREST_CAP } from "@/lib/loans/interest";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { segmentToggle } from "../guide-primitives";
-import { INTEREST_CAP } from "./historical-rates";
+
+const capPct = formatPercent(CURRENT_RATES.interestCap);
 
 const RPI_OPTIONS = [
   {
@@ -31,7 +33,7 @@ const chartConfig = {
     color: "var(--chart-2)", // costlier path — the cost clay
   },
   capped: {
-    label: "With 6% cap",
+    label: `With ${capPct} cap`,
     color: "var(--chart-1)", // better outcome — principal green
   },
 } satisfies ChartConfig;
@@ -41,7 +43,7 @@ const series: ChartSeriesConfig[] = [
   { dataKey: "capped" },
 ];
 
-function simulateBalance(rpi: number, capRate: number | null) {
+function simulateBalance(rpi: number, capRate: number) {
   const boe = CURRENT_RATES.boeBaseRate;
   const monthlyThreshold = PLAN_CONFIGS.PLAN_2.monthlyThreshold;
   const repaymentRate = PLAN_CONFIGS.PLAN_2.repaymentRate;
@@ -56,10 +58,14 @@ function simulateBalance(rpi: number, capRate: number | null) {
       salary *= 1 + SALARY_GROWTH;
     }
 
-    let annualRate = getAnnualInterestRate("PLAN_2", salary, rpi, boe);
-    if (capRate !== null) {
-      annualRate = Math.min(annualRate, capRate);
-    }
+    const annualRate = getAnnualInterestRate(
+      "PLAN_2",
+      salary,
+      rpi,
+      boe,
+      undefined,
+      capRate,
+    );
 
     const monthlyInterest = balance * (annualRate / 100 / 12);
     balance += monthlyInterest;
@@ -81,8 +87,8 @@ function simulateBalance(rpi: number, capRate: number | null) {
 }
 
 function buildData(rpi: RpiOption) {
-  const uncappedBalances = simulateBalance(rpi, null);
-  const cappedBalances = simulateBalance(rpi, INTEREST_CAP);
+  const uncappedBalances = simulateBalance(rpi, NO_INTEREST_CAP);
+  const cappedBalances = simulateBalance(rpi, CURRENT_RATES.interestCap);
 
   const maxYears = Math.max(uncappedBalances.length, cappedBalances.length);
   const data: Array<{ year: number; uncapped: number; capped: number }> = [];
@@ -144,7 +150,7 @@ export function BalanceWithCapChart() {
           xFormatter={formatYear}
           yLabel="Balance"
           yFormatter={formatCurrency}
-          ariaLabel="Area chart comparing loan balance over time with and without the 6% interest rate cap"
+          ariaLabel={`Area chart comparing loan balance over time with and without the ${capPct} interest rate cap`}
           chartConfig={chartConfig}
           series={series}
           showLegend

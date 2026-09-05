@@ -213,6 +213,24 @@ async function scrapeInterestRates(page: Page): Promise<ScrapedInterestRate[]> {
   return rates;
 }
 
+/**
+ * Read the interest cap from the sentence "RPI plus up to 3%, but there's
+ * currently a limit (or 'cap') of 6%.". GOV.UK writes the apostrophes as curly
+ * quotes, so the pattern accepts both forms.
+ */
+async function scrapeInterestCap(page: Page): Promise<number> {
+  const text = await page.evaluate(() => document.body.innerText);
+  const match = text.match(
+    /limit \(or [\u2018\u2019']cap[\u2018\u2019']\) of (\d+(?:\.\d+)?)%/i,
+  );
+  if (!match) {
+    throw new Error(
+      "Could not find the interest cap sentence on the what-you-pay page",
+    );
+  }
+  return Number(match[1]);
+}
+
 async function scrapeWriteOffs(page: Page): Promise<ScrapedWriteOff[]> {
   await page.goto(
     "https://www.gov.uk/repaying-your-student-loan/when-your-student-loan-gets-written-off-or-cancelled",
@@ -283,6 +301,7 @@ export async function scrapeGovUk(page: Page): Promise<ScrapedGovUkData> {
   const { thresholds, plan2InterestScale } = await scrapeThresholds(page);
   const repaymentRates = await scrapeRepaymentRates(page);
   const interestRates = await scrapeInterestRates(page);
+  const interestCap = await scrapeInterestCap(page);
 
   // Page 2: Write-off periods
   const writeOffs = await scrapeWriteOffs(page);
@@ -292,6 +311,7 @@ export async function scrapeGovUk(page: Page): Promise<ScrapedGovUkData> {
     repaymentRates,
     interestRates,
     plan2InterestScale,
+    interestCap,
     writeOffs,
     boeBaseRate: 0, // Filled in later by the updater agent via fetch()
     cpi: 0, // Filled in later by the updater agent via fetch()

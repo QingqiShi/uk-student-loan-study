@@ -16,6 +16,8 @@ export interface OverpayInput {
   plan2ThresholdSchedule?: number[];
   rpiRate?: number;
   boeBaseRate?: number;
+  /** Ceiling on every plan's annual interest rate, as a percentage. */
+  interestCap?: number;
   lumpSumPayment?: number;
 }
 

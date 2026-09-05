@@ -22,6 +22,7 @@ import {
   formatMultiplier,
   formatPercent,
 } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import {
   estimateOverseasRepayment,
   fromGBP,
@@ -220,7 +221,7 @@ function interestReadout(estimate: OverseasRepaymentEstimate): {
     case "POSTGRADUATE":
       return {
         figure: "RPI + 3%",
-        note: "Postgraduate interest is RPI + 3% wherever you live.",
+        note: `Postgraduate interest is a flat RPI + 3%, capped at ${formatPercent(getMaxAnnualInterestRate("POSTGRADUATE"))}, wherever you live.`,
       };
   }
 }

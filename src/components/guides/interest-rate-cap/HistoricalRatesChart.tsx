@@ -3,12 +3,16 @@
 import type { ChartSeriesConfig } from "@/components/charts/ChartBase";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
-import { HISTORICAL_RATES, INTEREST_CAP } from "./historical-rates";
+import { formatPercent } from "@/lib/format";
+import { CURRENT_RATES } from "@/lib/loans/plans";
+import { HISTORICAL_RATES } from "./historical-rates";
+
+const capPct = formatPercent(CURRENT_RATES.interestCap);
 
 const chartData = HISTORICAL_RATES.map((d) => ({
   ...d,
-  above: Math.max(0, d.maxRate - INTEREST_CAP),
-  below: Math.min(d.maxRate, INTEREST_CAP),
+  above: Math.max(0, d.maxRate - CURRENT_RATES.interestCap),
+  below: Math.min(d.maxRate, CURRENT_RATES.interestCap),
 }));
 
 const chartConfig = {
@@ -17,7 +21,7 @@ const chartConfig = {
     color: "var(--chart-5)", // within-cap portion — neutral baseline grey
   },
   above: {
-    label: "Above 6% cap",
+    label: `Above ${capPct} cap`,
     color: "var(--chart-2)", // the costly excess the cap removes — cost clay
   },
 } satisfies ChartConfig;
@@ -46,13 +50,13 @@ export function HistoricalRatesChart() {
         xFormatter={formatYear}
         yFormatter={formatRate}
         yDomain={[0, 9]}
-        ariaLabel="Bar chart showing maximum Plan 2 interest rate per academic year from 2012 to 2025, with bars coloured to show portions above and below the 6% cap"
+        ariaLabel={`Bar chart showing maximum Plan 2 interest rate per academic year from 2012 to 2025, with bars coloured to show portions above and below the ${capPct} cap`}
         chartConfig={chartConfig}
         series={series}
         horizontalAnnotations={[
           {
-            y: INTEREST_CAP,
-            label: "6% cap",
+            y: CURRENT_RATES.interestCap,
+            label: `${capPct} cap`,
             color: "var(--chart-1)",
             strokeDasharray: "6 4",
           },

@@ -3,7 +3,9 @@ import {
   formatGBP,
   formatGBPPence,
   formatMultiplier,
+  formatPercent,
 } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { getOverseasBand, requireTerritory } from "@/lib/loans/overseas";
 import {
   OVERSEAS_BANDS,
@@ -113,6 +115,7 @@ const year = OVERSEAS_TAX_YEAR;
 const ukPlan2 = formatGBP(featured.uk.plan2Threshold);
 const spainPlan2 = formatGBP(featured.spain.plan2Threshold);
 const usaPlan2 = formatGBP(featured.usa.plan2Threshold);
+const plan2MaxRatePct = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 // Single source of truth for the visible FAQ and the FAQPage JSON-LD in
 // layout.tsx, so the structured data can never drift from what the page shows.
@@ -142,7 +145,7 @@ export const movingAbroadFaqs = [
   },
   {
     question: "What happens if I don't tell SLC I've moved abroad?",
-    answer: `SLC charges the fixed monthly repayment for your country: ${formatGBPPence(featured.spain.plan2FixedMonthly)} a month in Spain, or ${formatGBPPence(featured.australia.plan2FixedMonthly)} in Australia for Plan 2 in ${year}. That can be higher than an income-based amount. Unpaid amounts become arrears, Plan 2 interest goes to the highest rate (RPI + 3%), and SLC can charge a penalty, demand the whole loan in one lump sum, and take court action. Student loans still do not appear on your credit report.`,
+    answer: `SLC charges the fixed monthly repayment for your country: ${formatGBPPence(featured.spain.plan2FixedMonthly)} a month in Spain, or ${formatGBPPence(featured.australia.plan2FixedMonthly)} in Australia for Plan 2 in ${year}. That can be higher than an income-based amount. Unpaid amounts become arrears, Plan 2 interest goes to the highest rate (capped at ${plan2MaxRatePct}), and SLC can charge a penalty, demand the whole loan in one lump sum, and take court action. Student loans still do not appear on your credit report.`,
   },
   {
     question:

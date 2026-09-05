@@ -1,3 +1,6 @@
+import { formatPercent } from "@/lib/format";
+import { CURRENT_RATES } from "@/lib/loans/plans";
+
 export type GuideSlug =
   | "threshold-freeze"
   | "plan-2-vs-plan-5"
@@ -25,8 +28,7 @@ export const GUIDES: GuideEntry[] = [
   {
     slug: "interest-rate-cap",
     title: "Plan 2 Interest Rate Cap",
-    description:
-      "The government is capping Plan 2 interest at 6% from September 2026. What it means for your loan.",
+    description: `Plan 2 interest has been capped at ${formatPercent(CURRENT_RATES.interestCap)} since 1 September 2026. What it means for your loan.`,
     topic: "Interest",
     newUntil: "2026-07-08",
   },

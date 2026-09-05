@@ -8,16 +8,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatGBP, formatPercent } from "@/lib/format";
+import {
+  getMaxAnnualInterestRate,
+  NO_INTEREST_CAP,
+} from "@/lib/loans/interest";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { surfaceCard } from "@/lib/surfaces";
 import { specHead, specHeadNum, specNum } from "../guide-parts";
 
-// The 6% cap is a policy figure (Sept 2026), not something plans.ts supplies —
-// kept as a labelled constant, consistent with the rest of this guide.
-const INTEREST_CAP_RATE = 6;
-
 const rpi = CURRENT_RATES.rpi;
-const maxRate = rpi + 3;
+// The formula's ceiling with the cap lifted, shown alongside the cap in
+// force so the table reads as "before" versus "after".
+const uncappedMaxRate = getMaxAnnualInterestRate(
+  "PLAN_2",
+  rpi,
+  CURRENT_RATES.boeBaseRate,
+  NO_INTEREST_CAP,
+);
 
 const rows = [
   { figure: "Base RPI", value: formatPercent(rpi) },
@@ -26,16 +33,16 @@ const rows = [
     value: formatPercent(rpi),
   },
   {
-    figure: "Plan 2 maximum interest rate (RPI + 3%)",
-    value: formatPercent(maxRate),
+    figure: "Plan 2 maximum interest rate: RPI + 3% before the cap",
+    value: formatPercent(uncappedMaxRate),
   },
   {
     figure: "Income at which the maximum rate applies",
     value: `Above ${formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}`,
   },
   {
-    figure: "Interest rate cap (from 1 September 2026)",
-    value: formatPercent(INTEREST_CAP_RATE),
+    figure: "Interest cap (in force)",
+    value: formatPercent(CURRENT_RATES.interestCap),
   },
 ];
 

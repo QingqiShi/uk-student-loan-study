@@ -1,4 +1,4 @@
-import { getAnnualInterestRate } from "./interest";
+import { getAnnualInterestRate, NO_INTEREST_CAP } from "./interest";
 import {
   OVERSEAS_BANDS_BY_ID,
   OVERSEAS_TERRITORIES,
@@ -109,13 +109,21 @@ export function estimateOverseasRepayment({
   const ukThreshold = OVERSEAS_UK_THRESHOLDS[plan];
   const incomeAboveThreshold = Math.max(0, annualIncomeGBP - threshold);
 
-  // An RPI of 0 makes the sliding scale return only the points above RPI.
+  // An RPI of 0 makes the sliding scale return only the points above RPI, and
+  // NO_INTEREST_CAP keeps the interest cap off that difference.
   const plan2InterestAboveRpi =
     plan === "PLAN_2"
-      ? getAnnualInterestRate("PLAN_2", annualIncomeGBP, 0, 0, {
-          interestLowerThreshold: threshold,
-          interestUpperThreshold: band.plan2UpperThreshold,
-        })
+      ? getAnnualInterestRate(
+          "PLAN_2",
+          annualIncomeGBP,
+          0,
+          0,
+          {
+            interestLowerThreshold: threshold,
+            interestUpperThreshold: band.plan2UpperThreshold,
+          },
+          NO_INTEREST_CAP,
+        )
       : undefined;
 
   return {

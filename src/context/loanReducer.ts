@@ -1,5 +1,4 @@
-import { DEFAULT_SALARY } from "@/constants";
-import { CURRENT_RATES } from "@/lib/loans/plans";
+import { CURRENT_RATES, DEFAULT_SALARY } from "@/lib/loans/plans";
 import { DEFAULT_PRESET, type Preset } from "@/lib/presets";
 import type { LoanState } from "@/types/store";
 
@@ -12,8 +11,8 @@ export const initialState: LoanState = {
   salaryGrowthRate: 0.04, // 4% - typical career progression
   thresholdGrowthRate: 0.02, // 2% - below-inflation growth
   applyPlan2Freeze: true, // Budget 2025: Plan 2 frozen until 2030
-  rpiRate: CURRENT_RATES.rpi, // 3.2% - Sept 2025–Aug 2026
-  boeBaseRate: CURRENT_RATES.boeBaseRate, // 3.75% - Feb 2026 MPC
+  rpiRate: CURRENT_RATES.rpi,
+  boeBaseRate: CURRENT_RATES.boeBaseRate,
   lumpSumPayment: 10_000,
 
   showPresentValue: false,

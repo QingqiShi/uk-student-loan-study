@@ -54,11 +54,13 @@ export function simulateOverpayScenarios(
     plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
+    interestCap,
     lumpSumPayment = 0,
   } = input;
 
   const rpi = rpiRate ?? CURRENT_RATES.rpi;
   const boe = boeBaseRate ?? CURRENT_RATES.boeBaseRate;
+  const cap = interestCap ?? CURRENT_RATES.interestCap;
 
   // Check for empty scenarios
   const validLoans = loans.filter((l) => l.balance > 0);
@@ -90,6 +92,7 @@ export function simulateOverpayScenarios(
     plan2ThresholdSchedule,
     rpiRate: rpi,
     boeBaseRate: boe,
+    interestCap: cap,
   });
 
   // Simulate with overpayment (lump sum applied + monthly overpayment)
@@ -106,6 +109,7 @@ export function simulateOverpayScenarios(
           plan2ThresholdSchedule,
           rpiRate: rpi,
           boeBaseRate: boe,
+          interestCap: cap,
         });
 
   // Convert simulations to scenario results

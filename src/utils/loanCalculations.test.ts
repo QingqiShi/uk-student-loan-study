@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import type { Loan } from "@/lib/loans/types";
 import { MIN_SALARY, MAX_SALARY, SALARY_STEP } from "../constants";
 import {
+  findPeakSalary,
   generateSalaryDataSeries,
   generateSalaryDataSeriesPV,
   generateBalanceTimeSeries,
@@ -191,5 +192,59 @@ describe("generateBalanceTimeSeries", () => {
     expect(resultLowRpi.data[1].balance).not.toBe(
       resultHighRpi.data[1].balance,
     );
+  });
+});
+
+describe("findPeakSalary", () => {
+  it("returns the salary of the highest point", () => {
+    const peak = findPeakSalary([
+      { salary: 25_000, value: 10_000 },
+      { salary: 45_000, value: 90_000 },
+      { salary: 65_000, value: 40_000 },
+    ]);
+
+    expect(peak).toBe(45_000);
+  });
+
+  it("returns the lowest salary when two points tie for the peak", () => {
+    const peak = findPeakSalary([
+      { salary: 25_000, value: 10_000 },
+      { salary: 45_000, value: 90_000 },
+      { salary: 46_000, value: 90_000 },
+    ]);
+
+    expect(peak).toBe(45_000);
+  });
+
+  it("finds a peak at either end of the series", () => {
+    expect(
+      findPeakSalary([
+        { salary: 25_000, value: 90_000 },
+        { salary: 45_000, value: 10_000 },
+      ]),
+    ).toBe(25_000);
+    expect(
+      findPeakSalary([
+        { salary: 25_000, value: 10_000 },
+        { salary: 45_000, value: 90_000 },
+      ]),
+    ).toBe(45_000);
+  });
+
+  it("throws for an empty series", () => {
+    expect(() => findPeakSalary([])).toThrow(
+      "Cannot find a peak salary in an empty series",
+    );
+  });
+
+  it("finds the peak of a real salary series", () => {
+    const data = generateSalaryDataSeries([
+      { planType: "PLAN_2", balance: 45_000 },
+    ]);
+    const peak = findPeakSalary(data);
+    const peakPoint = data.find((p) => p.salary === peak);
+
+    expect(peakPoint).toBeDefined();
+    expect(Math.max(...data.map((p) => p.value))).toBe(peakPoint?.value);
   });
 });

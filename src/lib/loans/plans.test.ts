@@ -82,6 +82,11 @@ describe("CURRENT_RATES", () => {
     expect(CURRENT_RATES.boeBaseRate).toBeGreaterThanOrEqual(0);
     expect(CURRENT_RATES.boeBaseRate).toBeLessThan(20);
   });
+
+  it("has an interest cap within sane range", () => {
+    expect(CURRENT_RATES.interestCap).toBeGreaterThan(0);
+    expect(CURRENT_RATES.interestCap).toBeLessThan(20);
+  });
 });
 
 describe("PLAN_DISPLAY_INFO", () => {

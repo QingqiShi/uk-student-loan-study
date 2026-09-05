@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import { formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
+
+const plan2MaxRatePct = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 export const metadata: Metadata = {
   title: "Interest Paid: Student Loan Interest Breakdown",
@@ -58,7 +62,7 @@ const faqSchema = {
       name: "Why do I pay more in interest than my original loan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Student loan interest accrues from the day your loan is paid out, including while you study. For Plan 2 borrowers, interest can be RPI + up to 3%, meaning your balance can grow faster than your repayments reduce it, especially in the early years when your salary is lower.",
+        text: `Student loan interest accrues from the day your loan is paid out, including while you study. For Plan 2 borrowers, interest can be as high as ${plan2MaxRatePct} (a cap holds the sliding scale below RPI + 3%), meaning your balance can grow faster than your repayments reduce it, especially in the early years when your salary is lower.`,
       },
     },
     {

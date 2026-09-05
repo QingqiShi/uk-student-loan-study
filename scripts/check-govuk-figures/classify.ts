@@ -1,3 +1,5 @@
+import { MAX_SALARY, MIN_SALARY } from "../../src/constants";
+
 import type { Mismatch, ScrapedPlanThreshold } from "./types";
 
 /**
@@ -31,7 +33,8 @@ interface FieldBound {
   increaseOnly?: boolean;
 }
 
-// Bounds for the fields the scrape can move routinely. Every other field —
+// Bounds for the fields the scrape can move routinely, plus DEFAULT_SALARY,
+// which the codegen derives from them. Every other field —
 // repayment rate, write-off period, the Plan 2 interest thresholds — is
 // structural and legislative: a change there is rare and always deserves human
 // review, so it is deliberately absent from this map (an unknown field reviews).
@@ -72,9 +75,10 @@ const AUTO_MERGE_BOUNDS: Record<string, FieldBound> = {
     maxRelDelta: 0.15,
     increaseOnly: true,
   },
-  // Market rates, as percentages. Plausible 0–20%; a single daily check rarely
-  // sees a move beyond 2 points, and a bigger swing should be looked at. A zero
-  // is almost always a placeholder from a failed parse, so it is rejected.
+  // Market rates and the GOV.UK interest cap, as percentages. Plausible 0–20%;
+  // a single daily check rarely sees a move beyond 2 points, and a bigger swing
+  // should be looked at. A zero is almost always a placeholder from a failed
+  // parse, so it is rejected.
   "CURRENT_RATES.rpi": {
     min: 0,
     max: 20,
@@ -92,6 +96,21 @@ const AUTO_MERGE_BOUNDS: Record<string, FieldBound> = {
     max: 20,
     maxAbsDelta: 2,
     rejectNonPositive: true,
+  },
+  "CURRENT_RATES.interestCap": {
+    min: 0,
+    max: 20,
+    maxAbsDelta: 2,
+    rejectNonPositive: true,
+  },
+  // The default salary is the peak of the home page curve, derived from the
+  // figures above rather than scraped. A rate move usually shifts the peak by a
+  // few thousand pounds, so a small move is routine; a large jump points to a
+  // bad rate. The peak can only be a point on the chart's salary axis.
+  DEFAULT_SALARY: {
+    min: MIN_SALARY,
+    max: MAX_SALARY,
+    maxRelDelta: 0.15,
   },
 };
 

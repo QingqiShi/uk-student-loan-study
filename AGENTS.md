@@ -79,7 +79,7 @@ Figure captions read `Fig. N: Title · Subtitle`.
 - `any` type or unsafe assertions (`as unknown as X`)
 - `useMemo`, `useCallback`, `React.memo` — React Compiler handles this (exception: shadcn/ui)
 - Barrel files — import from source modules directly
-- Default exports (exception: `page.tsx` / `layout.tsx`)
+- Default exports (exception: `page.tsx` / `layout.tsx` / `src/test/environment.ts`, which vitest loads by default export)
 - `Context.Provider` / `useContext` — use `<Context value={...}>` and `use(Context)` (React 19)
 - Manually fix lint error that could have been fixed with `--fix`.
 

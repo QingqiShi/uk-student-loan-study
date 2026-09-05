@@ -2,6 +2,7 @@ import {
   ArrowUpRight01Icon,
   BankIcon,
   ChartIncreaseIcon,
+  GaugeIcon,
   Globe02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -89,6 +90,12 @@ const RATES = [
     value: CURRENT_RATES.cpi,
     source: "ONS",
     icon: ChartIncreaseIcon,
+  },
+  {
+    label: "Interest cap",
+    value: CURRENT_RATES.interestCap,
+    source: "GOV.UK (via SLC)",
+    icon: GaugeIcon,
   },
 ];
 
@@ -214,12 +221,12 @@ export function OurDataPage() {
               The rates we track
             </Heading>
             <p className="max-w-[68ch] text-muted-foreground">
-              These three market figures feed every interest and present-value
+              These four figures feed every interest and present-value
               calculation on the site. They are the live values in use right
               now.
             </p>
           </div>
-          <MetricReadout columns={3}>
+          <MetricReadout columns={4}>
             {RATES.map((rate) => (
               <MetricCell
                 key={rate.label}

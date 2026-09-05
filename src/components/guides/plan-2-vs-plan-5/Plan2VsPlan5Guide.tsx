@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
-import { formatGBP } from "@/lib/format";
+import { formatGBP, formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 import { GuideArticle, guideBreakout, KeyTakeaways } from "../guide-parts";
 import { guideLink } from "../guide-primitives";
@@ -11,6 +12,7 @@ import { TotalRepaymentBySalaryChart } from "./TotalRepaymentBySalaryChart";
 
 const EXAMPLE_BALANCE = 45_000;
 const EXAMPLE_SALARY = 30_000;
+const plan2MaxRate = getMaxAnnualInterestRate("PLAN_2");
 const plan2Threshold = PLAN_DISPLAY_INFO.PLAN_2.yearlyThreshold;
 const plan5Threshold = PLAN_DISPLAY_INFO.PLAN_5.yearlyThreshold;
 const repaymentRate = PLAN_CONFIGS.PLAN_2.repaymentRate;
@@ -193,8 +195,9 @@ export function Plan2VsPlan5Guide() {
             <Link href="/guides/how-interest-works" className={guideLink}>
               interest
             </Link>{" "}
-            (up to RPI + 3%) compounds over decades. These borrowers often end
-            up repaying more in total than Plan 5 borrowers on the same salary.
+            (up to RPI + 3%, capped at {formatPercent(plan2MaxRate)}) compounds
+            over decades. These borrowers often end up repaying more in total
+            than Plan 5 borrowers on the same salary.
           </p>
           <p>
             Use the{" "}
@@ -213,9 +216,10 @@ export function Plan2VsPlan5Guide() {
           lower threshold mean more months of repayments.
         </li>
         <li>
-          Middle earners may pay more on Plan 2 because interest can reach RPI +
-          3%, and they earn too much for write-off to help but not enough to pay
-          off the balance quickly.
+          Middle earners may pay more on Plan 2 because interest can reach its
+          capped ceiling of {formatPercent(plan2MaxRate)}, and they earn too
+          much for write-off to help but not enough to pay off the balance
+          quickly.
         </li>
         <li>
           Plan 5&rsquo;s simpler interest (RPI only) makes the balance more

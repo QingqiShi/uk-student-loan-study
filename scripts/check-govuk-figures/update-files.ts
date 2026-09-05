@@ -5,11 +5,13 @@ import { fileURLToPath } from "node:url";
 import {
   PLAN_CONFIGS,
   CURRENT_RATES,
+  DEFAULT_SALARY,
   TUITION_FEE_CAP,
   LAST_UPDATED,
 } from "../../src/lib/loans/plans";
 
 import { classifyChange } from "./classify";
+import { computeDefaultSalary } from "./default-salary";
 import { renderPrBody } from "./pr-body";
 import { generateLlmsTxt, generatePlansTs } from "./templates";
 import { findRepaymentRate, findRpi, findWriteOffYears } from "./types";
@@ -86,7 +88,10 @@ async function fetchBoeBaseRate(): Promise<number> {
   throw new Error("Could not extract BoE base rate from response");
 }
 
-function comparePlans(scraped: ScrapedGovUkData): Mismatch[] {
+function comparePlans(
+  scraped: ScrapedGovUkData,
+  defaultSalary: number,
+): Mismatch[] {
   const mismatches: Mismatch[] = [];
 
   const planKeys = [
@@ -177,6 +182,22 @@ function comparePlans(scraped: ScrapedGovUkData): Mismatch[] {
     });
   }
 
+  if (CURRENT_RATES.interestCap !== scraped.interestCap) {
+    mismatches.push({
+      field: "CURRENT_RATES.interestCap",
+      current: CURRENT_RATES.interestCap,
+      scraped: scraped.interestCap,
+    });
+  }
+
+  if (DEFAULT_SALARY !== defaultSalary) {
+    mismatches.push({
+      field: "DEFAULT_SALARY",
+      current: DEFAULT_SALARY,
+      scraped: defaultSalary,
+    });
+  }
+
   return mismatches;
 }
 
@@ -202,7 +223,12 @@ async function main(): Promise<void> {
   writeFileSync(scrapedPath, JSON.stringify(scraped, null, 2) + "\n");
 
   // 3. Compare scraped vs current values
-  const mismatches = comparePlans(scraped);
+  const defaultSalary = computeDefaultSalary(scraped);
+  console.log(
+    `Default salary (repayment peak): \u00a3${defaultSalary.toLocaleString("en-GB")}`,
+  );
+
+  const mismatches = comparePlans(scraped, defaultSalary);
 
   if (mismatches.length > 0) {
     console.log(`Found ${mismatches.length} figure mismatch(es):`);
@@ -221,7 +247,12 @@ async function main(): Promise<void> {
     {
       path: path.join(projectRoot, "src/lib/loans/plans.ts"),
       label: "src/lib/loans/plans.ts",
-      content: generatePlansTs(scraped, TUITION_FEE_CAP, lastUpdated),
+      content: generatePlansTs(
+        scraped,
+        TUITION_FEE_CAP,
+        lastUpdated,
+        defaultSalary,
+      ),
     },
     {
       path: path.join(projectRoot, "public/llms.txt"),

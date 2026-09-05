@@ -1,5 +1,6 @@
 import { InstrumentSection } from "@/components/instrument/InstrumentSection";
-import { formatGBP } from "@/lib/format";
+import { formatGBP, formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
 
@@ -10,6 +11,7 @@ const PLAN2 = PLAN_CONFIGS.PLAN_2;
 const PLAN2_THRESHOLD = formatGBP(PLAN2.monthlyThreshold * 12);
 const PLAN2_RATE = Math.round(PLAN2.repaymentRate * 100);
 const PLAN2_WRITEOFF = PLAN2.writeOffYears;
+const PLAN2_MAX_RATE = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 export function RulesSection() {
   return (
@@ -49,7 +51,8 @@ export function RulesSection() {
           </h3>
           <p className="col-start-2 text-body leading-[1.55] text-pretty text-muted-foreground">
             The balance grows with inflation. Interest runs from RPI up to RPI +
-            3%, and how much you earn sets where you land on that sliding scale.
+            3%, capped at {PLAN2_MAX_RATE}, and how much you earn sets where you
+            land on that sliding scale.
           </p>
           <span className="col-start-2 mt-[0.55rem] font-sans text-meta text-muted-foreground">
             RPI to RPI + 3%
