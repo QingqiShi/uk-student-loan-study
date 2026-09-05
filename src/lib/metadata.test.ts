@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { DEFAULT_SALARY } from "@/constants";
+import { DEFAULT_SALARY } from "@/lib/loans/plans";
 import { DEFAULT_PRESET } from "@/lib/presets";
 import { parseMetadataParams } from "./metadata";
 

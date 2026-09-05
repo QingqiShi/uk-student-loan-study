@@ -3,13 +3,14 @@
 import type { ChartSeriesConfig } from "@/components/charts/ChartBase";
 import { LazyChartBase as ChartBase } from "@/components/charts/LazyChartBase";
 import type { ChartConfig } from "@/components/ui/chart";
-import { getAnnualInterestRate } from "@/lib/loans/interest";
+import { formatPercent } from "@/lib/format";
+import { getAnnualInterestRate, NO_INTEREST_CAP } from "@/lib/loans/interest";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
-import { INTEREST_CAP } from "./historical-rates";
 
 const STARTING_BALANCE = 45_000;
 const SALARY_GROWTH = 0.03;
 const HIGH_RPI = 7;
+const capPct = formatPercent(CURRENT_RATES.interestCap);
 
 const chartConfig = {
   uncapped: {
@@ -17,7 +18,7 @@ const chartConfig = {
     color: "var(--chart-2)", // costlier path — the cost clay
   },
   capped: {
-    label: "With 6% cap",
+    label: `With ${capPct} cap`,
     color: "var(--chart-1)", // better outcome — principal green
   },
 } satisfies ChartConfig;
@@ -27,10 +28,7 @@ const series: ChartSeriesConfig[] = [
   { dataKey: "capped" },
 ];
 
-function simulateTotalPaid(
-  startingSalary: number,
-  capRate: number | null,
-): number {
+function simulateTotalPaid(startingSalary: number, capRate: number): number {
   const boe = CURRENT_RATES.boeBaseRate;
   const monthlyThreshold = PLAN_CONFIGS.PLAN_2.monthlyThreshold;
   const repaymentRate = PLAN_CONFIGS.PLAN_2.repaymentRate;
@@ -45,10 +43,14 @@ function simulateTotalPaid(
       salary *= 1 + SALARY_GROWTH;
     }
 
-    let annualRate = getAnnualInterestRate("PLAN_2", salary, HIGH_RPI, boe);
-    if (capRate !== null) {
-      annualRate = Math.min(annualRate, capRate);
-    }
+    const annualRate = getAnnualInterestRate(
+      "PLAN_2",
+      salary,
+      HIGH_RPI,
+      boe,
+      undefined,
+      capRate,
+    );
 
     const monthlyInterest = balance * (annualRate / 100 / 12);
     balance += monthlyInterest;
@@ -73,8 +75,8 @@ function buildData() {
   for (let salary = 25000; salary <= 80000; salary += 1000) {
     points.push({
       salary,
-      uncapped: simulateTotalPaid(salary, null),
-      capped: simulateTotalPaid(salary, INTEREST_CAP),
+      uncapped: simulateTotalPaid(salary, NO_INTEREST_CAP),
+      capped: simulateTotalPaid(salary, CURRENT_RATES.interestCap),
     });
   }
 
@@ -102,7 +104,7 @@ export function TotalCostComparisonChart() {
         xFormatter={formatSalary}
         yLabel="Total repaid"
         yFormatter={formatCurrency}
-        ariaLabel="Line chart comparing total repayment by salary with and without the 6% interest rate cap, assuming 7% RPI"
+        ariaLabel={`Line chart comparing total repayment by salary with and without the ${capPct} interest rate cap, assuming 7% RPI`}
         chartConfig={chartConfig}
         series={series}
         showLegend

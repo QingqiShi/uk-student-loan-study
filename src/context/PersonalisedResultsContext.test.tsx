@@ -342,7 +342,10 @@ describe("usePersonalisedResults (cards)", () => {
 
   it("balance sparkline starts at initial balance and decreases", async () => {
     const { result } = renderHook(() => usePersonalisedResults(), {
-      wrapper: createWrapper(),
+      wrapper: createWrapper({
+        loans: [{ planType: "PLAN_2", balance: 20_000 }],
+        salary: 60_000,
+      }),
     });
 
     await waitFor(() => {

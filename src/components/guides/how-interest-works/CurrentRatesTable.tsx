@@ -8,13 +8,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { surfaceCard } from "@/lib/surfaces";
 import { specHead, specHeadNum, specNum } from "../guide-parts";
 
 // All rates derive from plans.ts so they track the current GOV.UK / BoE figures.
 const rpi = CURRENT_RATES.rpi;
-const maxRate = rpi + 3;
+const capPct = formatPercent(CURRENT_RATES.interestCap);
+const plan2MaxRate = getMaxAnnualInterestRate("PLAN_2");
+const postgradMaxRate = getMaxAnnualInterestRate("POSTGRADUATE");
 const plan1And4Rate = Math.min(rpi, CURRENT_RATES.boeBaseRate + 1);
 
 const rows = [
@@ -25,8 +28,8 @@ const rows = [
   },
   {
     plan: "Plan 2",
-    formula: "RPI to RPI + 3% (sliding scale by income)",
-    rate: `${formatPercent(rpi)}–${formatPercent(maxRate)}`,
+    formula: `RPI to RPI + 3% (sliding scale by income), capped at ${capPct}`,
+    rate: `${formatPercent(rpi)}–${formatPercent(plan2MaxRate)}`,
   },
   {
     plan: "Plan 4",
@@ -40,8 +43,8 @@ const rows = [
   },
   {
     plan: "Postgraduate",
-    formula: "RPI + 3% (all incomes)",
-    rate: formatPercent(maxRate),
+    formula: `RPI + 3% (all incomes), capped at ${capPct}`,
+    rate: formatPercent(postgradMaxRate),
   },
 ];
 

@@ -18,6 +18,7 @@ import { pvTotal } from "@/utils/presentValue";
  * @param rpiRate - Optional RPI rate override
  * @param salaryGrowthRate - Annual salary growth rate (default 0)
  * @param thresholdGrowthRate - Annual threshold growth rate (default 0)
+ * @param interestCap - Interest cap override (default CURRENT_RATES.interestCap)
  * @returns Array of [salary, value] data points
  */
 export function generateSalaryDataSeries(
@@ -27,6 +28,7 @@ export function generateSalaryDataSeries(
   thresholdGrowthRate = 0,
   boeBaseRate: number = CURRENT_RATES.boeBaseRate,
   plan2ThresholdSchedule?: number[],
+  interestCap?: number,
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
@@ -40,6 +42,7 @@ export function generateSalaryDataSeries(
       thresholdGrowthRate,
       boeBaseRate,
       plan2ThresholdSchedule,
+      interestCap,
     });
 
     data.push({ salary, value: timeSeries.summary.totalPaid });
@@ -60,6 +63,7 @@ export function generateSalaryDataSeries(
  * @param salaryGrowthRate - Annual salary growth rate (default 0)
  * @param thresholdGrowthRate - Annual threshold growth rate (default 0)
  * @param boeBaseRate - BoE base rate override
+ * @param interestCap - Interest cap override (default CURRENT_RATES.interestCap)
  * @returns Array of [salary, value] data points with PV-adjusted values
  */
 export function generateSalaryDataSeriesPV(
@@ -70,6 +74,7 @@ export function generateSalaryDataSeriesPV(
   thresholdGrowthRate = 0,
   boeBaseRate: number = CURRENT_RATES.boeBaseRate,
   plan2ThresholdSchedule?: number[],
+  interestCap?: number,
 ): DataPoint[] {
   const data: DataPoint[] = [];
 
@@ -83,6 +88,7 @@ export function generateSalaryDataSeriesPV(
       thresholdGrowthRate,
       boeBaseRate,
       plan2ThresholdSchedule,
+      interestCap,
     });
 
     const total = pvTotal(
@@ -118,6 +124,7 @@ export interface BalanceTimeSeriesResult {
  * @param rpiRate - Optional RPI rate override
  * @param salaryGrowthRate - Annual salary growth rate (default 0)
  * @param thresholdGrowthRate - Annual threshold growth rate (default 0)
+ * @param interestCap - Interest cap override (default CURRENT_RATES.interestCap)
  * @returns Balance data points and write-off month if applicable
  */
 export function generateBalanceTimeSeries(
@@ -128,6 +135,7 @@ export function generateBalanceTimeSeries(
   thresholdGrowthRate = 0,
   boeBaseRate: number = CURRENT_RATES.boeBaseRate,
   plan2ThresholdSchedule?: number[],
+  interestCap?: number,
 ): BalanceTimeSeriesResult {
   if (loans.length === 0 || loans.every((loan) => loan.balance <= 0)) {
     return { data: [], writeOffMonth: null };
@@ -142,6 +150,7 @@ export function generateBalanceTimeSeries(
     thresholdGrowthRate,
     boeBaseRate,
     plan2ThresholdSchedule,
+    interestCap,
   });
 
   const data: BalanceDataPoint[] = [];
@@ -179,4 +188,28 @@ export function generateBalanceTimeSeries(
   const writeOffMonth = hasWriteOff ? timeSeries.summary.monthsToPayoff : null;
 
   return { data, writeOffMonth };
+}
+
+/**
+ * Finds the salary at the centre of the peak repayment zone: the point in a
+ * salary series where total repaid is highest.
+ *
+ * A tie resolves to the lowest salary that reaches the maximum.
+ *
+ * @param data - Salary series, as produced by generateSalaryDataSeries
+ * @returns The salary of the highest data point
+ */
+export function findPeakSalary(data: DataPoint[]): number {
+  if (data.length === 0) {
+    throw new Error("Cannot find a peak salary in an empty series");
+  }
+
+  let peak = data[0];
+  for (const point of data) {
+    if (point.value > peak.value) {
+      peak = point;
+    }
+  }
+
+  return peak.salary;
 }

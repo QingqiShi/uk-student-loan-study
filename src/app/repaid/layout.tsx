@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import { formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
+
+const plan2MaxRatePct = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 export const metadata: Metadata = {
   title: "Total Repayments: Student Loan Repayment Calculator",
@@ -60,7 +64,7 @@ const faqSchema = {
       name: "Will I repay more than I borrowed?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Many graduates do repay more than they borrowed because interest accrues from day one. For Plan 2 borrowers, interest can be as high as RPI + 3%, meaning total repayments can exceed the original loan. However, if your salary stays low, you may repay less before the loan is written off.",
+        text: `Many graduates do repay more than they borrowed because interest accrues from day one. For Plan 2 borrowers, interest can be as high as ${plan2MaxRatePct} (a cap holds the sliding scale below RPI + 3%), meaning total repayments can exceed the original loan. However, if your salary stays low, you may repay less before the loan is written off.`,
       },
     },
     {

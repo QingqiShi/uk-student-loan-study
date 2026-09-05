@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
 import { formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { CURRENT_RATES } from "@/lib/loans/plans";
 import { GuideArticle, guideBreakout, KeyTakeaways } from "../guide-parts";
 import { guideLink } from "../guide-primitives";
@@ -10,7 +11,8 @@ import { InflationComparisonChart } from "./InflationComparisonChart";
 const rpi = CURRENT_RATES.rpi;
 const cpiTarget = 2;
 const gap = +(rpi - cpiTarget).toFixed(1);
-const maxRate = rpi + 3;
+const plan2MaxRate = getMaxAnnualInterestRate("PLAN_2");
+const postgradMaxRate = getMaxAnnualInterestRate("POSTGRADUATE");
 const plan1Rate = Math.min(rpi, CURRENT_RATES.boeBaseRate + 1);
 
 export function RpiVsCpiGuide() {
@@ -93,8 +95,8 @@ export function RpiVsCpiGuide() {
             </li>
             <li>
               <strong className="text-foreground">Plan 2</strong>: RPI to RPI +
-              3% ({formatPercent(rpi)} &ndash; {formatPercent(maxRate)})
-              depending on income
+              3%, capped ({formatPercent(rpi)} &ndash;{" "}
+              {formatPercent(plan2MaxRate)}) depending on income
             </li>
             <li>
               <strong className="text-foreground">Plan 1 &amp; 4</strong>:
@@ -103,7 +105,7 @@ export function RpiVsCpiGuide() {
             </li>
             <li>
               <strong className="text-foreground">Postgraduate</strong>: RPI +
-              3% ({formatPercent(maxRate)})
+              3%, capped ({formatPercent(postgradMaxRate)})
             </li>
           </ul>
         </div>
@@ -197,8 +199,9 @@ export function RpiVsCpiGuide() {
             </li>
             <li>
               <strong className="text-foreground">Plan 2</strong>: the sliding
-              scale starts at RPI (already above CPI). High earners face RPI +
-              3%.
+              scale starts at RPI (already above CPI). High earners face the
+              interest cap, {formatPercent(plan2MaxRate)}, rather than the full
+              RPI + 3%.
             </li>
             <li>
               <strong className="text-foreground">Plan 1 &amp; 4</strong>:
@@ -206,8 +209,9 @@ export function RpiVsCpiGuide() {
               are somewhat shielded.
             </li>
             <li>
-              <strong className="text-foreground">Postgraduate</strong>: RPI +
-              3% means the largest gap above CPI of any plan.
+              <strong className="text-foreground">Postgraduate</strong>: capped
+              at {formatPercent(postgradMaxRate)}, still the largest gap above
+              CPI of any plan.
             </li>
           </ul>
           <p>

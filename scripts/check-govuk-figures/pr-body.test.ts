@@ -16,6 +16,14 @@ describe("formatFieldValue", () => {
     expect(formatFieldValue("CURRENT_RATES.rpi", 3.2)).toBe("3.2%");
   });
 
+  it("formats the interest cap as a percent", () => {
+    expect(formatFieldValue("CURRENT_RATES.interestCap", 6)).toBe("6%");
+  });
+
+  it("formats the derived default salary as pounds", () => {
+    expect(formatFieldValue("DEFAULT_SALARY", 48000)).toBe("£48,000");
+  });
+
   it("formats a threshold as pounds with separators", () => {
     expect(formatFieldValue("PLAN_2.monthlyThreshold", 2448)).toBe("£2,448");
   });

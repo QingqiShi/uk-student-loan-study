@@ -17,6 +17,12 @@ function findThreshold(
   };
 }
 
+/** Format a whole pound amount as a 9_250 style numeric literal. */
+function formatUnderscoreLiteral(value: number): string {
+  if (value < 1000) return String(value);
+  return `${Math.floor(value / 1000)}_${String(value % 1000).padStart(3, "0")}`;
+}
+
 function formatRate(rate: number): string {
   // Convert 0.09 → "9%", 0.06 → "6%"
   const pct = rate * 100;
@@ -27,6 +33,7 @@ export function generatePlansTs(
   scraped: ScrapedGovUkData,
   existingTuitionCap: number,
   lastUpdated: string,
+  defaultSalary: number,
 ): string {
   const plan1 = findThreshold(scraped, "PLAN_1");
   const plan1Rate = findRepaymentRate(scraped, "PLAN_1");
@@ -51,12 +58,10 @@ export function generatePlansTs(
   const rpi = findRpi(scraped);
   const boeBaseRate = scraped.boeBaseRate;
   const cpi = scraped.cpi;
+  const interestCap = scraped.interestCap;
 
-  // Format as 9_250 style
-  const tuitionCapLiteral =
-    existingTuitionCap >= 1000
-      ? `${Math.floor(existingTuitionCap / 1000)}_${String(existingTuitionCap % 1000).padStart(3, "0")}`
-      : String(existingTuitionCap);
+  const tuitionCapLiteral = formatUnderscoreLiteral(existingTuitionCap);
+  const defaultSalaryLiteral = formatUnderscoreLiteral(defaultSalary);
 
   return `// =============================================================================
 // ANNUAL UPDATE SECTION - Update these values when GOV.UK announces changes
@@ -106,12 +111,21 @@ export const PLAN_CONFIGS = {
 /**
  * Current interest rates for loan calculations.
  * Update these when new rates are announced.
+ * interestCap is the GOV.UK ceiling on every plan's headline interest rate.
  */
 export const CURRENT_RATES = {
   rpi: ${rpi},
   boeBaseRate: ${boeBaseRate},
   cpi: ${cpi},
+  interestCap: ${interestCap},
 } as const;
+
+/**
+ * The income at which total repaid peaks for the default preset, under the
+ * home page's default assumptions. The automation derives it from the figures
+ * above, so the home page marker starts on the peak of the curve it is drawn on.
+ */
+export const DEFAULT_SALARY = ${defaultSalaryLiteral};
 
 /**
  * User-friendly display information for each undergraduate plan type.
@@ -206,6 +220,11 @@ export function generateLlmsTxt(scraped: ScrapedGovUkData): string {
   const postgradWriteOff = findWriteOffYears(scraped, "POSTGRADUATE");
 
   const rpi = findRpi(scraped);
+  const interestCap = scraped.interestCap;
+  const postgradInterest = Math.min(
+    Math.round((rpi + 3) * 100) / 100,
+    interestCap,
+  );
 
   const fmtRate = (r: number) => `${Math.round(r * 100)}%`;
 
@@ -244,10 +263,10 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 
 - [UK Student Loan Plans Explained](https://studentloanstudy.uk/plans): Every UK student loan plan compared at a glance: thresholds, repayment rates, interest and write-off periods
 - [Plan 1 Explained](https://studentloanstudy.uk/plans/plan-1): Plan 1 threshold, capped interest and ${plan1WriteOff}-year write-off for pre-2012 England/Wales and all Northern Irish students
-- [Plan 2 Explained](https://studentloanstudy.uk/plans/plan-2): Plan 2 threshold, RPI + 3% sliding-scale interest and why middle earners repay the most over ${plan2WriteOff} years
+- [Plan 2 Explained](https://studentloanstudy.uk/plans/plan-2): Plan 2 threshold, RPI + 3% sliding-scale interest capped at ${interestCap}% and why middle earners repay the most over ${plan2WriteOff} years
 - [Plan 4 Explained](https://studentloanstudy.uk/plans/plan-4): Plan 4 for Scottish students, with the highest threshold of any plan, capped interest and a ${plan4WriteOff}-year write-off
 - [Plan 5 Explained](https://studentloanstudy.uk/plans/plan-5): Plan 5 threshold, RPI-only interest and the longest ${plan5WriteOff}-year write-off
-- [Postgraduate Loan Explained](https://studentloanstudy.uk/plans/postgraduate): Postgraduate Master's and Doctoral loan at a ${fmtRate(postgradRate)} repayment rate, RPI + 3% interest, repaid alongside any undergraduate loan
+- [Postgraduate Loan Explained](https://studentloanstudy.uk/plans/postgraduate): Postgraduate Master's and Doctoral loan at a ${fmtRate(postgradRate)} repayment rate, RPI + 3% interest capped at ${interestCap}%, repaid alongside any undergraduate loan
 
 ## Key Facts
 
@@ -272,7 +291,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - Monthly threshold: \u00a3${formatNumber(plan2.monthlyThreshold)} (\u00a3${formatNumber(plan2.yearlyThreshold)}/year)
 - Repayment rate: ${fmtRate(plan2Rate)} of income above threshold
 - ${plan2WriteOff}-year write-off period
-- Interest rate: RPI + 0-3% depending on income (income scale: \u00a3${formatNumber(scraped.plan2InterestScale.lowerThreshold)} to \u00a3${formatNumber(scraped.plan2InterestScale.upperThreshold)})
+- Interest rate: RPI + 0-3% depending on income, capped at ${interestCap}% (income scale: \u00a3${formatNumber(scraped.plan2InterestScale.lowerThreshold)} to \u00a3${formatNumber(scraped.plan2InterestScale.upperThreshold)})
 
 ### Plan 4
 - For Scottish students who started after September 1998
@@ -293,6 +312,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - Monthly threshold: \u00a3${formatNumber(postgrad.monthlyThreshold)} (\u00a3${formatNumber(postgrad.yearlyThreshold)}/year)
 - Repayment rate: ${fmtRate(postgradRate)} of income above threshold
 - ${postgradWriteOff}-year write-off period
+- Interest rate: RPI + 3%, capped at ${interestCap}% (currently ${postgradInterest}%)
 
 ## Contact
 

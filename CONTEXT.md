@@ -76,6 +76,10 @@ The lower/upper income bands that bound Plan 2's sliding scale (`interestLowerTh
 The Bank of England base rate, used to cap Plan 1/Plan 4 interest. Spelled "BoE".
 _Avoid_: BOE, Boe
 
+**Interest cap**:
+The ceiling GOV.UK places on the headline interest rate ("RPI plus up to 3%, but there's currently a limit (or 'cap') of 6%"). It applies to every plan's computed rate and binds on the upper part of Plan 2's sliding scale and on Postgraduate. Held as `CURRENT_RATES.interestCap`, scraped daily with the other figures.
+_Avoid_: rate cap, PMR cap, prevailing market rate cap
+
 **Effective rate**:
 The true annualised cost of the loan as an internal rate of return (IRR) — lower than the headline rate because it accounts for write-off. The Readout quadrant and the `/effective-rate` tool.
 _Avoid_: effective interest rate, true rate, true cost, true annualized cost

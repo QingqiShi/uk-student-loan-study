@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { formatGBP } from "@/lib/format";
+import { formatGBP, formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
+
+const plan2MaxRatePct = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 export const metadata: Metadata = {
   title: "Why Your Student Loan Balance Keeps Growing",
@@ -60,7 +63,7 @@ const faqSchema = {
       name: "How is interest calculated on Plan 2 student loans?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `Plan 2 uses a sliding scale based on your income. If you earn below ${formatGBP(PLAN_CONFIGS.PLAN_2.interestLowerThreshold)}, you pay RPI only. If you earn above ${formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}, you pay RPI plus 3%. Between the two thresholds, the rate scales linearly.`,
+        text: `Plan 2 uses a sliding scale based on your income. If you earn below ${formatGBP(PLAN_CONFIGS.PLAN_2.interestLowerThreshold)}, you pay RPI only. If you earn above ${formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}, you pay RPI plus up to 3%, capped at ${plan2MaxRatePct}. Between the two thresholds, the rate scales linearly.`,
       },
     },
     {

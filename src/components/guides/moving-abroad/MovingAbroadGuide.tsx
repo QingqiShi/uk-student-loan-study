@@ -15,6 +15,7 @@ import {
   formatMultiplier,
   formatPercent,
 } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { OVERSEAS_TAX_YEAR } from "@/lib/loans/overseasThresholds";
 import { PLAN_CONFIGS } from "@/lib/loans/plans";
 import {
@@ -52,6 +53,7 @@ const undergradRate = formatPercent(PLAN_CONFIGS.PLAN_2.repaymentRate * 100);
 const postgradRate = formatPercent(
   PLAN_CONFIGS.POSTGRADUATE.repaymentRate * 100,
 );
+const plan2MaxRatePct = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 export function MovingAbroadGuide() {
   return (
@@ -359,10 +361,10 @@ export function MovingAbroadGuide() {
         </p>
         <p className="text-muted-foreground">
           If you don&rsquo;t keep your employment details up to date, Plan 2
-          interest goes to the highest rate, RPI + 3%, whatever your income, for
-          as long as your details are out of date. Plan 1, Plan 4, Plan 5 and
-          Postgraduate interest rates are not income-based, so an overseas
-          assessment does not change them.
+          interest goes to the highest rate, capped at {plan2MaxRatePct},
+          whatever your income, for as long as your details are out of date.
+          Plan 1, Plan 4, Plan 5 and Postgraduate interest rates are not
+          income-based, so an overseas assessment does not change them.
         </p>
       </section>
 
@@ -396,8 +398,8 @@ export function MovingAbroadGuide() {
                 .
               </li>
               <li>
-                Plan 2 interest moves to the highest rate, RPI + 3%, for as long
-                as your details are out of date.
+                Plan 2 interest moves to the highest rate, capped at{" "}
+                {plan2MaxRatePct}, for as long as your details are out of date.
               </li>
               <li>
                 SLC can charge a penalty, demand the whole loan plus interest

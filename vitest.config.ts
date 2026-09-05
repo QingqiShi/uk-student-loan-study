@@ -33,7 +33,7 @@ export default defineConfig({
     },
   },
   test: {
-    environment: "jsdom",
+    environment: "./src/test/environment.ts",
     setupFiles: [resolvedWebWorker, "./src/test/setup.ts"],
     // Extend (don't replace) the defaults: losing **/node_modules/** made
     // vitest crawl dependency test suites inside .claude/worktrees/*/node_modules.

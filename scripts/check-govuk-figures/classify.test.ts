@@ -28,6 +28,44 @@ describe("classifyChange", () => {
     );
   });
 
+  it("auto-merges an interest-cap move within bounds", () => {
+    expect(
+      classifyChange(
+        [{ field: "CURRENT_RATES.interestCap", current: 6, scraped: 7 }],
+        [],
+      ),
+    ).toEqual({ decision: "auto", reviewReasons: [] });
+  });
+
+  it("reviews an interest-cap move beyond 2 points", () => {
+    const result = classifyChange(
+      [{ field: "CURRENT_RATES.interestCap", current: 6, scraped: 9 }],
+      [],
+    );
+    expect(result.decision).toBe("review");
+    expect(result.reviewReasons[0]).toContain("CURRENT_RATES.interestCap");
+    expect(result.reviewReasons[0]).toContain("moved 3.00 points");
+  });
+
+  it("auto-merges a small move in the derived default salary", () => {
+    expect(
+      classifyChange(
+        [{ field: "DEFAULT_SALARY", current: 45_000, scraped: 48_000 }],
+        [],
+      ),
+    ).toEqual({ decision: "auto", reviewReasons: [] });
+  });
+
+  it("reviews a large move in the derived default salary", () => {
+    const result = classifyChange(
+      [{ field: "DEFAULT_SALARY", current: 45_000, scraped: 60_000 }],
+      [],
+    );
+    expect(result.decision).toBe("review");
+    expect(result.reviewReasons[0]).toContain("DEFAULT_SALARY");
+    expect(result.reviewReasons[0]).toContain("moved 33.3%");
+  });
+
   it("reviews a routine repayment-threshold uprating so the overseas dataset is refreshed", () => {
     // ~4% annual uprating, in bounds and internally consistent — but every
     // overseas band multiplies the UK threshold, and that dataset is hand-copied.

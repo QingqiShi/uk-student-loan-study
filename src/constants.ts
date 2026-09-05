@@ -3,7 +3,6 @@ import { CURRENT_RATES, LAST_UPDATED } from "@/lib/loans/plans";
 // Chart salary range
 export const MIN_SALARY = 25_000;
 export const MAX_SALARY = 150_000;
-export const DEFAULT_SALARY = 45_000;
 export const SALARY_STEP = 1_000;
 
 // Overpay analysis constants

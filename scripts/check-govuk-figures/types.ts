@@ -30,6 +30,8 @@ export interface ScrapedGovUkData {
   repaymentRates: ScrapedRepaymentRate[];
   interestRates: ScrapedInterestRate[];
   plan2InterestScale: ScrapedPlan2InterestScale;
+  /** The GOV.UK ceiling on every plan's interest rate, as a percentage. */
+  interestCap: number;
   writeOffs: ScrapedWriteOff[];
   boeBaseRate: number;
   cpi: number;

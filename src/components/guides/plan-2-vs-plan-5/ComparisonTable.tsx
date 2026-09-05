@@ -7,8 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatGBP } from "@/lib/format";
-import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
+import { formatGBP, formatPercent } from "@/lib/format";
+import {
+  CURRENT_RATES,
+  PLAN_CONFIGS,
+  PLAN_DISPLAY_INFO,
+} from "@/lib/loans/plans";
 import { surfaceCard } from "@/lib/surfaces";
 import { specHead } from "../guide-parts";
 
@@ -18,6 +22,7 @@ const plan5 = PLAN_DISPLAY_INFO.PLAN_5;
 const plan2Threshold = formatGBP(PLAN_CONFIGS.PLAN_2.monthlyThreshold * 12);
 const plan5Threshold = formatGBP(PLAN_CONFIGS.PLAN_5.monthlyThreshold * 12);
 const repaymentRate = String(plan2.repaymentRate * 100);
+const capPct = formatPercent(CURRENT_RATES.interestCap);
 
 const rows = [
   {
@@ -37,7 +42,7 @@ const rows = [
   },
   {
     label: "Interest rate",
-    plan2: "RPI to RPI + 3% (sliding scale)",
+    plan2: `RPI to RPI + 3% (sliding scale), capped at ${capPct}`,
     plan5: "RPI only",
   },
   {

@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { simulate } from "./engine";
+import { NO_INTEREST_CAP } from "./interest";
 import { PLAN_CONFIGS, CURRENT_RATES } from "./plans";
-import type { SimulationConfig } from "./types";
+import type { SimulationConfig, SimulationTimeSeries } from "./types";
 
 describe("simulate engine", () => {
   const defaultConfig: SimulationConfig = {
@@ -867,6 +868,38 @@ describe("simulate engine", () => {
         highSalary.snapshots[0]?.loans[0]?.interestApplied ?? 0;
 
       expect(highSalaryInterest).toBeGreaterThan(lowSalaryInterest);
+    });
+
+    it("holds a Plan 2 borrower above the upper interest threshold to the cap", () => {
+      const totalInterest = (result: SimulationTimeSeries) =>
+        result.snapshots.reduce(
+          (sum, snapshot) =>
+            sum +
+            snapshot.loans.reduce((s, loan) => s + loan.interestApplied, 0),
+          0,
+        );
+
+      const balance = 50000;
+      const config: SimulationConfig = {
+        ...defaultConfig,
+        loans: [{ planType: "PLAN_2", balance }],
+        annualSalary: PLAN_CONFIGS.PLAN_2.interestUpperThreshold + 10000,
+        // At this RPI, RPI + 3 is above the cap whatever the cap is.
+        rpiRate: CURRENT_RATES.interestCap,
+      };
+
+      const capped = simulate(config);
+      const uncapped = simulate({ ...config, interestCap: NO_INTEREST_CAP });
+
+      expect(capped.snapshots[0]?.loans[0]?.interestApplied).toBeCloseTo(
+        (balance * CURRENT_RATES.interestCap) / 100 / 12,
+        6,
+      );
+      expect(uncapped.snapshots[0]?.loans[0]?.interestApplied).toBeCloseTo(
+        (balance * (CURRENT_RATES.interestCap + 3)) / 100 / 12,
+        6,
+      );
+      expect(totalInterest(capped)).toBeLessThan(totalInterest(uncapped));
     });
   });
 

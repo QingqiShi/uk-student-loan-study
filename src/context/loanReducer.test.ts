@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CURRENT_RATES } from "@/lib/loans/plans";
+import { CURRENT_RATES, DEFAULT_SALARY } from "@/lib/loans/plans";
 import { PRESETS } from "@/lib/presets";
 import {
   loanReducer,
@@ -14,7 +14,7 @@ describe("loanReducer", () => {
       expect(initialState.loans).toEqual([
         { planType: "PLAN_2", balance: 45_000 },
       ]);
-      expect(initialState.salary).toBe(45_000);
+      expect(initialState.salary).toBe(DEFAULT_SALARY);
     });
 
     it("should have rpiRate equal to CURRENT_RATES.rpi", () => {

@@ -1,6 +1,7 @@
 import { render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { RPI_OPTIONS } from "@/constants";
 import { trackRpiRateSelected } from "@/lib/analytics";
 import { RpiStep } from "./RpiStep";
 
@@ -41,10 +42,9 @@ describe("RpiStep", () => {
     expect(radios).toHaveLength(4);
 
     const labels = radios.map((r) => r.textContent);
-    expect(labels.some((t) => t.includes("0%"))).toBe(true);
-    expect(labels.some((t) => t.includes("2%"))).toBe(true);
-    expect(labels.some((t) => t.includes("3.2%"))).toBe(true);
-    expect(labels.some((t) => t.includes("5%"))).toBe(true);
+    for (const option of RPI_OPTIONS) {
+      expect(labels.some((t) => t.includes(option.label))).toBe(true);
+    }
   });
 
   it("clicking a preset calls updateField and trackRpiRateSelected", async () => {

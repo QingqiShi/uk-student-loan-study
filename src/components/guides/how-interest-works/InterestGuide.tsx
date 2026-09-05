@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
 import { formatGBP, formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
 import { GuideArticle, guideBreakout } from "../guide-parts";
@@ -11,10 +12,11 @@ import { InterestRateChart } from "./InterestRateChart";
 
 const EXAMPLE_BALANCE = 45_000;
 const rpi = CURRENT_RATES.rpi;
-const maxRate = rpi + 3;
+const plan2MaxRate = getMaxAnnualInterestRate("PLAN_2");
+const postgradMaxRate = getMaxAnnualInterestRate("POSTGRADUATE");
 const plan1Rate = Math.min(rpi, CURRENT_RATES.boeBaseRate + 1);
 const boeRatePlus1 = CURRENT_RATES.boeBaseRate + 1;
-const monthlyInterest = Math.round((EXAMPLE_BALANCE * maxRate) / 100 / 12);
+const monthlyInterest = Math.round((EXAMPLE_BALANCE * plan2MaxRate) / 100 / 12);
 
 // Derived from the current date so the label tracks the live plans.ts figures.
 const currentTaxYear = getCurrentTaxYearLabel();
@@ -46,8 +48,8 @@ export function InterestGuide() {
           <p>
             Plan 2 has the most complex interest calculation. It uses a sliding
             scale tied to your income, ranging from RPI (currently{" "}
-            {formatPercent(rpi)}) up to RPI + 3% (currently{" "}
-            {formatPercent(maxRate)}).
+            {formatPercent(rpi)}) up to RPI + 3%, though a cap currently holds
+            the ceiling at {formatPercent(plan2MaxRate)}.
           </p>
           <ul className="list-disc space-y-1 pl-6">
             <li>
@@ -58,17 +60,17 @@ export function InterestGuide() {
             <li>
               Earning above the upper threshold of{" "}
               {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}: you pay
-              the maximum of RPI + 3% ({formatPercent(maxRate)})
+              the capped maximum ({formatPercent(plan2MaxRate)})
             </li>
             <li>
               Earning between the two: the rate scales linearly from{" "}
-              {formatPercent(rpi)} up to {formatPercent(maxRate)}
+              {formatPercent(rpi)} up to {formatPercent(plan2MaxRate)}
             </li>
           </ul>
           <p>
-            While studying, Plan 2 borrowers are charged the maximum rate of RPI
-            + 3%. This means your balance starts growing before you even
-            graduate.
+            While studying, Plan 2 borrowers are charged the sliding
+            scale&apos;s capped maximum rate. This means your balance starts
+            growing before you even graduate.
           </p>
         </div>
       </section>
@@ -85,8 +87,8 @@ export function InterestGuide() {
           </p>
           <p>
             This is a significant change from Plan 2. A high earner on Plan 2
-            could be paying {formatPercent(maxRate)} interest, while the same
-            earner on Plan 5 would pay only {formatPercent(rpi)}. The chart
+            could be paying {formatPercent(plan2MaxRate)} interest, while the
+            same earner on Plan 5 would pay only {formatPercent(rpi)}. The chart
             below illustrates this difference clearly.
           </p>
         </div>
@@ -95,7 +97,7 @@ export function InterestGuide() {
       <ChartFrame
         className={guideBreakout}
         caption="Fig. 1: Annual interest rate by salary · Plan 2 vs Plan 5"
-        figure={`${formatPercent(maxRate)} max`}
+        figure={`${formatPercent(plan2MaxRate)} max`}
         figureTone="cost"
       >
         <InterestRateChart />
@@ -128,9 +130,9 @@ export function InterestGuide() {
         <div className="space-y-2 text-muted-foreground">
           <p>
             Postgraduate (Master&apos;s and Doctoral) loans always charge RPI +
-            3%, regardless of your income. At current rates, that means{" "}
-            {formatPercent(maxRate)} interest per year, the highest rate of any
-            UK student loan plan.
+            3%, capped like every plan, regardless of your income. At current
+            rates, that means {formatPercent(postgradMaxRate)} interest per
+            year, the highest rate of any UK student loan plan.
           </p>
         </div>
       </section>
@@ -166,7 +168,7 @@ export function InterestGuide() {
           </p>
           <p>
             For example, on a {formatGBP(EXAMPLE_BALANCE)} balance at{" "}
-            {formatPercent(maxRate)} interest, you would accrue roughly{" "}
+            {formatPercent(plan2MaxRate)} interest, you would accrue roughly{" "}
             {formatGBP(monthlyInterest)} per month in interest alone. If your
             monthly repayment is less than that, the balance will keep growing.
           </p>

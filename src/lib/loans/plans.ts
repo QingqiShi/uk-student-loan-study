@@ -7,7 +7,7 @@
  * ISO date of the last time figures were actually changed by the automation.
  * Only updates when GOV.UK/BoE figures differ from what we have.
  */
-export const LAST_UPDATED = "2026-08-19T07:43:53.450Z";
+export const LAST_UPDATED = "2026-09-05T12:43:11.244Z";
 
 /**
  * Plan configurations for all UK student loan types.
@@ -46,12 +46,21 @@ export const PLAN_CONFIGS = {
 /**
  * Current interest rates for loan calculations.
  * Update these when new rates are announced.
+ * interestCap is the GOV.UK ceiling on every plan's headline interest rate.
  */
 export const CURRENT_RATES = {
-  rpi: 3.2,
+  rpi: 4.1,
   boeBaseRate: 3.75,
   cpi: 2.9,
+  interestCap: 6,
 } as const;
+
+/**
+ * The income at which total repaid peaks for the default preset, under the
+ * home page's default assumptions. The automation derives it from the figures
+ * above, so the home page marker starts on the peak of the curve it is drawn on.
+ */
+export const DEFAULT_SALARY = 45_000;
 
 /**
  * User-friendly display information for each undergraduate plan type.

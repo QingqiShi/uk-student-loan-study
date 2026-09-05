@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import { formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
+
+const plan2MaxRatePct = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 export const metadata: Metadata = {
   title: "How Long to Pay Off Your Student Loan: Payoff Timeline",
@@ -68,7 +72,7 @@ const faqSchema = {
       name: "Why is my student loan balance going up?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Your balance grows when interest added each month exceeds your repayments. This is common in the early years when your salary is lower and repayments are small. For Plan 2 borrowers, interest can be as high as RPI + 3%, meaning the balance may rise for several years before repayments start to outpace interest.",
+        text: `Your balance grows when interest added each month exceeds your repayments. This is common in the early years when your salary is lower and repayments are small. For Plan 2 borrowers, interest can be as high as ${plan2MaxRatePct} (a cap holds the sliding scale below RPI + 3%), meaning the balance may rise for several years before repayments start to outpace interest.`,
       },
     },
   ],

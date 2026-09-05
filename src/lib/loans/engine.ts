@@ -35,11 +35,13 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
     plan2ThresholdSchedule,
     rpiRate,
     boeBaseRate,
+    interestCap,
     careerBreak,
   } = config;
 
   const rpi = rpiRate ?? CURRENT_RATES.rpi;
   const boe = boeBaseRate ?? CURRENT_RATES.boeBaseRate;
+  const cap = interestCap ?? CURRENT_RATES.interestCap;
 
   // Filter to active loans (positive balance)
   const activeLoans = loans.filter((loan) => loan.balance > 0);
@@ -198,6 +200,7 @@ export function simulate(config: SimulationConfig): SimulationTimeSeries {
         rpi,
         boe,
         interestThresholdOverrides,
+        cap,
       );
       const monthlyInterestRate = annualInterest / 100 / 12;
       const interestApplied = state.balance * monthlyInterestRate;

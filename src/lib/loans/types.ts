@@ -78,6 +78,9 @@ export interface SimulationConfig {
   plan2ThresholdSchedule?: number[];
   rpiRate?: number;
   boeBaseRate?: number;
+  /** Ceiling on every plan's annual interest rate, as a percentage
+   *  (default CURRENT_RATES.interestCap; NO_INTEREST_CAP removes it). */
+  interestCap?: number;
   /** A period of reduced/zero income (e.g. a career break or parental leave).
    *  During the window, repayments follow the lower income and (on Plan 2) so
    *  does the interest rate; interest still accrues. Omit for no break. */

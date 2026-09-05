@@ -65,7 +65,7 @@ const faqSchema = {
       name: "Why does my student loan interest seem higher than inflation?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Your loan interest is tied to RPI, which historically runs 0.5-1 percentage points higher than CPI (the measure most people think of as 'inflation'). On top of that, some plans add up to 3% on top of RPI. So even Plan 5's 'inflation-only' rate exceeds general inflation as measured by CPI.",
+        text: `Your loan interest is tied to RPI, which historically runs 0.5-1 percentage points higher than CPI (the measure most people think of as 'inflation'). On top of that, some plans add up to 3% on top of RPI, though an interest cap currently holds that ceiling at ${String(CURRENT_RATES.interestCap)}%. So even Plan 5's 'inflation-only' rate exceeds general inflation as measured by CPI.`,
       },
     },
     {

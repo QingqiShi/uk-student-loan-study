@@ -1,6 +1,10 @@
 import { ChartFrame } from "@/components/instrument/ChartFrame";
 import { Heading } from "@/components/typography/Heading";
 import { formatGBP, formatPercent } from "@/lib/format";
+import {
+  getMaxAnnualInterestRate,
+  NO_INTEREST_CAP,
+} from "@/lib/loans/interest";
 import { CURRENT_RATES, PLAN_CONFIGS } from "@/lib/loans/plans";
 import { getCurrentTaxYearLabel } from "@/lib/taxYear";
 import { GuideArticle, guideBreakout, KeyTakeaways } from "../guide-parts";
@@ -11,7 +15,21 @@ import { HistoricalRatesChart } from "./HistoricalRatesChart";
 import { TotalCostComparisonChart } from "./TotalCostComparisonChart";
 
 const rpi = CURRENT_RATES.rpi;
-const currentMaxRate = rpi + 3;
+const rpiPct = formatPercent(rpi);
+const capPct = formatPercent(CURRENT_RATES.interestCap);
+// The formula's ceiling with the cap lifted, for the before/after comparison
+// this guide exists to explain.
+const uncappedMaxRate = getMaxAnnualInterestRate(
+  "PLAN_2",
+  rpi,
+  CURRENT_RATES.boeBaseRate,
+  NO_INTEREST_CAP,
+);
+const uncappedMaxRatePct = formatPercent(uncappedMaxRate);
+const gapAboveCap = Math.max(
+  0,
+  Math.round((uncappedMaxRate - CURRENT_RATES.interestCap) * 100) / 100,
+);
 
 // Derived from the current date so the label tracks the live plans.ts figures.
 const currentTaxYear = getCurrentTaxYearLabel();
@@ -20,13 +38,13 @@ export function InterestRateCapGuide() {
   return (
     <GuideArticle
       breadcrumbLabel="Interest Rate Cap"
-      title="Plan 2 interest rate capped at 6%: what it means for you"
+      title={`Plan 2 interest rate capped at ${capPct}: what it means for you`}
       intro={
         <>
-          On 7 April 2026, the government announced a 6% cap on Plan 2 and Plan
-          3 student loan interest rates from September 2026. At today&rsquo;s
-          RPI it changes almost nothing. Its value is in what it prevents if
-          inflation spikes again.
+          On 7 April 2026, the government announced a cap on Plan 2 and Plan 3
+          student loan interest rates. Since 1 September 2026, that cap has held
+          the maximum rate at {capPct}. At today&rsquo;s RPI it changes almost
+          nothing. Its value is in what it prevents if inflation spikes again.
         </>
       }
       related={{
@@ -42,22 +60,22 @@ export function InterestRateCapGuide() {
         <div className="space-y-2 text-muted-foreground">
           <p>
             Plan 2 loans charge interest on a sliding scale: from RPI (currently{" "}
-            {formatPercent(rpi)}) for lower earners up to RPI + 3% (currently{" "}
-            {formatPercent(currentMaxRate)}) for those earning above{" "}
-            {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}. While
-            studying, borrowers are charged the full RPI + 3%.
+            {rpiPct}) for lower earners up to RPI + 3% for those earning above{" "}
+            {formatGBP(PLAN_CONFIGS.PLAN_2.interestUpperThreshold)}. A cap holds
+            that ceiling at {capPct} rather than the {uncappedMaxRatePct} the
+            formula would otherwise produce. While studying, borrowers are
+            charged that capped maximum.
           </p>
           <p>
-            From 1 September 2026, the maximum interest rate on Plan 2 and Plan
-            3 loans will be capped at 6%, regardless of what the RPI + 3%
+            Since 1 September 2026, the maximum interest rate on Plan 2 and Plan
+            3 loans has been capped at {capPct}, regardless of what the RPI + 3%
             formula produces. This cap applies for the 2026/27 academic year.
           </p>
           <p>
-            At current rates, this barely bites: the maximum is{" "}
-            {formatPercent(currentMaxRate)}, only{" "}
-            {formatPercent(Math.round((currentMaxRate - 6) * 100) / 100)} above
-            the cap. But the cap is designed as insurance: if inflation surges
-            again, your interest rate will not follow it above 6%.
+            At current rates, this barely bites: the uncapped formula would
+            produce {uncappedMaxRatePct}, only {formatPercent(gapAboveCap)}{" "}
+            above the cap. But the cap is designed as insurance: if inflation
+            surges again, your interest rate will not follow it above {capPct}.
           </p>
         </div>
       </section>
@@ -69,7 +87,7 @@ export function InterestRateCapGuide() {
         <div className="space-y-2 text-muted-foreground">
           <p>
             The key Plan 2 interest figures for the {currentTaxYear} tax year,
-            alongside the 6% cap that applies from September 2026.
+            alongside the {capPct} cap that has applied since 1 September 2026.
           </p>
         </div>
       </section>
@@ -92,18 +110,18 @@ export function InterestRateCapGuide() {
           <p>
             The government had previously used the &ldquo;prevailing market
             rate&rdquo; (PMR) mechanism to intervene when rates became
-            unreasonable. The 6% cap formalises this protection with a clear,
-            predictable ceiling instead of ad-hoc adjustments.
+            unreasonable. The {capPct} cap formalises this protection with a
+            clear, predictable ceiling instead of ad-hoc adjustments.
           </p>
         </div>
       </section>
 
       <section className="space-y-4">
         <Heading as="h2" size="section">
-          How Often Has the Rate Exceeded 6%?
+          {`How Often Has the Rate Exceeded ${capPct}?`}
         </Heading>
         <p className="text-muted-foreground">
-          The maximum Plan 2 interest rate has exceeded 6% in{" "}
+          The maximum Plan 2 interest rate has exceeded {capPct} in{" "}
           {String(YEARS_ABOVE_CAP)} out of {String(TOTAL_YEARS)} academic years{" "}
           since Plan 2 was introduced in 2012. During the inflation crisis of
           2022&ndash;2024, rates hit 7.7% even after the PMR cap was applied.
@@ -111,14 +129,14 @@ export function InterestRateCapGuide() {
         </p>
         <p className="text-sm text-muted-foreground">
           The bars show the maximum rate actually charged each year (after any
-          PMR intervention). The dashed line marks the new 6% cap.
+          PMR intervention). The dashed line marks the {capPct} cap.
         </p>
       </section>
 
       <ChartFrame
         className={guideBreakout}
         caption="Fig. 1: Maximum Plan 2 rate charged by year"
-        figure="Cap 6%"
+        figure={`Cap ${capPct}`}
         figureTone="cost"
       >
         <HistoricalRatesChart />
@@ -147,14 +165,14 @@ export function InterestRateCapGuide() {
         <p className="text-sm text-muted-foreground">
           At higher RPI values, the gap between the capped and uncapped balance
           widens significantly. At 7% RPI, the uncapped rate would be 10%, and
-          the cap saves borrowers from that compounding.
+          the cap holds it at {capPct} instead.
         </p>
       </section>
 
       <ChartFrame
         className={guideBreakout}
-        caption="Fig. 2: Balance with and without the 6% cap"
-        figure="Cap 6%"
+        caption={`Fig. 2: Balance with and without the ${capPct} cap`}
+        figure={`Cap ${capPct}`}
         figureTone="cost"
         bodyClassName="h-80 sm:h-100"
       >
@@ -198,8 +216,9 @@ export function InterestRateCapGuide() {
               <strong className="text-foreground">
                 Current students on Plan 2 or Plan 3
               </strong>
-              : while studying, you are charged the maximum rate (RPI + 3%). The
-              cap means this will not exceed 6%, slowing the growth of your
+              : while studying, you are charged the maximum rate. The cap holds
+              this at {capPct} rather than the {uncappedMaxRatePct} the RPI + 3%
+              formula would otherwise produce, slowing the growth of your
               balance before you even start repaying.
             </li>
             <li>
@@ -244,11 +263,12 @@ export function InterestRateCapGuide() {
             </li>
             <li>
               <strong className="text-foreground">
-                Plan 1, 4, and 5 are not affected
+                Plan 1, 4, and 5 rarely feel it
               </strong>
               : Plan 1 and 4 rates are already capped at the lower of RPI or
-              Bank of England base rate + 1%. Plan 5 charges RPI only, with no
-              +3% component.
+              Bank of England base rate + 1%, which sits below the interest cap
+              at current figures. Plan 5 charges RPI only, with no +3%
+              component, also below the cap today.
             </li>
             <li>
               <strong className="text-foreground">
@@ -263,11 +283,12 @@ export function InterestRateCapGuide() {
 
       <KeyTakeaways>
         <li>
-          Plan 2 and Plan 3 interest will be capped at 6% from September 2026.
+          Plan 2 and Plan 3 interest is capped at {capPct}, in force since 1
+          September 2026.
         </li>
         <li>
-          The maximum rate has exceeded 6% in {String(YEARS_ABOVE_CAP)} of the{" "}
-          {String(TOTAL_YEARS)} years since Plan 2 was introduced.
+          The maximum rate has exceeded {capPct} in {String(YEARS_ABOVE_CAP)} of
+          the {String(TOTAL_YEARS)} years since Plan 2 was introduced.
         </li>
         <li>
           The biggest beneficiaries are higher earners and current students,
@@ -277,7 +298,7 @@ export function InterestRateCapGuide() {
           Monthly repayments do not change; the cap only slows balance growth.
         </li>
         <li>
-          The cap is announced for one year only (2026/27), though it may be
+          The cap applies for one year only (2026/27), though it may be
           extended.
         </li>
       </KeyTakeaways>

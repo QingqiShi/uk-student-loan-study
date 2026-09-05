@@ -1,3 +1,5 @@
+import { CURRENT_RATES } from "@/lib/loans/plans";
+
 /**
  * Maximum Plan 2 interest rate actually charged each academic year.
  * For years where the prevailing market rate (PMR) cap was applied,
@@ -20,10 +22,8 @@ export const HISTORICAL_RATES = [
   { year: 2025, label: "25/26", maxRate: 6.2 },
 ] as const;
 
-export const INTEREST_CAP = 6;
-
 export const YEARS_ABOVE_CAP = HISTORICAL_RATES.filter(
-  (d) => d.maxRate > INTEREST_CAP,
+  (d) => d.maxRate > CURRENT_RATES.interestCap,
 ).length;
 
 export const TOTAL_YEARS = HISTORICAL_RATES.length;

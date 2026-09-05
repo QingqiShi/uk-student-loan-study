@@ -17,6 +17,7 @@ import {
 import { currencyFormatter } from "@/constants";
 import { formatGBP, formatPercent } from "@/lib/format";
 import { PROSE_LINK } from "@/lib/layout";
+import { CURRENT_RATES } from "@/lib/loans/plans";
 import type { PlanPageKey } from "@/lib/planContent";
 import { PLAN_PAGES } from "@/lib/planContent";
 import { surfaceCard } from "@/lib/surfaces";
@@ -161,12 +162,12 @@ export function PlanDetailPage({ planKey }: PlanDetailPageProps) {
             ))}
             {planKey === "PLAN_2" && (
               <p>
-                From September 2026 the government is capping Plan 2 interest at
-                6%. See our{" "}
+                Since 1 September 2026, an interest cap has held Plan 2 interest
+                at {formatPercent(CURRENT_RATES.interestCap)}. See our{" "}
                 <Link href="/guides/interest-rate-cap" className={PROSE_LINK}>
                   Plan 2 interest rate cap guide
                 </Link>{" "}
-                for what changes.
+                for what it means.
               </p>
             )}
             <p>

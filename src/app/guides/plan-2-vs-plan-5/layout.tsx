@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { formatGBP } from "@/lib/format";
+import { formatGBP, formatPercent } from "@/lib/format";
+import { getMaxAnnualInterestRate } from "@/lib/loans/interest";
 import { PLAN_CONFIGS, PLAN_DISPLAY_INFO } from "@/lib/loans/plans";
 
 const description =
@@ -57,6 +58,7 @@ const plan2Threshold = formatGBP(PLAN_DISPLAY_INFO.PLAN_2.yearlyThreshold);
 const plan5Threshold = formatGBP(PLAN_DISPLAY_INFO.PLAN_5.yearlyThreshold);
 const plan2WriteOff = PLAN_CONFIGS.PLAN_2.writeOffYears;
 const plan5WriteOff = PLAN_CONFIGS.PLAN_5.writeOffYears;
+const plan2MaxRatePct = formatPercent(getMaxAnnualInterestRate("PLAN_2"));
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -67,7 +69,7 @@ const faqSchema = {
       name: "What is the difference between Plan 2 and Plan 5?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `Plan 2 applies to English and Welsh students who started between 2012 and 2023, with a repayment threshold of ${plan2Threshold} and ${String(plan2WriteOff)}-year write-off. Plan 5 applies to English students starting from 2023 onwards, with a lower threshold of ${plan5Threshold} but a longer ${String(plan5WriteOff)}-year write-off period. Plan 2 charges interest on a sliding scale up to RPI + 3%, while Plan 5 charges RPI only.`,
+        text: `Plan 2 applies to English and Welsh students who started between 2012 and 2023, with a repayment threshold of ${plan2Threshold} and ${String(plan2WriteOff)}-year write-off. Plan 5 applies to English students starting from 2023 onwards, with a lower threshold of ${plan5Threshold} but a longer ${String(plan5WriteOff)}-year write-off period. Plan 2 charges interest on a sliding scale up to RPI + 3%, capped at ${plan2MaxRatePct}, while Plan 5 charges RPI only.`,
       },
     },
     {
@@ -75,7 +77,7 @@ const faqSchema = {
       name: "Which student loan plan costs more overall?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `It depends on your salary. Lower earners often repay less on Plan 2 because it writes off after ${String(plan2WriteOff)} years, while Plan 5's ${String(plan5WriteOff)}-year term means more payments despite the lower interest rate. Middle earners may repay more on Plan 2 because they earn too much for write-off to help but not enough to pay off the balance quickly before interest (up to RPI + 3%) compounds significantly.`,
+        text: `It depends on your salary. Lower earners often repay less on Plan 2 because it writes off after ${String(plan2WriteOff)} years, while Plan 5's ${String(plan5WriteOff)}-year term means more payments despite the lower interest rate. Middle earners may repay more on Plan 2 because they earn too much for write-off to help but not enough to pay off the balance quickly before interest (capped at ${plan2MaxRatePct}) compounds significantly.`,
       },
     },
     {
@@ -83,7 +85,7 @@ const faqSchema = {
       name: "Does Plan 5 have lower interest than Plan 2?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: `Yes. Plan 5 charges interest at RPI only, while Plan 2 uses a sliding scale from RPI up to RPI + 3% depending on your income. However, Plan 5's longer ${String(plan5WriteOff)}-year repayment window and lower threshold mean you may still pay more in total despite the lower rate.`,
+        text: `Yes. Plan 5 charges interest at RPI only, while Plan 2 uses a sliding scale from RPI up to RPI + 3%, capped at ${plan2MaxRatePct}, depending on your income. However, Plan 5's longer ${String(plan5WriteOff)}-year repayment window and lower threshold mean you may still pay more in total despite the lower rate.`,
       },
     },
     {

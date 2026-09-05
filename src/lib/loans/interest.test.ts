@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { getAnnualInterestRate } from "./interest";
-import { PLAN_CONFIGS } from "./plans";
+import {
+  getAnnualInterestRate,
+  getMaxAnnualInterestRate,
+  NO_INTEREST_CAP,
+} from "./interest";
+import { CURRENT_RATES, PLAN_CONFIGS } from "./plans";
 
 describe("getAnnualInterestRate", () => {
   describe("PLAN_1 - min(RPI, BoE+1%)", () => {
@@ -125,12 +129,28 @@ describe("getAnnualInterestRate", () => {
     });
 
     it("works with different RPI values", () => {
+      // An RPI this high is above the interest cap, so the cap is lifted to
+      // leave only the sliding scale under test.
       const highRpi = 8.0;
       expect(
-        getAnnualInterestRate("PLAN_2", interestLowerThreshold, highRpi, boe),
+        getAnnualInterestRate(
+          "PLAN_2",
+          interestLowerThreshold,
+          highRpi,
+          boe,
+          undefined,
+          NO_INTEREST_CAP,
+        ),
       ).toBe(highRpi);
       expect(
-        getAnnualInterestRate("PLAN_2", interestUpperThreshold, highRpi, boe),
+        getAnnualInterestRate(
+          "PLAN_2",
+          interestUpperThreshold,
+          highRpi,
+          boe,
+          undefined,
+          NO_INTEREST_CAP,
+        ),
       ).toBe(highRpi + 3);
     });
   });
@@ -160,22 +180,40 @@ describe("getAnnualInterestRate", () => {
   });
 
   describe("POSTGRADUATE - RPI+3%", () => {
+    // RPI + 3 is above the interest cap at this RPI, so these cases lift the
+    // cap to leave only the RPI + 3 rule under test.
     it("returns RPI + 3%", () => {
       const rpi = 3.5;
-      expect(getAnnualInterestRate("POSTGRADUATE", 50000, rpi, 4.0)).toBe(
-        rpi + 3,
-      );
+      expect(
+        getAnnualInterestRate(
+          "POSTGRADUATE",
+          50000,
+          rpi,
+          4.0,
+          undefined,
+          NO_INTEREST_CAP,
+        ),
+      ).toBe(rpi + 3);
     });
 
     it("is independent of salary", () => {
       const rpi = 3.5;
       const boe = 4.0;
-      const lowSalary = getAnnualInterestRate("POSTGRADUATE", 20000, rpi, boe);
+      const lowSalary = getAnnualInterestRate(
+        "POSTGRADUATE",
+        20000,
+        rpi,
+        boe,
+        undefined,
+        NO_INTEREST_CAP,
+      );
       const highSalary = getAnnualInterestRate(
         "POSTGRADUATE",
         150000,
         rpi,
         boe,
+        undefined,
+        NO_INTEREST_CAP,
       );
       expect(lowSalary).toBe(highSalary);
       expect(lowSalary).toBe(rpi + 3);
@@ -183,8 +221,22 @@ describe("getAnnualInterestRate", () => {
 
     it("is independent of BoE rate", () => {
       const rpi = 3.5;
-      const lowBoe = getAnnualInterestRate("POSTGRADUATE", 50000, rpi, 1.0);
-      const highBoe = getAnnualInterestRate("POSTGRADUATE", 50000, rpi, 10.0);
+      const lowBoe = getAnnualInterestRate(
+        "POSTGRADUATE",
+        50000,
+        rpi,
+        1.0,
+        undefined,
+        NO_INTEREST_CAP,
+      );
+      const highBoe = getAnnualInterestRate(
+        "POSTGRADUATE",
+        50000,
+        rpi,
+        10.0,
+        undefined,
+        NO_INTEREST_CAP,
+      );
       expect(lowBoe).toBe(highBoe);
       expect(lowBoe).toBe(rpi + 3);
     });
@@ -312,6 +364,107 @@ describe("getAnnualInterestRate", () => {
       expect(
         getAnnualInterestRate("PLAN_2", salary, rpi, boe, overrides),
       ).toBeCloseTo(rpi + 0.75, 5);
+    });
+  });
+
+  describe("interest cap", () => {
+    const boe = CURRENT_RATES.boeBaseRate;
+    const cap = CURRENT_RATES.interestCap;
+    const { interestLowerThreshold, interestUpperThreshold } =
+      PLAN_CONFIGS.PLAN_2;
+
+    it("holds PLAN_2 above the upper interest threshold to the cap", () => {
+      // At this RPI, RPI + 3 is above the cap whatever the cap is.
+      const rpi = cap;
+      expect(
+        getAnnualInterestRate(
+          "PLAN_2",
+          interestUpperThreshold + 10000,
+          rpi,
+          boe,
+        ),
+      ).toBe(cap);
+    });
+
+    it("caps the sliding scale at the salary where it crosses the cap", () => {
+      const rpi = cap - 1;
+      const crossing =
+        interestLowerThreshold +
+        ((cap - rpi) / 3) * (interestUpperThreshold - interestLowerThreshold);
+      expect(getAnnualInterestRate("PLAN_2", crossing + 100, rpi, boe)).toBe(
+        cap,
+      );
+      expect(
+        getAnnualInterestRate("PLAN_2", crossing - 100, rpi, boe),
+      ).toBeLessThan(cap);
+    });
+
+    it("holds POSTGRADUATE to the cap at the current figures", () => {
+      expect(
+        getAnnualInterestRate("POSTGRADUATE", 50000, CURRENT_RATES.rpi, boe),
+      ).toBe(Math.min(CURRENT_RATES.rpi + 3, cap));
+    });
+
+    it("returns the uncapped rate with NO_INTEREST_CAP", () => {
+      const rpi = cap;
+      expect(
+        getAnnualInterestRate(
+          "PLAN_2",
+          interestUpperThreshold + 10000,
+          rpi,
+          boe,
+          undefined,
+          NO_INTEREST_CAP,
+        ),
+      ).toBe(rpi + 3);
+      expect(
+        getAnnualInterestRate(
+          "POSTGRADUATE",
+          50000,
+          rpi,
+          boe,
+          undefined,
+          NO_INTEREST_CAP,
+        ),
+      ).toBe(rpi + 3);
+    });
+
+    it("leaves PLAN_1, PLAN_4 and PLAN_5 unchanged at the current figures", () => {
+      for (const plan of ["PLAN_1", "PLAN_4", "PLAN_5"] as const) {
+        expect(getAnnualInterestRate(plan, 60000, CURRENT_RATES.rpi, boe)).toBe(
+          getAnnualInterestRate(
+            plan,
+            60000,
+            CURRENT_RATES.rpi,
+            boe,
+            undefined,
+            NO_INTEREST_CAP,
+          ),
+        );
+      }
+    });
+  });
+
+  describe("getMaxAnnualInterestRate", () => {
+    it("returns the capped RPI + 3% ceiling for PLAN_2 at the current figures", () => {
+      expect(getMaxAnnualInterestRate("PLAN_2")).toBe(
+        Math.min(CURRENT_RATES.rpi + 3, CURRENT_RATES.interestCap),
+      );
+    });
+
+    it("returns the uncapped RPI + 3% ceiling for PLAN_2 with NO_INTEREST_CAP", () => {
+      expect(
+        getMaxAnnualInterestRate(
+          "PLAN_2",
+          CURRENT_RATES.rpi,
+          CURRENT_RATES.boeBaseRate,
+          NO_INTEREST_CAP,
+        ),
+      ).toBe(CURRENT_RATES.rpi + 3);
+    });
+
+    it("returns RPI for PLAN_5", () => {
+      expect(getMaxAnnualInterestRate("PLAN_5")).toBe(CURRENT_RATES.rpi);
     });
   });
 
