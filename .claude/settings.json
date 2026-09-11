@@ -3,10 +3,8 @@
     "POSTHOG_CLI_PROJECT_ID": "238904"
   },
   "permissions": {
-    "defaultMode": "bypassPermissions",
     "deny": ["Read(./.env)", "Read(./.env.*)"]
   },
-  "showClearContextOnPlanAccept": true,
   "hooks": {
     "SessionStart": [
       {
