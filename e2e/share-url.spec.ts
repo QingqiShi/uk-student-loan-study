@@ -35,7 +35,9 @@ test.describe("Share URL round-trip", () => {
     await page.goto("/overpay?loans=PLAN_2:45000&sal=50000&ovp=200&lsp=5000");
 
     // Wait for the overpay verdict to appear
-    const verdict = page.locator("[role='status'][aria-live='polite']").first();
+    const verdict = page.getByRole("status", {
+      name: "Overpay recommendation",
+    });
     await expect(verdict).toBeVisible({ timeout: 15_000 });
   });
 

@@ -268,6 +268,7 @@ export function OverpayVerdict({
         <div
           role="status"
           aria-live="polite"
+          aria-label="Overpay recommendation"
           className="col-start-1 row-start-1 self-start"
         >
           <VerdictBody
