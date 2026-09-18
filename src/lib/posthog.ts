@@ -1,4 +1,4 @@
-import posthog from "posthog-js";
+import posthog, { type CaptureResult } from "posthog-js";
 
 // Both names are inlined by Next at build time, so they must be read as whole
 // `process.env.X` expressions. Without them `posthog.init` never runs and every
@@ -9,6 +9,45 @@ export const posthogEnabled = Boolean(
 );
 
 let initialised = false;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isOwnScript(filename: unknown): boolean {
+  if (typeof filename !== "string") return false;
+  try {
+    return new URL(filename).origin === window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
+function hasOwnScriptFrame(exceptionList: unknown): boolean {
+  if (!Array.isArray(exceptionList)) return false;
+  return exceptionList.some(
+    (exception: unknown) =>
+      isRecord(exception) &&
+      isRecord(exception.stacktrace) &&
+      Array.isArray(exception.stacktrace.frames) &&
+      exception.stacktrace.frames.some((frame: unknown) =>
+        isRecord(frame) ? isOwnScript(frame.filename) : false,
+      ),
+  );
+}
+
+// Browser extensions and the browser itself cause exceptions on this page.
+// PostHog removes them only if a stack frame shows an extension URL. The
+// exceptions this site recorded have no frames, or only frames whose URL Safari
+// masks, so that test keeps them. This hook keeps an exception only if one
+// frame points to a script on this origin. It also removes a rejected promise
+// whose value is not an Error, because the browser gives no stack for it.
+export function dropThirdPartyExceptions(
+  event: CaptureResult | null,
+): CaptureResult | null {
+  if (!event || event.event !== "$exception") return event;
+  return hasOwnScriptFrame(event.properties.$exception_list) ? event : null;
+}
 
 // Must run after hydration: posthog.init injects its remote-config script next
 // to the first <script> in the document, which is the layout's JSON-LD block.
@@ -30,6 +69,7 @@ export function initPostHog() {
     // Needs "Cookieless server hash mode" enabled in the PostHog project.
     cookieless_mode: "always",
     capture_exceptions: true,
+    before_send: dropThirdPartyExceptions,
     capture_performance: { web_vitals: true },
     debug: process.env.NODE_ENV === "development",
   });
