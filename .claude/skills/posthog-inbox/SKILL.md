@@ -7,7 +7,9 @@ description: Check the PostHog inbox and query PostHog data with posthog-cli. Us
 
 Use the globally installed `posthog-cli` (`pnpm add -g @posthog/cli` if missing). Do not use PostHog MCP tools, and do not run `posthog-cli api skill install` — this project deliberately avoids the `.agents/` skill layer.
 
-This repo's PostHog project is **StudentLoanStudy, ID `238904`, EU cloud**. Sessions inherit `POSTHOG_CLI_PROJECT_ID=238904` from the env block in `.claude/settings.json`, which overrides the machine-level login's active project. If the variable is missing from the environment, prefix each call with it. Do not call `switch-project` — it changes the machine-global default for other repos.
+This repo's PostHog project is **StudentLoanStudy, ID `238904`, EU cloud**. Sessions inherit `POSTHOG_CLI_PROJECT_ID` and `POSTHOG_CLI_ORGANIZATION_ID` from the env block in `.claude/settings.json`. The CLI needs both: given the project ID alone, it looks up the account's default organisation and overwrites the project with whichever one was last active in the PostHog web app. If either variable is missing from the environment, prefix each call with the values from that file. Do not call `switch-project` — it changes the machine-global default for other repos.
+
+Every response carries a `_posthogUrl`. Check that it sits under `/project/238904/` before acting on anything, because a failed pin returns another project's data without an error.
 
 ## Auth
 
