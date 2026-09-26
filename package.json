@@ -28,7 +28,7 @@
     "posthog-js": "^1.434.7",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-error-boundary": "^6.1.5",
+    "react-error-boundary": "^6.1.6",
     "react-number-format": "^5.4",
     "recharts": "2.15.4",
     "tailwind-merge": "^3.7.0"
