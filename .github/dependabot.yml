@@ -5,11 +5,14 @@
 
 version: 2
 updates:
+  # Run 2 hours before the Paseo schedule that merges Dependabot PRs
+  # (0 1 2-31/2 * *), so that no new PRs stay open after the merge.
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: "daily"
-      time: "15:00"
+      interval: "cron"
+      cronjob: "0 23 1-29/2 * *"
+      timezone: "Europe/London"
     # Wait until a version has aged before opening a PR, so it has cleared
     # pnpm 11's default 24h `minimumReleaseAge` supply-chain gate by the time
     # CI runs `pnpm install`. Cooldown applies to version updates only —
@@ -65,8 +68,9 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
-      time: "15:00"
+      interval: "cron"
+      cronjob: "0 23 1-29/2 * *"
+      timezone: "Europe/London"
     assignees:
       - "QingqiShi"
     open-pull-requests-limit: 10
