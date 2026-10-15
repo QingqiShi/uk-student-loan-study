@@ -1,4 +1,4 @@
-import posthog, { type CaptureResult } from "posthog-js";
+import posthog, { type CaptureResult, type Properties } from "posthog-js";
 
 // Both names are inlined by Next at build time, so they must be read as whole
 // `process.env.X` expressions. Without them `posthog.init` never runs and every
@@ -105,7 +105,7 @@ export function initPostHog() {
   });
 }
 
-export function captureException(error: unknown) {
+export function captureException(error: unknown, properties?: Properties) {
   if (!posthogEnabled) return;
-  posthog.captureException(error);
+  posthog.captureException(error, properties);
 }

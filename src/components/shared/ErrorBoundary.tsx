@@ -34,7 +34,9 @@ export function AppErrorBoundary({ children }: AppErrorBoundaryProps) {
   return (
     <ReactErrorBoundary
       FallbackComponent={ErrorFallback}
-      onError={captureException}
+      onError={(error) => {
+        captureException(error);
+      }}
       onReset={() => {
         // Reset application state if needed
         window.location.reload();
