@@ -61,18 +61,27 @@ export function ShareButton({ repaymentYear }: ShareButtonProps) {
   };
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={handleShare}
-      aria-label={copied ? "Link copied" : "Share results"}
-      className="shrink-0"
-    >
-      <HugeiconsIcon
-        icon={copied ? Tick02Icon : Share01Icon}
-        className="size-4"
-        strokeWidth={2}
-      />
-    </Button>
+    <>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={handleShare}
+        aria-label={copied ? "Link copied" : "Share results"}
+        className="shrink-0"
+      >
+        <HugeiconsIcon
+          icon={copied ? Tick02Icon : Share01Icon}
+          className="size-4"
+          strokeWidth={2}
+        />
+      </Button>
+      {/* Announce copy success to screen readers: an aria-label change on the
+          already-focused button is not reliably re-read, so a live region is
+          needed. The message clears when `copied` resets, so a repeat copy
+          re-announces. */}
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? "Link copied to clipboard" : ""}
+      </span>
+    </>
   );
 }
