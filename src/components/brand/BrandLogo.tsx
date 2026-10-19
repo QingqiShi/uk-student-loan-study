@@ -19,25 +19,18 @@ export function BrandLogo({ size = "default", className }: BrandLogoProps) {
     <div className={cn("flex items-center", className)} style={{ gap }}>
       <BrandIcon size={size} />
       <div className="relative">
-        {/* Shadow layer — decorative, hidden from screen readers.
-            Per-segment weights must mirror the main text below: bold glyphs
-            advance wider than regular, so a blanket weight here would drift
-            the shadow progressively rightward instead of holding a constant offset. */}
-        <span
-          aria-hidden="true"
-          className="absolute font-display whitespace-nowrap text-primary/15"
-          style={{
-            top: shadowOffset.y,
-            left: shadowOffset.x,
-            fontSize,
-          }}
-        >
-          StudentLoan<span className="font-bold">Study.uk</span>
-        </span>
-        {/* Main text */}
+        {/* The offset shadow is a text-shadow, not a second copy of the
+            wordmark. A duplicate text layer puts the words on the page twice,
+            which makes the header link fail WCAG 2.5.3 Label in Name: no
+            accessible name can contain the doubled text. text-shadow also
+            keeps the offset constant, because it follows each glyph and thus
+            mirrors the per-segment weights on its own. */}
         <span
           className="relative font-display whitespace-nowrap"
-          style={{ fontSize }}
+          style={{
+            fontSize,
+            textShadow: `${String(shadowOffset.x)}px ${String(shadowOffset.y)}px 0 color-mix(in oklab, var(--primary) 15%, transparent)`,
+          }}
         >
           <span className="text-foreground">StudentLoan</span>
           <span className="font-bold text-primary">Study</span>
