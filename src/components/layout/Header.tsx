@@ -25,7 +25,12 @@ export function Header({ repaymentYear }: HeaderProps) {
       </a>
       <div className={`mx-auto ${SHELL_WIDE}`}>
         <header className="flex items-center justify-between gap-3 py-3">
-          <Link href="/" aria-label="Go to home page">
+          {/* The label must start with the logo text that users see
+              ("StudentLoanStudy.uk"). WCAG 2.5.3 Label in Name makes this a
+              requirement: speech-control users say the words they see, so a
+              label that replaces those words makes the link impossible to
+              speak to. */}
+          <Link href="/" aria-label="StudentLoanStudy.uk home page">
             <BrandLogo size="sm" />
           </Link>
           <div className="flex shrink-0 items-center gap-2">

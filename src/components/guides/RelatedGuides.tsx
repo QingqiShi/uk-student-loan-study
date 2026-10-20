@@ -120,16 +120,13 @@ export function RelatedGuides({
 
   return (
     <div className="space-y-8">
-      <Link
-        href="/"
-        className="group block no-underline"
-        aria-labelledby="companion-cta-h"
-      >
+      {/* The whole card is the link, so its name comes from all the text in
+          it. Naming it from the headline alone (aria-labelledby) leaves the
+          eyebrow and the line below out of the name, which fails WCAG 2.5.3
+          Label in Name. */}
+      <Link href="/" className="group block no-underline">
         <Eyebrow marker={false}>Try it yourself</Eyebrow>
-        <span
-          id="companion-cta-h"
-          className="mt-2 flex items-center gap-1.5 font-semibold text-foreground transition-colors group-hover:text-cta"
-        >
+        <span className="mt-2 flex items-center gap-1.5 font-semibold text-foreground transition-colors group-hover:text-cta">
           Open the calculator
           <LinkArrow className="text-primary" />
         </span>
