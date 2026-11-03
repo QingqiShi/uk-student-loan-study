@@ -5,7 +5,9 @@ test.describe("Overpay page", () => {
     await page.goto("/overpay");
 
     // Wait for the verdict to appear (shows recommendation)
-    const verdict = page.locator("[role='status'][aria-live='polite']").first();
+    const verdict = page.getByRole("status", {
+      name: "Overpay recommendation",
+    });
     await expect(verdict).toBeVisible({ timeout: 15_000 });
 
     // Heading should be visible
@@ -22,7 +24,9 @@ test.describe("Overpay page", () => {
     await page.goto("/overpay?loans=PLAN_2:45000&sal=50000");
 
     // Wait for initial verdict
-    const verdict = page.locator("[role='status'][aria-live='polite']").first();
+    const verdict = page.getByRole("status", {
+      name: "Overpay recommendation",
+    });
     await expect(verdict).toBeVisible({ timeout: 15_000 });
 
     // Focus the overpayment slider thumb and use keyboard to change value
@@ -46,7 +50,9 @@ test.describe("Overpay page", () => {
     await page.goto("/overpay?loans=PLAN_2:45000&sal=50000");
 
     // Wait for page to load
-    const verdict = page.locator("[role='status'][aria-live='polite']").first();
+    const verdict = page.getByRole("status", {
+      name: "Overpay recommendation",
+    });
     await expect(verdict).toBeVisible({ timeout: 15_000 });
     const initialText = await verdict.textContent();
 
@@ -65,7 +71,9 @@ test.describe("Overpay page", () => {
     await page.goto("/overpay");
 
     // Wait for initial load
-    const verdict = page.locator("[role='status'][aria-live='polite']").first();
+    const verdict = page.getByRole("status", {
+      name: "Overpay recommendation",
+    });
     await expect(verdict).toBeVisible({ timeout: 15_000 });
     const initialText = await verdict.textContent();
 
