@@ -1,7 +1,9 @@
 import { render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { BOE_BASE_RATE_OPTIONS } from "@/constants";
 import { trackBoeBaseRateSelected } from "@/lib/analytics";
+import { CURRENT_RATES } from "@/lib/loans/plans";
 import { BoeBaseRateStep } from "./BoeBaseRateStep";
 
 vi.mock("@/lib/analytics", () => ({
@@ -11,7 +13,7 @@ vi.mock("@/lib/analytics", () => ({
 const mockUpdateField = vi.fn();
 vi.mock("@/context/LoanContext", () => ({
   useLoanActions: () => ({ updateField: mockUpdateField }),
-  useLoanConfigState: () => ({ boeBaseRate: 3.75 }),
+  useLoanConfigState: () => ({ boeBaseRate: CURRENT_RATES.boeBaseRate }),
 }));
 
 describe("BoeBaseRateStep", () => {
@@ -43,7 +45,10 @@ describe("BoeBaseRateStep", () => {
     const labels = radios.map((r) => r.textContent).join("|");
     expect(labels).toContain("2%");
     expect(labels).toContain("3%");
-    expect(labels).toContain("3.75%");
+    const currentRateOption = BOE_BASE_RATE_OPTIONS.find(
+      (o) => o.value === CURRENT_RATES.boeBaseRate,
+    );
+    expect(labels).toContain(currentRateOption?.label);
     expect(labels).toContain("5.25%");
   });
 

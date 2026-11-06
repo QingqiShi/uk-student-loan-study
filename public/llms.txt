@@ -54,7 +54,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - Monthly threshold: £2,241 (£26,900/year)
 - Repayment rate: 9% of income above threshold
 - 25-year write-off period
-- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower (currently RPI 4.1%, base rate 3.75%)
+- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower (currently RPI 4.1%, base rate 4%)
 
 ### Plan 2
 - For students who started between September 2012 and July 2023 (England/Wales)
@@ -68,7 +68,7 @@ UK student loans are often misunderstood. Middle earners typically repay the mos
 - Monthly threshold: £2,816 (£33,795/year)
 - Repayment rate: 9% of income above threshold
 - 30-year write-off period
-- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower (currently RPI 4.1%, base rate 3.75%)
+- Interest rate: RPI or Bank of England base rate + 1%, whichever is lower (currently RPI 4.1%, base rate 4%)
 
 ### Plan 5
 - For students starting August 2023 or later (England)
