@@ -7,7 +7,7 @@
  * ISO date of the last time figures were actually changed by the automation.
  * Only updates when GOV.UK/BoE figures differ from what we have.
  */
-export const LAST_UPDATED = "2026-10-21T12:48:39.871Z";
+export const LAST_UPDATED = "2026-11-06T08:12:13.451Z";
 
 /**
  * Plan configurations for all UK student loan types.
@@ -50,7 +50,7 @@ export const PLAN_CONFIGS = {
  */
 export const CURRENT_RATES = {
   rpi: 4.1,
-  boeBaseRate: 3.75,
+  boeBaseRate: 4,
   cpi: 3.5,
   interestCap: 6,
 } as const;
