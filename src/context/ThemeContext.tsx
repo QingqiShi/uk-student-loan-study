@@ -32,10 +32,16 @@ function subscribeToTheme(callback: () => void) {
   };
 }
 
+let unsavedTheme: Theme | null = null;
+
 function getThemeSnapshot(): Theme {
   if (typeof window === "undefined") return "system";
-  const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  return stored ?? "system";
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    return stored ?? "system";
+  } catch {
+    return unsavedTheme ?? "system";
+  }
 }
 
 function getThemeServerSnapshot(): Theme {
@@ -89,7 +95,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [resolvedTheme]);
 
   const setTheme = (newTheme: Theme) => {
-    localStorage.setItem(STORAGE_KEY, newTheme);
+    try {
+      localStorage.setItem(STORAGE_KEY, newTheme);
+      unsavedTheme = null;
+    } catch {
+      unsavedTheme = newTheme;
+    }
     notifyThemeListeners();
   };
 
