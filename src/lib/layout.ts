@@ -173,7 +173,7 @@ export const FOLD_CHART_BODY =
  * bare form on a field, where a marker per control would be noise.
  */
 export const ENGRAVED_LABEL =
-  "font-sans text-xs font-semibold tracking-label text-muted-foreground uppercase";
+  "font-sans text-xs leading-4 font-semibold tracking-label text-muted-foreground uppercase";
 
 /**
  * Inline prose link in the accent-ink (`text-cta`) treatment — underlined, the
